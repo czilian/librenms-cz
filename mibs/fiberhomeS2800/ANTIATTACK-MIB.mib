@@ -1,0 +1,265 @@
+	ANTIATTACK-MIB DEFINITIONS ::= BEGIN
+ 
+		IMPORTS
+			Integer32, Unsigned32, OBJECT-TYPE, NOTIFICATION-TYPE			
+				FROM SNMPv2-SMI	
+			MacAddress FROM SNMPv2-TC		
+			wriProtocol	FROM WRI-SMI;
+
+		antiattackMib OBJECT IDENTIFIER ::= { wriProtocol 102 }
+
+		antiattackComm OBJECT IDENTIFIER ::= { antiattackMib 1 }
+
+		antiAttackPktLimitStatus OBJECT-TYPE
+			SYNTAX INTEGER
+				{
+				enable(1),
+				disable(0)
+				}
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"antiattack packet limit status."
+			::= { antiattackComm 1 }
+
+		antiAttackArpReq OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"arp request packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 2 }
+		
+		antiAttackArpReply OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"arp reply packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 3 }
+			
+		antiAttackStp OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"STP packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 4 }
+			
+		antiAttackIcmp OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"ICMP packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 5 }
+			
+		antiAttackIgmp OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"IGMP packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 6 }
+			
+		antiAttackDhcp OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"DHCP packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 7 }
+			
+		antiAttackUdp OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"UDP packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 8 }
+			
+		antiAttackTcp OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"TCP packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 9 }
+			
+		antiAttackSgm OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"SGM packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 10 }
+		
+	antiAttackIpToSelf OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"Ip address to Self packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 11 }
+	
+	antiAttackIpForward OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"Ip address forward packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 12 }
+			
+	antiAttackOther OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"Other packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 13 }
+			
+	-- ******************************************************************
+	-- xf edit 2013-7-4
+	-- old platform mib
+	-- attackOrScanSrcIp antiattackComm 14
+	-- attackOrScanEvent antiattackComm 15
+	-- ******************************************************************
+	antiAttackOspf OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"Ospf packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 16}
+			
+	antiAttackBgp OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"Bgp packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 17 }
+	
+	antiAttackRip OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"Rip packet limit. from 1 to 3000pps, 0 means no packet can through."
+			::= { antiattackComm 18 }
+	
+	
+	
+	antiattackTrap OBJECT IDENTIFIER ::= { antiattackMib 2 }
+	-- ******************************************************************
+	-- xf edit 2013-7-4
+	-- old platform mib
+	-- attackOrScanTrap antiattackTrap 1
+	-- ******************************************************************	
+	antiattackArpReplyPktOverTrap NOTIFICATION-TYPE
+					OBJECTS {antiAttackArpReply}     
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 2} 	
+	
+	antiattackStpPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackStp}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 3} 	
+	
+	antiattackIcmpPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackIcmp}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 4} 	
+	
+	antiattackIgmpPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackIgmp}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 5} 	
+	
+	antiattackDhcpPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackDhcp}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 6} 	
+	
+	antiattackUdpPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackUdp}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 7} 	
+	
+	antiattackTcpPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackTcp}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 8} 	
+	
+	antiattackSgmPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackSgm}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 9} 	
+	
+	antiattackIpToSelfPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackIpToSelf}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 10} 	
+	
+	antiattackIpForwardPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackIpForward}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 11} 	
+	
+	antiattackOtherPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackOther}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 12} 	
+	
+	antiattackOspfPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackOspf}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 13} 	
+	
+	antiattackBgpPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackBgp}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 14} 	
+	
+	antiattackRipPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackRip}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 15} 	
+	
+	antiattackArpReqPktOverTrap NOTIFICATION-TYPE     
+       		OBJECTS {antiAttackArpReq}
+       		STATUS  current
+       		DESCRIPTION
+               	""
+			::= { antiattackTrap 16} 	
+
+	
+	END

@@ -1,0 +1,742 @@
+ROUTEPOLICY-MIB DEFINITIONS ::= BEGIN
+	IMPORTS
+			MODULE-IDENTITY, OBJECT-TYPE, Counter32, Gauge32, Unsigned32,
+			Integer32, TimeTicks, Counter64,enterprises,IpAddress,
+			NOTIFICATION-TYPE                        		FROM SNMPv2-SMI
+            RowStatus, TEXTUAL-CONVENTION, TruthValue, 
+			TimeInterval,MacAddress,PhysAddress				FROM SNMPv2-TC
+			InetAddressPrefixLength,InetAddressType,
+			InetPortNumber,InetAddress						FROM INET-ADDRESS-MIB
+			SnmpAdminString									FROM SNMP-FRAMEWORK-MIB
+    		InterfaceIndex									FROM IF-MIB
+			wri,wriProducts,wriProtocol						FROM WRI-SMI;
+ 
+-- ROUTEPOLICY Parent Port 
+                           
+	-- 1.3.6.1.4.1.3807.2.1811
+		routePolicy OBJECT IDENTIFIER ::= { wriProtocol 1811 }
+		
+-- ROUTEPOLICY Common Information         
+
+	   -- 1.3.6.1.4.1.3807.2.1811.1
+		routePolicyCommon OBJECT IDENTIFIER ::= { routePolicy 1 }
+       
+       	-- 1.3.6.1.4.1.3807.2.1811.1.1
+		routePolicyMaxNum OBJECT-TYPE
+			SYNTAX Counter32
+			MAX-ACCESS read-only
+			STATUS current
+			DESCRIPTION
+				"The routepolicy max number."
+			::= { routePolicyCommon 1 } 
+			
+		-- 1.3.6.1.4.1.3807.2.1811.1.2
+		routePolicyCurNum OBJECT-TYPE
+			SYNTAX Counter32
+			MAX-ACCESS read-only
+			STATUS current
+			DESCRIPTION
+				"The routepolicy current number."
+			::= { routePolicyCommon 2 }
+          
+        -- 1.3.6.1.4.1.3807.2.1811.1.3
+		routePolicyNodeMaxNum OBJECT-TYPE
+			SYNTAX Counter32
+			MAX-ACCESS read-only
+			STATUS current
+			DESCRIPTION
+				"The routepolicy node max number."
+			::= { routePolicyCommon 3 }
+			
+		-- 1.3.6.1.4.1.3807.2.1811.1.4
+		routePolicyNotifyDelayTime OBJECT-TYPE
+			SYNTAX INTEGER  (1..180)
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"The routepolicy notify delay time(default:1s)."
+			::= { routePolicyCommon 4 }	
+			
+		-- 1.3.6.1.4.1.3807.2.1811.1.5
+		routePolicyMapFreeIndex OBJECT-TYPE
+			SYNTAX Integer32
+			MAX-ACCESS read-only
+			STATUS current
+			DESCRIPTION
+				"The routepolicy map free index."
+			::= { routePolicyCommon 5 }
+									
+		-- 1.3.6.1.4.1.3807.2.1811.1.6
+		routePolicyNodeCurNum OBJECT-TYPE
+			SYNTAX Counter32
+			MAX-ACCESS read-only
+			STATUS current
+			DESCRIPTION
+				"The routepolicy node current number."
+			::= { routePolicyCommon 6 }
+ -- ROUTEPOLICY Map Table   
+
+	-- 1.3.6.1.4.1.3807.2.1811.2                      
+    	routePolicyMapTable OBJECT-TYPE
+	        SYNTAX SEQUENCE OF RoutePolicyMapEntry
+	        MAX-ACCESS not-accessible
+	        STATUS current
+	        DESCRIPTION
+	            "The routepolicy map table. "
+	        ::= { routePolicy 2 }
+	        
+	-- 1.3.6.1.4.1.3807.2.1811.2.1                                                   
+	     routePolicyMapEntry OBJECT-TYPE
+	         SYNTAX RoutePolicyMapEntry
+	         MAX-ACCESS not-accessible
+	         STATUS current
+	         DESCRIPTION
+	            "The routepolicy index entry. "
+	         INDEX { routePolicyMapIndex }
+	         ::= { routePolicyMapTable 1 }
+	         
+		RoutePolicyMapEntry ::=  
+			SEQUENCE {
+				routePolicyMapIndex			Integer32,
+				routePolicyMapName			OCTET STRING,
+				routePolicyMapNodeCurNum	Counter32,
+				routePolicyMapCounter		Counter32,
+				routePolicyMapRowStatus  	RowStatus
+			}
+			
+        -- 1.3.6.1.4.1.3807.2.1811.2.1.1
+        routePolicyMapIndex OBJECT-TYPE
+            SYNTAX Integer32
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Routepolicy index . "
+            ::= { routePolicyMapEntry 1 }
+            
+      	-- 1.3.6.1.4.1.3807.2.1811.2.1.2
+        routePolicyMapName OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..20))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy map name. "
+            ::= { routePolicyMapEntry 2 }
+
+        -- 1.3.6.1.4.1.3807.2.1811.2.1.3
+        routePolicyMapNodeCurNum OBJECT-TYPE
+            SYNTAX Counter32
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Routepolicy map node current num. "
+            ::= { routePolicyMapEntry 3 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.2.1.4
+        routePolicyMapCounter OBJECT-TYPE
+            SYNTAX Counter32
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy map counter. "
+            ::= { routePolicyMapEntry 4 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.2.1.5
+        routePolicyMapRowStatus OBJECT-TYPE
+            SYNTAX RowStatus
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Add or delete one dhcpsnoop user. active 1,notInService 2,notReady 3,createAndGo 4
+						createAndWait 5,destroy 6. "
+            ::= { routePolicyMapEntry 5 }
+			
+
+-- ROUTEPOLICY Node Table   
+
+	-- 1.3.6.1.4.1.3807.2.1811.3                      
+    	routePolicyNodeTable OBJECT-TYPE
+	        SYNTAX SEQUENCE OF RoutePolicyNodeEntry
+	        MAX-ACCESS not-accessible
+	        STATUS current
+	        DESCRIPTION
+	            "The routepolicy node table. "
+	        ::= { routePolicy 3 }
+	        
+	-- 1.3.6.1.4.1.3807.2.1811.3.1                                                   
+	     routePolicyNodeEntry OBJECT-TYPE
+	         SYNTAX RoutePolicyNodeEntry
+	         MAX-ACCESS not-accessible
+	         STATUS current
+	         DESCRIPTION
+	            "The routepolicy node entry. "
+	         INDEX { routePolicyNodeIndex,routePolicyNodeNum }
+	         ::= { routePolicyNodeTable 1 }
+	         
+		RoutePolicyNodeEntry ::=  
+			SEQUENCE {
+				routePolicyNodeIndex					Integer32,
+				routePolicyNodeNum						Integer32,
+				routePolicyNodeType     				INTEGER,
+				routePolicyNodeExitPolicy				INTEGER,
+				routePolicyNextNode						Integer32,
+				
+				routePolicyMatchIpDstFilter     		Integer32,
+				routePolicyMatchIpv6DstFilter			Integer32,
+				routePolicyMatchIpDstPrefix				OCTET STRING,
+				routePolicyMatchIpv6DstPrefix			OCTET STRING,
+				routePolicyMatchIpNextHopFilter			Integer32,
+				routePolicyMatchIpv6NextHopFilter		Integer32,
+				routePolicyMatchIpNextHopPrefix    		OCTET STRING,
+				routePolicyMatchIpv6NextHopPrefix    	OCTET STRING,
+				routePolicyMatchIpRouteSourceFilter  	Integer32,
+				routePolicyMatchIpv6RouteSourceFilter  	Integer32,
+				routePolicyMatchIpRouteSourcePrefix		OCTET STRING,
+				routePolicyMatchIpv6RouteSourcePrefix	OCTET STRING,
+				routePolicyMatchBGPAddAsPath			OCTET STRING,
+				routePolicyMatchBGPDeleteAsPath			OCTET STRING,
+				routePolicyMatchBGPAddCommunity    		OCTET STRING,
+				routePolicyMatchBGPDeleteCommunity 		OCTET STRING,
+				routePolicyMatchCost	    			Unsigned32,
+				routePolicyMatchBGPAddExtCommunity		OCTET STRING,
+				routePolicyMatchBGPDeleteExtCommunity	OCTET STRING,
+				routePolicyMatchRouteType	 			INTEGER,
+				routePolicyMatchTag			 			OCTET STRING,
+				
+				routePolicyApplyBGPAsPath			 	OCTET STRING,
+				routePolicyApplyBGPAsPathAdditive		INTEGER,
+				routePolicyApplyBGPDeleteCommlistNum 	Integer32,
+				routePolicyApplyBGPCommunity    		OCTET STRING,
+				routePolicyApplyBGPCommunityAdditive    INTEGER,
+				routePolicyApplyCost	    			OCTET STRING,
+				routePolicyApplyCostType    			INTEGER,
+				routePolicyApplyBGPExtCommunity			OCTET STRING,
+				routePolicyApplyBGPExtCommunityAdditive INTEGER,
+				routePolicyApplyIsIsLevel 				INTEGER,
+				routePolicyApplyBGPLocalPreference 		OCTET STRING,
+				routePolicyApplyBGPOriginType			INTEGER,
+				routePolicyApplyBGPOriginVal			Integer32,
+				routePolicyApplyPreferredVal			Integer32,
+				routePolicyApplyTag 					OCTET STRING,
+				routePolicyApplyOspfTranslate			INTEGER,
+				
+				routePolicyNodeRowStatus				RowStatus,
+				routePolicyMatchFlag					Integer32,
+				routePolicyApplyFlag					Integer32,
+				--xf add 2015-1-21
+				routePolicyMatchProcessId 				Integer32
+			}
+                                         
+		-- 1.3.6.1.4.1.3807.2.1811.3.1.1
+        routePolicyNodeIndex OBJECT-TYPE
+            SYNTAX Integer32
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The index of the routepolicy. "
+            ::= { routePolicyNodeEntry 1 }
+            
+		-- 1.3.6.1.4.1.3807.2.1811.3.1.2
+        routePolicyNodeNum OBJECT-TYPE
+            SYNTAX Integer32 (0..65535)
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The node num of the routepolicy. "
+            ::= { routePolicyNodeEntry 2 }
+            
+		-- 1.3.6.1.4.1.3807.2.1811.3.1.3
+        routePolicyNodeType OBJECT-TYPE
+            SYNTAX INTEGER
+            	{
+            	permit(0),
+            	deny(1)
+            	}
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match mode. "
+            ::= { routePolicyNodeEntry 3 }
+            
+       	-- 1.3.6.1.4.1.3807.2.1811.3.1.4
+        routePolicyNodeExitPolicy OBJECT-TYPE
+            SYNTAX INTEGER
+	            {
+	            exit(0),
+	            goto(1),
+	            next(2)
+	            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy exit policy. "
+            ::= { routePolicyNodeEntry 4 }
+            
+       	-- 1.3.6.1.4.1.3807.2.1811.3.1.5
+        routePolicyNextNode OBJECT-TYPE
+            SYNTAX Integer32  (0..65535)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy next node. "
+            ::= { routePolicyNodeEntry 5 }
+                    
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.6
+        routePolicyMatchIpDstFilter OBJECT-TYPE
+            SYNTAX Integer32  (1001..3000)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv4 destination filter. 0 means to delete the configuration."
+            ::= { routePolicyNodeEntry 6 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.7
+        routePolicyMatchIpv6DstFilter OBJECT-TYPE
+            SYNTAX Integer32  (2001..4000)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv6 destination filter. 0 means to delete the configuration."
+            ::= { routePolicyNodeEntry 7 }    
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.8
+        routePolicyMatchIpDstPrefix OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..32))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv4 destination prefix. "
+            ::= { routePolicyNodeEntry 8 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.9
+        routePolicyMatchIpv6DstPrefix OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..32))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv6 destination prefix. "
+            ::= { routePolicyNodeEntry 9 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.10
+        routePolicyMatchIpNextHopFilter OBJECT-TYPE
+            SYNTAX Integer32  (1001..3000)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv4 next-hop filter. 0 means to delete the configuration."
+            ::= { routePolicyNodeEntry 10 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.11
+        routePolicyMatchIpv6NextHopFilter OBJECT-TYPE
+            SYNTAX Integer32  (2001..4000)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv6 next-hop filter. 0 means to delete the configuration."
+            ::= { routePolicyNodeEntry 11 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.12
+        routePolicyMatchIpNextHopPrefix OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..32))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv4 next-hop ip-prefix. "
+            ::= { routePolicyNodeEntry 12 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.13
+        routePolicyMatchIpv6NextHopPrefix OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..32))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv6 next-hop ip-prefix. "
+            ::= { routePolicyNodeEntry 13 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.14
+        routePolicyMatchIpRouteSourceFilter OBJECT-TYPE
+            SYNTAX Integer32  (1001..3000)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv4 route-source filter. 0 means to delete the configuration."
+            ::= { routePolicyNodeEntry 14 }
+        
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.15
+        routePolicyMatchIpv6RouteSourceFilter OBJECT-TYPE
+            SYNTAX Integer32  (2001..4000)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv6 route-source filter. 0 means to delete the configuration."
+            ::= { routePolicyNodeEntry 15 }
+                
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.16
+        routePolicyMatchIpRouteSourcePrefix OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..32))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv4 route-source ip-prefix. "
+            ::= { routePolicyNodeEntry 16 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.17
+        routePolicyMatchIpv6RouteSourcePrefix OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..32))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match ipv6 route-source ip-prefix. "
+            ::= { routePolicyNodeEntry 17 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.18
+        routePolicyMatchBGPAddAsPath OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match bgp as-path. "
+            ::= { routePolicyNodeEntry 18 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.19
+        routePolicyMatchBGPDeleteAsPath OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match bgp community. "
+            ::= { routePolicyNodeEntry 19 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.20
+        routePolicyMatchBGPAddCommunity OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match bgp community. "
+            ::= { routePolicyNodeEntry 20 }        
+        
+       	-- 1.3.6.1.4.1.3807.2.1811.3.1.21
+        routePolicyMatchBGPDeleteCommunity OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match bgp community. "
+            ::= { routePolicyNodeEntry 21 } 
+        
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.22
+        routePolicyMatchCost OBJECT-TYPE
+            SYNTAX Unsigned32  (0..16777215)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match cost. 16777216 means to delete the configuration."
+            ::= { routePolicyNodeEntry 22 }
+                
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.23
+        routePolicyMatchBGPAddExtCommunity OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match bgp ext-community. "
+            ::= { routePolicyNodeEntry 23 }  
+            
+       -- 1.3.6.1.4.1.3807.2.1811.3.1.24
+        routePolicyMatchBGPDeleteExtCommunity OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match bgp ext-community. "
+            ::= { routePolicyNodeEntry 24 }
+                   
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.25
+        routePolicyMatchRouteType OBJECT-TYPE
+            SYNTAX INTEGER
+            {
+            	internal(1),
+            	external-type1(2),
+            	external-type2(4),
+            	external-type1or2(8),
+            	isis-level1(16),
+            	isis-level2(32),
+            	nssa-external-type1(64),
+            	nssa-external-type2(128),
+            	nssa-external-type1or2(256)
+         	}
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match route type. "
+            ::= { routePolicyNodeEntry 25 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.26
+        routePolicyMatchTag OBJECT-TYPE
+            SYNTAX OCTET STRING  (SIZE (1..5))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match tag. The zero byte will be 0 or 1, 0 means to delete the configuration, 1 means to set."
+            ::= { routePolicyNodeEntry 26 }
+       
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.27
+        routePolicyApplyBGPAsPath OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply as-path. "
+            ::= { routePolicyNodeEntry 27 }
+       
+       -- 1.3.6.1.4.1.3807.2.1811.3.1.28
+        routePolicyApplyBGPAsPathAdditive OBJECT-TYPE
+            SYNTAX INTEGER
+            {
+            	replace(0),
+            	append(1)
+            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply as-path additive flag. "
+            ::= { routePolicyNodeEntry 28 }
+       
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.29
+        routePolicyApplyBGPDeleteCommlistNum OBJECT-TYPE
+            SYNTAX Integer32
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply bgp commlist number. "
+            ::= { routePolicyNodeEntry 29 }
+       
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.30
+        routePolicyApplyBGPCommunity OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply bgp community. "
+            ::= { routePolicyNodeEntry 30 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.31
+        routePolicyApplyBGPCommunityAdditive OBJECT-TYPE
+            SYNTAX INTEGER
+            {
+            	replace(0),
+            	append(1)
+            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply community additive flag. "
+            ::= { routePolicyNodeEntry 31 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.32
+        routePolicyApplyCost OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..5))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply cost. The zero byte will between 0 and 3. 
+                0 means to delete the configuration. 1 means to set, 2 means to plus, 3 means to plus"
+            ::= { routePolicyNodeEntry 32 }
+        
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.33
+        routePolicyApplyCostType OBJECT-TYPE
+            SYNTAX INTEGER
+            {     
+            	external(1),
+            	internal(2),
+            	type-1(4),
+            	type-2(8)
+            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply cost type. "
+            ::= { routePolicyNodeEntry 33 }
+       
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.34
+        routePolicyApplyBGPExtCommunity OBJECT-TYPE
+            SYNTAX OCTET STRING
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply bgp extend community. "
+            ::= { routePolicyNodeEntry 34 }
+        
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.35
+        routePolicyApplyBGPExtCommunityAdditive OBJECT-TYPE
+            SYNTAX INTEGER
+            {
+            	replace(0),
+            	append(1)
+            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply extend community additive flag. "
+            ::= { routePolicyNodeEntry 35 }
+                
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.36
+        routePolicyApplyIsIsLevel OBJECT-TYPE
+            SYNTAX INTEGER
+            {
+            	isis-level-1(1),
+            	isis-level-2(2),
+            	isis-level-1or2(4)
+            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply is-is level. "
+            ::= { routePolicyNodeEntry 36 }
+       
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.37
+        routePolicyApplyBGPLocalPreference OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..5))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply local preference. The zero byte will be 0 or 1, 0 means to delete the configuration, 1 means to set."
+            ::= { routePolicyNodeEntry 37 }
+            
+       	-- 1.3.6.1.4.1.3807.2.1811.3.1.38
+        routePolicyApplyBGPOriginType OBJECT-TYPE
+            SYNTAX INTEGER
+            {
+            	egp(1),
+            	igp(2),
+            	incomplete(3)
+            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply bgp origin. "
+            ::= { routePolicyNodeEntry 38 }
+               
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.39
+        routePolicyApplyBGPOriginVal OBJECT-TYPE
+            SYNTAX Integer32
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply bgp origin. "
+            ::= { routePolicyNodeEntry 39 }
+                    
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.40
+        routePolicyApplyPreferredVal OBJECT-TYPE
+            SYNTAX Integer32 (0..65535)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply preferred value. 65536 means to delete the configuration"
+            ::= { routePolicyNodeEntry 40 }
+            
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.41
+        routePolicyApplyTag OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..5))
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply tag. The zero byte will be 0 or 1, 0 means to delete the configuration, 1 means to set."
+            ::= { routePolicyNodeEntry 41 }            
+        
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.42
+        routePolicyApplyOspfTranslate OBJECT-TYPE
+            SYNTAX INTEGER
+            {
+            	translate(1),
+            	not-translate(2)
+            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply ospf translate. "
+            ::= { routePolicyNodeEntry 42 }
+                                                        
+        -- 1.3.6.1.4.1.3807.2.1811.3.1.43
+        routePolicyNodeRowStatus OBJECT-TYPE
+            SYNTAX RowStatus
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy row status. "
+            ::= { routePolicyNodeEntry 43 }
+
+		-- 1.3.6.1.4.1.3807.2.1811.3.1.44
+        routePolicyMatchFlag OBJECT-TYPE
+            SYNTAX Integer32
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match flag. "
+            ::= { routePolicyNodeEntry 44 }
+
+		-- 1.3.6.1.4.1.3807.2.1811.3.1.45
+        routePolicyApplyFlag OBJECT-TYPE
+            SYNTAX Integer32
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Routepolicy apply flag. "
+            ::= { routePolicyNodeEntry 45 }	
+
+		-- 1.3.6.1.4.1.3807.2.1811.3.1.46
+        routePolicyMatchProcessId OBJECT-TYPE
+            SYNTAX Integer32
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "Routepolicy match process id. "
+            ::= { routePolicyNodeEntry 46 }	
+
+			
+-- ROUTEPOLICY Map Name Table   
+
+	-- 1.3.6.1.4.1.3807.2.1811.4                      
+    	routePolicyMapNameTable OBJECT-TYPE
+	        SYNTAX SEQUENCE OF RoutePolicyMapNameEntry
+	        MAX-ACCESS not-accessible
+	        STATUS current
+	        DESCRIPTION
+	            "The routepolicy map name table. "
+	        ::= { routePolicy 4 }
+	        
+	-- 1.3.6.1.4.1.3807.2.1811.4.1                                                   
+	     routePolicyMapNameEntry OBJECT-TYPE
+	         SYNTAX RoutePolicyMapNameEntry
+	         MAX-ACCESS not-accessible
+	         STATUS current
+	         DESCRIPTION
+	            "The routepolicy map index entry. "
+	         INDEX { routePolicyMapNameStr }
+	         ::= { routePolicyMapNameTable 1 }
+	         
+		RoutePolicyMapNameEntry ::=  
+			SEQUENCE {
+				routePolicyMapNameStr			OCTET STRING,
+				routePolicyMapNameIndex			Integer32
+			}
+			
+        -- 1.3.6.1.4.1.3807.2.1811.4.1.1
+		 routePolicyMapNameStr OBJECT-TYPE
+            SYNTAX OCTET STRING (SIZE (1..21))
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Routepolicy map name. "
+            ::= { routePolicyMapNameEntry 1 }
+            
+       -- 1.3.6.1.4.1.3807.2.1811.4.1.2
+		routePolicyMapNameIndex OBJECT-TYPE
+            SYNTAX Integer32
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Routepolicy map name to index . "
+            ::= { routePolicyMapNameEntry 2 }
+			
+END

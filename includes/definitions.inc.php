@@ -898,7 +898,38 @@ $config['os'][$os]['icon']             = 'junos';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
+// ADVA Optical
+
+$os = 'advafsp150GE11x';
+$config['os'][$os]['text']             = 'ADVA FSP150CC';
+$config['os'][$os]['type']             = 'network';
+$config['os'][$os]['icon']             = 'adva-switch';
+$config['os'][$os]['over'][0]['graph'] = 'device_bits';
+$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+
+$os = 'advafsp150GE20x';
+$config['os'][$os]['text']             = 'ADVA FSP150CC';
+$config['os'][$os]['type']             = 'network';
+$config['os'][$os]['icon']             = 'adva-switch';
+$config['os'][$os]['over'][0]['graph'] = 'device_bits';
+$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+
+$os = 'advafsp150EG-X';
+$config['os'][$os]['text']             = 'ADVA FSP150CC';
+$config['os'][$os]['type']             = 'network';
+$config['os'][$os]['icon']             = 'adva-switch';
+$config['os'][$os]['over'][0]['graph'] = 'device_bits';
+$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+
+$os = 'advafsp3kR7';
+$config['os'][$os]['text']             = 'ADVA FSP3KR7';
+$config['os'][$os]['type']             = 'DWDM';
+$config['os'][$os]['icon']             = 'adva-dwdm';
+$config['os'][$os]['over'][0]['graph'] = 'device_bits';
+$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+
 // Pulse Secure OS definition
+
 $os = 'pulse';
 $config['os'][$os]['text']             = 'Pulse Secure';
 $config['os'][$os]['type']             = 'firewall';
@@ -909,6 +940,9 @@ $config['os'][$os]['over'][1]['graph'] = 'device_processor';
 $config['os'][$os]['over'][1]['text']  = 'CPU Usage';
 $config['os'][$os]['over'][2]['graph'] = 'device_mempool';
 $config['os'][$os]['over'][2]['text']  = 'Memory Usage';
+
+
+//Fortigate
 
 $os = 'fortigate';
 $config['os'][$os]['text']             = 'Fortinet Fortigate';
@@ -1855,11 +1889,31 @@ $config['os'][$os]['over'][1]['text']  = 'CPU Usage';
 $config['os'][$os]['over'][2]['graph'] = 'device_mempool';
 $config['os'][$os]['over'][2]['text']  = 'Memory Usage';
 
+//Altai
+$os = 'altaisuperwifi';
+$config['os'][$os]['text']             = 'Altai OS';
+$config['os'][$os]['type']             = 'network';
+$config['os'][$os]['icon']             = 'wifi';
+$config['os'][$os]['over'][0]['graph'] = 'device_bits';
+$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+$config['os'][$os]['ifname']           = 1;
+
+
 // Fiberhome
-$os = 'fiberhome';
-$config['os'][$os]['text'] = 'Fiberhome';
+$os = 'fiberhomeOLT';
+$config['os'][$os]['text'] = 'Fiberhome OS';
+$config['os'][$os]['type'] = 'gpon';
+$config['os'][$os]['icon'] = 'fiberhome';
+$config['os'][$os]['over'][0]['graph'] = 'device_bits';
+$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+$config['os'][$os]['ifname']           = 1;
+
+$os = 'fiberhomeS2800';
+$config['os'][$os]['text'] = 'Fiberhome OS';
 $config['os'][$os]['type'] = 'network';
 $config['os'][$os]['icon'] = 'fiberhome';
+$config['os'][$os]['over'][0]['graph'] = 'device_bits';
+$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
 // PBN, Pacific Broadband Networks
 $os = 'pbn';
@@ -2762,6 +2816,11 @@ $config['device_types'][$i]['icon'] = 'server.png';
 $i++;
 $config['device_types'][$i]['text'] = 'Network';
 $config['device_types'][$i]['type'] = 'network';
+$config['device_types'][$i]['icon'] = 'network.png';
+
+$i++;
+$config['device_types'][$i]['text'] = 'DWDM';
+$config['device_types'][$i]['type'] = 'dwdm';
 $config['device_types'][$i]['icon'] = 'network.png';
 
 $i++;

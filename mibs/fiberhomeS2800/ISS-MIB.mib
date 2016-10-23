@@ -1,0 +1,601 @@
+ISS-MIB DEFINITIONS ::= BEGIN
+	IMPORTS
+			MODULE-IDENTITY, OBJECT-TYPE, Counter32, Gauge32,
+			Integer32, TimeTicks, Counter64,enterprises,
+			NOTIFICATION-TYPE                        		FROM SNMPv2-SMI
+       
+			TEXTUAL-CONVENTION, TruthValue, TimeInterval,
+			MacAddress,PhysAddress							FROM SNMPv2-TC
+			InetAddressPrefixLength,InetAddressType,
+			InetPortNumber,InetAddress						FROM INET-ADDRESS-MIB
+			SnmpAdminString									FROM SNMP-FRAMEWORK-MIB
+    		InterfaceIndex									FROM IF-MIB
+			wri,wriProducts,wriProtocol						FROM WRI-SMI;
+ 
+-- ISS Parent Port 
+                           
+	-- 1.3.6.1.4.1.3807.2.921
+		iss OBJECT IDENTIFIER ::= { wriProtocol 921 }       
+		
+-- ISS Common Information
+
+	-- 1.3.6.1.4.1.3807.2.921.1
+		issCommon OBJECT IDENTIFIER ::= { iss 1 }
+			
+	-- 1.3.6.1.4.1.3807.2.921.1.1
+		issDomainID OBJECT-TYPE
+			SYNTAX INTEGER
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"The domain id."
+			::= { issCommon 1 } 
+		
+	-- 1.3.6.1.4.1.3807.2.921.1.2
+    	issRunningMode OBJECT-TYPE
+	        SYNTAX INTEGER  
+	        	{
+				iss(1),
+				independency(0)
+				}
+	        MAX-ACCESS read-write
+	        STATUS current
+	        DESCRIPTION
+	            "The running mode. "
+	        ::= { issCommon 2 } 
+	        
+	-- 1.3.6.1.4.1.3807.2.921.1.3
+    	issVersion OBJECT-TYPE
+	        SYNTAX INTEGER  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The iss software version. "
+	        ::= { issCommon 3 }
+
+	-- 1.3.6.1.4.1.3807.2.921.1.4
+    	issIsRing OBJECT-TYPE
+	        SYNTAX INTEGER  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The iss is ring or not. "
+	        ::= { issCommon 4 }
+   
+	-- 1.3.6.1.4.1.3807.2.921.1.5
+    	issCurrentMasterID OBJECT-TYPE
+	        SYNTAX INTEGER  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "Current running of the master id. "
+	        ::= { issCommon 5 }
+
+	-- 1.3.6.1.4.1.3807.2.921.1.6
+    	issMemberNum OBJECT-TYPE
+	        SYNTAX INTEGER  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The number of iss device. "
+	        ::= { issCommon 6 }
+ 
+ 	-- 1.3.6.1.4.1.3807.2.921.1.7
+    	issConfigMemberID OBJECT-TYPE
+	        SYNTAX INTEGER	(1..8)
+	        MAX-ACCESS read-write
+	        STATUS current
+	        DESCRIPTION
+	            "The config of  member id. "
+	        ::= { issCommon 7 }
+	        
+ 	-- 1.3.6.1.4.1.3807.2.921.1.8
+    	issConfigPriority OBJECT-TYPE
+	        SYNTAX INTEGER	(1..8) 
+	        MAX-ACCESS read-write
+	        STATUS current
+	        DESCRIPTION
+	            "The config of priority. "
+	        ::= { issCommon 8 }
+	        
+ 	-- 1.3.6.1.4.1.3807.2.921.1.9
+    	issConfigDomainID OBJECT-TYPE
+	        SYNTAX INTEGER	(1..8)
+	        MAX-ACCESS read-write
+	        STATUS current
+	        DESCRIPTION
+	            "The config of domain id. "
+	        ::= { issCommon 9 }
+	        
+ 	-- 1.3.6.1.4.1.3807.2.921.1.10
+    	issNextMasterRole OBJECT-TYPE
+	        SYNTAX INTEGER
+		        {
+		        	true(1),
+		        	false(0)
+		        }  
+	        MAX-ACCESS read-write
+	        STATUS current
+	        DESCRIPTION
+	            "The next config of master role. "
+	        ::= { issCommon 10 }
+
+ 	-- 1.3.6.1.4.1.3807.2.921.1.11
+    	issMemberState OBJECT-TYPE
+	        SYNTAX INTEGER
+		        {
+		        	init(0),
+		        	collection(1),
+		        	election(2),
+		        	loading(3),
+		        	done(4)
+		        }  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The member state. "
+	        ::= { issCommon 11 }
+
+ 	-- 1.3.6.1.4.1.3807.2.921.1.12
+    	issHelloPktInterval OBJECT-TYPE
+	        SYNTAX INTEGER	(1..10)  
+	        MAX-ACCESS read-write
+	        STATUS current
+	        DESCRIPTION
+	            "The send nterval of hello pkt. "
+	        ::= { issCommon 12 }
+	        
+	-- 1.3.6.1.4.1.3807.2.921.1.13
+    	issPrevMasterId OBJECT-TYPE
+	        SYNTAX INTEGER
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The id of prev master. "
+	        ::= { issCommon 13 }
+	        
+	-- 1.3.6.1.4.1.3807.2.921.1.14
+    	issPrevMasterMac OBJECT-TYPE
+	        SYNTAX MacAddress  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The mac of prev master. "
+	        ::= { issCommon 14 }
+	  
+	  -- 1.3.6.1.4.1.3807.2.921.1.15
+    	issSystemRunMac OBJECT-TYPE
+	        SYNTAX MacAddress  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The system running mac. "
+	        ::= { issCommon 15 }
+	  
+	  -- 1.3.6.1.4.1.3807.2.921.1.16
+    	issTopoCompleteState OBJECT-TYPE
+	        SYNTAX INTEGER
+	        {
+	        	false(0),
+	        	true(1)
+	        }  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The system state. "
+	        ::= { issCommon 16 }
+	                    
+	  -- 1.3.6.1.4.1.3807.2.921.1.17
+    	issSystemState OBJECT-TYPE
+	        SYNTAX INTEGER
+	        {
+	        	down(0),
+	        	up(1)
+	        }  
+	        MAX-ACCESS read-only
+	        STATUS current
+	        DESCRIPTION
+	            "The system state. "
+	        ::= { issCommon 17 }  
+	        
+	 -- 1.3.6.1.4.1.3807.2.921.1.18
+    	issMacSwitchDelay OBJECT-TYPE
+	        SYNTAX INTEGER
+	        MAX-ACCESS read-write
+	        STATUS current
+	        DESCRIPTION
+	            "The system state. "
+	        ::= { issCommon 18 }
+       
+	                
+-- ISS Interface Table   
+
+	-- 1.3.6.1.4.1.3807.2.921.2                      
+    	issIfTable OBJECT-TYPE
+	        SYNTAX SEQUENCE OF ISSIfEntry
+	        MAX-ACCESS not-accessible
+	        STATUS current
+	        DESCRIPTION
+	            "The iss interface table. "
+	        ::= { iss 2 }
+	        
+	-- 1.3.6.1.4.1.3807.2.921.2.1                                                   
+	     issIfEntry OBJECT-TYPE
+	         SYNTAX ISSIfEntry
+	         MAX-ACCESS not-accessible
+	         STATUS current
+	         DESCRIPTION
+	            "The iss interface table. "
+	         INDEX { issIfIndex }
+	         ::= { issIfTable 1 }
+              
+		ISSIfEntry ::=
+         	SEQUENCE { 
+                issIfIndex               		INTEGER,
+                issIfStatus              		INTEGER,
+                issIfBlockState             	INTEGER,
+                issIfLinkState              	INTEGER,            
+                issIfHops    					INTEGER,
+                issIfKeepAliveInterval      	INTEGER,
+                issIfPeerKeepAliveInterval      INTEGER, 
+                issIfRcvKeepAliveMultiplier		INTEGER,
+                issIfPeerState    				INTEGER,
+                issIfLocalState        			INTEGER,
+                issIfProtocolState          	INTEGER,
+                issIfMacAddress      			MacAddress
+                  }
+              
+	-- 1.3.6.1.4.1.3807.2.921.2.1.1
+        issIfIndex OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Interface index. "
+            ::= { issIfEntry 1 }  
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.2
+        issIfStatus OBJECT-TYPE
+            SYNTAX INTEGER  
+            {
+            	enable(1),
+            	disable(2)
+            }
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "The interface state. "
+            ::= { issIfEntry 2 } 
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.3
+        issIfBlockState OBJECT-TYPE
+            SYNTAX INTEGER
+            	{
+	           		down(0),
+	           		up(1)
+	           	}
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The block state. "
+            ::= { issIfEntry 3 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.4
+        issIfLinkState OBJECT-TYPE
+            SYNTAX INTEGER 
+	           {
+	           		up(1),
+	           		down(2)
+	           }
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The link state. "
+            ::= { issIfEntry 4 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.5
+        issIfHops OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The hops. "
+            ::= { issIfEntry 5 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.6
+        issIfKeepAliveInterval OBJECT-TYPE
+            SYNTAX INTEGER  (1..5)
+            MAX-ACCESS read-write
+            STATUS current
+            DESCRIPTION
+                "The local keepalive pkt interval. "
+            ::= { issIfEntry 6 }   
+    
+    -- 1.3.6.1.4.1.3807.2.921.2.1.7
+        issIfPeerKeepAliveInterval OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The peer keepalive pkt interval. "
+            ::= { issIfEntry 7 }
+                    
+	-- 1.3.6.1.4.1.3807.2.921.2.1.8
+        issIfRcvKeepAliveMultiplier OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The keepalive pkt receive timeout times. "
+            ::= { issIfEntry 8 } 
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.9
+        issIfPeerState OBJECT-TYPE
+            SYNTAX INTEGER
+           		{
+	           		down(0),
+	           		up(1)
+	           	}
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The peer state. "
+            ::= { issIfEntry 9 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.10
+        issIfLocalState OBJECT-TYPE
+            SYNTAX INTEGER
+            	{
+	           		down(0),
+	           		up(1)
+	           	}
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The local state. "
+            ::= { issIfEntry 10 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.11
+        issIfProtocolState OBJECT-TYPE
+            SYNTAX INTEGER
+            	{
+	           		down(0),
+	           		up(1)
+	           	}
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The protocal state. "
+            ::= { issIfEntry 11 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.2.1.12
+        issIfMacAddress OBJECT-TYPE
+            SYNTAX MacAddress
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The interface Mac address. "
+            ::= { issIfEntry 12 }
+          
+          
+-- ISS Topo Table   
+
+	-- 1.3.6.1.4.1.3807.2.921.3                      
+    	issTopoTable OBJECT-TYPE
+	        SYNTAX SEQUENCE OF ISSTopoEntry
+	        MAX-ACCESS not-accessible
+	        STATUS current
+	        DESCRIPTION
+	            "The iss topo table. "
+	        ::= { iss 3 }
+	        
+	-- 1.3.6.1.4.1.3807.2.921.3.1                                                   
+	     issTopoEntry OBJECT-TYPE
+	         SYNTAX ISSTopoEntry
+	         MAX-ACCESS not-accessible
+	         STATUS current
+	         DESCRIPTION
+	            "The iss topo table. "
+	         INDEX { issTopoIfIndex,issTopoHops }
+	         ::= { issTopoTable 1 }
+	         
+		ISSTopoEntry ::=  
+			SEQUENCE {
+				issTopoIfIndex		INTEGER,
+				issTopoHops			INTEGER,
+				issTopoMemberID     INTEGER
+			}
+                                         
+	-- 1.3.6.1.4.1.3807.2.921.3.1.1
+        issTopoIfIndex OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Topo index 1. "
+            ::= { issTopoEntry 1 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.3.1.2
+        issTopoHops OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "Topo index 2. "
+            ::= { issTopoEntry 2 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.3.1.3
+        issTopoMemberID OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The member id. "
+            ::= { issTopoEntry 3 }
+              
+                                             
+-- ISS Member Table   
+
+	-- 1.3.6.1.4.1.3807.2.921.4                      
+    	issMemberTable OBJECT-TYPE
+	        SYNTAX SEQUENCE OF ISSMemberEntry
+	        MAX-ACCESS not-accessible
+	        STATUS current
+	        DESCRIPTION
+	            "The iss member table. "
+	        ::= { iss 4 }
+	        
+	-- 1.3.6.1.4.1.3807.2.921.4.1                                                   
+	     issMemberEntry OBJECT-TYPE
+	         SYNTAX ISSMemberEntry
+	         MAX-ACCESS not-accessible
+	         STATUS current
+	         DESCRIPTION
+	            "The iss member table. "
+	         INDEX { issMemberIndex }
+	         ::= { issMemberTable 1 }
+                         
+		ISSMemberEntry ::=
+         	SEQUENCE { 
+                issMemberIndex               		INTEGER,
+                issMemberRole              			INTEGER,
+                issMemberConfigRole             	INTEGER,
+                issMemberPriority              		INTEGER,            
+                issMemberMac    					MacAddress,
+                issMemberRunningTime      			TimeTicks, 
+                issMemberIfPort0State				INTEGER,
+                issMemberIfPort1State    			INTEGER,
+                issMemberIfPort0Mac        			MacAddress,
+                issMemberIfPort1Mac          		MacAddress,
+                issMemberIsLocal      				INTEGER,
+                issMemberRunningState      			INTEGER
+                  }    
+                  
+	-- 1.3.6.1.4.1.3807.2.921.4.1.1
+        issMemberIndex OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "member index. "
+            ::= { issMemberEntry 1 }  
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.2
+        issMemberRole OBJECT-TYPE
+            SYNTAX INTEGER
+	           {
+	           		slave(0),
+	           		master(1)
+	           }
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "member role. "
+            ::= { issMemberEntry 2 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.3
+        issMemberConfigRole OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "member config role. "
+            ::= { issMemberEntry 3 }  
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.4
+        issMemberPriority OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "member priority. "
+            ::= { issMemberEntry 4 }       
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.5
+        issMemberMac OBJECT-TYPE
+            SYNTAX MacAddress
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "member mac. "
+            ::= { issMemberEntry 5 }  
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.6
+        issMemberRunningTime OBJECT-TYPE
+            SYNTAX TimeTicks
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "member running time. "
+            ::= { issMemberEntry 6 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.7
+        issMemberIfPort0State OBJECT-TYPE
+            SYNTAX INTEGER
+            	{
+	           		down(0),
+	           		up(1)
+	           	}
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "east interface state. "
+            ::= { issMemberEntry 7 }  
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.8
+        issMemberIfPort1State OBJECT-TYPE
+            SYNTAX INTEGER
+            	{
+	           		down(0),
+	           		up(1)
+	           	}
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "west interface state. "
+            ::= { issMemberEntry 8 }   
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.9
+        issMemberIfPort0Mac OBJECT-TYPE
+            SYNTAX MacAddress
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "east interface mac. "
+            ::= { issMemberEntry 9 }
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.10
+        issMemberIfPort1Mac OBJECT-TYPE
+            SYNTAX MacAddress
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "west interface mac. "
+            ::= { issMemberEntry 10 }  
+            
+	-- 1.3.6.1.4.1.3807.2.921.4.1.11
+        issMemberIsLocal OBJECT-TYPE
+            SYNTAX INTEGER
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "member is local or not. "
+            ::= { issMemberEntry 11 }
+            
+   -- 1.3.6.1.4.1.3807.2.921.4.1.12
+        issMemberRunningState OBJECT-TYPE
+            SYNTAX INTEGER
+            {
+            	init(0),
+	        	collection(1),
+	        	election(2),
+	        	loading(3),
+	        	done(4)
+            }
+            MAX-ACCESS read-only
+            STATUS current
+            DESCRIPTION
+                "The member state. "
+            ::= { issMemberEntry 12 }         
+            
+END
