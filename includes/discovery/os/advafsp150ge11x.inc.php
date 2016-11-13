@@ -1,11 +1,9 @@
 <?php
 
-$adva_desc = array(
-    'FSP150EG-X',
-);
+$adva_desc = 'FSP150CC-GE114';
 
 if (str_contains($sysDescr, $adva_desc)) {
-    $os = 'advafsp150EG-X';
+    $os = 'advafsp150ge11x';
 }
 
 unset($adva_desc);

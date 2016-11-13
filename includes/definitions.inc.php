@@ -900,33 +900,36 @@ $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
 // ADVA Optical
 
-$os = 'advafsp150GE11x';
+$os = 'advafsp150ge11x';
 $config['os'][$os]['text']             = 'ADVA FSP150CC';
 $config['os'][$os]['type']             = 'network';
 $config['os'][$os]['icon']             = 'adva-switch';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
-$os = 'advafsp150GE20x';
+$os = 'advafsp150ge20x';
 $config['os'][$os]['text']             = 'ADVA FSP150CC';
 $config['os'][$os]['type']             = 'network';
 $config['os'][$os]['icon']             = 'adva-switch';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
-$os = 'advafsp150EG-X';
+$os = 'advafsp150eg-x';
 $config['os'][$os]['text']             = 'ADVA FSP150CC';
 $config['os'][$os]['type']             = 'network';
 $config['os'][$os]['icon']             = 'adva-switch';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
-$os = 'advafsp3kR7';
+$os = 'advafsp3kr7';
 $config['os'][$os]['text']             = 'ADVA FSP3KR7';
 $config['os'][$os]['type']             = 'DWDM';
 $config['os'][$os]['icon']             = 'adva-dwdm';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+$config['os'][$os]['over'][1]['graph'] = 'device_mempool';
+$config['os'][$os]['over'][1]['text']  = 'Memory Usage';
+
 
 // Pulse Secure OS definition
 
@@ -1900,7 +1903,7 @@ $config['os'][$os]['ifname']           = 1;
 
 
 // Fiberhome
-$os = 'fiberhomeOLT';
+$os = 'fiberhomeolt';
 $config['os'][$os]['text'] = 'Fiberhome OS';
 $config['os'][$os]['type'] = 'gpon';
 $config['os'][$os]['icon'] = 'fiberhome';
@@ -1908,7 +1911,7 @@ $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 $config['os'][$os]['ifname']           = 1;
 
-$os = 'fiberhomeS2800';
+$os = 'fiberhomes2800';
 $config['os'][$os]['text'] = 'Fiberhome OS';
 $config['os'][$os]['type'] = 'network';
 $config['os'][$os]['icon'] = 'fiberhome';

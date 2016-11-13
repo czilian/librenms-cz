@@ -1,6 +1,6 @@
 <?php
 
-if ($device['os'] == 'fspr7') {
+if ($device['os'] == 'advafsp3kr7') {
     echo 'ADVA FSP3KR7 : ';
     $descr = 'Processor';
     $usage = snmp_get($device, '.1.3.6.1.4.1.12356.101.4.1.3.0', '-Ovq');
