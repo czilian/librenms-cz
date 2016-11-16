@@ -925,8 +925,8 @@ $os = 'advafsp3kr7';
 $config['os'][$os]['text']             = 'ADVA FSP3KR7';
 $config['os'][$os]['type']             = 'DWDM';
 $config['os'][$os]['icon']             = 'adva-dwdm';
-$config['os'][$os]['over'][0]['graph'] = 'device_bits';
-$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+$config['os'][$os]['over'][0]['graph'] = 'device_dbm';
+$config['os'][$os]['over'][0]['text']  = 'Laser Power';
 $config['os'][$os]['over'][1]['graph'] = 'device_mempool';
 $config['os'][$os]['over'][1]['text']  = 'Memory Usage';
 
@@ -1310,6 +1310,13 @@ $config['os'][$os]['icon'] = 'dlink';
 $os = 'tplink';
 $config['os'][$os]['text']             = 'TP-Link Switch';
 $config['os'][$os]['type']             = 'network';
+$config['os'][$os]['icon']             = 'tplink';
+$config['os'][$os]['over'][0]['graph'] = 'device_bits';
+$config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+
+$os = 'tplinkvpnrouter';
+$config['os'][$os]['text']             = 'TP-Link Router';
+$config['os'][$os]['type']             = 'firewall';
 $config['os'][$os]['icon']             = 'tplink';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
@@ -1895,7 +1902,7 @@ $config['os'][$os]['over'][2]['text']  = 'Memory Usage';
 //Altai
 $os = 'altaisuperwifi';
 $config['os'][$os]['text']             = 'Altai OS';
-$config['os'][$os]['type']             = 'network';
+$config['os'][$os]['type']             = 'wireless';
 $config['os'][$os]['icon']             = 'wifi';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
