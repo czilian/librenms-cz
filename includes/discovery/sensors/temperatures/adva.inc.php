@@ -1,5 +1,5 @@
 <?php
-/*
+;/*
 not working
   $id = $device['device_id'];
   $hostname = $device['hostname'];
@@ -83,4 +83,3 @@ not working
       $temperature_exists[] = "$id $oid_hss2";
     }
 */
-?>
