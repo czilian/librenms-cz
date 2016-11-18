@@ -93,6 +93,7 @@ $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 $config['os'][$os]['over'][1]['graph'] = 'device_processor';
 $config['os'][$os]['over'][1]['text']  = 'Processor Usage';
+$config['os'][$os]['group']            = 'viprinet';
 
 $os = 'edgeos';
 $config['os'][$os]['text']             = 'EdgeOS';
@@ -1360,6 +1361,18 @@ $os = 'gamatronicups';
 $config['os'][$os]['text'] = 'Gamatronic UPS Stack';
 $config['os'][$os]['type'] = 'power';
 
+$os = 'eatonups';
+$config['os'][$os]['text']             = 'Eaton UPS';
+$config['os'][$os]['type']             = 'power';
+$config['os'][$os]['icon']             = 'eaton';
+$config['os'][$os]['over'][0]['graph'] = 'device_voltage';
+$config['os'][$os]['over'][0]['text']  = 'Voltage';
+$config['os'][$os]['over'][1]['graph'] = 'device_current';
+$config['os'][$os]['over'][1]['text']  = 'Current';
+$config['os'][$os]['over'][2]['graph'] = 'device_frequency';
+$config['os'][$os]['over'][2]['text']  = 'Frequencies';
+$config['os'][$os]['mib_dir'][]        = 'ups';
+
 $os = 'powerware';
 $config['os'][$os]['text']             = 'Powerware UPS';
 $config['os'][$os]['type']             = 'power';
@@ -1370,6 +1383,7 @@ $config['os'][$os]['over'][1]['graph'] = 'device_current';
 $config['os'][$os]['over'][1]['text']  = 'Current';
 $config['os'][$os]['over'][2]['graph'] = 'device_frequency';
 $config['os'][$os]['over'][2]['text']  = 'Frequencies';
+$config['os'][$os]['mib_dir'][]        = 'ups';
 
 $os = 'deltaups';
 $config['os'][$os]['text'] = 'Delta UPS';
@@ -1850,6 +1864,7 @@ $config['os'][$os]['over'][0]['text']  = 'Traffic';
 $config['os'][$os]['over'][1]['graph'] = 'device_processor';
 $config['os'][$os]['over'][1]['text']  = 'CPU Usage';
 $config['os'][$os]['icon']             = 'watchguard';
+$config['os'][$os]['group']            = 'watchguard';
 
 $os = 'fireware';
 $config['os'][$os]['text']             = 'Watchguard Fireware';
@@ -1859,6 +1874,7 @@ $config['os'][$os]['over'][0]['text']  = 'Traffic';
 $config['os'][$os]['over'][1]['graph'] = 'device_processor';
 $config['os'][$os]['over'][1]['text']  = 'CPU Usage';
 $config['os'][$os]['icon']             = 'watchguard';
+$config['os'][$os]['group']            = 'watchguard';
 
 $os = 'panos';
 $config['os'][$os]['text'] = 'PanOS';
@@ -1895,18 +1911,20 @@ $config['os'][$os]['over'][0]['text']  = 'Device Uptime';
 
 // Canopy / Cambium support
 $os = 'cambium';
-$config['os'][$os]['text'] = 'Cambium';
-$config['os'][$os]['type'] = 'wireless';
-$config['os'][$os]['icon'] = 'cambium';
+$config['os'][$os]['text']             = 'Cambium';
+$config['os'][$os]['type']             = 'wireless';
+$config['os'][$os]['icon']             = 'cambium';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+$config['os'][$os]['group']            = 'cambium';
 
 $os = 'canopy';
-$config['os'][$os]['text'] = 'Canopy';
-$config['os'][$os]['type'] = 'wireless';
-$config['os'][$os]['icon'] = 'cambium';
+$config['os'][$os]['text']             = 'Canopy';
+$config['os'][$os]['type']             = 'wireless';
+$config['os'][$os]['icon']             = 'cambium';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
+$config['os'][$os]['group']            = 'cambium';
 
 $os = 'datacom';
 $config['os'][$os]['text'] = 'Datacom';
