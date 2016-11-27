@@ -232,11 +232,6 @@ function get_all_devices($device, $type = "")
     return $devices;
 }
 
-function port_by_id_cache($port_id)
-{
-    return get_port_by_id_cache('port', $port_id);
-}
-
 function table_from_entity_type($type)
 {
     // Fuck you, english pluralisation.
@@ -1522,5 +1517,8 @@ function clean($value)
  */
 function display($value)
 {
-    return htmlentities(stripslashes(strip_tags($value)));
+    $purifier = new HTMLPurifier(
+        HTMLPurifier_Config::createDefault()
+    );
+    return $purifier->purify(stripslashes($value));
 }
