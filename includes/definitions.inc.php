@@ -18,7 +18,6 @@ $config['os_group'][$os_group]['over'][0]['text']   = 'Processor Usage';
 $config['os_group'][$os_group]['over'][1]['graph']  = 'device_ucd_memory';
 $config['os_group'][$os_group]['over'][1]['text']   = 'Memory Usage';
 
-<<<<<<< HEAD
 $os = 'generic';
 $config['os'][$os]['text'] = 'Generic Device';
 
@@ -895,7 +894,7 @@ $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 $os = 'advafsp150ge11x';
 $config['os'][$os]['text']             = 'ADVA FSP150CC';
 $config['os'][$os]['type']             = 'network';
-$config['os'][$os]['icon']             = 'adva-ge11x';
+$config['os'][$os]['icon']             = 'advage11x';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
@@ -2302,8 +2301,6 @@ $config['os'][$os]['over'][1]['text']  = 'CPU Usage';
 $config['os'][$os]['over'][2]['graph'] = 'device_mempool';
 $config['os'][$os]['over'][2]['text']  = 'Memory Usage';
 
-=======
->>>>>>> cc8e31d1a194b6bcae0cfdc6ddeee16d779c41a1
 // Device - Wireless - AirMAX
 $config['graph_types']['device']['ubnt_airmax_WlStatStaCount']['section'] = 'wireless';
 $config['graph_types']['device']['ubnt_airmax_WlStatStaCount']['order'] = '0';
@@ -3002,3 +2999,4 @@ if (!isset($config['plugin_dir'])) {
 if (!isset($config['title_image'])) {
     $config['title_image'] = 'images/librenms_logo_'.$config['site_style'].'.png';
 }
+
