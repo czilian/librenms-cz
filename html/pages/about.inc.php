@@ -76,7 +76,7 @@ if ($callback_status == 1) {
 }
 
 if (extension_loaded('curl')) {
-    $callback = 'Opt in to send anonymous usage statistics to LibreNMS? <input type="checkbox" data-on-text="Yes" data-off-text="No" data-size="mini" name="statistics" '.$stats_checked.'>';
+    $callback = '<label for="callback"> Opt in to send anonymous usage statistics to LibreNMS?</label><input type="checkbox" id="callback" data-on-text="Yes" data-off-text="No" data-size="mini" name="statistics" '.$stats_checked.'>';
 } else {
     $callback = "PHP Curl module isn't installed, please install this, restart your web service and refresh this page.";
 }
@@ -176,7 +176,7 @@ echo "
       <a href="http://www.librenms.org/">Web site</a> |
       <a href="https://github.com/librenms/">GitHub</a> |
       <a href="https://github.com/librenms/librenms/issues">Bug tracker</a> |
-      <a href="https://groups.google.com/forum/#!forum/librenms-project">Mailing list</a> |
+      <a href="https://community.librenms.org">Community Forum</a> |
       <a href="http://twitter.com/librenms">Twitter</a> |
       <a href="http://www.librenms.org/changelog.html">Changelog</a> |
       <a href="#" data-toggle="modal" data-target="#git_log">Git log</a>

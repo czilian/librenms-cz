@@ -41,11 +41,12 @@ function poll_sensor($device, $class, $unit)
         if ($sensor['poller_type'] == 'snmp') {
             $mibdir = null;
 
+            $sensor_value = trim(str_replace('"', '', $snmp_data[$sensor['sensor_oid']]));
+
             if (file_exists('includes/polling/sensors/'. $class .'/'. $device['os'] .'.inc.php')) {
                 require_once 'includes/polling/sensors/'. $class .'/'. $device['os'] .'.inc.php';
             }
 
-            $sensor_value = trim(str_replace('"', '', $snmp_data[$sensor['sensor_oid']]));
 
             if ($class == 'temperature') {
                 preg_match('/[\d\.\-]+/', $sensor_value, $temp_response);
@@ -144,10 +145,11 @@ function poll_sensor($device, $class, $unit)
     }
 }//end poll_sensor()
 
-
 function poll_device($device, $options)
 {
     global $config, $device, $polled_devices, $memcache;
+
+    $config['os'][$device['os']] = load_os($device['os']);
 
     $attribs = get_dev_attribs($device['device_id']);
     $device['snmp_max_repeaters'] = $attribs['snmp_max_repeaters'];

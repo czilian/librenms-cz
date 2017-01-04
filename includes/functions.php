@@ -106,8 +106,60 @@ function getHostOS($device)
             return $os;
         }
     }
+    return discover_os($sysObjectId, $sysDescr);
+}
 
-    return "generic";
+/**
+ * @param $sysObjectId
+ * @param $sysDescr
+ * @return string
+ */
+function discover_os($sysObjectId, $sysDescr)
+{
+    global $config;
+    $pattern = $config['install_dir'] . '/includes/definitions/*.yaml';
+    foreach (glob($pattern) as $file) {
+        $tmp = Symfony\Component\Yaml\Yaml::parse(
+            file_get_contents($file)
+        );
+        if (isset($tmp['discovery']) && is_array($tmp['discovery'])) {
+            foreach ($tmp['discovery'] as $item) {
+                if (!is_array($item) || empty($item)) {
+                    break;
+                }
+                // all items must be true
+                $result = true;
+                foreach ($item as $key => $value) {
+                    switch ($key) {
+                        case 'sysObjectId':
+                            $result &= starts_with($sysObjectId, $value);
+                            break;
+                        case 'sysDescr':
+                            $result &= str_contains($sysDescr, $value);
+                            break;
+                        case 'sysDescr_regex':
+                            $result &= preg_match_any($sysDescr, $value);
+                            break;
+                        default:
+                    }
+                }
+                if ($result) {
+                    return $tmp['os'];
+                }
+            }
+        }
+    }
+    return 'generic';
+}
+
+function preg_match_any($subject, $regexes)
+{
+    foreach ((array)$regexes as $regex) {
+        if (preg_match($regex, $subject)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function percent_colour($perc)
@@ -759,18 +811,22 @@ function formatCiscoHardware(&$device, $short = false)
 {
     if ($device['os'] == "ios") {
         if ($device['hardware']) {
-            if (preg_match("/^WS-C([A-Za-z0-9]+).*/", $device['hardware'], $matches)) {
+            if (preg_match("/^WS-C([A-Za-z0-9]+)/", $device['hardware'], $matches)) {
                 if (!$short) {
+                    $device['hardware'] = "Catalyst " . $matches[1] . " (" . $device['hardware'] . ")";
+                } else {
+                    $device['hardware'] = "Catalyst " . $matches[1];
+                }
+            } elseif (preg_match("/^CISCO([0-9]+)(.*)/", $device['hardware'], $matches)) {
+                if (!$short && $matches[2]) {
                     $device['hardware'] = "Cisco " . $matches[1] . " (" . $device['hardware'] . ")";
                 } else {
                     $device['hardware'] = "Cisco " . $matches[1];
                 }
-            } elseif (preg_match("/^CISCO([0-9]+)$/", $device['hardware'], $matches)) {
-                $device['hardware'] = "Cisco " . $matches[1];
             }
         } else {
             if (preg_match("/Cisco IOS Software, C([A-Za-z0-9]+) Software.*/", $device['sysDescr'], $matches)) {
-                $device['hardware'] = "Cisco " . $matches[1];
+                $device['hardware'] = "Catalyst " . $matches[1];
             } elseif (preg_match("/Cisco IOS Software, ([0-9]+) Software.*/", $device['sysDescr'], $matches)) {
                 $device['hardware'] = "Cisco " . $matches[1];
             }
@@ -1386,7 +1442,7 @@ function oxidized_reload_nodes()
 **/
 function dnslookup($device, $type = false, $return = false)
 {
-    if (filter_var($device['hostname'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == true || filter_var($device['hostname'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) == truee) {
+    if (filter_var($device['hostname'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == true || filter_var($device['hostname'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) == true) {
         return '';
     }
     if (empty($type)) {

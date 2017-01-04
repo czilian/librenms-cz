@@ -103,10 +103,16 @@ function discover_device($device, $options = null)
     if ($device['os'] == 'generic') {
         // verify if OS has changed from generic
         $device['os'] = getHostOS($device);
+
         if ($device['os'] != 'generic') {
             echo "\nDevice os was updated to " . $device['os'] . '!';
             dbUpdate(array('os' => $device['os']), 'devices', '`device_id` = ?', array($device['device_id']));
         }
+    }
+
+    $config['os'][$device['os']] = load_os($device);
+    if (is_array($config['os'][$device['os']]['register_mibs'])) {
+        register_mibs($device, $config['os'][$device['os']]['register_mibs'], 'includes/discovery/os/' . $device['os'] . '.inc.php');
     }
 
     // Set type to a predefined type for the OS if it's not already set
@@ -916,4 +922,36 @@ function get_toner_capacity($raw_capacity)
         return 100;
     }
     return $raw_capacity;
+}
+
+/**
+ * @param $descr
+ * @return int
+ */
+function ignore_storage($descr)
+{
+    global $config;
+    $deny = 0;
+    foreach ($config['ignore_mount'] as $bi) {
+        if ($bi == $descr) {
+            $deny = 1;
+            d_echo("$bi == $descr \n");
+        }
+    }
+
+    foreach ($config['ignore_mount_string'] as $bi) {
+        if (strpos($descr, $bi) !== false) {
+            $deny = 1;
+            d_echo("strpos: $descr, $bi \n");
+        }
+    }
+
+    foreach ($config['ignore_mount_regexp'] as $bi) {
+        if (preg_match($bi, $descr) > '0') {
+            $deny = 1;
+            d_echo("preg_match $bi, $descr \n");
+        }
+    }
+
+    return $deny;
 }

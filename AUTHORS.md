@@ -79,6 +79,7 @@ LibreNMS contributors:
 - D. Britz <github@wrind.de> (flatterlight)
 - Tobias Herrmann <tobias@fiveninedigital.ch> (Mightea)
 - Nicolas Guillaumin <nicolas+github@guillaumin.me> (nguillaumin)
+- Dave Hope <dave@hope.mx> (davehope)
 - Jurrian van Iersel <jurrian@vaniersel.net> (jviersel)
 - Adam Winberg <adam.winberg@gmail.com> (wiad)
 - Maximilian Wilhelm <max@rfc2324.org> (BarbarossaTM)
@@ -155,6 +156,11 @@ LibreNMS contributors:
 - Andres Rahn <andreser@gmail.com> (Andreser)
 - Christoph Zilian <czilian@hotmail.com> (czilian)
 - Guillem Mateos <bbguillem@gmail.com> (guillemmateos) 
+- Joachim Tingvold <joachim@tingvold.com> (jallakim)
+- Martin Zatloukal <slezi2@pvfree.net> (erotel)
+- Matthew Schwen <mschwen@gmail.com> (mattschwen)
+- Joel Cant <joel@linuxmod.co.uk> (NerdBlender
+- Aldemir Akpinar <aldemir.akpinar@gmail.com> (aldemir_a)
 
 [1]: http://observium.org/ "Observium web site"
 Observium was written by:

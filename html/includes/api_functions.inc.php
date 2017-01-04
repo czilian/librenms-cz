@@ -86,7 +86,7 @@ function get_port_stats_by_port_hostname()
     $hostname  = $router['hostname'];
     $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
     $ifName    = urldecode($router['ifname']);
-    $port     = dbFetchRow('SELECT * FROM `ports` WHERE `device_id`=? AND `ifName`=?', array($device_id, $ifName));
+    $port     = dbFetchRow('SELECT * FROM `ports` WHERE `device_id`=? AND `ifName`=? AND `deleted` = 0', array($device_id, $ifName));
 
     $in_rate = $port['ifInOctets_rate'] * 8;
     $out_rate = $port['ifOutOctets_rate'] * 8;
@@ -96,7 +96,17 @@ function get_port_stats_by_port_hostname()
     $port['out_perc'] = number_format($out_rate / $port['ifSpeed'] * 100, 2, '.', '');
     $port['in_pps'] = format_bi($port['ifInUcastPkts_rate']);
     $port['out_pps'] = format_bi($port['ifOutUcastPkts_rate']);
-    
+
+    //only return requested columns
+    if (isset($_GET['columns'])) {
+        $cols = explode(",", $_GET['columns']);
+        foreach (array_keys($port) as $c) {
+            if (!in_array($c, $cols)) {
+                unset($port[$c]);
+            }
+        }
+    }
+
     $output    = array(
         'status' => 'ok',
         'port'   => $port,
@@ -1007,6 +1017,8 @@ function get_inventory()
         $total_inv = 0;
         $inventory = array();
     } else {
+        $sql .= ' AND `device_id`=?';
+        $params[] = $device_id;
         $inventory = dbFetchRows("SELECT * FROM `entPhysical` WHERE 1 $sql", $params);
         $code      = 200;
         $status    = 'ok';
