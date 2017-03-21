@@ -18,10 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once $config['install_dir'] . "/includes/rrdtool.inc.php";
-require_once $config['install_dir'] . "/includes/influxdb.inc.php";
-
-
 /**
  * Filter all elements with keys that start with 'rrd_'
  *
@@ -45,7 +41,7 @@ function rrd_array_filter($arr)
  * Datastore-independent function which should be used for all polled metrics.
  *
  * RRD Tags:
- *   rrd_def     array|string: (required) an array of rrd field definitions example: "DS:dataName:COUNTER:600:U:100000000000"
+ *   rrd_def     RrdDefinition
  *   rrd_name    array|string: the rrd filename, will be processed with rrd_name()
  *   rrd_oldname array|string: old rrd filename to rename, will be processed with rrd_name()
  *   rrd_step             int: rrd step, defaults to 300

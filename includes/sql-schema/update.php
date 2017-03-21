@@ -15,12 +15,10 @@
  * See COPYING for more details.
  */
 
-if (!isset($debug)) {
+if (!isset($debug)  && php_sapi_name() == 'cli') {
     // Not called from within discovery, let's load up the necessary stuff.
-    include 'includes/defaults.inc.php';
-    include 'config.php';
-    include 'includes/definitions.inc.php';
-    include 'includes/functions.php';
+    $init_modules = array();
+    require realpath(__DIR__ . '/../..') . '/includes/init.php';
 
     $options = getopt('d');
     if (isset($options['d'])) {
@@ -37,34 +35,6 @@ if ($db_rev = @dbFetchCell('SELECT version FROM `dbSchema` ORDER BY version DESC
     $db_rev = 0;
     $insert = 1;
 }
-
-// For transition from old system
-if ($old_rev = @dbFetchCell('SELECT revision FROM `dbSchema`')) {
-    echo "-- Transitioning from old revision-based schema to database version system\n";
-    $db_rev = 6;
-
-    if ($old_rev <= 1000) {
-        $db_rev = 1;
-    }
-
-    if ($old_rev <= 1435) {
-        $db_rev = 2;
-    }
-
-    if ($old_rev <= 2245) {
-        $db_rev = 3;
-    }
-
-    if ($old_rev <= 2804) {
-        $db_rev = 4;
-    }
-
-    if ($old_rev <= 2827) {
-        $db_rev = 5;
-    }
-
-    $insert = 1;
-}//end if
 
 $updating = 0;
 
@@ -88,6 +58,9 @@ if ($tmp[0] <= $db_rev) {
     }
     return;
 }
+
+// Set Database Character set and Collation
+dbQuery('ALTER DATABASE ? CHARACTER SET utf8 COLLATE utf8_unicode_ci;', array(array($config['db_name'])));
 
 $limit = 150; //magic marker far enough in the future
 foreach ($filelist as $file) {
@@ -121,30 +94,18 @@ foreach ($filelist as $file) {
                     d_echo("$line \n");
 
                     if ($line[0] != '#') {
-                        if ($config['db']['extension'] == 'mysqli') {
-                            $update = mysqli_query($database_link, $line);
-                        } else {
-                            $update = mysql_query($line);
-                        }
+                        $update = mysqli_query($database_link, $line);
                         if (!$update) {
                             $err++;
                             if ($debug) {
-                                if ($config['db']['extension'] == 'mysqli') {
-                                    echo mysqli_error($database_link)."\n";
-                                } else {
-                                    echo mysql_error()."\n";
-                                }
+                                echo mysqli_error($database_link)."\n";
                             }
                         }
                     }
                 }
             }
 
-            if ($db_rev < 5) {
-                echo " done.\n";
-            } else {
-                echo " done ($err errors).\n";
-            }
+            echo " done ($err errors).\n";
         } else {
             echo " Could not open file!\n";
         }//end if
@@ -153,9 +114,7 @@ foreach ($filelist as $file) {
         $db_rev = $filename;
         if ($insert) {
             dbInsert(array('version' => $db_rev), 'dbSchema');
-            if ($db_rev >= 6) {
-                $insert = 0;
-            }
+            $insert = 0;
         } else {
             dbUpdate(array('version' => $db_rev), 'dbSchema');
         }

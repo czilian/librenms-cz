@@ -23,30 +23,26 @@
  * @author     Tony Murray <murraytony@gmail.com>
  */
 
-// get the current LibreNMS install directory
 $install_dir = realpath(__DIR__ . '/..');
 
-require $install_dir . '/includes/defaults.inc.php';
+$init_modules = array('web');
 
-// definitions, don't want to initialize mysql...
-$config['install_dir'] = $install_dir;
-$config['mibdir'] = $install_dir . '/mibs';
-$config['snmpget'] = 'snmpget';
-$runtime_stats = array('snmpget' => 0, 'snmpwalk' => 0);
-
-$classLoader->registerDir($install_dir . '/tests', 'LibreNMS\Tests');
-
-require $install_dir . '/includes/common.php';
-if (getenv('SNMPSIM')) {
-    require $install_dir . '/includes/functions.php';
-} else {
-    require $install_dir . '/includes/rrdtool.inc.php';
-    require $install_dir . '/includes/syslog.php';
-    require $install_dir . '/tests/mocks/mock.snmp.inc.php';
+if (!getenv('SNMPSIM')) {
+    $init_modules[] = 'mocksnmp';
 }
+
+if (getenv('DBTEST')) {
+    if (!is_file($install_dir . '/config.php')) {
+        exec("cp $install_dir/tests/config/config.test.php $install_dir/config.php");
+    }
+}
+
+require $install_dir . '/includes/init.php';
+chdir($install_dir);
+
+$config['install_dir'] = $install_dir;
+$config['mib_dir'] = $install_dir . '/mibs';
+$config['snmpget'] = 'snmpget';
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL & ~E_WARNING);
-//error_reporting(E_ALL);
-//$debug=true;
-//$vdebug=true;

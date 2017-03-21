@@ -33,6 +33,15 @@ $graphs['nginx']     = array(
     'req',
 );
 
+$graphs['postfix'] = array(
+    'messages',
+    'qstats',
+    'bytes',
+    'sr',
+    'deferral',
+    'rejects',
+);
+
 $graphs['powerdns-recursor'] = array(
     'questions',
     'answers',
@@ -54,6 +63,15 @@ $graphs['tinydns']   = array(
     'errors',
     'dnssec',
     'other',
+);
+
+$graphs['postgres'] = array(
+    'backends',
+    'cr',
+    'rows',
+    'hr',
+    'index',
+    'sequential'
 );
 
 $graphs['powerdns'] = array(
@@ -94,8 +112,13 @@ $graphs['nfs-v3-stats'] = array(
 $graphs['os-updates'] = array(
     'packages',
 );
+
 $graphs['dhcp-stats'] = array(
      'stats',
+);
+
+$graphs['fail2ban'] = array(
+    'banned',
 );
 
 $graphs['freeswitch'] = array(
@@ -120,6 +143,73 @@ $graphs['ups-apcups'] = array(
     'voltage_input',
 );
 
+$graphs['gpsd'] = array(
+    'satellites',
+    'dop',
+    'mode',
+);
+
+$graphs['exim-stats'] = array(
+    'frozen',
+    'queue'
+);
+
+$graphs['php-fpm'] = array(
+    'stats'
+);
+
+$graphs['nvidia'] = array(
+    'sm',
+    'mem',
+    'enc',
+    'dec',
+    'rxpci',
+    'txpci',
+    'fb',
+    'bar1',
+    'mclk',
+    'pclk',
+    'pwr',
+    'temp',
+    'pviol',
+    'tviol',
+    'sbecc',
+    'dbecc',
+);
+
+$graphs['squid'] = array(
+    'memory',
+    'clients',
+    'cpuusage',
+    'objcount',
+    'filedescr',
+    'httpbw',
+    'http',
+    'server',
+    'serverbw',
+    'reqhit',
+    'bytehit',
+    'sysnumread',
+    'pagefaults',
+    'cputime',
+);
+
+$graphs['fbsd-nfs-server'] = array(
+    'stats',
+    'cache',
+    'gathering',
+);
+
+$graphs['fbsd-nfs-client'] = array(
+    'stats',
+    'cache',
+    'rpc',
+);
+
+$graphs['unbound'] = array(
+    'queries',
+);
+
 print_optionbar_start();
 
 echo "<span style='font-weight: bold;'>Apps</span> &#187; ";
@@ -135,12 +225,8 @@ $link_array = array(
 foreach ($app_list as $app) {
     echo $sep;
 
-    // if (!$vars['app']) { $vars['app'] = $app['app_type']; }
     if ($vars['app'] == $app['app_type']) {
         echo "<span class='pagemenu-selected'>";
-        // echo('<img src="images/icons/'.$app['app_type'].'.png" class="optionicon" />');
-    } else {
-        // echo('<img src="images/icons/greyscale/'.$app['app_type'].'.png" class="optionicon" />');
     }
 
     echo generate_link(nicecase($app['app_type']), array('page' => 'apps', 'app' => $app['app_type']));

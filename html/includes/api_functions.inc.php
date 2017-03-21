@@ -12,12 +12,6 @@
  * the source code distribution for details.
  */
 
-require_once '../includes/functions.php';
-require_once '../includes/device-groups.inc.php';
-if (file_exists('../html/includes/authentication/'.$config['auth_mechanism'].'.inc.php')) {
-       include '../html/includes/authentication/'.$config['auth_mechanism'].'.inc.php';
-}
-
 function authToken(\Slim\Route $route)
 {
     $app   = \Slim\Slim::getInstance();
@@ -77,9 +71,11 @@ function get_graph_by_port_hostname()
     $vars['width']  = $_GET['width'] ?: 1075;
     $vars['height'] = $_GET['height'] ?: 300;
     $auth           = '1';
-    $vars['id']     = dbFetchCell("SELECT `P`.`port_id` FROM `ports` AS `P` JOIN `devices` AS `D` ON `P`.`device_id` = `D`.`device_id` WHERE `D`.`hostname`=? AND `P`.`$port`=?", array($hostname, $vars['port']));
-    $app->response->headers->set('Content-Type', 'image/png');
+    $vars['id']     = dbFetchCell("SELECT `P`.`port_id` FROM `ports` AS `P` JOIN `devices` AS `D` ON `P`.`device_id` = `D`.`device_id` WHERE `D`.`hostname`=? AND `P`.`$port`=? AND `deleted` = 0 LIMIT 1", array($hostname, $vars['port']));
+    $app->response->headers->set('Content-Type', get_image_type());
+    rrdtool_initialize(false);
     include 'includes/graphs/graph.inc.php';
+    rrdtool_close();
 }
 
 
@@ -92,10 +88,30 @@ function get_port_stats_by_port_hostname()
     $hostname  = $router['hostname'];
     $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
     $ifName    = urldecode($router['ifname']);
-    $stats     = dbFetchRow('SELECT * FROM `ports` WHERE `device_id`=? AND `ifName`=?', array($device_id, $ifName));
+    $port     = dbFetchRow('SELECT * FROM `ports` WHERE `device_id`=? AND `ifName`=? AND `deleted` = 0', array($device_id, $ifName));
+
+    $in_rate = $port['ifInOctets_rate'] * 8;
+    $out_rate = $port['ifOutOctets_rate'] * 8;
+    $port['in_rate'] = formatRates($in_rate);
+    $port['out_rate'] = formatRates($out_rate);
+    $port['in_perc'] = number_format($in_rate / $port['ifSpeed'] * 100, 2, '.', '');
+    $port['out_perc'] = number_format($out_rate / $port['ifSpeed'] * 100, 2, '.', '');
+    $port['in_pps'] = format_bi($port['ifInUcastPkts_rate']);
+    $port['out_pps'] = format_bi($port['ifOutUcastPkts_rate']);
+
+    //only return requested columns
+    if (isset($_GET['columns'])) {
+        $cols = explode(",", $_GET['columns']);
+        foreach (array_keys($port) as $c) {
+            if (!in_array($c, $cols)) {
+                unset($port[$c]);
+            }
+        }
+    }
+
     $output    = array(
         'status' => 'ok',
-        'port'   => $stats,
+        'port'   => $port,
     );
     $app->response->headers->set('Content-Type', 'application/json');
     echo _json_encode($output);
@@ -109,8 +125,13 @@ function get_graph_generic_by_hostname()
     $app          = \Slim\Slim::getInstance();
     $router       = $app->router()->getCurrentRoute()->getParams();
     $hostname     = $router['hostname'];
+    $sensor_id    = $router['sensor_id'] ?: null;
     $vars         = array();
     $vars['type'] = $router['type'] ?: 'device_uptime';
+    if (isset($sensor_id)) {
+        $vars['id']   = $sensor_id;
+        $vars['type'] = str_replace('device_', 'sensor_', $vars['type']);
+    }
 
     // use hostname as device_id if it's all digits
     $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
@@ -128,8 +149,10 @@ function get_graph_generic_by_hostname()
     $vars['height'] = $_GET['height'] ?: 300;
     $auth           = '1';
     $vars['device'] = dbFetchCell('SELECT `D`.`device_id` FROM `devices` AS `D` WHERE `D`.`hostname`=?', array($hostname));
-    $app->response->headers->set('Content-Type', 'image/png');
+    $app->response->headers->set('Content-Type', get_image_type());
+    rrdtool_initialize(false);
     include 'includes/graphs/graph.inc.php';
+    rrdtool_close();
 }
 
 
@@ -155,6 +178,10 @@ function get_device()
         echo _json_encode($output);
         $app->stop();
     } else {
+        $host_id = get_vm_parent_id($device);
+        if (is_numeric($host_id)) {
+            $device = array_merge($device, array('parent_id' => $host_id));
+        }
         $output = array(
             'status'  => 'ok',
             'devices' => array($device),
@@ -162,7 +189,6 @@ function get_device()
         echo _json_encode($output);
     }
 }
-
 
 function list_devices()
 {
@@ -184,6 +210,8 @@ function list_devices()
 
     if ($type == 'all' || empty($type)) {
         $sql = '1';
+    } elseif ($type == 'location') {
+        $sql = "`location` LIKE '%".$query."%'";
     } elseif ($type == 'ignored') {
         $sql = "`ignore`='1' AND `disabled`='0'";
     } elseif ($type == 'up') {
@@ -209,7 +237,11 @@ function list_devices()
     }
     $devices = array();
     foreach (dbFetchRows("SELECT * FROM `devices` $join WHERE $sql ORDER by $order", $param) as $device) {
+        $host_id = get_vm_parent_id($device);
         $device['ip'] = inet6_ntop($device['ip']);
+        if (is_numeric($host_id)) {
+            $device['parent_id'] = $host_id;
+        }
         $devices[] = $device;
     }
 
@@ -247,7 +279,7 @@ function add_device()
     $port         = $data['port'] ? mres($data['port']) : $config['snmp']['port'];
     $transport    = $data['transport'] ? mres($data['transport']) : 'udp';
     $poller_group = $data['poller_group'] ? mres($data['poller_group']) : 0;
-    $force_add    = $data['force_add'] ? mres($data['force_add']) : 0;
+    $force_add    = $data['force_add'] ? true : false;
     if ($data['version'] == 'v1' || $data['version'] == 'v2c') {
         if ($data['community']) {
             $config['snmp']['community'] = array($data['community']);
@@ -425,14 +457,19 @@ function list_bgp()
     $message    = 'Error retrieving bgpPeers';
     $sql        = '';
     $sql_params = array();
-    $hostname   = $_GET['hostname'];
+    $hostname   = $_GET['hostname'] ?: '';
+    $asn        = $_GET['asn'] ?: '';
     $device_id  = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
     if (is_numeric($device_id)) {
-        $sql        = ' AND `device_id`=?';
-        $sql_params = array($device_id);
+        $sql        = ' AND `devices`.`device_id` = ?';
+        $sql_params[] = $device_id;
+    }
+    if (!empty($asn)) {
+        $sql = ' AND `devices`.`bgpLocalAs` = ?';
+        $sql_params[] = $asn;
     }
 
-    $bgp_sessions       = dbFetchRows("SELECT * FROM bgpPeers WHERE `bgpPeerState` IS NOT NULL AND `bgpPeerState` != '' $sql", $sql_params);
+    $bgp_sessions       = dbFetchRows("SELECT `bgpPeers`.* FROM `bgpPeers` LEFT JOIN `devices` ON `bgpPeers`.`device_id` = `devices`.`device_id` WHERE `bgpPeerState` IS NOT NULL AND `bgpPeerState` != '' $sql", $sql_params);
     $total_bgp_sessions = count($bgp_sessions);
     if (is_numeric($total_bgp_sessions)) {
         $code    = 200;
@@ -457,7 +494,8 @@ function get_graph_by_portgroup()
     global $config;
     $app    = \Slim\Slim::getInstance();
     $router = $app->router()->getCurrentRoute()->getParams();
-    $group  = $router['group'];
+    $group  = $router['group'] ?: '';
+    $id     = $router['id'] ?: '';
     $vars   = array();
     if (!empty($_GET['from'])) {
         $vars['from'] = $_GET['from'];
@@ -470,20 +508,29 @@ function get_graph_by_portgroup()
     $vars['width']  = $_GET['width'] ?: 1075;
     $vars['height'] = $_GET['height'] ?: 300;
     $auth           = '1';
+    $if_list        = '';
+    $ports          = array();
 
-    $ports = get_ports_from_type(explode(',', $group));
-    $if_list     = '';
-    $seperator   = '';
-    foreach ($ports as $port) {
-        $if_list  .= $seperator.$port['port_id'];
-        $seperator = ',';
+    if (!empty($id)) {
+        $if_list = $id;
+    } else {
+        $ports = get_ports_from_type(explode(',', $group));
+    }
+    if (empty($if_list)) {
+        $seperator   = '';
+        foreach ($ports as $port) {
+            $if_list  .= $seperator.$port['port_id'];
+            $seperator = ',';
+        }
     }
 
     unset($seperator);
     $vars['type'] = 'multiport_bits_separate';
     $vars['id']   = $if_list;
-    $app->response->headers->set('Content-Type', 'image/png');
+    $app->response->headers->set('Content-Type', get_image_type());
+    rrdtool_initialize(false);
     include 'includes/graphs/graph.inc.php';
+    rrdtool_close();
 }
 
 
@@ -664,6 +711,53 @@ function get_graphs()
     echo _json_encode($output);
 }
 
+function list_available_health_graphs()
+{
+    global $config;
+    $code     = 200;
+    $status   = 'ok';
+    $message  = '';
+    $app      = \Slim\Slim::getInstance();
+    $router   = $app->router()->getCurrentRoute()->getParams();
+    $hostname = $router['hostname'];
+    $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
+    if (isset($router['type'])) {
+        list($dump, $type) = explode('_', $router['type']);
+    }
+    $sensor_id = $router['sensor_id'] ?: null;
+    $graphs    = array();
+
+    if (isset($type)) {
+        if (isset($sensor_id)) {
+              $graphs = dbFetchRows('SELECT * FROM `sensors` WHERE `sensor_id` = ?', array($sensor_id));
+        } else {
+            foreach (dbFetchRows('SELECT `sensor_id`, `sensor_descr` FROM `sensors` WHERE `device_id` = ? AND `sensor_class` = ? AND `sensor_deleted` = 0', array($device_id, $type)) as $graph) {
+                $graphs[] = array(
+                    'sensor_id' => $graph['sensor_id'],
+                    'desc'      => $graph['sensor_descr'],
+                );
+            }
+        }
+    } else {
+        foreach (dbFetchRows('SELECT `sensor_class` FROM `sensors` WHERE `device_id` = ? AND `sensor_deleted` = 0 GROUP BY `sensor_class`', array($device_id)) as $graph) {
+            $graphs[] = array(
+                'desc' => ucfirst($graph['sensor_class']),
+                'name' => 'device_'.$graph['sensor_class'],
+            );
+        }
+    }
+
+    $total_graphs = count($graphs);
+    $output       = array(
+        'status'  => "$status",
+        'err-msg' => $message,
+        'count'   => $total_graphs,
+        'graphs'  => $graphs,
+    );
+    $app->response->setStatus($code);
+    $app->response->headers->set('Content-Type', 'application/json');
+    echo _json_encode($output);
+}
 
 function get_port_graphs()
 {
@@ -685,6 +779,74 @@ function get_port_graphs()
         'status'  => 'ok',
         'err-msg' => '',
         'count'   => $total_ports,
+        'ports'   => $ports,
+    );
+    $app->response->setStatus('200');
+    $app->response->headers->set('Content-Type', 'application/json');
+    echo _json_encode($output);
+}
+
+function get_ip_addresses()
+{
+    global $config;
+    $app      = \Slim\Slim::getInstance();
+    $router   = $app->router()->getCurrentRoute()->getParams();
+    if (isset($router['hostname'])) {
+        $hostname = $router['hostname'];
+        // use hostname as device_id if it's all digits
+        $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
+        $ipv4   = dbFetchRows("SELECT `ipv4_addresses`.* FROM `ipv4_addresses` JOIN `ports` ON `ports`.`port_id`=`ipv4_addresses`.`port_id` WHERE `ports`.`device_id` = ? AND `deleted` = 0", array($device_id));
+        $ipv6   = dbFetchRows("SELECT `ipv6_addresses`.* FROM `ipv6_addresses` JOIN `ports` ON `ports`.`port_id`=`ipv6_addresses`.`port_id` WHERE `ports`.`device_id` = ? AND `deleted` = 0", array($device_id));
+    } elseif (isset($router['portid'])) {
+        $port_id = urldecode($router['portid']);
+        $ipv4   = dbFetchRows("SELECT * FROM `ipv4_addresses` WHERE `port_id` = ?", array($port_id));
+        $ipv6   = dbFetchRows("SELECT * FROM `ipv6_addresses` WHERE `port_id` = ?", array($port_id));
+    }
+
+    $output = array(
+        'status'    => 'ok',
+        'err-msg'   => '',
+        'addresses' => array_merge($ipv4, $ipv6),
+    );
+
+    $app->response->setStatus('200');
+    $app->response->headers->set('Content-Type', 'application/json');
+    echo _json_encode($output);
+}
+
+function get_port_info()
+{
+    global $config;
+    $app      = \Slim\Slim::getInstance();
+    $router   = $app->router()->getCurrentRoute()->getParams();
+    $port_id  = urldecode($router['portid']);
+
+    // use hostname as device_id if it's all digits
+    $port   = dbFetchRows("SELECT * FROM `ports` WHERE `port_id` = ? AND `deleted` = 0", array($port_id));
+    $output = array(
+        'status'  => 'ok',
+        'err-msg' => '',
+        'port'    => $port,
+    );
+    $app->response->setStatus('200');
+    $app->response->headers->set('Content-Type', 'application/json');
+    echo _json_encode($output);
+}
+
+function get_all_ports()
+{
+    global $config;
+    $app = \Slim\Slim::getInstance();
+    if (isset($_GET['columns'])) {
+        $columns = $_GET['columns'];
+    } else {
+        $columns = 'ifName';
+    }
+    $ports = dbFetchRows("SELECT $columns FROM `ports` WHERE `deleted` = 0");
+
+    $output = array(
+        'status'  => 'ok',
+        'err-msg' => '',
         'ports'   => $ports,
     );
     $app->response->setStatus('200');
@@ -1003,6 +1165,8 @@ function get_inventory()
         $total_inv = 0;
         $inventory = array();
     } else {
+        $sql .= ' AND `device_id`=?';
+        $params[] = $device_id;
         $inventory = dbFetchRows("SELECT * FROM `entPhysical` WHERE 1 $sql", $params);
         $code      = 200;
         $status    = 'ok';
@@ -1121,6 +1285,9 @@ function list_bills()
         $bill['used'] = $used;
         $bill['percent'] = $percent;
         $bill['overuse'] = $overuse;
+
+        $bill['ports'] = dbFetchRows("SELECT `D`.`device_id`,`P`.`port_id`,`P`.`ifName` FROM `bill_ports` AS `B`, `ports` AS `P`, `devices` AS `D` WHERE `B`.`bill_id` = ? AND `P`.`port_id` = `B`.`port_id` AND `D`.`device_id` = `P`.`device_id`", array($bill["bill_id"]));
+
         $bills[] = $bill;
     }
     $count = count($bills);
@@ -1147,13 +1314,33 @@ function update_device()
     // use hostname as device_id if it's all digits
     $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
     $data = json_decode(file_get_contents('php://input'), true);
-    $bad_fields = array('id','hostname');
+    $bad_fields = array('device_id','hostname');
     if (empty($data['field'])) {
         $message = 'Device field to patch has not been supplied';
     } elseif (in_array($data['field'], $bad_fields)) {
         $message = 'Device field is not allowed to be updated';
     } else {
-        if (dbUpdate(array(mres($data['field']) => mres($data['data'])), 'devices', '`device_id`=?', array($device_id)) >= 0) {
+        if (is_array($data['field']) && is_array($data['data'])) {
+            foreach ($data['field'] as $tmp_field) {
+                if (in_array($tmp_field, $bad_fields)) {
+                    $message = 'Device field is not allowed to be updated';
+                }
+            }
+            if ($message == '' && count($data['field']) == count($data['data'])) {
+                for ($x=0; $x<count($data['field']); $x++) {
+                    $update[mres($data['field'][$x])] = mres($data['data'][$x]);
+                }
+                if (dbUpdate($update, 'devices', '`device_id`=?', array($device_id)) >= 0) {
+                    $status = 'ok';
+                    $code = 200;
+                    $message = 'Device fields have been updated';
+                } else {
+                    $message = 'Device fields failed to be updated';
+                }
+            } elseif ($message == '') {
+                $message = 'Device fields failed to be updated as the number of fields ('.count($data['field']).') does not match the supplied data ('.count($data['data']).')';
+            }
+        } elseif (dbUpdate(array(mres($data['field']) => mres($data['data'])), 'devices', '`device_id`=?', array($device_id)) >= 0) {
             $status = 'ok';
             $message = 'Device ' . mres($data['field']) . ' field has been updated';
             $code = 200;
@@ -1210,13 +1397,14 @@ function get_devices_by_group()
     $status   = 'error';
     $code     = 404;
     $count    = 0;
-    $name = urldecode($router['name']);
-    $devices = array();
+    $name     = urldecode($router['name']);
+    $devices  = array();
+    $full     = $_GET['full'];
     if (empty($name)) {
         $message = 'No device group name provided';
     } else {
         $group_id = dbFetchCell("SELECT `id` FROM `device_groups` WHERE `name`=?", array($name));
-        $devices = GetDevicesFromGroup($group_id, true);
+        $devices = GetDevicesFromGroup($group_id, true, $full);
         $count = count($devices);
         if (empty($devices)) {
             $message = 'No devices found in group ' . $name;
@@ -1246,6 +1434,7 @@ function list_ipsec()
     $code     = 404;
     $message  = '';
     $hostname = $router['hostname'];
+    $total    = 0;
     // use hostname as device_id if it's all digits
     $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
     if (!is_numeric($device_id)) {
@@ -1276,6 +1465,7 @@ function list_arp()
     $code     = 404;
     $message  = '';
     $ip       = $router['ip'];
+    $total    = 0;
     if (empty($ip)) {
         $message = "No valid IP provided";
     } else {
@@ -1313,26 +1503,26 @@ function list_services()
     $services = array();
     $where    = '';
     $devicewhere = '';
-    
+
     // Filter BY STATE
     if (isset($_GET['state'])) {
         $where  = " AND S.service_status= ? AND S.service_disabled='0' AND S.service_ignore='0'";
         $host_par[] = $_GET['state'];
-        
+
         if (!is_numeric($_GET['state'])) {
             $status   = 'error';
             $message = "No valid service state provided, valid option is 0=Ok, 1=Warning, 2=Critical";
         }
     }
-    
+
     // GET BY HOST
     if (isset($router['hostname'])) {
         $hostname = $router['hostname'];
         $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
-        
+
         $where .= " AND S.device_id = ?";
         $host_par[] = $device_id;
-        
+
         if (!is_numeric($device_id)) {
             $status   = 'error';
             $message = "No valid hostname or device id provided";
@@ -1341,19 +1531,19 @@ function list_services()
 
     // DEVICE
     $host_sql = 'SELECT * FROM devices AS D, services AS S WHERE D.device_id = S.device_id '.$where.' GROUP BY D.hostname ORDER BY D.hostname';
-    
+
     // SERVICE
     foreach (dbFetchRows($host_sql, $host_par) as $device) {
         $device_id = $device['device_id'];
         $sql_param[0] = $device_id;
-        
+
         // FILTER BY TYPE
         if (isset($_GET['type'])) {
             $devicewhere  = " AND `service_type` LIKE ?";
             $sql_param[1] = $_GET['type'];
         }
 
-        $services = dbFetchRows("SELECT * FROM `services` WHERE `device_id` = ?".$devicewhere, $sql_param);
+        $services[] = dbFetchRows("SELECT * FROM `services` WHERE `device_id` = ?".$devicewhere, $sql_param);
     }
     $count = count($services);
     $output = array(

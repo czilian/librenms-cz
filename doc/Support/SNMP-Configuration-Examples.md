@@ -8,14 +8,19 @@ Table of Content:
         - [Adaptive Security Appliance (ASA)](#adaptive-security-appliance-asa)
         - [IOS / IOS XE / NX-OS](#ios--ios-xe--nx-os)
         - [Wireless LAN Controller (WLC)](#wireless-lan-controller-wlc)
+    - [HPE 3PAR](#hpe3par)
+        - [Inform OS 3.2.x](#inform-os-32x)
     - [Infoblox](#infoblox)
         - [NIOS 7.x](#nios-7x)
     - [Juniper](#juniper)
         - [Junos OS](#junos-os)
+    - [Mikrotik](#mikrotik)
+        - [RouterOS 6.x](#routeros-6x)
     - [Palo Alto](#palo-alto)
         - [PANOS 6.x/7.x](#panos-6x7x)
 - [Operating systems](#operating-systems)
-    - [Linux (snmpd)](#linux-snmpd)
+    - [Linux (snmpd v2)](#linux-snmpd)
+    - [Linux (snmpd v3)](#linux-snmpd-v3)
     - [Windows Server 2008 R2](#windows-server-2008-r2)
     - [Windows Server 2012 R2](#windows-server-2012-r2)
 
@@ -46,6 +51,18 @@ snmp-server location YOUR-LOCATION
 6. Add your community name and leave IP addresses empty
 7. Click Apply and Save
 
+### HPE 3PAR
+#### Inform OS 3.2.x
+- Access the CLI
+- Add an SNMP Manager with your LibreNMS IP address:
+```
+addsnmpmgr <librenms ip>
+```
+- Add your SNMP community:
+```
+setsnmppw <community>
+```
+
 ### Infoblox
 #### NIOS 7.x
 1. Access the web admin page and log in
@@ -65,6 +82,17 @@ set snmp contact contact
 set snmp community YOUR-COMMUNITY authorization read-only
 ```
 
+### Mikrotik
+#### RouterOS 6.x
+```
+#Terminal SNMP v2 Configuration
+/snmp community
+set [ find default=yes ] read-access=no
+add addresses=<SRC IP/NETWORK> name=<COMMUNITY>
+/snmp
+set contact="<NAME>" enabled=yes engine-id=<ENGINE ID> location="<LOCALTION>"
+```
+
 ### Palo Alto
 #### PANOS 6.x/7.x
 1. Access the web admin page and log in
@@ -78,7 +106,7 @@ Note that you need to allow SNMP on the needed interfaces. To do that you need t
 
 
 ## Operating systems
-### Linux (snmpd)
+### Linux (snmpd v2)
 
 Replace your snmpd.conf file by the example below and edit it with appropriate community in "RANDOMSTRINGGOESHERE".
 
@@ -100,11 +128,58 @@ syscontact Your Name <your@email.address>
 #Distro Detection
 extend .1.3.6.1.4.1.2021.7890.1 distro /usr/bin/distro
 ```
+
+```
+#If you have 'dmidecode' installed on your host, you can add the following lines for additional hardware detection
+extend .1.3.6.1.4.1.2021.7890.2 hardware '/usr/sbin/dmidecode -s system-product-name'
+extend .1.3.6.1.4.1.2021.7890.3 manufacturer '/usr/sbin/dmidecode -s system-manufacturer'
+extend .1.3.6.1.4.1.2021.7890.4 serial '/usr/sbin/dmidecode -s system-serial-number'
+```
 The LibreNMS server include a copy of this example here:
 
 ```
 /opt/librenms/snmpd.conf.example
 ```
+
+The binary /usr/bin/distro must be copied from the original source repository:
+
+```
+curl -o /usr/bin/distro https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro
+chmod +x /usr/bin/distro
+```
+
+### Linux (snmpd v3)
+
+Go to /etc/snmp/snmpd.conf
+
+Open the file in vi or nano /etc/snmp/snmpd.conf and add the following line to create SNMPV3 User (replace username and passwords with your own):
+
+```
+createUser authPrivUser MD5 "authPassword" DES "privPassword"
+```
+
+Make sure the agent listens to all interfaces by adding the following line inside snmpd.conf:
+
+```
+agentAddress udp:161,udp6:[::1]:161
+```
+
+This line simply means listen to connections across all interfaces IPv4 and IPv6 respectively
+
+Uncomment and change the following line to give read access to the username created above (rouser is what LibreNMS uses) :
+
+```
+#rouser authPrivUser priv
+```
+
+Change the following details inside snmpd.conf
+
+```
+syslocation Rack, Room, Building, City, Country [GPSX,Y]
+syscontact Your Name <your@email.address>
+```
+
+Save and exit the file
 
 #### Restart the snmpd service:
 

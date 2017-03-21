@@ -34,6 +34,8 @@ if ($_SESSION['userlevel'] < '7') {
     }
 
     $panes['storage']  = 'Storage';
+    $panes['processors']  = 'Processors';
+    $panes['mempools']  = 'Memory';
     $panes['misc']     = 'Misc';
 
     $panes['component'] = 'Components';
@@ -48,14 +50,11 @@ if ($_SESSION['userlevel'] < '7') {
         echo($sep);
         if ($vars['section'] == $type) {
             echo("<span class='pagemenu-selected'>");
-            #echo('<img src="images/icons/'.$type.'.png" class="optionicon" />');
         } else {
-            #echo('<img src="images/icons/greyscale/'.$type.'.png" class="optionicon" />');
         }
 
         echo(generate_link($text, $link_array, array('section'=>$type)));
 
-    #    echo("<a href='device/".$device['device_id']."/edit/" . $type . ($_GET['optd'] ? "/" . $_GET['optd'] : ''). "/'> " . $text ."</a>");
         if ($vars['section'] == $type) {
             echo("</span>");
         }

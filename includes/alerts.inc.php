@@ -22,9 +22,6 @@
  * @subpackage Alerts
  */
 
-include_once($config['install_dir'].'/includes/common.inc.php');
-include_once($config['install_dir'].'/includes/device-groups.inc.php');
-include_once($config['install_dir'].'/html/includes/authentication/'.$config['auth_mechanism'].'.inc.php');
 
 /**
  * Generate SQL from Rule
@@ -145,9 +142,8 @@ function IsMaintenance($device)
         $where .= " || alert_schedule_items.target = ?";
         $params[] = 'g'.$group;
     }
-    return dbFetchCell('SELECT alert_schedule.schedule_id FROM alert_schedule LEFT JOIN alert_schedule_items ON alert_schedule.schedule_id=alert_schedule_items.schedule_id WHERE ( alert_schedule_items.target = ?'.$where.' ) && NOW() BETWEEN alert_schedule.start AND alert_schedule.end LIMIT 1', $params);
+    return dbFetchCell('SELECT alert_schedule.schedule_id FROM alert_schedule LEFT JOIN alert_schedule_items ON alert_schedule.schedule_id=alert_schedule_items.schedule_id WHERE ( alert_schedule_items.target = ?'.$where.' ) && ((alert_schedule.recurring = 0 AND (NOW() BETWEEN alert_schedule.start AND alert_schedule.end)) OR (alert_schedule.recurring = 1 AND (alert_schedule.start_recurring_dt <= date_format(NOW(), \'%Y-%m-%d\') AND (end_recurring_dt >= date_format(NOW(), \'%Y-%m-%d\') OR end_recurring_dt is NULL OR end_recurring_dt = \'0000-00-00\' OR end_recurring_dt = \'\')) AND (date_format(now(), \'%H:%i:%s\') BETWEEN `start_recurring_hr` AND end_recurring_hr) AND (recurring_day LIKE CONCAT(\'%\',date_format(now(), \'%w\'),\'%\') OR recurring_day is null or recurring_day = \'\'))) LIMIT 1', $params);
 }
-
 /**
  * Run all rules for a device
  * @param int $device Device-ID
@@ -169,10 +165,16 @@ function RunRules($device)
         }
         d_echo(PHP_EOL);
         $chk = dbFetchRow("SELECT state FROM alerts WHERE rule_id = ? && device_id = ? ORDER BY id DESC LIMIT 1", array($rule['id'], $device));
-        $sql = GenSQL($rule['rule']);
+        if (empty($rule['query'])) {
+            $rule['query'] = GenSQL($rule['rule']);
+        }
+        $sql = $rule['query'];
         $qry = dbFetchRows($sql, array($device));
-        if (isset($qry[0]['ip'])) {
-            $qry[0]['ip'] = inet6_ntop($qry[0]['ip']);
+        $cnt = count($qry);
+        for ($i = 0; $i < $cnt; $i++) {
+            if (isset($qry[$i]['ip'])) {
+                $qry[$i]['ip'] = inet6_ntop($qry[$i]['ip']);
+            }
         }
         $s = sizeof($qry);
         if ($s == 0 && $inv === false) {
@@ -225,7 +227,7 @@ function GetContacts($results)
     if (sizeof($results) == 0) {
         return array();
     }
-    if ($config['alert']['default_only'] == true || $config['alerts']['email']['default_only'] == true) {
+    if ($config['alert']['default_only'] === true || $config['alerts']['email']['default_only'] === true) {
         return array(''.($config['alert']['default_mail'] ? $config['alert']['default_mail'] : $config['alerts']['email']['default']) => 'NOC');
     }
     $users = get_userlist();
@@ -252,7 +254,9 @@ function GetContacts($results)
                 } else {
                     $tmpa = dbFetchCell("SELECT sysContact FROM devices WHERE device_id = ?", array($result["device_id"]));
                 }
-                $contacts[$tmpa] = "NOC";
+                if (!empty($tmpa)) {
+                    $contacts[$tmpa] = "NOC";
+                }
             }
             $tmpa = dbFetchRows("SELECT user_id FROM devices_perms WHERE access_level >= 0 AND device_id = ?", array($result["device_id"]));
             foreach ($tmpa as $tmp) {
@@ -279,7 +283,7 @@ function GetContacts($results)
     $tmp_contacts = array();
     foreach ($contacts as $email => $name) {
         if (strstr($email, ',')) {
-            $split_contacts = preg_split("/[,\s]+/", $email);
+            $split_contacts = preg_split('/[,\s]+/', $email);
             foreach ($split_contacts as $split_email) {
                 if (!empty($split_email)) {
                     $tmp_contacts[$split_email] = $name;
@@ -288,6 +292,11 @@ function GetContacts($results)
         } else {
             $tmp_contacts[$email] = $name;
         }
+    }
+
+    # Send email to default contact if no other contact found
+    if ((count($tmp_contacts) == 0) && ($config['alert']['default_if_none']) && (!empty($config['alert']['default_mail']))) {
+        $tmp_contacts[$config['alert']['default_mail']] = 'NOC';
     }
 
     return $tmp_contacts;

@@ -36,6 +36,11 @@ require 'includes/dev-overview-data.inc.php';
 LibreNMS\Plugins::call('device_overview_container', array($device));
 
 require 'overview/ports.inc.php';
+
+if ($device['os'] == 'cimc') {
+    require 'overview/cimc.inc.php';
+}
+
 echo('
     </div>
     <div class="col-md-6">
@@ -51,18 +56,19 @@ if (is_array($entity_state['group']['c6kxbar'])) {
 
 require 'overview/toner.inc.php';
 require 'overview/sensors/charge.inc.php';
-require 'overview/sensors/temperatures.inc.php';
+require 'overview/sensors/temperature.inc.php';
 require 'overview/sensors/humidity.inc.php';
-require 'overview/sensors/fanspeeds.inc.php';
+require 'overview/sensors/fanspeed.inc.php';
 require 'overview/sensors/dbm.inc.php';
-require 'overview/sensors/voltages.inc.php';
+require 'overview/sensors/voltage.inc.php';
 require 'overview/sensors/current.inc.php';
 require 'overview/sensors/runtime.inc.php';
 require 'overview/sensors/power.inc.php';
-require 'overview/sensors/frequencies.inc.php';
+require 'overview/sensors/frequency.inc.php';
 require 'overview/sensors/load.inc.php';
 require 'overview/sensors/state.inc.php';
 require 'overview/sensors/signal.inc.php';
+require 'overview/sensors/airflow.inc.php';
 require 'overview/eventlog.inc.php';
 require 'overview/services.inc.php';
 require 'overview/syslog.inc.php';

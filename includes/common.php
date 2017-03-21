@@ -19,19 +19,19 @@
 function generate_priority_icon($priority)
 {
     $map = array(
-        "emerg"     => "server_delete",
-        "alert"     => "cancel",
-        "crit"      => "application_lightning",
-        "err"       => "application_delete",
-        "warning"   => "application_error",
-        "notice"    => "application_edit",
-        "info"      => "application",
-        "debug"     => "bug",
-        ""          => "application",
+        "emerg"     => "fa-plus-circle text-danger",
+        "alert"     => "fa-ban text-danger",
+        "crit"      => "fa-minus-circle text-danger",
+        "err"       => "fa-times-circle text-warning",
+        "warning"   => "fa-exclamation-triangle text-warning",
+        "notice"    => "fa-info-circle text-info",
+        "info"      => "fa-info-circle text-info",
+        "debug"     => "fa-bug text-muted",
+        ""          => "fa-info-circle text-info",
     );
 
-    $image = isset($map[$priority]) ? $map[$priority] : 'application';
-    return '<img src="images/16/' . $image .'.png" title="' . $priority . '">';
+    $fa_icon = isset($map[$priority]) ? $map[$priority] : 'fa-info-circle text-info';
+    return '<i class="fa '. $fa_icon.' fa-lg" title="'.$priority.'" aria-hidden="true"></i>';
 }
 
 function generate_priority_status($priority)
@@ -49,22 +49,6 @@ function generate_priority_status($priority)
     );
 
     return isset($map[$priority]) ? $map[$priority] : 0;
-}
-
-function format_number_short($number, $sf)
-{
-    // This formats a number so that we only send back three digits plus an optional decimal point.
-    // Example: 723.42 -> 723    72.34 -> 72.3    2.23 -> 2.23
-
-    list($whole, $decimal) = explode(".", $number);
-
-    if (strlen($whole) >= $sf || !is_numeric($decimal)) {
-        $number = $whole;
-    } elseif (strlen($whole) < $sf) {
-        $diff = $sf - strlen($whole);
-        $number = $whole .".".substr($decimal, 0, $diff);
-    }
-    return $number;
 }
 
 function external_exec($command)
@@ -140,15 +124,14 @@ function delete_port($int_id)
 {
     $interface = dbFetchRow("SELECT * FROM `ports` AS P, `devices` AS D WHERE P.port_id = ? AND D.device_id = P.device_id", array($int_id));
 
-    $interface_tables = array('adjacencies', 'ipaddr', 'ip6adjacencies', 'ip6addr', 'mac_accounting', 'bill_ports', 'pseudowires', 'ports');
+    $interface_tables = array('ipv4_addresses', 'ipv4_mac', 'ipv6_addresses', 'juniAtmVp', 'mac_accounting', 'ospf_nbrs', 'ospf_ports', 'ports', 'ports_adsl', 'ports_perms', 'ports_statistics', 'ports_stp', 'ports_vlans', 'pseudowires');
 
     foreach ($interface_tables as $table) {
         dbDelete($table, "`port_id` =  ?", array($int_id));
     }
 
-    dbDelete('links', "`local_port_id` =  ?", array($int_id));
-    dbDelete('links', "`remote_port_id` =  ?", array($int_id));
-    dbDelete('bill_ports', "`port_id` =  ?", array($int_id));
+    dbDelete('links', "`local_port_id` = ? OR `remote_port_id` = ?", array($int_id, $int_id));
+    dbDelete('ports_stack', "`port_id_low` = ? OR `port_id_high` = ?", array($int_id, $int_id));
 
     unlink(get_port_rrdfile_path($interface['hostname'], $interface['port_id']));
 }
@@ -214,7 +197,7 @@ function get_port_by_ifIndex($device_id, $ifIndex)
     return dbFetchRow("SELECT * FROM `ports` WHERE `device_id` = ? AND `ifIndex` = ?", array($device_id, $ifIndex));
 }
 
-function get_all_devices($device, $type = "")
+function get_all_devices()
 {
     global $cache;
     $devices = array();
@@ -231,11 +214,6 @@ function get_all_devices($device, $type = "")
     }
 
     return $devices;
-}
-
-function port_by_id_cache($port_id)
-{
-    return get_port_by_id_cache('port', $port_id);
 }
 
 function table_from_entity_type($type)
@@ -398,12 +376,8 @@ function truncate($substring, $max = 50, $rep = '...')
 function mres($string)
 {
     // short function wrapper because the real one is stupidly long and ugly. aesthetics.
-    global $config, $database_link;
-    if ($config['db']['extension'] == 'mysqli') {
-        return mysqli_real_escape_string($database_link, $string);
-    } else {
-        return mysql_real_escape_string($string);
-    }
+    global $database_link;
+    return mysqli_real_escape_string($database_link, $string);
 }
 
 function getifhost($id)
@@ -489,6 +463,16 @@ function gethostosbyid($id)
 function safename($name)
 {
     return preg_replace('/[^a-zA-Z0-9,._\-]/', '_', $name);
+}
+
+/**
+ * Function format the rrdtool description text correctly.
+ * @param $descr
+ * @return mixed
+ */
+function safedescr($descr)
+{
+    return preg_replace('/[^a-zA-Z0-9,._\-\/\ ]/', ' ', $descr);
 }
 
 function zeropad($num, $length = 2)
@@ -601,7 +585,7 @@ function format_si($value, $round = '2', $sf = '3')
         $value = $value * -1;
     }
 
-        return format_number_short(round($value, $round), $sf).$ext;
+        return number_format(round($value, $round), $sf, '.', '').$ext;
 }
 
 function format_bi($value, $round = '2', $sf = '3')
@@ -621,7 +605,7 @@ function format_bi($value, $round = '2', $sf = '3')
         $value = $value * -1;
     }
 
-    return format_number_short(round($value, $round), $sf).$ext;
+    return number_format(round($value, $round), $sf, '.', '').$ext;
 }
 
 function format_number($value, $base = '1000', $round = 2, $sf = 3)
@@ -693,7 +677,8 @@ function c_echo($string, $enabled = true)
 function is_mib_graph($type, $subtype)
 {
     global $config;
-    return $config['graph_types'][$type][$subtype]['section'] == 'mib';
+    return isset($config['graph_types'][$type][$subtype]['section']) &&
+        $config['graph_types'][$type][$subtype]['section'] == 'mib';
 } // is_mib_graph
 
 
@@ -747,7 +732,7 @@ function get_graph_subtypes($type, $device = null)
 
         foreach ($config['graph_types'] as $type => $unused1) {
             foreach ($config['graph_types'][$type] as $subtype => $unused2) {
-                if (is_mib_graph($type, $subtype) && in_array($graphs, $subtype)) {
+                if (is_mib_graph($type, $subtype) && in_array($subtype, $graphs)) {
                     $types[] = $subtype;
                 }
             }
@@ -1056,7 +1041,7 @@ function print_mib_poller_disabled()
 {
     echo '<h4>MIB polling is not enabled</h4>
 <p>
-Set <tt>$config[\'poller_modules\'][\'mib\'] = 1;</tt> in <tt>config.php</tt> to enable.
+Set <code>$config[\'poller_modules\'][\'mib\'] = 1;</code> in <code>config.php</code> or enable for this device specifically to enable.
 </p>';
 } // print_mib_poller_disabled
 
@@ -1088,7 +1073,7 @@ function ceph_rrd($gtype)
 function parse_location($location)
 {
     preg_match('/(\[)(-?[0-9\. ]+),[ ]*(-?[0-9\. ]+)(\])/', $location, $tmp_loc);
-    if (!empty($tmp_loc[2]) && !empty($tmp_loc[3])) {
+    if (is_numeric($tmp_loc[2]) && is_numeric($tmp_loc[3])) {
         return array('lat' => $tmp_loc[2], 'lng' => $tmp_loc[3]);
     }
 }//end parse_location()
@@ -1101,24 +1086,28 @@ function version_info($remote = true)
 {
     global $config;
     $output = array();
-    if ($remote === true && $config['update_channel'] == 'master') {
-        $api = curl_init();
-        set_curl_proxy($api);
-        curl_setopt($api, CURLOPT_USERAGENT, 'LibreNMS');
-        curl_setopt($api, CURLOPT_URL, $config['github_api'].'commits/master');
-        curl_setopt($api, CURLOPT_RETURNTRANSFER, 1);
-        $output['github'] = json_decode(curl_exec($api), true);
+    if (check_git_exists() === true) {
+        if ($remote === true && $config['update_channel'] == 'master') {
+            $api = curl_init();
+            set_curl_proxy($api);
+            curl_setopt($api, CURLOPT_USERAGENT, 'LibreNMS');
+            curl_setopt($api, CURLOPT_URL, $config['github_api'].'commits/master');
+            curl_setopt($api, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($api, CURLOPT_TIMEOUT, 5);
+            curl_setopt($api, CURLOPT_TIMEOUT_MS, 5000);
+            curl_setopt($api, CURLOPT_CONNECTTIMEOUT, 5);
+            $output['github'] = json_decode(curl_exec($api), true);
+        }
+        list($local_sha, $local_date) = explode('|', rtrim(`git show --pretty='%H|%ct' -s HEAD`));
+        $output['local_sha']    = $local_sha;
+        $output['local_date']   = $local_date;
+        $output['local_branch'] = rtrim(`git rev-parse --abbrev-ref HEAD`);
     }
-    list($local_sha, $local_date) = explode('|', rtrim(`git show --pretty='%H|%ct' -s HEAD`));
-    $output['local_sha']    = $local_sha;
-    $output['local_date']   = $local_date;
-    $output['local_branch'] = rtrim(`git rev-parse --abbrev-ref HEAD`);
-
     $output['db_schema']   = dbFetchCell('SELECT version FROM dbSchema');
     $output['php_ver']     = phpversion();
     $output['mysql_ver']   = dbFetchCell('SELECT version()');
     $output['rrdtool_ver'] = implode(' ', array_slice(explode(' ', shell_exec($config['rrdtool'].' --version |head -n1')), 1, 1));
-    $output['netsnmp_ver'] = shell_exec($config['snmpget'].' --version 2>&1');
+    $output['netsnmp_ver'] = str_replace('version: ', '', rtrim(shell_exec($config['snmpget'].' --version 2>&1')));
 
     return $output;
 }//end version_info()
@@ -1267,11 +1256,12 @@ function get_ports_mapped($device_id, $with_statistics = false)
         'ifDescr' => array(),
     );
 
-    /* Query all information available for ports for this device ... */
-    $query = 'SELECT * FROM `ports` WHERE `device_id` = ? ORDER BY port_id';
     if ($with_statistics) {
         /* ... including any related ports_statistics if requested */
         $query = 'SELECT *, `ports_statistics`.`port_id` AS `ports_statistics_port_id`, `ports`.`port_id` AS `port_id` FROM `ports` LEFT OUTER JOIN `ports_statistics` ON `ports`.`port_id` = `ports_statistics`.`port_id` WHERE `ports`.`device_id` = ? ORDER BY ports.port_id';
+    } else {
+        /* Query all information available for ports for this device ... */
+        $query = 'SELECT * FROM `ports` WHERE `device_id` = ? ORDER BY port_id';
     }
 
     // Query known ports in order of discovery to make sure the latest
@@ -1479,4 +1469,203 @@ function get_auth_ad_group_filter($groupname)
         $group_filter = "(&{$config['auth_ad_group_filter']}$group_filter)";
     }
     return $group_filter;
+}
+
+/**
+ * Print a list of items up to a max amount
+ * If over that number, a line will print the total items
+ *
+ * @param array $list
+ * @param string $format format as consumed by printf()
+ * @param int $max the max amount of items to print, default 10
+ */
+function print_list($list, $format, $max = 10)
+{
+    if (is_array(current($list))) {
+        $list = array_map(function ($item) {
+            return implode(' ', $item);
+        }, $list);
+    }
+
+    foreach (array_slice($list, 0, $max) as $item) {
+        printf($format, $item);
+    }
+
+    $extra = count($list) - $max;
+    if ($extra > 0) {
+        printf($format, " and $extra more...");
+    }
+}
+
+/**
+ * @param $value
+ * @return string
+ */
+function clean($value)
+{
+    return strip_tags(mres($value));
+}
+
+/**
+ * @param $value
+ * @return string
+ */
+function display($value)
+{
+    /** @var HTMLPurifier $purifier */
+    global $config, $purifier;
+    if (!isset($purifier)) {
+        // initialize HTML Purifier here since this is the only user
+        $p_config = HTMLPurifier_Config::createDefault();
+        $p_config->set('Cache.SerializerPath', $config['temp_dir']);
+        $purifier = new HTMLPurifier($p_config);
+    }
+
+    return $purifier->purify(stripslashes($value));
+}
+
+/**
+ * Load the os definition for the device and set type and os_group
+ * $device['os'] must be set
+ *
+ * @param array $device
+ * @throws Exception No OS to load
+ */
+function load_os(&$device)
+{
+    global $config;
+    if (!isset($device['os'])) {
+        throw new Exception('No OS to load');
+    }
+    $tmp_os = Symfony\Component\Yaml\Yaml::parse(
+        file_get_contents($config['install_dir'] . '/includes/definitions/' . $device['os'] . '.yaml')
+    );
+
+    if (isset($config['os'][$device['os']])) {
+        $config['os'][$device['os']] = array_replace_recursive($tmp_os, $config['os'][$device['os']]);
+    } else {
+        $config['os'][$device['os']] = $tmp_os;
+    }
+
+    // Set type to a predefined type for the OS if it's not already set
+    if ($device['attribs']['override_device_type'] != 1 && $config['os'][$device['os']]['type'] != $device['type']) {
+        log_event('Device type changed ' . $device['type'] . ' => ' . $config['os'][$device['os']]['type'], $device, 'system', 3);
+        $device['type'] = $config['os'][$device['os']]['type'];
+        dbUpdate(array('type' => $device['type']), 'devices', 'device_id=?', array($device['device_id']));
+        echo "Device type changed to " . $device['type'] . "!\n";
+    }
+
+    if ($config['os'][$device['os']]['group']) {
+        $device['os_group'] = $config['os'][$device['os']]['group'];
+    }
+}
+
+/**
+ * @param array $restricted
+ */
+function load_all_os($restricted = array())
+{
+    global $config;
+    if (!empty($restricted)) {
+        $list = $restricted;
+    } else {
+        $list = glob($config['install_dir'].'/includes/definitions/*.yaml');
+    }
+    foreach ($list as $file) {
+        $tmp = Symfony\Component\Yaml\Yaml::parse(
+            file_get_contents($file)
+        );
+        if (isset($config['os'][$tmp['os']])) {
+            $config['os'][$tmp['os']] = array_replace_recursive($tmp, $config['os'][$tmp['os']]);
+        } else {
+            $config['os'][$tmp['os']] = $tmp;
+        }
+    }
+}
+
+/**
+ * @param $scale
+ * @param $value
+ * @return float
+ */
+function fahrenheit_to_celsius($scale, $value)
+{
+    if ($scale === 'fahrenheit') {
+        $value = ($value - 32) / 1.8;
+    }
+    return sprintf('%.02f', $value);
+}
+function uw_to_dbm($value)
+{
+    return 10 * log10($value / 1000);
+}
+/**
+ * @param $value
+ * @param null $default
+ * @param int $min
+ * @return null
+ */
+function set_null($value, $default = null, $min = null)
+{
+    if (!is_numeric($value)) {
+        return $default;
+    } elseif (isset($min) && $value < $min) {
+        return $default;
+    }
+    return $value;
+}
+/*
+ * @param $value
+ * @param int $default
+ * @return int
+ */
+function set_numeric($value, $default = 0)
+{
+    if (!isset($value) || !is_numeric($value)) {
+        $value = $default;
+    }
+    return $value;
+}
+
+function check_git_exists()
+{
+    if (`which git`) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function get_vm_parent_id($device)
+{
+    global $config;
+
+    if (empty($device['hostname'])) {
+        return false;
+    }
+
+    return dbFetchCell("SELECT `device_id` FROM `vminfo` WHERE `vmwVmDisplayName` = ? OR `vmwVmDisplayName` = ?", array($device['hostname'],$device['hostname'].'.'.$config['mydomain']));
+}
+
+/**
+ * @param $string
+ * @param string $ver
+ * @return bool
+ */
+function is_ip($string, $ver = 'ipv4ipv6')
+{
+    if ($ver === 'ipv4ipv6') {
+        if (filter_var($string, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == true || filter_var($string, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) == true) {
+            return true;
+        }
+    } elseif ($ver === 'ipv4') {
+        if (filter_var($string, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) == true) {
+            return true;
+        }
+    } elseif ($ver === 'ipv6') {
+        if (filter_var($string, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) == true) {
+            return true;
+        }
+    }
+    return false;
 }

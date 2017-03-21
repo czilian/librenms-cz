@@ -37,7 +37,7 @@ if (isset($_POST['create-default'])) {
     );
     $default_rules[] = array(
         'device_id' => '-1',
-        'rule'      => '%bgpPeers.bgpPeerFsmEstablishedTime < "300" && %bgpPeers.bgpPeerState = "established"',
+        'rule'      => '%bgpPeers.bgpPeerFsmEstablishedTime < "300" && %bgpPeers.bgpPeerState = "established" && %macros.device_up = "1"',
         'severity'  => 'critical',
         'extra'     => '{"mute":false,"count":"1","delay":"300"}',
         'disabled'  => 0,
@@ -61,7 +61,7 @@ if (isset($_POST['create-default'])) {
     );
     $default_rules[] = array(
         'device_id' => '-1',
-        'rule'      => '%sensors.sensor_current > %sensors.sensor_limit && %sensors.sensor_alert = "1"',
+        'rule'      => '%sensors.sensor_current > %sensors.sensor_limit && %sensors.sensor_alert = "1" && %macros.device_up = "1"',
         'severity'  => 'critical',
         'extra'     => '{"mute":false,"count":"-1","delay":"300"}',
         'disabled'  => 0,
@@ -69,7 +69,7 @@ if (isset($_POST['create-default'])) {
     );
     $default_rules[] = array(
         'device_id' => '-1',
-        'rule'      => '%sensors.sensor_current < %sensors.sensor_limit_low && %sensors.sensor_alert = "1"',
+        'rule'      => '%sensors.sensor_current < %sensors.sensor_limit_low && %sensors.sensor_alert = "1" && %macros.device_up = "1"',
         'severity'  => 'critical',
         'extra'     => '{"mute":false,"count":"-1","delay":"300"}',
         'disabled'  => 0,
@@ -77,19 +77,22 @@ if (isset($_POST['create-default'])) {
     );
     $default_rules[] = array(
         'device_id' => '-1',
-        'rule'      => '%services.service_status != "0"',
+        'rule'      => '%services.service_status != "0" && %macros.device_up = "1"',
         'severity'  => 'critical',
         'extra'     => '{"mute":false,"count":"-1","delay":"300"}',
         'disabled'  => 0,
         'name'      => 'Service up/down',
     );
+    require_once '../includes/alerts.inc.php';
     foreach ($default_rules as $add_rule) {
+        $add_rule['query'] = GenSQL($add_rule['rule']);
         dbInsert($add_rule, 'alert_rules');
     }
 }//end if
 
 require_once 'includes/modal/new_alert_rule.inc.php';
 require_once 'includes/modal/delete_alert_rule.inc.php';
+require_once 'includes/modal/alert_rule_collection.inc.php';
 ?>
 <form method="post" action="" id="result_form">
 <?php
@@ -115,8 +118,9 @@ echo '<div class="table-responsive">
 echo '<td colspan="7">';
 if ($_SESSION['userlevel'] >= '10') {
     echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#create-alert" data-device_id="'.$device['device_id'].'"><i class="fa fa-plus"></i> Create new alert rule</button>';
+    echo '<i> - OR - </i>';
+    echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#search_rule_modal" data-device_id="'.$device['device_id'].'"><i class="fa fa-plus"></i> Create rule from collection</button>';
 }
-
 echo '</td>
     <td><select name="results" id="results" class="form-control input-sm" onChange="updateResults(this);">';
 $result_options = array(
@@ -139,7 +143,7 @@ foreach ($result_options as $option) {
 
 echo '</select></td>';
 
-$count_query = 'SELECT COUNT(id)';
+$count_query = 'SELECT COUNT(*)';
 $full_query  = 'SELECT *';
 $sql         = '';
 $param       = array();
@@ -148,7 +152,7 @@ if (isset($device['device_id']) && $device['device_id'] > 0) {
     $param = array($device['device_id']);
 }
 
-$query       = " FROM alert_rules $sql ORDER BY id ASC";
+$query       = " FROM alert_rules $sql";
 $count_query = $count_query.$query;
 $count       = dbFetchCell($count_query, $param);
 if (!isset($_POST['page_number']) && $_POST['page_number'] < 1) {
@@ -158,7 +162,7 @@ if (!isset($_POST['page_number']) && $_POST['page_number'] < 1) {
 }
 
 $start      = (($page_number - 1) * $results);
-$full_query = $full_query.$query." LIMIT $start,$results";
+$full_query = $full_query.$query." ORDER BY id ASC LIMIT $start,$results";
 
 foreach (dbFetchRows($full_query, $param) as $rule) {
     $sub   = dbFetchRows('SELECT * FROM alerts WHERE rule_id = ? ORDER BY `state` DESC, `id` DESC LIMIT 1', array($rule['id']));
@@ -246,7 +250,7 @@ if ($count < 1) {
             <div class="col-sm-12">
             <form role="form" method="post">
             <p class="text-center">
-            <button type="submit" class="btn btn-success btn-lg" id="create-default" name="create-default">Create default global alerts!</button>
+            <button type="submit" class="btn btn-success btn-lg" id="create-default" name="create-default"><i class="fa fa-plus"></i> Click here to create the default alert rules!</button>
             </p>
             </form>
             </div>
@@ -334,6 +338,13 @@ function changePage(page,e) {
     e.preventDefault();
     $('#page_number').val(page);
     $('#result_form').submit();
+}
+
+function newRule(data, e) {
+    $('#template_id').val(data.value);
+    $('#create-alert').modal({
+        show: true
+    });
 }
 
 </script>

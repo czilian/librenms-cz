@@ -1,5 +1,7 @@
 <?php
 
+use LibreNMS\RRD\RrdDefinition;
+
 /**
  * Check if a port on a Proxmox VM exists
  * @param string  $p Port name
@@ -51,6 +53,7 @@ if (isset($config['enable_proxmox']) && $config['enable_proxmox'] && !empty($age
 }
 
 if ($proxmox) {
+    update_application($app, $proxmox);
     $pmxlines = explode("\n", $proxmox);
     $pmxcluster = array_shift($pmxlines);
     dbUpdate(
@@ -64,6 +67,7 @@ if ($proxmox) {
         $pmxcache = array();
 
         foreach ($pmxlines as $vm) {
+            $vm = str_replace('"', '', $vm);
             list($vmid, $vmport, $vmpin, $vmpout, $vmdesc) = explode('/', $vm, 5);
             print "Proxmox ($pmxcluster): $vmdesc: $vmpin/$vmpout/$vmport\n";
 
@@ -72,10 +76,9 @@ if ($proxmox) {
                 'vmid' => $vmid,
                 'vmport' => $vmport
             );
-            $rrd_def = array(
-                'DS:INOCTETS:DERIVE:600:0:12500000000',
-                'DS:OUTOCTETS:DERIVE:600:0:12500000000'
-            );
+            $rrd_def = RrdDefinition::make()
+                ->addDataset('INOCTETS', 'DERIVE', 0, 12500000000)
+                ->addDataset('OUTOCTETS', 'DERIVE', 0, 12500000000);
             $fields = array(
                 'INOCTETS' => $vmpin,
                 'OUTOCTETS' => $vmpout

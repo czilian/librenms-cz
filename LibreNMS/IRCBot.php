@@ -437,7 +437,7 @@ class IRCBot
     private function chkdb()
     {
         if (!is_resource($this->sql)) {
-            if (($this->sql = mysqli_connect($this->config['db_host'], $this->config['db_user'], $this->config['db_pass'])) != false && mysqli_select_db($this->sql, $this->config['db_name'])) {
+            if (($this->sql = mysqli_connect($this->config['db_host'], $this->config['db_user'], $this->config['db_pass'], null, $this->config['db_port'])) != false && mysqli_select_db($this->sql, $this->config['db_name'])) {
                 return true;
             } else {
                 $this->log('Cannot connect to MySQL');
@@ -480,7 +480,7 @@ class IRCBot
                 $this->user['expire'] = (time() + ($this->config['irc_authtime'] * 3600));
                 $tmp_user = get_user($this->user['id']);
                 $tmp = get_userlevel($tmp_user['username']);
-                $this->user['level']  = $tmp['level'];
+                $this->user['level'] = $tmp;
                 if ($this->user['level'] < 5) {
                     foreach (dbFetchRows('SELECT device_id FROM devices_perms WHERE user_id = ?', array($this->user['id'])) as $tmp) {
                         $this->user['devices'][] = $tmp['device_id'];

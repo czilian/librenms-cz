@@ -6,14 +6,10 @@
  * (c) 2013 LibreNMS Contributors
  */
 
-chdir(__DIR__); // cwd to the directory containing this script
+$init_modules = array('alerts');
+require __DIR__ . '/includes/init.php';
 
-require 'includes/defaults.inc.php';
-require 'config.php';
-require_once 'includes/definitions.inc.php';
-require 'includes/functions.php';
-
-$options = getopt('f:d');
+$options = getopt('f:d:o:');
 
 if (isset($options['d'])) {
     echo "DEBUG\n";
@@ -46,7 +42,7 @@ if ($options['f'] === 'rrd_purge') {
 
 if ($options['f'] === 'syslog') {
     if (is_numeric($config['syslog_purge'])) {
-        $rows = dbFetchRow('SELECT MIN(seq) FROM syslog');
+        $rows = (int)dbFetchCell('SELECT MIN(seq) FROM syslog');
         while (true) {
             $limit = dbFetchRow('SELECT seq FROM syslog WHERE seq >= ? ORDER BY seq LIMIT 1000,1', array($rows));
             if (empty($limit)) {
@@ -150,5 +146,27 @@ if ($options['f'] === 'purgeusers') {
         if (dbDelete('users', "username NOT IN ($del_users)", array($del_users))) {
             echo "Removed users that haven't logged in for $purge days";
         }
+    }
+}
+
+if ($options['f'] === 'refresh_alert_rules') {
+    echo 'Refreshing alert rules queries' . PHP_EOL;
+    $rules = dbFetchRows('SELECT `id`, `rule` FROM `alert_rules`');
+    foreach ($rules as $rule) {
+        $data['query'] = GenSQL($rule['rule']);
+        if (!empty($data['query'])) {
+            dbUpdate($data, 'alert_rules', 'id=?', array($rule['id']));
+            unset($data);
+        }
+    }
+}
+
+if ($options['f'] === 'notify') {
+    if (isset($config['alert']['default_mail'])) {
+        send_mail(
+            $config['alert']['default_mail'],
+            '[LibreNMS] Auto update has failed',
+            "We just attempted to update your install but failed. The information below should help you fix this.\r\n\r\n" . $options['o']
+        );
     }
 }

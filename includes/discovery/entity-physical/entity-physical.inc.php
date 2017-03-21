@@ -83,6 +83,10 @@ foreach ($entity_array as $entPhysicalIndex => $entry) {
     } else {
         $ifIndex_array = explode('.', $ifIndex);
         $ifIndex       = $ifIndex_array[1];
+<<<<<<< HEAD
+=======
+        unset($ifIndex_array);
+>>>>>>> 716441eeda921def312f3448de38aa42cf26c50c
     }
 
     if ($entPhysicalVendorTypes[$entPhysicalVendorType] && !$entPhysicalModelName) {
@@ -147,3 +151,12 @@ foreach ($entity_array as $entPhysicalIndex => $entry) {
     }//end if
 }//end foreach
 echo "\n";
+<<<<<<< HEAD
+=======
+unset(
+    $update_data,
+    $insert_data,
+    $entry,
+    $entity_array
+);
+>>>>>>> 716441eeda921def312f3448de38aa42cf26c50c
