@@ -1,0 +1,865 @@
+VRRPV3-EX-MIB DEFINITIONS ::= BEGIN
+
+ IMPORTS
+     MODULE-IDENTITY, OBJECT-TYPE,
+     NOTIFICATION-TYPE, Counter32,
+     Integer32, IpAddress, mib-2,
+     Unsigned32,TimeTicks,Counter64					          FROM SNMPv2-SMI
+
+     TEXTUAL-CONVENTION, RowStatus,
+     MacAddress, TruthValue, TimeStamp,
+     TimeInterval											   FROM SNMPv2-TC
+
+     MODULE-COMPLIANCE, OBJECT-GROUP,
+     NOTIFICATION-GROUP                  FROM SNMPv2-CONF
+     ifIndex                             FROM IF-MIB
+     InetAddressType, InetAddress        FROM INET-ADDRESS-MIB
+     wri,wriProtocol,wriProducts				FROM WRI-SMI;
+
+     DisplayString ::=
+              OCTET STRING
+          -- This data type is used to model textual information taken
+          -- from the NVT ASCII character set.  By convention, objects
+          -- with this syntax are declared as having
+          --
+          --      SIZE (0..255)
+          
+ vrrpv3ExMIB  MODULE-IDENTITY
+     LAST-UPDATED "201008050000Z"
+     ORGANIZATION "IETF VRRP Working Group"
+     CONTACT-INFO
+            "Brian R. Jewell
+     Postal: Copper Mountain Networks, Inc.
+             2470 Embarcadero Way
+             Palo Alto, California 94303
+     Tel:    +1 650 687 3367
+     E-Mail: tyang@fhn.com.cn"
+
+     DESCRIPTION
+         "This MIB describes objects used for managing Virtual Router
+          Redundancy Protocol (VRRP) routers."
+     REVISION "201008050000Z"
+     DESCRIPTION "Extern for vrrp.mib."
+     ::= { wriProtocol 2202 }
+
+      vrrpv3ExObjects         OBJECT IDENTIFIER ::= { vrrpv3ExMIB 1 } 
+
+
+
+      Vrrpv3VrIdTC ::= TEXTUAL-CONVENTION  
+           DISPLAY-HINT "d" 
+           STATUS       current  
+           DESCRIPTION  
+               "The value of the virtual router identifier noted as  
+               (VRID) in RFC5798. This along with interface index  
+               (ifIndex)and IP version, serves to uniquely identify a  
+               virtual router on a given VRRP router." 
+           REFERENCE " RFC 5798 (Sections 3 and 5.2.3" 
+           SYNTAX      Integer32 (1..255)  
+
+      
+ --  VRRPv3Ex Operations Table  
+        
+       vrrpv3ExOperationsTable OBJECT-TYPE  
+           SYNTAX       SEQUENCE OF Vrrpv3ExOperationsEntry  
+           MAX-ACCESS   not-accessible  
+           STATUS       current  
+           DESCRIPTION  
+               "Unified Operations table for a VRRP router which   
+                consists of a sequence (i.e., one or more conceptual 
+                rows) of 'vrrpv3ExOperationsEntry' items which describe  
+                the operational characteristics of a virtual router."  
+           ::= { vrrpv3ExObjects 1 }  
+        
+       vrrpv3ExOperationsEntry OBJECT-TYPE  
+           SYNTAX       Vrrpv3ExOperationsEntry  
+           MAX-ACCESS   not-accessible  
+           STATUS       current  
+           DESCRIPTION  
+               "An entry in the vrrpv3ExOperationsTable containing the   
+                operational characteristics of a virtual router.  On a  
+                VRRP router, a given virtual router is identified by a 
+                combination of ifIndex, VRID and the IP version. 
+                ifIndex represents a interface of the router. 
+                Note that rows in this table can be distinguished on a 
+                multi-stacked device running VRRP over IPvX on the  
+                same interface.  
+        
+                Rows in the table cannot be modified unless the value  
+                of 'vrrpv3ExOperationsStatus' has transitioned to  
+                'initialize' state. 
+    
+                The information in this table is persistent and when  
+                written the entity SHOULD save the change to non- 
+                volatile storage." 
+        
+           INDEX    { ifIndex, vrrpv3ExOperationsVrId,  
+                      vrrpv3ExOperationsInetAddrType 
+                     }  
+           ::= { vrrpv3ExOperationsTable 1 }  
+        
+    
+       Vrrpv3ExOperationsEntry ::=  
+    
+           SEQUENCE {  
+               vrrpv3ExOperationsVrId  
+                   Vrrpv3VrIdTC,  
+               vrrpv3ExOperationsInetAddrType  
+                   InetAddressType,  
+               vrrpv3ExOperationsMasterIpAddr  
+                   InetAddress,  
+               vrrpv3ExOperationsPrimaryIpAddr  
+                   InetAddress,  
+               vrrpv3ExOperationsVirtualMacAddr  
+                   MacAddress,  
+               vrrpv3ExOperationsStatus  
+                   INTEGER,  
+               vrrpv3ExOperationsPriority  
+                   Unsigned32, 
+               vrrpv3ExOperationsAddrCount 
+                   Integer32,  
+               vrrpv3ExOperationsAdvInterval  
+                   TimeInterval,  
+               vrrpv3ExOperationsPreemptMode  
+                   TruthValue,  
+               vrrpv3ExOperationsAcceptMode  
+                   TruthValue,  
+               vrrpv3ExOperationsUpTime  
+                   TimeTicks,
+               vrrpv3ExOperationsRowStatus  
+                   RowStatus,
+               vrrpv3ExOperationsBfdTrackId
+                 	Integer32,
+               vrrpv3ExOperationsAuthMode
+                  INTEGER,
+               vrrpv3ExOperationsAuthKey
+                  DisplayString,
+               vrrpv3ExOperationsTtlCheckState 
+               	  INTEGER,
+               vrrpv3ExOperationsGratuitousArpState 
+                  INTEGER,
+               vrrpv3ExOperationsArpInterval 
+                  INTEGER              
+       }  
+       
+       vrrpv3ExOperationsVrId OBJECT-TYPE  
+         SYNTAX       Vrrpv3VrIdTC  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "This object contains the Virtual Router Identifier  
+                (VRID)."  
+           REFERENCE "RFC 4001" 
+           ::= { vrrpv3ExOperationsEntry 1 }  
+    
+       vrrpv3ExOperationsInetAddrType OBJECT-TYPE  
+           SYNTAX       InetAddressType  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The IP address type of Vrrpv3ExOperationsEntry. This 
+                value determines the type for both  
+                vrrpv3ExOperationsMasterIpAddr and  
+                vrrpv3ExOperationsPrimaryIpAddr." 
+           REFERENCE "RFC 4001" 
+           ::= { vrrpv3ExOperationsEntry 2 } 
+      
+       vrrpv3ExOperationsMasterIpAddr OBJECT-TYPE  
+           SYNTAX       InetAddress  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The master router's real IP address. Master router  
+               would set this address to vrrpv3ExOperationsPrimaryIpAddr  
+               while transitioning to master state. For backup  
+               routers, this is the IP address listed as the source in 
+               VRRP advertisement last received by this virtual  
+               router."  
+           REFERENCE " RFC 5798" 
+           ::= { vrrpv3ExOperationsEntry 3 }  
+            
+       vrrpv3ExOperationsPrimaryIpAddr OBJECT-TYPE  
+           SYNTAX       InetAddress  
+           MAX-ACCESS   read-create  
+           STATUS       current  
+           DESCRIPTION  
+               "In the case where there are more than one IP  
+               Address (associated IP addresses) for a given  
+               `ifIndex', this object is used to specify the IP  
+               address that will become the 
+               vrrpv3ExOperationsMasterIpAddr', should the virtual  
+               router transition from backup state to master."  
+           ::= { vrrpv3ExOperationsEntry 4 }  
+
+       vrrpv3ExOperationsVirtualMacAddr OBJECT-TYPE  
+           SYNTAX       MacAddress  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The virtual MAC address of the virtual router.  
+               Although this object can be derived from the  
+               'vrrpv3ExOperationsVrId' object, it is defined so that it  
+               is easily obtainable by a management application and  
+               can be included in VRRP-related SNMP notifications."  
+           REFERENCE "STD 58 RFC 2578" 
+           ::= { vrrpv3ExOperationsEntry 5 }  
+        
+       vrrpv3ExOperationsStatus OBJECT-TYPE  
+           SYNTAX       INTEGER {  
+               initialize(1),  
+               backup(2),  
+               master(3)  
+           }  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+        
+           DESCRIPTION  
+               "The current state of the virtual router. This object   
+               has three defined values:  
+        
+                 - `initialize', which indicates that the  
+                   virtual router is waiting for a startup event.  
+        
+                 - `backup', which indicates the virtual router is  
+                   monitoring the availability of the master router.  
+        
+                 - `master', which indicates that the virtual router  
+                   is forwarding packets for IP addresses that are  
+                   associated with this router."  
+           REFERENCE " RFC 5798" 
+           ::= { vrrpv3ExOperationsEntry 6 }  
+ 
+       vrrpv3ExOperationsPriority OBJECT-TYPE  
+           SYNTAX       Unsigned32 (0..255)  
+           MAX-ACCESS   read-create  
+           STATUS       current  
+           DESCRIPTION  
+               "This object specifies the priority to be used for the  
+               virtual router master election process.  Higher values  
+               imply higher priority.  
+        
+               A priority of '0', although not settable, is sent by  
+               the master router to indicate that this router has  
+               ceased to participate in VRRP and a backup virtual  
+               router should transition to become a new master.  
+        
+               A priority of 255 is used for the router that owns the  
+               associated IP address(es) for VRRP over IPv4 and hence 
+               not settable. 
+    
+               A 'badValue(3)' should be returned when a user tries to  
+               set 0 or 255 for this object. " 
+           REFERENCE " RFC 5798 section 6.1" 
+           DEFVAL       { 100 }  
+           ::= { vrrpv3ExOperationsEntry 7 }  
+        
+       vrrpv3ExOperationsAddrCount OBJECT-TYPE  
+           SYNTAX       Integer32 (0..255)  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The number of IP addresses that are associated with  
+               this virtual router.  This number is equal to the  
+               number of rows in the vrrpv3AssociatedAddrTable that  
+               correspond to a given ifIndex/VRID/IP version."  
+           REFERENCE "RFC 5798 Section 6.1" 
+           ::= { vrrpv3ExOperationsEntry 8 }   
+        
+       vrrpv3ExOperationsAdvInterval OBJECT-TYPE  
+           SYNTAX       TimeInterval (1..4095)  
+           UNITS        "centiseconds"  
+           MAX-ACCESS   read-create  
+           STATUS       current  
+           DESCRIPTION  
+               "The time interval, in centiseconds, between sending  
+               advertisement messages. Only the master router sends  
+               VRRP advertisements."  
+           REFERENCE " RFC 5798 section 6.1" 
+           DEFVAL       { 100}  
+           ::= { vrrpv3ExOperationsEntry 9 }  
+        
+       vrrpv3ExOperationsPreemptMode OBJECT-TYPE  
+           SYNTAX       TruthValue  
+           MAX-ACCESS   read-create  
+           STATUS       current  
+           DESCRIPTION  
+               "Controls whether a higher priority virtual router will 
+               preempt a lower priority master."  
+           REFERENCE " RFC 5798 section 6.1" 
+           DEFVAL       { true }  
+           ::= { vrrpv3ExOperationsEntry 10 } 
+  
+       vrrpv3ExOperationsAcceptMode OBJECT-TYPE  
+           SYNTAX       TruthValue  
+           MAX-ACCESS   read-create  
+           STATUS       current  
+           DESCRIPTION  
+               "Controls whether a virtual router in Master state  
+               will accept packets addressed to the address owner's  
+               IPv6 address as its own if it is not the IPv6 address  
+               owner.  Default is False. 
+               This object is not relevant for rows representing VRRP 
+               over IPv4 and should be set to false."  
+           DEFVAL       { false }  
+           ::= { vrrpv3ExOperationsEntry 11 }   
+        
+       vrrpv3ExOperationsUpTime OBJECT-TYPE  
+           SYNTAX       TimeTicks
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "This is the value of the `sysUpTime' object when this  
+               virtual router (i.e., the `vrrpv3ExOperationsStatus')  
+               transitioned out of `initialized'."  
+           REFERENCE " RFC 5798 section 6.1" 
+           ::= { vrrpv3ExOperationsEntry 12 }  
+ 
+       vrrpv3ExOperationsRowStatus OBJECT-TYPE  
+           SYNTAX       RowStatus  
+           MAX-ACCESS   read-create  
+           STATUS       current  
+           DESCRIPTION  
+               "The RowStatus variable should be used in accordance to 
+               installation and removal conventions for conceptual  
+               rows. When `vrrpv3ExOperationsRowStatus' is set to  
+               active(1), no other objects in the conceptual row can 
+               be modified. 
+        
+               To create a row in this table, a manager sets this  
+               object to either createAndGo(4) or createAndWait(5).  
+               Until instances of all corresponding columns are  
+               appropriately configured, the value of the  
+               Corresponding instance of the  
+               `vrrpv3ExOperationsRowStatus' column will be read as  
+               notReady(3).   
+               In particular, a newly created row cannot be made  
+               active(1) until (minimally) the corresponding instance  
+               of vrrpv3ExOperationsInetAddrType, vrrpv3ExOperationsVrId  
+               and vrrpv3ExOperationsPrimaryIpAddr has been set and  
+               there is at least one active row in the  
+               `vrrpv3ExAssociatedIpAddrTable' defining an associated  
+               IP address. 
+    
+               notInService(2) should be used to administratively  
+               bring the row down. 
+    
+               A typical order of operation to add a row is: 
+               1. Create a row in vrrpv3ExOperationsTable with  
+               createAndWait(5). 
+               2. Create one or more corresponding rows in 
+               vrrpv3ExAssociatedIpAddrTable. 
+               3. Populate the vrrpv3ExOperationsEntry. 
+               4. set vrrpv3ExOperationsRowStatus to active(1). 
+    
+               A typical order of operation to delete an entry is: 
+               1. Set vrrpv3ExOperationsRowStatus to notInService(2). 
+               2. Set the corresponding rows in  
+               vrrpv3ExAssociatedIpAddrTable to destroy(6) to delete the  
+               entry.  
+               3. set vrrpv3ExOperationsRowStatus to destroy(6) to  
+               delete the entry."  
+           ::= { vrrpv3ExOperationsEntry 13 }  
+    
+    
+     vrrpv3ExOperationsBfdTrackId OBJECT-TYPE
+    	 SYNTAX       Integer32
+    	 MAX-ACCESS   read-write
+    	 STATUS       current
+    	 DESCRIPTION
+   	      "The identifier of bfd session monitored by the current VRID."
+   	  ::= { vrrpv3ExOperationsEntry 14 }
+    
+     vrrpv3ExOperationsAuthMode OBJECT-TYPE
+    	 SYNTAX       INTEGER
+    	 MAX-ACCESS   read-write
+    	 STATUS       current
+    	 DESCRIPTION
+   	      "The authentication mode of ip vrrp.Ipv6 vrrp not support it."
+   	  ::= { vrrpv3ExOperationsEntry 15 }
+        
+     vrrpv3ExOperationsAuthKey OBJECT-TYPE
+    	 SYNTAX       DisplayString (SIZE (1..32))
+    	 MAX-ACCESS   read-write
+    	 STATUS       current
+    	 DESCRIPTION
+   	      "The authentication key string.The max length is 32 bytes."
+   	  ::= { vrrpv3ExOperationsEntry 16 }
+      
+     vrrpv3ExOperationsTtlCheckState OBJECT-TYPE
+    	 SYNTAX       INTEGER{disable(0),enable(1)}
+    	 MAX-ACCESS   read-write
+    	 STATUS       current
+    	 DESCRIPTION
+   	      "The TTL check state of ip vrrp."
+   	  ::= { vrrpv3ExOperationsEntry 17 } 
+   	  
+   	  vrrpv3ExOperationsGratuitousArpState OBJECT-TYPE
+    	 SYNTAX       INTEGER{disable(0),enable(1)}
+    	 MAX-ACCESS   read-write
+    	 STATUS       current
+    	 DESCRIPTION
+   	      "The gratuitous arp sending state of ip vrrp."
+   	  ::= { vrrpv3ExOperationsEntry 18 }
+
+			vrrpv3ExOperationsArpInterval OBJECT-TYPE
+    	 SYNTAX       INTEGER
+    	 MAX-ACCESS   read-write
+    	 STATUS       current
+    	 DESCRIPTION
+   	      ""
+   	  ::= { vrrpv3ExOperationsEntry 19 }
+
+
+   --  VRRP Associated Address Table 
+        
+       vrrpv3ExAssociatedIpAddrTable OBJECT-TYPE  
+           SYNTAX       SEQUENCE OF Vrrpv3ExAssociatedIpAddrEntry  
+           MAX-ACCESS   not-accessible  
+           STATUS       current  
+           DESCRIPTION  
+               "The table of addresses associated with this virtual  
+                router."  
+           ::= { vrrpv3ExObjects 2 }  
+        
+       vrrpv3ExAssociatedIpAddrEntry OBJECT-TYPE  
+           SYNTAX       Vrrpv3ExAssociatedIpAddrEntry  
+           MAX-ACCESS   not-accessible  
+           STATUS       current  
+           DESCRIPTION  
+               "An entry in the table contains an IP address that is  
+               associated with a virtual router.  The number of rows  
+               for a given IP version, VrID and ifIndex will equal the  
+               number of IP addresses associated (e.g., backed up) by  
+               the virtual router (equivalent to  
+               'vrrpv3ExOperationsIpAddrCount').  
+        
+               Rows in the table cannot be modified unless the value  
+               of `vrrpv3ExOperationsStatus' has transitioned to  
+               `initialize'. 
+               The information in this table is persistent and when  
+               written the entity SHOULD save the change to non- 
+               volatile storage." 
+        
+           INDEX    { ifIndex, vrrpv3ExOperationsVrId,  
+                      vrrpv3ExOperationsInetAddrType, 
+                      vrrpv3ExAssociatedIpAddrAddress } 
+ 
+           ::= { vrrpv3ExAssociatedIpAddrTable 1 }  
+        
+       Vrrpv3ExAssociatedIpAddrEntry ::=  
+           SEQUENCE {  
+               vrrpv3ExAssociatedIpAddrAddress  
+                   InetAddress,  
+               vrrpv3ExAssociatedIpAddrRowStatus  
+                   RowStatus  
+       }  
+            
+       vrrpv3ExAssociatedIpAddrAddress OBJECT-TYPE  
+           SYNTAX       InetAddress (SIZE (0|4|16)) 
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The assigned IP addresses that a virtual router is  
+               responsible for backing up."  
+           REFERENCE " RFC 5798 " 
+           ::= { vrrpv3ExAssociatedIpAddrEntry 1 }  
+     
+       vrrpv3ExAssociatedIpAddrRowStatus OBJECT-TYPE  
+           SYNTAX       RowStatus  
+           MAX-ACCESS   read-create  
+           STATUS       current  
+           DESCRIPTION  
+               "The row status variable, used according to  
+               installation and removal conventions for conceptual  
+               rows. To create a row in this table, a manager sets  
+               this object to either createAndGo(4) or  
+               createAndWait(5). Setting this object to active(1)  
+               results in the addition of an associated address for a  
+               virtual router. Setting this object to notInService(2)  
+               results in administratively bringing down the row. 
+    
+               Destroying the entry or setting it to destroy(6)  
+               removes the associated address from the virtual router. 
+               The use of other values is implementation-dependent. 
+ 
+               Implementations should not allow deletion of the last 
+               row corresponding to an active row in  
+               vrrpv3ExOperationsTable. 
+               Refer to description of vrrpv3ExOperationsRowStatus for a  
+               typical row creation and deletion scenarios."  
+           ::= { vrrpv3ExAssociatedIpAddrEntry 2 }  
+
+		  vrrpv3ExStatistics      OBJECT IDENTIFIER ::= { vrrpv3ExObjects 3 }
+        
+   --  VRRP Router Statistics  
+     
+       vrrpv3ExRouterChecksumErrors OBJECT-TYPE  
+    
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of VRRP packets received with an 
+               invalid VRRP checksum value."  
+           REFERENCE " RFC 5798 Section 5.2.8" 
+           ::= { vrrpv3ExStatistics 1 }  
+        
+       vrrpv3ExRouterVersionErrors OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of VRRP packets received with an  
+               unknown or unsupported version number."  
+           REFERENCE " RFC 5798 Section 5.2.1" 
+           ::= { vrrpv3ExStatistics 2 }  
+        
+       vrrpv3ExRouterVrIdErrors OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+          STATUS       current  
+           DESCRIPTION  
+               "The total number of VRRP packets received with an  
+               invalid VRID for this virtual router."  
+           REFERENCE " RFC 5798 Section 5.2.3" 
+           ::= { vrrpv3ExStatistics 3 }  
+    
+      vrrpv3ExGlobalStatisticsDiscontinuityTime OBJECT-TYPE
+          SYNTAX     TimeStamp
+          MAX-ACCESS read-only
+          STATUS     current
+          DESCRIPTION
+            "The value of sysUpTime on the most recent occasion at
+             which one of vrrpv3RouterChecksumErrors,
+             vrrpv3RouterVersionErrors, and vrrpv3RouterVrIdErrors
+             suffered a discontinuity.
+
+             If no such discontinuities have occurred since the last
+             re-initialization of the local management subsystem,
+             then this object contains a zero value."
+
+          ::= { vrrpv3ExStatistics 4 }
+
+   --  VRRP Router Statistics Table  
+        
+       vrrpv3ExStatisticsTable OBJECT-TYPE  
+           SYNTAX       SEQUENCE OF Vrrpv3ExStatisticsEntry  
+           MAX-ACCESS   not-accessible  
+           STATUS       current  
+           DESCRIPTION  
+               "Table of virtual router statistics."  
+           ::= { vrrpv3ExObjects 4 }  
+        
+       vrrpv3ExStatisticsEntry OBJECT-TYPE  
+           SYNTAX       Vrrpv3ExStatisticsEntry  
+           MAX-ACCESS   not-accessible  
+           STATUS       current  
+           DESCRIPTION  
+               "An entry in the table, containing statistics  
+               information about a given virtual router."  
+           AUGMENTS    { vrrpv3ExOperationsEntry }  
+           ::= { vrrpv3ExStatisticsTable 1 }  
+    
+       Vrrpv3ExStatisticsEntry ::=  
+           SEQUENCE {  
+               vrrpv3ExStatisticsMasterTransitions   
+                   Counter32, 
+               vrrpv3ExStatisticsNewMasterReason 
+                   INTEGER, 
+               vrrpv3ExStatisticsRcvdAdvertisements  
+                   Counter64,
+               vrrpv3ExStatisticsAdvIntervalErrors  
+                   Counter64,
+               vrrpv3ExStatisticsIpTtlErrors  
+                   Counter64,
+               vrrpv3ExStatisticsProtoErrReason 
+                   INTEGER, 
+               vrrpv3ExStatisticsRcvdPriZeroPackets  
+                   Counter64,
+               vrrpv3ExStatisticsSentPriZeroPackets  
+                   Counter64,
+               vrrpv3ExStatisticsRcvdInvalidTypePackets  
+                   Counter64,
+               vrrpv3ExStatisticsAddressListErrors  
+                   Counter64,
+               vrrpv3ExStatisticsPacketLengthErrors  
+                   Counter64,
+               vrrpv3ExStatisticsRowDiscontinuityTime  
+                    TimeStamp,  
+               vrrpv3ExStatisticsRefreshRate 
+                    Unsigned32 
+           }  
+        
+        
+       vrrpv3ExStatisticsMasterTransitions OBJECT-TYPE  
+           SYNTAX       Counter32  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of times that this virtual router's  
+               state has transitioned to MASTER.   
+        
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."  
+        
+           ::= { vrrpv3ExStatisticsEntry 1 }  
+    
+      vrrpv3ExStatisticsNewMasterReason OBJECT-TYPE  
+           SYNTAX        INTEGER { 
+               notMaster (0),  
+               priority  (1),  
+               preempted (2),  
+               masterNoResponse (3)  
+           }  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "This indicates the reason for the virtual router to  
+               transition to MASTER state. If the virtual router never  
+               transitioned to master state, this SHOULD be set to  
+               notmaster(0). Otherwise this indicates the reason this  
+               virtual router transitioned to master state the last 
+               time. Used by vrrpv3NewMaster notification."  
+           ::= { vrrpv3ExStatisticsEntry 2 }  
+
+       vrrpv3ExStatisticsRcvdAdvertisements OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of VRRP advertisements received by  
+               this virtual router.   
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."  
+           ::= { vrrpv3ExStatisticsEntry 3 }  
+        
+       vrrpv3ExStatisticsAdvIntervalErrors OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of VRRP advertisement packets  
+               received for which the advertisement interval is  
+               different than the one configured for the local virtual 
+               router. 
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."  
+           ::= { vrrpv3ExStatisticsEntry 4 }  
+        
+       vrrpv3ExStatisticsIpTtlErrors OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current   
+           DESCRIPTION  
+               "The total number of VRRP packets received by the  
+               Virtual router with IPv4 TTL (for VRRP over IPv4) or  
+               IPv6 Hop Limit (for VRRP over IPv6) not equal to 255. 
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."  
+           REFERENCE "RFC 5798 Section 5.1.1.3" 
+           ::= { vrrpv3ExStatisticsEntry 5 } 
+    
+      vrrpv3ExStatisticsProtoErrReason OBJECT-TYPE  
+           SYNTAX        INTEGER {  
+               noError (0),  
+               ipTtlError (1),  
+               versionError  (2),  
+               checksumError (3),  
+               vrIdError(4)  
+           }  
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "This indicates the reason for the last protocol error.  
+                This SHOULD be set to noError(0) when no protocol  
+                errors are encountered. Used by vrrpv3ProtoError  
+                notification."  
+           ::= { vrrpv3ExStatisticsEntry 6 }  
+    
+       vrrpv3ExStatisticsRcvdPriZeroPackets OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of VRRP packets received by the  
+               virtual router with a priority of '0'.   
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."  
+           REFERENCE "RFC 5798 Section 5.2.4" 
+           ::= { vrrpv3ExStatisticsEntry 7 }  
+        
+       vrrpv3ExStatisticsSentPriZeroPackets OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of VRRP packets sent by the virtual  
+               router with a priority of '0'.   
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."  
+           REFERENCE "RFC 5798 Section 5.3.4" 
+           ::= { vrrpv3ExStatisticsEntry 8 }  
+        
+       vrrpv3ExStatisticsRcvdInvalidTypePackets OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The number of VRRP packets received by the virtual  
+               router with an invalid value in the 'type' field.  
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."   
+           ::= { vrrpv3ExStatisticsEntry 9 }  
+        
+       vrrpv3ExStatisticsAddressListErrors OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of packets received for which the  
+               address list does not match the locally configured list 
+               for the virtual router.   
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."  
+           ::= { vrrpv3ExStatisticsEntry 10 }  
+        
+       vrrpv3ExStatisticsPacketLengthErrors OBJECT-TYPE  
+           SYNTAX       Counter64
+           MAX-ACCESS   read-only  
+           STATUS       current  
+           DESCRIPTION  
+               "The total number of packets received with a packet  
+               length less than the length of the VRRP header.   
+               Discontinuities in the value of this counter can occur  
+               at re-initialization of the management system, and at  
+               other times as indicated by the value of  
+               vrrpv3ExStatisticsRowDiscontinuityTime."  
+           ::= { vrrpv3ExStatisticsEntry 11 }  
+     
+      vrrpv3ExStatisticsRowDiscontinuityTime OBJECT-TYPE  
+          SYNTAX     TimeStamp  
+          MAX-ACCESS read-only  
+          STATUS     current  
+          DESCRIPTION  
+              "The value of sysUpTime on the most recent occasion at  
+               which any one or more of this entry's counters suffered 
+               a discontinuity.  
+               If no such discontinuities have occurred since the last 
+               re-initialization of the local management subsystem,  
+               then this object contains a zero value." 
+          ::= { vrrpv3ExStatisticsEntry 12 }  
+        
+      vrrpv3ExStatisticsRefreshRate OBJECT-TYPE  
+          SYNTAX     Unsigned32  
+          UNITS "milli-seconds"  
+          MAX-ACCESS read-only 
+          STATUS     current  
+          DESCRIPTION  
+              "The minimum reasonable polling interval for this entry. 
+               This object provides an indication of the minimum  
+               Amount of time required to update the counters in this  
+               entry." 
+          ::= { vrrpv3ExStatisticsEntry 13 }  
+
+
+
+-- *******************************************************************
+--  VRRP AssIf Table
+-- *******************************************************************
+
+
+ vrrpv3ExAssIfTable OBJECT-TYPE
+     SYNTAX       SEQUENCE OF Vrrpv3ExAssIfEntry
+     MAX-ACCESS   not-accessible
+     STATUS       current
+     DESCRIPTION
+         "Operations table for a VRRP router which consists of a
+          sequence (i.e., one or more conceptual rows) of
+          'vrrpOperEntry' items."
+     ::= { vrrpv3ExObjects 5 }
+
+ vrrpv3ExAssIfEntry OBJECT-TYPE
+     SYNTAX       Vrrpv3ExAssIfEntry
+     MAX-ACCESS   not-accessible
+     STATUS       current
+     DESCRIPTION
+         "Associate interface for vrrp."
+     INDEX    { vrrpv3ExAssIfLocalIfIndex, vrrpv3ExAssIfOperVrId,vrrpv3ExAssIfPeerIfIndex,vrrpv3ExAssIfAddrType }
+     ::= { vrrpv3ExAssIfTable 1 }
+
+ Vrrpv3ExAssIfEntry ::=
+     SEQUENCE {
+		  vrrpv3ExAssIfLocalIfIndex			Integer32,
+          vrrpv3ExAssIfOperVrId    			Integer32,
+          vrrpv3ExAssIfPeerIfIndex			Integer32,
+          vrrpv3ExAssIfAddrType				InetAddressType,
+          vrrpv3ExAssIfRowStatus            RowStatus
+ }
+
+ vrrpv3ExAssIfLocalIfIndex OBJECT-TYPE
+     SYNTAX       Integer32
+     MAX-ACCESS   read-only
+     STATUS       current
+     DESCRIPTION
+         "local interface index."
+     ::= { vrrpv3ExAssIfEntry 1 }
+
+ vrrpv3ExAssIfOperVrId OBJECT-TYPE
+     SYNTAX       Integer32
+     MAX-ACCESS   read-only
+     STATUS       current
+     DESCRIPTION
+         "This object contains the Virtual Router Identifier (VRID)."
+     ::= { vrrpv3ExAssIfEntry 2 }
+
+ vrrpv3ExAssIfPeerIfIndex OBJECT-TYPE
+     SYNTAX       Integer32
+     MAX-ACCESS   read-only
+     STATUS       current
+     DESCRIPTION
+         "the peer interface index."
+     ::= { vrrpv3ExAssIfEntry 3 }
+
+ vrrpv3ExAssIfAddrType OBJECT-TYPE
+     SYNTAX       InetAddressType
+     MAX-ACCESS   read-only
+     STATUS       current
+     DESCRIPTION
+         "ip address type."
+     ::= { vrrpv3ExAssIfEntry 4 }
+
+
+ vrrpv3ExAssIfRowStatus OBJECT-TYPE
+     SYNTAX       RowStatus 
+     MAX-ACCESS   read-create
+     STATUS       current
+     DESCRIPTION
+         "create/destroy vrrp associate interface."
+     ::= { vrrpv3ExAssIfEntry 5 }     
+     
+     
+  
+  vrrpv3ExTrapEnable OBJECT-TYPE
+     SYNTAX        INTEGER {disable (0),  enable(1)}  
+     MAX-ACCESS   read-write
+     STATUS       current
+     DESCRIPTION
+         "vrrp trap state."
+     ::= { vrrpv3ExObjects 6 }     
+END

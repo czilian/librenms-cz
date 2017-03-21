@@ -1,0 +1,180 @@
+	DOS-ANTIATTACK-MIB DEFINITIONS ::= BEGIN
+ 
+		IMPORTS
+			Unsigned32, OBJECT-TYPE ,NOTIFICATION-TYPE				FROM SNMPv2-SMI	
+			TEXTUAL-CONVENTION	FROM SNMPv2-TC
+			wriProtocol	FROM WRI-SMI;
+
+		dosantiattackMib OBJECT IDENTIFIER ::= { wriProtocol 402 }
+
+		EntryStatus ::= TEXTUAL-CONVENTION
+		STATUS current
+		DESCRIPTION
+				"entry status."
+		SYNTAX INTEGER 
+			{
+				valid(1),
+				createRequest(2),
+				underCreation(3),
+				invalid(4)
+			}
+
+		dosantiattackComm OBJECT IDENTIFIER ::= { dosantiattackMib 1 } 
+				
+		antiAttackDosLimitStatus OBJECT-TYPE
+			SYNTAX INTEGER
+				{
+				enable(1),
+				disable(0)
+				}
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"antiattack dos limit status."
+			::= { dosantiattackComm 1 }
+
+		antiAttackLocktimeEnable OBJECT-TYPE
+			SYNTAX INTEGER
+				{
+				enable(1),
+				disable(0)
+				}
+			MAX-ACCESS read-write
+			STATUS current
+			DESCRIPTION
+				"antiattack dos limit lock time status."
+			::= { dosantiattackComm 2 }
+			
+		--interface table
+
+		dosantiattackIfTable OBJECT-TYPE
+			SYNTAX  SEQUENCE OF DosantiattackIfEntry
+			MAX-ACCESS  not-accessible
+			STATUS  current
+			DESCRIPTION
+				"A list of interface entries."
+			::= { dosantiattackMib 2 }
+	
+	
+		dosantiattackIfEntry OBJECT-TYPE
+			SYNTAX  DosantiattackIfEntry
+			MAX-ACCESS  not-accessible
+			STATUS  current
+			DESCRIPTION
+					"An interface entry containing objects at the
+					subnetwork layer and below for a particular
+					interface."
+			INDEX   { dosAntiAttackIfIndex,dosAntiAttackIfType }
+			::= { dosantiattackIfTable 1 }
+
+		DosantiattackIfEntry ::=
+			SEQUENCE {
+				dosAntiAttackIfIndex			Unsigned32,
+				dosAntiAttackIfType				INTEGER,
+				dosAntiAttackIfBurstNormal		Unsigned32,
+				dosAntiAttackIfBurstMax			Unsigned32,
+				dosAntiAttackIfLock				Unsigned32,
+				dosAntiAttackIfExpireTime		INTEGER,
+				dosAntiAttackIfCount				INTEGER,
+				dosAntiAttackIfHWFlag				INTEGER,
+				dosAntiAttackIfEntryStatus				EntryStatus
+				}	
+				
+			dosAntiAttackIfIndex OBJECT-TYPE
+		    	SYNTAX  Unsigned32
+		    	MAX-ACCESS  read-only
+		    	STATUS  current
+		    	DESCRIPTION
+					"from 1 to msppIfNum"
+		    	::= { dosantiattackIfEntry 1 }
+		
+			dosAntiAttackIfType OBJECT-TYPE
+				SYNTAX  INTEGER{
+					arp(1),
+					ip(2),
+					icmp(3),
+					igmp(4),       
+					udp(5),
+					tcp(6),
+					all(7)
+				}
+		    MAX-ACCESS  read-only
+				STATUS  current
+				DESCRIPTION
+		            "The dos limit for which type packet,arp/icmp or the others."
+		    	::= { dosantiattackIfEntry 2 }		
+		 
+		 dosAntiAttackIfBurstNormal OBJECT-TYPE
+				SYNTAX  Unsigned32
+				MAX-ACCESS  read-write
+				STATUS  current
+				DESCRIPTION
+		            "Dos Limit burst normal, exceed bandwidth is drop(kbps)."
+		    	::= { dosantiattackIfEntry 3 }
+		  
+		dosAntiAttackIfBurstMax OBJECT-TYPE
+				SYNTAX  Unsigned32
+		    MAX-ACCESS  read-write
+				STATUS  current
+				DESCRIPTION
+		            "Dos Limit burst max, exceed packets is not traffic any this type packets(pps."
+		    	::= { dosantiattackIfEntry 4 }
+		    	
+		dosAntiAttackIfLock OBJECT-TYPE
+				SYNTAX  Unsigned32
+		    MAX-ACCESS  read-write
+				STATUS  current
+				DESCRIPTION
+		            "The dos limit interval of lockup."
+		    	::= { dosantiattackIfEntry 5 }
+		
+		dosAntiAttackIfExpireTime OBJECT-TYPE
+				SYNTAX  INTEGER
+		    MAX-ACCESS  read-only
+				STATUS  current
+				DESCRIPTION
+		            "The expire time."
+		    	::= { dosantiattackIfEntry 6 }
+		    	
+		dosAntiAttackIfCount OBJECT-TYPE
+				SYNTAX  INTEGER
+		    MAX-ACCESS  read-only
+				STATUS  current
+				DESCRIPTION
+		            "The counter."
+		    	::= { dosantiattackIfEntry 7 }
+		    	
+		dosAntiAttackIfHWFlag OBJECT-TYPE
+				SYNTAX  INTEGER
+					{
+							off(0),
+							on(1)	
+					}
+		    MAX-ACCESS  read-only
+				STATUS  current
+				DESCRIPTION
+		            "hardware flag."
+		    	::= { dosantiattackIfEntry 8 }
+		    	
+		dosAntiAttackIfEntryStatus OBJECT-TYPE
+				SYNTAX  EntryStatus
+		    MAX-ACCESS  read-write
+				STATUS  current
+				DESCRIPTION
+		            "Status of dos limit."
+		    	::= { dosantiattackIfEntry 9 }
+		
+	
+	  dosAntiattackTrap		OBJECT IDENTIFIER ::=   {dosantiattackMib 3}
+		
+		dosAntiattackPktOver NOTIFICATION-TYPE
+       		OBJECTS {dosAntiAttackIfIndex,
+       		         dosAntiAttackIfType}
+       		STATUS  current
+       		DESCRIPTION
+               	"One type of packets over the max limit number on interface."
+			::= { dosAntiattackTrap 1} 
+			
+					
+		
+		END

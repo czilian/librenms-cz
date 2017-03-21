@@ -1,0 +1,10 @@
+os:   advafsp150ge11x
+text: 'ADVA FSP150CC'
+type: network
+icon: adva-ge11x
+
+mib_dir:
+    - advafsp150ge11x
+
+over:
+    - { graph: device_bits, text: 'Device Traffic' }

@@ -1,0 +1,3855 @@
+ 
+BGP-MIB DEFINITIONS ::= BEGIN
+
+  IMPORTS
+      MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE,
+      IpAddress, Integer32, Counter32, Gauge32,enterprises
+           FROM SNMPv2-SMI     
+        TEXTUAL-CONVENTION, TruthValue, RowStatus
+           FROM SNMPv2-TC     
+      mib-2
+          FROM RFC1213-MIB
+      InetAddress, InetAddressType         
+          FROM INET-ADDRESS-MIB 
+       wri,wriProtocol	
+        FROM WRI-SMI ;   
+           
+   	bgpStdMIB  MODULE-IDENTITY
+       LAST-UPDATED  "201104060000Z" 
+       ORGANIZATION  "FiberHome Networks Systems, Inc"
+       CONTACT-INFO  "http://www.fhn.com.cn"   
+       DESCRIPTION   "reference to rfc1657."
+          ::= { wriProtocol 242 }
+
+     	   
+                bgp OBJECT IDENTIFIER  ::= { bgpStdMIB 1 }
+
+                bgpVersion OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "version number."
+                    ::= { bgp 1 }
+
+                bgpLocalAs OBJECT-TYPE
+                    SYNTAX     INTEGER (0..65535)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The local autonomous system number."
+                    ::= { bgp 2 }
+
+                bgpIdentifier OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The BGP Identifier of local system."
+                    ::= { bgp 3 }
+
+                            
+                bgpNexthopSelf OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        disable(0),
+                                        enable(1)
+                               }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "is bgp support set nexthop as self"
+                    ::= { bgp 4 } 
+                                                            
+                bgpClusterId OBJECT-TYPE
+                    SYNTAX   InetAddress
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "When Bgp act as a route cluster,it need set cluster id"
+                    ::= { bgp 5 } 
+                                                                    
+                bgpCummunityAction OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        noaction(0),
+                                        add(1),
+                                        replace(2),
+                                        none(3)
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "describe how to process community"
+                    ::= { bgp 6 }  
+                    
+                 bgpCummunity OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "describe bgp community"
+                    ::= { bgp 7 }   
+                        
+                 bgpConfederationId OBJECT-TYPE
+                    SYNTAX   INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "ConfederationId"
+                    ::= { bgp 8 }  
+                    
+                bgpTrapSupport OBJECT-TYPE
+                    SYNTAX   INTEGER {
+                                       disable(0),
+                                       enable(1)
+                                     }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "configure if bgp can running trap"
+                    ::= { bgp 9 }
+                
+                bgpDefaultLocalPref OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The DefaultLocalPref"
+                    ::= { bgp 10 } 
+                    
+                  bgpSyncStatus OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        disable(2),
+                                        enable(1)
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The DefaultLocalPref"
+                    ::= { bgp 11 }   
+                    
+                bgpLocal4BytesAs OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The local autonomous system number,extend to 4bytes"
+                    ::= { bgp 12 }
+                
+                 bgpServerState OBJECT-TYPE
+                    SYNTAX     INTEGER{disable(0),enable(1)} 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp server state"
+                    ::= { bgp 13 }    
+                    
+				bgpClinetState OBJECT-TYPE
+                    SYNTAX     INTEGER{disable(0),enable(1)} 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp clinet state"
+                    ::= { bgp 14 }    
+                    
+    			bgpUpdateSize OBJECT-TYPE
+                    SYNTAX     INTEGER(0..4097) 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp update size"
+                    ::= { bgp 15 }  
+                                      
+   				bgpTaskPriority OBJECT-TYPE
+                    SYNTAX     INTEGER(50..250)
+                    MAX-ACCESS read-write      
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp task priority"
+                    ::= { bgp 16 }      
+                                  
+    			bgpMaxStackSize OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write      
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp max stack size"
+                    ::= { bgp 17 }      
+                    
+   				bgpMaxPeer     OBJECT-TYPE
+                    SYNTAX     INTEGER(1..400000)
+                    MAX-ACCESS read-write      
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp max peer"
+                    ::= { bgp 18}
+                      
+    			bgpMaxRoute     OBJECT-TYPE
+                    SYNTAX     INTEGER(1..400000)
+                    MAX-ACCESS read-write      
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp max route"
+                    ::= { bgp 19 }        
+                    
+     			bgpMaxPath     OBJECT-TYPE
+                    SYNTAX     INTEGER(1..400000)
+                    MAX-ACCESS read-write      
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp max path"
+                    ::= { bgp 20 }    
+                                                                       
+               bgpDefaultLocalMed OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The DefaultLocal med"
+                    ::= { bgp 21 } 
+                
+               bgpProtocolRouteCnt OBJECT-TYPE
+                    SYNTAX     OCTET STRING 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The route number which is leaned by other protocol"
+                    ::= { bgp 22 } 
+                    
+              bgpGrEnable OBJECT-TYPE
+                    SYNTAX   INTEGER{disbale(0),enable(1)}   
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The state of graceful restart"
+                    ::= { bgp 23 }  
+                    
+               bgpGrTimer OBJECT-TYPE
+                    SYNTAX   INTEGER(3..600)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The timer of graceful restart,in second"
+                    ::= { bgp 24 }      
+                                    
+               bgpGrSelectionDeferralTimer OBJECT-TYPE
+                    SYNTAX   INTEGER(3..3000)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The timer of graceful restart Selection Deferral,in second"
+                    ::= { bgp 25 }                                                                      
+               
+               bgpResetState OBJECT-TYPE
+                    SYNTAX   INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "reset bgp process"
+                    ::= { bgp 26 }    
+                    
+               bgpDampState OBJECT-TYPE
+                    SYNTAX   INTEGER{disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "route damping state"
+                    ::= { bgp 49}           
+               
+               bgpDampPenaltyHalfTime   OBJECT-TYPE
+                    SYNTAX   INTEGER(60..2700)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Half-life time (in seconds) for the penalty when reachable"
+                    ::= { bgp 50 }                                                    
+                    
+               bgpDampPenaltyLimit   OBJECT-TYPE
+                    SYNTAX   INTEGER(1001..20000)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            " Ceiling of the penalty for route flapping"
+                    ::= { bgp 51 }      
+               
+               bgpDampPenaltySuppress   OBJECT-TYPE
+                    SYNTAX   INTEGER(1..20000)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Value to start suppressing a route"
+                    ::= { bgp 52 }   
+                    
+                bgpDampPenaltyReuse   OBJECT-TYPE
+                    SYNTAX   INTEGER(1..20000)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Value to start reusing a route"
+                    ::= { bgp 53 }   
+   
+              
+              	bgpBackupPathState   OBJECT-TYPE
+                    SYNTAX   INTEGER{disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Fast switching backup route "
+                    ::= { bgp 56 }  
+                             
+                -- BGP Peer table.  This table contains, one entry per
+                -- BGP peer, information about the BGP peer.
+
+                bgpPeerTable OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpPeerEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "BGP peer table.  This table contains,
+                            one entry per BGP peer, information about
+                            the connections with BGP peers."
+                    ::= { bgp 27 }
+
+                bgpPeerEntry OBJECT-TYPE
+                    SYNTAX     BgpPeerEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Entry containing information about the
+                            connection with a BGP peer."
+                    INDEX { bgpPeerVrid,bgpPeerAddrType,bgpPeerRemoteAddr}
+                    
+                    ::= { bgpPeerTable 1 }
+
+                BgpPeerEntry ::= SEQUENCE {
+                		bgpPeerVrid 
+                			INTEGER,
+                        bgpPeerAddrType 
+                            InetAddressType,
+        				bgpPeerRemoteAddr
+                            InetAddress,
+                       bgpPeerIdentifier
+                            InetAddress,
+                        bgpPeerState
+                            INTEGER,
+                        bgpPeerAdminStatus
+                            INTEGER,
+                        bgpPeerNegotiatedVersion
+                            Integer32, 
+                        bgpPeerLocalAddrType 
+                            InetAddressType,    
+                        bgpPeerLocalAddr
+                            InetAddress,
+                        bgpPeerLocalPort
+                            INTEGER,
+                        bgpPeerRemotePort
+                            INTEGER,
+                        bgpPeerRemoteAs
+                            INTEGER,
+                        bgpPeerInUpdates
+                            Counter32,
+                        bgpPeerOutUpdates
+                            Counter32,
+                        bgpPeerInTotalMessages
+                            Counter32,
+                        bgpPeerOutTotalMessages
+                            Counter32,
+                        bgpPeerLastError
+                            OCTET STRING,
+                        bgpPeerFsmEstablishedTransitions
+                            Counter32,
+                        bgpPeerFsmEstablishedTime
+                            Gauge32,
+                        bgpPeerConnectRetryInterval
+                            INTEGER,
+                        bgpPeerHoldTime
+                            INTEGER,
+                        bgpPeerKeepAlive
+                            INTEGER, 
+                        bgpPeerHoldTimeConfigured
+                    		INTEGER,
+               			bgpPeerKeepAliveConfigured
+                    		INTEGER,    
+                        bgpPeerMinASOriginationInterval
+                            INTEGER,
+                        bgpPeerMinRouteAdvertisementInterval
+                            INTEGER,
+                        bgpPeerInUpdateElapsedTime
+                            Gauge32,       
+                        bgpPeerPasswordSupport 
+                            INTEGER,    
+                        bgpPeerPassword 
+                            OCTET STRING,    
+                        bgpPeerRtReflectorState 
+                            INTEGER,        
+                        bgpPeerAttachedVrf 
+                            OCTET STRING,   
+                        bgpPeerSendCommunity 
+                            INTEGER,
+                        bgpPeerRawStatus 
+                            INTEGER,
+                        bgpPeerUpdateSource
+                            InetAddress,
+                        
+--new peer attribute S ddp add 20051010
+                 
+						bgpPeer4BytesAsNumber INTEGER,
+						bgpPeer4BytesAsSupport INTEGER,
+						bgpPeerLocalAfiFlag INTEGER ,
+						bgpPeerRemoteAfiFlag INTEGER ,
+						bgpPeerLocalRefresh INTEGER,
+						bgpPeerRemoteRefresh INTEGER,
+						bgpPeerGrRemoteSupport INTEGER ,
+						bgpPeerGrRemoteResetBit INTEGER,
+						bgpPeerGrRemoteResetTime INTEGER,
+						bgpPeerGrLocalRole INTEGER     ,
+						bgpPeerEbgpMtHop INTEGER ,
+            			bgpPeerCaseReason INTEGER ,
+            			bgpPeerMaxPrefix INTEGER ,
+            			bgpPeerResourceLack INTEGER ,
+                        bgpPeerRejectConnect INTEGER ,
+                        bgpPeerEbgp INTEGER,
+                        bgpPeerRtRefresh INTEGER,
+                        bgpPeerGrRemoteResetAf INTEGER,
+                        bgpPeerRestart  INTEGER,
+                        bgpPeerUnConfig  INTEGER,
+                        bgpPeerIpv6Ce    INTEGER,
+                        bgpPeerSendLable INTEGER,
+                       	bgpPeerValidTtl   INTEGER,
+                       	bgpPeerRouteCnt Counter32, 
+                       	bgpPeerNexthopSelf  INTEGER,
+                       	bgpPeerBfdState     INTEGER,
+                       	bgpPeerPublicAsOnly INTEGER,
+                       	bgpPeerSubstitureAs INTEGER,
+                       	bgpPeerAsLoopTime   INTEGER,
+                       	bgpPeerFakeAs       INTEGER,
+                       	bgpPeerUpe          INTEGER                 	 
+                        }  
+                bgpPeerVrid OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The vpn instance id."
+                    ::= { bgpPeerEntry 1 }
+       
+                bgpPeerAddrType OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The remote IP address type of this entry's BGP
+                            peer."
+                    ::= { bgpPeerEntry 2 }
+                    
+                bgpPeerRemoteAddr OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The remote IP address of this entry's BGP
+                            peer."
+                    ::= { bgpPeerEntry 3 }
+                   
+                bgpPeerIdentifier OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The BGP Identifier of this entry's BGP
+                            peer."
+                    ::= { bgpPeerEntry 4 }
+
+                bgpPeerState OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        idle(1),
+                                        connect(2),
+                                        active(3),
+                                        opensent(4),
+                                        openconfirm(5),
+                                        established(6)
+                               }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The BGP peer connection state."
+                    ::= { bgpPeerEntry 5 }
+
+                bgpPeerAdminStatus OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        stop(1),
+                                        start(2)
+                                 }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The desired state of the BGP connection.
+                            A transition from 'stop' to 'start' will
+                            cause the BGP Start Event to be generated.
+                            A transition from 'start' to 'stop' will
+                            cause the BGP Stop Event to be generated.
+                            This parameter can be used to restart BGP
+                            peer connections.  Care should be used in
+                            providing write access to this object
+                            without adequate authentication."
+                    ::= { bgpPeerEntry 6 }
+
+                bgpPeerNegotiatedVersion OBJECT-TYPE
+                    SYNTAX     Integer32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The negotiated version of BGP running
+                            between the two peers."
+                    ::= { bgpPeerEntry 7 }
+                    
+               bgpPeerLocalAddrType  OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The local IP address type of this entry's BGP
+                            connection."
+                    ::= { bgpPeerEntry 8 }
+
+                bgpPeerLocalAddr OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The local IP address of this entry's BGP
+                            connection."
+                    ::= { bgpPeerEntry 9 }
+
+                bgpPeerLocalPort OBJECT-TYPE
+                    SYNTAX     INTEGER (0..65535)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The local port for the TCP connection
+                            between the BGP peers."
+                    ::= { bgpPeerEntry 10 }
+
+                
+                bgpPeerRemotePort OBJECT-TYPE
+                    SYNTAX     INTEGER (0..65535)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The remote port for the TCP connection
+                            between the BGP peers.  Note that the
+                            objects bgpPeerLocalAddr,
+                            bgpPeerLocalPort, bgpPeerRemoteAddr and
+                            bgpPeerRemotePort provide the appropriate
+                            reference to the standard MIB TCP
+                            connection table."
+                    ::= { bgpPeerEntry 11 }
+
+                bgpPeerRemoteAs OBJECT-TYPE
+                    SYNTAX     INTEGER (0..65535)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The remote autonomous system number."
+                    ::= { bgpPeerEntry 12 }
+
+                bgpPeerInUpdates OBJECT-TYPE
+                    SYNTAX     Counter32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The number of BGP UPDATE messages
+                            received on this connection.  This object
+                            should be initialized to zero (0) when the
+                            connection is established."
+                    ::= { bgpPeerEntry 13 }
+
+                bgpPeerOutUpdates OBJECT-TYPE
+                    SYNTAX     Counter32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The number of BGP UPDATE messages
+                            transmitted on this connection.  This
+                            object should be initialized to zero (0)
+                            when the connection is established."
+                    ::= { bgpPeerEntry 14 }
+
+                bgpPeerInTotalMessages OBJECT-TYPE
+                    SYNTAX     Counter32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The total number of messages received
+                            from the remote peer on this connection.
+                            This object should be initialized to zero
+                            when the connection is established."
+                    ::= { bgpPeerEntry 15 }
+
+                bgpPeerOutTotalMessages OBJECT-TYPE
+                    SYNTAX     Counter32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The total number of messages transmitted to
+                            the remote peer on this connection.  This
+                            object should be initialized to zero when
+                            the connection is established."
+                    ::= { bgpPeerEntry 16 }
+
+                bgpPeerLastError OBJECT-TYPE
+                    SYNTAX     OCTET STRING (SIZE (0..2))   
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The last error code and subcode seen by this
+						 	peer on this connection. If no error has
+						 	occurred, this field is zero. Otherwise, the
+						 	first byte of this two byte OCTET STRING
+						 	contains the error code; the second contains
+						 	the subcode"
+                    ::= { bgpPeerEntry 17 }   
+                    
+             
+
+                bgpPeerFsmEstablishedTransitions OBJECT-TYPE
+                    SYNTAX     Counter32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The total number of times the BGP FSM
+                            transitioned into the established state."
+                    ::= { bgpPeerEntry 18 }
+
+                bgpPeerFsmEstablishedTime OBJECT-TYPE
+                    SYNTAX     Gauge32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "This timer indicates how long (in
+                            seconds) this peer has been in the
+                            Established state or how long
+                            since this peer was last in the
+                            Established state.  It is set to zero when
+                            a new peer is configured or the router is
+                            booted."
+                    ::= { bgpPeerEntry 19 }
+
+                bgpPeerConnectRetryInterval OBJECT-TYPE
+                    SYNTAX     INTEGER (1..65535)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Time interval in seconds for the
+                            ConnectRetry timer.  The suggested value
+                            for this timer is 120 seconds."
+                    ::= { bgpPeerEntry 20 }
+
+                bgpPeerHoldTime OBJECT-TYPE
+                    SYNTAX     INTEGER  ( 0 | 3..65535 )
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Time interval in seconds for the Hold
+                            Timer established with the peer.  The
+                            value of this object is calculated by this
+                            BGP speaker by using the smaller of the
+                            value in bgpPeerHoldTimeConfigured and the
+                            Hold Time received in the OPEN message.
+                            This value must be at lease three seconds
+                            if it is not zero (0) in which case the
+                            Hold Timer has not been established with
+                            the peer, or, the value of
+                            bgpPeerHoldTimeConfigured is zero (0)."
+                    ::= { bgpPeerEntry 21 }
+
+                bgpPeerKeepAlive OBJECT-TYPE
+                    SYNTAX     INTEGER ( 0 | 1..21845 )
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Time interval in seconds for the KeepAlive
+                            timer established with the peer.  The value
+                            of this object is calculated by this BGP
+                            speaker such that, when compared with
+                            bgpPeerHoldTime, it has the same
+                            proportion as what
+                            bgpPeerKeepAliveConfigured has when
+                            compared with bgpPeerHoldTimeConfigured.
+                            If the value of this object is zero (0),
+                            it indicates that the KeepAlive timer has
+                            not been established with the peer, or,
+                            the value of bgpPeerKeepAliveConfigured is
+                            zero (0)."
+                    ::= { bgpPeerEntry 22 }
+
+		          bgpPeerHoldTimeConfigured OBJECT-TYPE
+		            SYNTAX     INTEGER ( 0 | 3..65535 )
+		            UNITS      "seconds"
+		            MAX-ACCESS read-write
+		            STATUS     current
+		            DESCRIPTION
+		                    "Time interval (in seconds) for the Hold Time
+		                     configured for this BGP speaker with this
+		                     peer.  This value is placed in an OPEN
+		                     message sent to this peer by this BGP
+		                     speaker, and is compared with the Hold
+		                     Time field in an OPEN message received
+		                     from the peer when determining the Hold
+		                     Time (bgpPeerHoldTime) with the peer.
+		                     This value must not be less than three
+		                     seconds if it is not zero (0).  If it is
+		                     zero (0), the Hold Time is NOT to be
+		                     established with the peer.  The suggested
+		                     value for this timer is 90 seconds."
+		            REFERENCE
+		                    "RFC 4271, Section 4.2.
+		                     RFC 4271, Section 10."
+		            ::= { bgpPeerEntry 23 }
+            
+            	bgpPeerKeepAliveConfigured OBJECT-TYPE             	
+	            SYNTAX     INTEGER ( 0 | 1..21845 )
+	            UNITS      "seconds"
+	            MAX-ACCESS read-write
+	            STATUS     current
+	            DESCRIPTION
+	                    "Time interval (in seconds) for the
+	                     KeepAlive timer configured for this BGP
+	                     speaker with this peer.  The value of this
+	                     object will only determine the
+	                     KEEPALIVE messages' frequency relative to
+	                     the value specified in
+	                     bgpPeerHoldTimeConfigured; the actual
+	                     time interval for the KEEPALIVE messages is
+	                     indicated by bgpPeerKeepAlive.  A
+	                     reasonable maximum value for this timer
+	                     would be one third of that of
+	                     bgpPeerHoldTimeConfigured.
+	                     If the value of this object is zero (0),
+	                     no periodical KEEPALIVE messages are sent
+	                     to the peer after the BGP connection has
+	                     been established.  The suggested value for
+	                     this timer is 30 seconds."
+	            REFERENCE
+	                    "RFC 4271, Section 4.4.
+	                     RFC 4271, Section 10."
+	            ::= { bgpPeerEntry 24 }
+            
+                bgpPeerMinASOriginationInterval OBJECT-TYPE
+                    SYNTAX     INTEGER (1..65535)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Time interval in seconds for the
+                            MinASOriginationInterval timer.
+                            The suggested value for this timer is 15
+                            seconds."
+                    ::= { bgpPeerEntry 25 }    
+                    
+                bgpPeerMinRouteAdvertisementInterval OBJECT-TYPE
+                    SYNTAX     INTEGER (1..65535)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Time interval in seconds for the
+                            MinRouteAdvertisementInterval timer.
+                            The suggested value for this timer is 30
+                            seconds."
+                    ::= { bgpPeerEntry 26 }
+
+                bgpPeerInUpdateElapsedTime OBJECT-TYPE
+                    SYNTAX     Gauge32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Elapsed time in seconds since the last BGP
+                            UPDATE message was received from the peer.
+                            Each time bgpPeerInUpdates is incremented,
+                            the value of this object is set to zero
+                            (0)."
+                    ::= { bgpPeerEntry 27 }       
+
+               bgpPeerPasswordSupport OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                         disable(0),
+                                         enable(1)
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "indicate if peer has been configured password"
+                    ::= { bgpPeerEntry 28} 
+                    
+                bgpPeerPassword OBJECT-TYPE
+                    SYNTAX    OCTET STRING (SIZE (1..80))
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "the MD5 password configured to peer"
+                    ::= { bgpPeerEntry 29} 
+                    
+                 bgpPeerRtReflectorState OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                    					disable(0),
+                    					enable(1)                                         
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "indicate peer configured as reflector client"
+                    ::= { bgpPeerEntry 30 } 
+                    
+                  bgpPeerAttachedVrf OBJECT-TYPE
+                    SYNTAX     OCTET STRING (SIZE (0..32))
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "when peer configured to a special vrf,indicate
+                            vrf name"
+                    ::= { bgpPeerEntry 31 } 
+                    
+                  bgpPeerSendCommunity OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                         unsend(0),
+                                         send(1)
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "if peer can send sommunity"
+                    ::= { bgpPeerEntry 32}  
+                    
+                                   
+                   bgpPeerRawStatus OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        active(1),
+                                        notinservice(2),
+                                        notready(3),
+                                        createandgo(4),
+                                        createandwait(5),
+                                        destory(6)
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "if neighbor is a ipv6 neighbor"
+                    ::= { bgpPeerEntry 33 }
+                    
+                    bgpPeerUpdateSource OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "used for 6pe"
+                    ::= { bgpPeerEntry 34 }
+
+
+--new peer attribute S ddp add 20051010
+                 
+                 bgpPeer4BytesAsNumber OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "peer's 4bytes AS NUmber"
+                    ::= { bgpPeerEntry 35 }  
+
+                 bgpPeer4BytesAsSupport OBJECT-TYPE
+                    SYNTAX     INTEGER {support(1),not-support(0)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "peer's 4bytes AS NUmber capability"
+                    ::= { bgpPeerEntry 36}  
+                         
+                 bgpPeerLocalAfiFlag OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "bit flag of address family:0x01-ipv4.unicast,0x10-ipv6.unicast"
+                    ::= { bgpPeerEntry 37}  
+
+                    
+                 bgpPeerRemoteAfiFlag OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "bit flag of address family:0x01-ipv4.unicast,0x10-ipv6.unicast"
+                    ::= { bgpPeerEntry 38}  
+                                                                                    
+                 
+                 bgpPeerLocalRefresh OBJECT-TYPE
+                    SYNTAX     INTEGER {support(1),not-support(0)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "local configured refresh support"
+                    ::= { bgpPeerEntry 39}  
+
+                 bgpPeerRemoteRefresh OBJECT-TYPE
+                    SYNTAX     INTEGER {support(1),not-support(0)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "remote configured refresh support"
+                    ::= { bgpPeerEntry 40}  
+                                      
+                bgpPeerGrRemoteSupport OBJECT-TYPE
+                    SYNTAX     INTEGER {enable(1),disable(0)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "remote graceful restart capability"                            
+                    ::= { bgpPeerEntry 41}
+                       
+                                 
+                bgpPeerGrRemoteResetBit OBJECT-TYPE
+                    SYNTAX     INTEGER {set(1),not-set(0)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "remote reset bit" 
+                    ::= { bgpPeerEntry 42}
+                                             
+                bgpPeerGrRemoteResetTime OBJECT-TYPE
+                    SYNTAX     INTEGER (1..65534)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "remote reset time" 
+                    ::= { bgpPeerEntry 43}
+                                                   
+                 bgpPeerGrLocalRole OBJECT-TYPE
+                    SYNTAX     INTEGER {normal(0),restarting(1),recieving(2)} 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "local role in current restarting" 
+                    ::= { bgpPeerEntry 44}  
+                        
+                            	    
+               	bgpPeerEbgpMtHop OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 45}  
+                    
+                                   
+                 bgpPeerCaseReason OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 46} 
+                    
+                bgpPeerMaxPrefix OBJECT-TYPE
+                    SYNTAX     INTEGER(1..65535) 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 47} 
+                    
+                bgpPeerResourceLack OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 48} 
+               
+               bgpPeerRejectConnect OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 49} 
+                    
+             	bgpPeerEbgp    OBJECT-TYPE
+                    SYNTAX     INTEGER(1..65535) 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 50}  
+               
+                 bgpPeerRtRefresh OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 51}
+                                        
+                bgpPeerGrRemoteResetAf OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 52}   
+               
+                bgpPeerRestart  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 53}  
+                    
+                bgpPeerUnConfig  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 54}
+                                         
+                 bgpPeerIpv6Ce   OBJECT-TYPE
+                    SYNTAX     INTEGER{disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 55}               
+                    
+                  bgpPeerSendLable OBJECT-TYPE
+                    SYNTAX     INTEGER{disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 56}  
+                  
+                 bgpPeerValidTtl  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 57}   
+                 
+                    
+                bgpPeerRouteCnt OBJECT-TYPE
+                    SYNTAX     Counter32
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 58}    
+   
+                bgpPeerNexthopSelf  OBJECT-TYPE
+                    SYNTAX     INTEGER{disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 59}
+                    
+               bgpPeerBfdState  OBJECT-TYPE
+                    SYNTAX     INTEGER{disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "" 
+                    ::= { bgpPeerEntry 60}     
+                    
+               bgpPeerPublicAsOnly OBJECT-TYPE
+                    SYNTAX     INTEGER{disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Only user pulic as number when send update packet" 
+                    ::= { bgpPeerEntry 61}
+                    
+               bgpPeerSubstitureAs OBJECT-TYPE
+                    SYNTAX     INTEGER{disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "replace peer as number of AS_Path with local as number" 
+                    ::= { bgpPeerEntry 62}
+
+                bgpPeerAsLoopTime   OBJECT-TYPE
+                    SYNTAX     INTEGER(1..10)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "allow local as number repeat times" 
+                    ::= { bgpPeerEntry 63}
+
+                 bgpPeerFakeAs       OBJECT-TYPE
+                    SYNTAX     INTEGER (0..65535)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The fake autonomous system number."
+                    ::= { bgpPeerEntry 64 }  
+                    
+                bgpPeerUpe OBJECT-TYPE
+                    SYNTAX     INTEGER {disable(0),enable(1)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "neighbor upe state."
+                    ::= { bgpPeerEntry 65 }
+    
+       
+ -- bgp PathAttr Table                                                             
+                bgp4PathAttrTable OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF Bgp4PathAttrEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "The BGP-4 Received Path Attribute Table
+                            contains information about paths to
+                            destination networks received from all
+                            BGP4 peers."
+                    ::= { bgp 28 }
+
+                bgp4PathAttrEntry OBJECT-TYPE
+                    SYNTAX     Bgp4PathAttrEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Information about a path to a network."
+                    INDEX { bgp4PathAttrProtocol,
+                            bgp4PathAttrIpAddrType,
+                            bgp4PathAttrIpAddrPrefix,
+                            bgp4PathAttrIpAddrPrefixLen,
+                            bgp4PathAttrPeerVrid,            
+                            bgp4PathAttrPeerAddrType,
+                            bgp4PathAttrPeer}
+                    ::= { bgp4PathAttrTable 1 }
+
+                Bgp4PathAttrEntry ::= SEQUENCE {
+                    bgp4PathAttrProtocol
+               			 INTEGER,                          
+                   bgp4PathAttrIpAddrType 
+                         InetAddressType, 
+                   bgp4PathAttrIpAddrPrefix
+                         InetAddress, 
+                   bgp4PathAttrIpAddrPrefixLen
+                         INTEGER,
+                   bgp4PathAttrPeerAddrType 
+                         InetAddressType,
+                   bgp4PathAttrPeer
+                         InetAddress,
+                   bgp4PathAttrPeerVrid
+                         INTEGER,
+                    bgp4PathAttrOrigin
+                         INTEGER,
+                    bgp4PathAttrASPathSegment
+                         OCTET STRING,
+                    bgp4PathAttrNextHop
+                         InetAddress,
+                    bgp4PathAttrMultiExitDisc
+                         INTEGER,
+                    bgp4PathAttrLocalPref
+                         INTEGER,
+                    bgp4PathAttrAtomicAggregate
+                         INTEGER,
+                    bgp4PathAttrAggregatorAS
+                         INTEGER,
+                    bgp4PathAttrAggregatorAddr
+                         InetAddress,
+                    bgp4PathAttrCalcLocalPref
+                         INTEGER,
+                    bgp4PathAttrBest
+                         INTEGER,
+                    bgp4PathAttrUnknown
+                         OCTET STRING,
+              --ddp add new as-path&new-aggr for 4bytes AS s
+                    bgp4PathAttrNewASPathSegment
+                         OCTET STRING,
+                    bgp4PathAttrNewAggregatorAS
+                         INTEGER         
+              --ddp add new as-path&new-aggr for 4bytes AS e
+                }
+
+                bgp4PathAttrProtocol  OBJECT-TYPE
+                    SYNTAX     INTEGER{  
+                    		other(1),
+							local(2),
+							netmgmt(3),
+							icmp(4),
+							egp(5),
+							ggp(6),
+							hello(7),
+							rip(8),
+							isis(9),
+							esis(10),
+							ciscoIgrp(11),
+							bbnSpfIgp(12),
+							ospf(13),
+							bgp(14)	}
+
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Protocol type:
+                            other           	1
+							local           	2
+							netmgmt         	3
+							icmp            	4
+							egp             	5
+							ggp             	6
+							hello           	7
+							rip             	8
+							is_is           	9
+							es_is				10
+							ciscoIgrp			11
+							bbnSpfIgp			12
+							ospf				13
+							bgp     			14"
+                    ::= { bgp4PathAttrEntry 1 }
+                          
+                   bgp4PathAttrIpAddrType OBJECT-TYPE
+	                    SYNTAX     InetAddressType                                                                                                      MAX-ACCESS read-only
+	                    STATUS     current
+	                    DESCRIPTION
+	                            " ip address type in
+                     			the Network Layer Reachability
+                     			Information field."
+	                    ::= { bgp4PathAttrEntry 2 }
+  
+                    bgp4PathAttrIpAddrPrefix OBJECT-TYPE
+	                    SYNTAX     InetAddress 
+	                    MAX-ACCESS read-only
+	                    STATUS     current
+	                    DESCRIPTION
+	                            " An IP address prefix in the Network Layer
+                     Reachability Information field.  This object is an IP address containing the prefix with
+                     length specified by bgp4PathAttrIpAddrPrefixLen.Any bits beyond the length specified by
+                     bgp4PathAttrIpAddrPrefixLen are zeroed."
+	                    ::= { bgp4PathAttrEntry 3 }
+                         
+                   bgp4PathAttrIpAddrPrefixLen   OBJECT-TYPE
+	                    SYNTAX     INTEGER 
+                        MAX-ACCESS read-only
+	                    STATUS     current
+	                    DESCRIPTION
+	                            "Length in bits of the IP address prefix in
+                     the Network Layer Reachability
+                     Information field."
+	                    ::= { bgp4PathAttrEntry 4 }  
+	                    
+                   bgp4PathAttrPeerAddrType OBJECT-TYPE
+	                    SYNTAX     InetAddressType                                                                                                      MAX-ACCESS read-only
+	                    STATUS     current
+	                    DESCRIPTION
+	                            "The IP address type of the peer where the path
+                     information was learned"
+	                    ::= { bgp4PathAttrEntry 5 }
+
+                      bgp4PathAttrPeer  OBJECT-TYPE
+	                    SYNTAX     InetAddress 
+	                    MAX-ACCESS read-only
+	                    STATUS     current
+	                    DESCRIPTION
+	                            "The IP address of the peer where the path
+                     information was learned"
+	                    ::= { bgp4PathAttrEntry 6 }
+
+                   
+                   bgp4PathAttrPeerVrid  OBJECT-TYPE
+	                    SYNTAX     INTEGER 
+                        MAX-ACCESS read-only
+	                    STATUS     current
+	                    DESCRIPTION
+	                   "vpn instance id which the peer belong to"
+	                    ::= { bgp4PathAttrEntry 7 }  
+                   
+                  bgp4PathAttrOrigin OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                         igp(1),-- networks are interior
+                                         egp(2),-- networks learned
+                                                -- via EGP
+                                         incomplete(3) -- undetermined
+                                       }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The ultimate origin of the path
+                            information."
+                    ::= { bgp4PathAttrEntry 8 }
+
+                bgp4PathAttrASPathSegment OBJECT-TYPE
+                    SYNTAX     OCTET STRING (SIZE (2..255))
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The sequence of AS path segments.  Each AS
+                            path segment is represented by a triple
+                            <type, length, value>.
+
+                            The type is a 1-octet field which has two
+                            possible values:
+                                 1      AS_SET: unordered set of ASs a
+                                             route in the UPDATE
+                                             message has traversed
+                                 2      AS_SEQUENCE: ordered set of ASs
+                                             a route in the UPDATE
+                                             message has traversed.
+
+                            The length is a 1-octet field containing the
+                            number of ASs in the value field.
+
+                            The value field contains one or more AS
+                            numbers, each AS is represented in the octet
+                            string as a pair of octets according to the
+                            following algorithm:
+                                first-byte-of-pair = ASNumber / 256;
+                                second-byte-of-pair = ASNumber & 255;"
+                    ::= { bgp4PathAttrEntry 9 }
+
+                bgp4PathAttrNextHop OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The address of the border router that
+                            should be used for the destination
+                            network."
+                    ::= { bgp4PathAttrEntry 10 }
+
+                bgp4PathAttrMultiExitDisc OBJECT-TYPE
+                    SYNTAX     INTEGER (-1..2147483647)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "This metric is used to discriminate
+                            between multiple exit points to an
+                            adjacent autonomous system.  A value of -1
+                            indicates the absence of this attribute."
+                    ::= { bgp4PathAttrEntry 11 }
+
+                bgp4PathAttrLocalPref OBJECT-TYPE
+                    SYNTAX     INTEGER (-1..2147483647)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The originating BGP4 speaker's degree of
+                            preference for an advertised route.  A
+                            value of -1 indicates the absence of this
+                            attribute."
+                    ::= { bgp4PathAttrEntry 12 }
+
+                bgp4PathAttrAtomicAggregate OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                   lessSpecificRrouteNotSelected(1),
+                                   lessSpecificRouteSelected(2)
+                               }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Whether or not the local system has
+                            selected a less specific route without
+                            selecting a more specific route."
+                    ::= { bgp4PathAttrEntry 13 }
+
+                bgp4PathAttrAggregatorAS OBJECT-TYPE
+                    SYNTAX     INTEGER (0..65535)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The AS number of the last BGP4 speaker that
+                            performed route aggregation.  A value of
+                            zero (0) indicates the absence of this
+                            attribute."
+                    ::= { bgp4PathAttrEntry 14 }
+
+                bgp4PathAttrAggregatorAddr OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The IP address of the last BGP4 speaker
+                            that performed route aggregation.  A value
+                            of 0.0.0.0 indicates the absence of this
+                            attribute."
+                    ::= { bgp4PathAttrEntry 15 }
+
+                bgp4PathAttrCalcLocalPref OBJECT-TYPE
+                    SYNTAX     INTEGER (-1..2147483647)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "The degree of preference calculated by the
+                            receiving BGP4 speaker for an advertised
+                            route.  A value of -1 indicates the
+                            absence of this attribute."
+                    ::= { bgp4PathAttrEntry 16 }
+
+                bgp4PathAttrBest OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                   false(1),-- not chosen as best route
+                                   true(2) -- chosen as best route
+                               }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "An indication of whether or not this route
+                            was chosen as the best BGP4 route."
+                    ::= { bgp4PathAttrEntry 17 }
+
+               bgp4PathAttrUnknown OBJECT-TYPE
+                    SYNTAX     OCTET STRING (SIZE(0..255))
+                    MAX-ACCESS read-only
+
+                    STATUS     current
+                    DESCRIPTION
+                            "One or more path attributes not understood
+                             by this BGP4 speaker.  Size zero (0)
+                             indicates the absence of such
+                             attribute(s).  Octets beyond the maximum
+                             size, if any, are not recorded by this
+                             object."
+                    ::= { bgp4PathAttrEntry 18 }  
+                    
+                 bgp4PathAttrNewASPathSegment OBJECT-TYPE
+                    SYNTAX     OCTET STRING (SIZE(0..255))
+                    MAX-ACCESS read-only
+
+                    STATUS     current
+                    DESCRIPTION
+                            "new aspath in 4bytes AS number"
+                    ::= { bgp4PathAttrEntry 19 } 
+                                  
+                 bgp4PathAttrNewAggregatorAS OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+
+                    STATUS     current
+                    DESCRIPTION
+                            "new aggr in 4bytes AS number"
+                    ::= { bgp4PathAttrEntry 20 } 
+                 
+     --bgp Confederation Peer Table
+                                            
+            bgpConfederationPeerTable  OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpConfederationPeerEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "The BGP-4 ConfederationPeer Table
+                            contains information about ConfederationPeer"
+                    ::= { bgp 29 }             
+                    
+               bgpConfederationPeerEntry OBJECT-TYPE
+                    SYNTAX     BgpConfederationPeerEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Information about ConfederationPeer"
+                    INDEX { bgpConfederationPeerIndex}
+                    ::= { bgpConfederationPeerTable 1 }
+               
+               BgpConfederationPeerEntry ::= SEQUENCE {  
+                         bgpConfederationPeerIndex
+                           INTEGER,
+                         bgpConfederationPeerAsNumber
+                         INTEGER,
+                         bgpConfederationRawStatus
+                         INTEGER
+                         }
+               
+               bgpConfederationPeerIndex OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "index of peer index"
+                    ::= { bgpConfederationPeerEntry 1 }
+          
+               bgpConfederationPeerAsNumber OBJECT-TYPE
+                    SYNTAX     INTEGER (0..65535)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The AS Number of peer"
+                    ::= { bgpConfederationPeerEntry 2 } 
+                    
+             bgpConfederationRawStatus OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        active(1),
+                                        notinservice(2),
+                                        notready(3),
+                                        createandgo(4),
+                                        createandwait(5),
+                                        destory(6)
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "The AS Number of peer"
+                    ::= { bgpConfederationPeerEntry 3 } 
+                                   
+   -- bgp Network Table 
+                bgpNetworkTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpNetworkEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "The BGP-4 network configure"
+                    ::= { bgp 30 }             
+                    
+               bgpNetworkEntry OBJECT-TYPE
+                    SYNTAX     BgpNetworkEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Information about ConfederationPeer"
+                    INDEX {bgpNetworkVrid,bgpNetworkAddrType,bgpNetworkPrefixLen,bgpNetworkPrefix}
+                    ::= { bgpNetworkTable 1 }
+               
+               BgpNetworkEntry ::= SEQUENCE {
+               		   bgpNetworkVrid
+               		   	   INTEGER,
+               		   bgpNetworkAddrType
+               			   INTEGER, 
+               		   bgpNetworkPrefixLen
+               		   		INTEGER,	   
+               		   bgpNetworkPrefix
+                           InetAddress,
+                       bgpNetworkRawStatus
+                           INTEGER
+                         } 
+                         
+             bgpNetworkVrid  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "network vpn instance id"
+                    ::= { bgpNetworkEntry 1 }
+                               
+             bgpNetworkAddrType OBJECT-TYPE
+                    SYNTAX     INTEGER{
+                    		ipUnicast(0),
+  							ipMutilcast(1),
+  							ipLabel(2),
+  							ipVpn(3),
+  							ipv6Unicast(4),
+  							ipv6Mutilcast(5),
+  							ipv6Label(6),
+  							ipv6Vpn(7),
+  							l2Vpn(8)
+						}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "network address type"
+                    ::= { bgpNetworkEntry 2 }     
+                                        
+               bgpNetworkPrefixLen OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "network PrefixLen"
+                    ::= { bgpNetworkEntry 3 }   
+                    
+               bgpNetworkPrefix OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "network Prefix"
+                    ::= { bgpNetworkEntry 4 } 
+               
+                                 
+               bgpNetworkRawStatus OBJECT-TYPE
+                    SYNTAX     INTEGER{
+                                        active(1),
+                                        notinservice(2),
+                                        notready(3),
+                                        createandgo(4),
+                                        createandwait(5),
+                                        destory(6)
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "network"
+                    ::= { bgpNetworkEntry 5 }    
+                                      
+ --bgp Aggregate Table
+                     
+                   bgpAggregateTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpAggregateEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "The BGP-4 MED configure"
+                    ::= { bgp 31 }     
+                    bgpAggregateEntry OBJECT-TYPE
+                    SYNTAX     BgpAggregateEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Information about MED table"
+                    INDEX {bgpAggregateVrid,bgpAggregateIpAddrType,bgpAggregateIpAddress,bgpAggregatePrefixLen}
+                    ::= { bgpAggregateTable 1 }
+                    
+                    BgpAggregateEntry ::= SEQUENCE { 
+                    	 bgpAggregateVrid 
+                    	 	INTEGER,    
+                          bgpAggregateIpAddrType
+                            InetAddressType,  
+                          bgpAggregateIpAddress
+                            InetAddress,
+                          bgpAggregatePrefixLen
+                            INTEGER,
+                          bgpAggregateAdvertise               
+                            INTEGER,
+                         bgpAggregateAdminStatus
+                            RowStatus    
+                   }    
+                 bgpAggregateVrid  OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Aggregate vpn instance id"
+                    ::= { bgpAggregateEntry 1 } 
+                    
+                 bgpAggregateIpAddrType OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "network v6"
+                    ::= { bgpAggregateEntry 2 }        
+                  
+                bgpAggregateIpAddress OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "network v6"
+                    ::= { bgpAggregateEntry 3 }  
+                bgpAggregatePrefixLen OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "network v6"
+                    ::= { bgpAggregateEntry 4 }           
+                bgpAggregateAdvertise OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        summary(1),
+                                        all(2)
+                                       }
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "network v6"
+                    ::= { bgpAggregateEntry 5 } 
+               
+               bgpAggregateAdminStatus OBJECT-TYPE
+                    SYNTAX     RowStatus 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "network v6"
+                    ::= { bgpAggregateEntry 6 }           
+                                                                
+ -- bgp route table
+               bgpRouteTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpRouteEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "The BGP-4 ipv4 RIB infor"
+                    ::= { bgp 33 }             
+                    
+               bgpRouteEntry OBJECT-TYPE
+                    SYNTAX     BgpRouteEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Information about ConfederationPeer"
+                    INDEX { bgpRouteVrid,bgpRouteProtocol,
+                    		bgpRouteDestAddrType,bgpRouteDestAddr,bgpRouteDestAddrPrefix,
+                            bgpRoutePeerVrid,bgpRoutePeerAddrType,bgpRoutePeerAddr,
+                            bgpRouteNexthop}
+                    ::= { bgpRouteTable 1 }
+               
+               BgpRouteEntry ::= SEQUENCE {
+               			bgpRouteVrid
+               				INTEGER,
+               			bgpRouteProtocol
+               				INTEGER,                          
+                        bgpRouteDestAddrType 
+                            InetAddressType, 
+                        bgpRouteDestAddr
+                           InetAddress, 
+                        bgpRouteDestAddrPrefix
+                            INTEGER,
+                        bgpRoutePeerAddrType 
+                            InetAddressType,
+                        bgpRoutePeerAddr
+                           InetAddress,
+                        bgpRoutePeerVrid
+                            INTEGER,
+                        bgpRouteNexthop
+                           InetAddress,        
+                        bgpRouteMed
+                           INTEGER,
+                        bgpRouteLocalPref
+                           INTEGER,
+                        bgpRouteAsSquence
+                           OCTET STRING,
+                        bgpRouteOrigin
+                           INTEGER,
+                        bgpRouteAtomicAggr
+                           INTEGER,
+                        bgpRouteAggregatorAddr
+                           InetAddress,
+                        bgpRouteCalcLocalPref
+                           INTEGER,
+                        bgpRouteBest
+                           INTEGER, 
+                        bgpRouteAttrUnknown
+                           OCTET STRING,
+                        bgpRouteInLabel
+                        	INTEGER,
+                        bgpRouteOutLabel
+                        	INTEGER,
+                        bgpRouteRDString
+                           OCTET STRING,
+                        bgpRouteCommunity
+                           OCTET STRING,
+                        bgpRouteExtCommunity
+                           OCTET STRING,
+                        bgpRouteClusterId
+                           OCTET STRING,
+                        bgpRouteHWState
+                           	INTEGER,
+                         bgpRouteHWUpgradeTime
+                            INTEGER         		      
+                         } 
+               bgpRouteVrid  OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "route vpn instance id"
+                    ::= { bgpRouteEntry 1 }
+                            
+               bgpRouteProtocol OBJECT-TYPE
+                    SYNTAX     INTEGER{  
+                    		other(1),
+							local(2),
+							netmgmt(3),
+							icmp(4),
+							egp(5),
+							ggp(6),
+							hello(7),
+							rip(8),
+							isis(9),
+							esis(10),
+							ciscoIgrp(11),
+							bbnSpfIgp(12),
+							ospf(13),
+							bgp(14)
+                    		}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Protocol type:
+                            other           	1
+							local           	2
+							netmgmt         	3
+							icmp            	4
+							egp             	5
+							ggp             	6
+							hello           	7
+							rip             	8
+							is_is           	9
+							es_is				10
+							ciscoIgrp			11
+							bbnSpfIgp			12
+							ospf				13
+							bgp     			14"
+                    ::= { bgpRouteEntry 2 }
+                    
+               bgpRouteDestAddrType OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "destination address type"
+                    ::= { bgpRouteEntry 3 }    
+                    
+               bgpRouteDestAddr OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "destination address"
+                    ::= { bgpRouteEntry 4 }
+                           
+               bgpRouteDestAddrPrefix OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "destination address prefixlen"
+                    ::= { bgpRouteEntry 5 } 
+                    
+              bgpRoutePeerAddrType OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "peer address type"
+                    ::= { bgpRouteEntry 6 } 
+                    
+              bgpRoutePeerAddr OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "peer address"
+                    ::= { bgpRouteEntry 7 }
+               
+               bgpRoutePeerVrid OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "peer address vpn instance id"
+                    ::= { bgpRouteEntry 8 } 
+           
+              bgpRouteNexthop OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "next hop"
+                    ::= { bgpRouteEntry 9} 
+             
+              bgpRouteMed  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 10} 
+                    
+              bgpRouteLocalPref  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 11} 
+                          
+              bgpRouteAsSquence     OBJECT-TYPE
+                    SYNTAX     OCTET STRING
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 12}
+                           
+              bgpRouteOrigin OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 13}
+                    
+            bgpRouteAtomicAggr  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 14}  
+                    
+            bgpRouteAggregatorAddr   OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 15}  
+                    
+                        
+          bgpRouteCalcLocalPref   OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 16}
+                    
+          bgpRouteBest  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 17}
+
+         bgpRouteAttrUnknown  OBJECT-TYPE
+                    SYNTAX     OCTET STRING  
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 18}     
+                    
+         bgpRouteInLabel  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 19}
+                    
+          bgpRouteOutLabel  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 20}
+                    
+           bgpRouteRDString  OBJECT-TYPE
+                    SYNTAX     OCTET STRING
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 21}    
+                                                          
+          bgpRouteCommunity  OBJECT-TYPE
+                    SYNTAX     OCTET STRING
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 22}   
+                    
+         bgpRouteExtCommunity  OBJECT-TYPE
+                    SYNTAX     OCTET STRING
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 23}  
+                    
+          bgpRouteClusterId   OBJECT-TYPE
+                    SYNTAX     OCTET STRING
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 24}    
+                    
+           bgpRouteHWState  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 25}
+          
+           bgpRouteHWUpgradeTime  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpRouteEntry 26}                             
+    -- index:RD,dest,mask,nexthop
+		bgpVpnRouteTable   OBJECT-TYPE
+		        SYNTAX     SEQUENCE OF BgpVpnRouteEntry
+		        MAX-ACCESS not-accessible
+		        STATUS     current
+		        DESCRIPTION
+		                "RFC2547 MPLS VPN RD information"
+		        ::= { bgp 34 }
+		bgpVpnRouteEntry OBJECT-TYPE
+		        SYNTAX     BgpVpnRouteEntry
+		        MAX-ACCESS not-accessible
+		        STATUS     current
+		        DESCRIPTION
+		                "Information about MPLS VPN RD info"
+		        INDEX {bgpVpnRouteVrid,bgpVpnRouteProtocol,bgpVpnRouteRD,
+		        	   bgpVpnRouteDestAddrType,bgpVpnRouteDestAddrPrefix,bgpVpnRouteDestAddr,
+		               bgpVpnRoutePeerVrid,bgpVpnRoutePeerAddrType,bgpVpnRoutePeerAddr,
+		               bgpVpnRouteNexthop 
+		              }
+		        ::= { bgpVpnRouteTable 1 }               
+                    
+        BgpVpnRouteEntry ::= SEQUENCE {
+				bgpVpnRouteVrid
+					INTEGER,     
+				bgpVpnRouteProtocol
+					INTEGER,	                      
+				bgpVpnRouteRD
+					OCTET STRING ,
+				bgpVpnRouteDestAddrType
+					InetAddressType,
+				bgpVpnRouteDestAddrPrefix
+					INTEGER,	
+				bgpVpnRouteDestAddr
+					InetAddress,  
+				bgpVpnRoutePeerVrid
+					INTEGER,	        
+				bgpVpnRoutePeerAddrType	
+					InetAddressType ,
+				bgpVpnRoutePeerAddr
+					InetAddress,                     	
+				bgpVpnRouteNexthop
+					InetAddress,        
+				bgpVpnRouteMed
+					INTEGER,
+				bgpVpnRouteLocalPref
+					INTEGER,
+				bgpVpnRouteAsSquence
+					OCTET STRING,
+				bgpVpnRouteOrigin
+					INTEGER,
+				bgpVpnRouteAtomicAggr
+					INTEGER,
+				bgpVpnRouteAggregatorAddr
+					InetAddress,
+				bgpVpnRouteCalcLocalPref
+					INTEGER,
+				bgpVpnRouteBest
+					INTEGER, 
+				bgpVpnRouteAttrUnknown
+					OCTET STRING,
+				bgpVpnRouteInLable
+					INTEGER, 
+				bgpVpnRouteOutLable
+					INTEGER,	
+				bgpVpnRouteRDString
+					OCTET STRING	 
+            }     
+            
+         bgpVpnRouteVrid OBJECT-TYPE
+               SYNTAX     INTEGER 
+               MAX-ACCESS read-only
+               STATUS     current
+               DESCRIPTION
+                       "Route vpn instance id"
+               ::= { bgpVpnRouteEntry 1 }    
+         
+         bgpVpnRouteProtocol OBJECT-TYPE
+              SYNTAX INTEGER{  
+					other(1),
+					local(2),
+					netmgmt(3),
+					icmp(4),
+					egp(5),
+					ggp(6),
+					hello(7 ),
+					rip(8),
+					isis(9),
+					esis(10),
+					ciscoIgrp(11),
+					bbnSpfIgp(12),
+					ospf(13),
+					bgp(14)
+                 }
+              MAX-ACCESS read-only
+              STATUS     current
+              DESCRIPTION
+					"Protocol type:
+					other           	1
+					local           	2
+					netmgmt         	3
+					icmp            	4
+					egp             	5
+					ggp             	6
+					hello           	7
+					rip             	8
+					is_is           	9
+					es_is				10
+					ciscoIgrp			11
+					bbnSpfIgp			12
+					ospf				13
+					bgp     			14"
+                ::= { bgpVpnRouteEntry 2 }
+
+         	                 
+       	   bgpVpnRouteRD   OBJECT-TYPE
+                SYNTAX     OCTET STRING(SIZE(0..8))
+                MAX-ACCESS read-only
+                STATUS     current
+                DESCRIPTION
+                   "destination address type"
+                ::= { bgpVpnRouteEntry 3 }    
+               
+                            
+           bgpVpnRouteDestAddrType OBJECT-TYPE
+                SYNTAX     InetAddressType
+                MAX-ACCESS read-only
+                STATUS     current
+                DESCRIPTION
+                    "destination address type"
+                ::= { bgpVpnRouteEntry 4 }    
+           
+           bgpVpnRouteDestAddrPrefix OBJECT-TYPE
+				SYNTAX     INTEGER 
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+					"destination address prefixlen"
+				::= { bgpVpnRouteEntry 5 } 
+
+                 
+           bgpVpnRouteDestAddr OBJECT-TYPE
+				SYNTAX     InetAddress
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+					"destination address"
+				::= { bgpVpnRouteEntry 6 }
+                        
+                                                         
+          bgpVpnRoutePeerVrid   OBJECT-TYPE
+				SYNTAX     INTEGER 
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+					"peer address vpn instance id"
+				::= { bgpVpnRouteEntry 7 }                                 
+                                              
+           bgpVpnRoutePeerAddrType OBJECT-TYPE
+				SYNTAX     InetAddressType
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				     "peer address type"
+				::= { bgpVpnRouteEntry 8 } 
+                 
+           bgpVpnRoutePeerAddr OBJECT-TYPE
+				SYNTAX     InetAddress
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       "peer address"
+				::= { bgpVpnRouteEntry 9 }
+            
+                    
+           bgpVpnRouteNexthop OBJECT-TYPE
+				SYNTAX     InetAddress
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        "next hop"
+				::= { bgpVpnRouteEntry 10} 
+          
+           bgpVpnRouteMed  OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpVpnRouteEntry 11} 
+                 
+           bgpVpnRouteLocalPref  OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpVpnRouteEntry 12} 
+                       
+           bgpVpnRouteAsSquence     OBJECT-TYPE
+				SYNTAX     OCTET STRING
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				      ""
+				::= { bgpVpnRouteEntry 13}
+                        
+           bgpVpnRouteOrigin OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpVpnRouteEntry 14} 
+				
+         bgpVpnRouteAtomicAggr  OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpVpnRouteEntry 15}  
+                 
+         bgpVpnRouteAggregatorAddr   OBJECT-TYPE
+				SYNTAX     InetAddress
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpVpnRouteEntry 16}  
+                  
+                      
+        bgpVpnRouteCalcLocalPref   OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpVpnRouteEntry 17}
+				
+        bgpVpnRouteBest  OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpVpnRouteEntry 18}
+
+       bgpVpnRouteAttrUnknown  OBJECT-TYPE
+				SYNTAX     OCTET STRING  
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpVpnRouteEntry 19}     
+                  
+        bgpVpnRouteInLable   OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpVpnRouteEntry 20}                           
+		
+		bgpVpnRouteOutLable   OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpVpnRouteEntry 21}
+				
+		bgpVpnRouteRDString  OBJECT-TYPE
+				SYNTAX     OCTET STRING  
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       "RD string"
+				::= { bgpVpnRouteEntry 22}   
+	  			
+-- RFC2547 MPLS VPN RIB information route-target
+    -- index:RD,dest,mask,nexthop,route-target
+            bgpVpnRouteRtTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpVpnRouteRtEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "RFC2547 MPLS VPN RIB information--route-target"
+                    ::= { bgp 35}
+            bgpVpnRouteRtEntry OBJECT-TYPE
+                    SYNTAX     BgpVpnRouteRtEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Information about RFC2547 MPLS VPN rib info"
+                    INDEX {
+                           bgpVpnRouteRtRD,bgpVpnRouteRtDest,bgpVpnRouteRtMask,
+                           bgpVpnRouteRtNexthop,bgpVpnRouteRtProtocol,bgpVpnRouteRt 
+                          }
+                    ::= { bgpVpnRouteRtTable 1 }
+           BgpVpnRouteRtEntry ::= SEQUENCE {                           
+                           bgpVpnRouteRtRD
+                           OCTET STRING ,
+                           bgpVpnRouteRtDest
+                           InetAddress,
+                           bgpVpnRouteRtMask
+                           InetAddress,
+                           bgpVpnRouteRtNexthop
+                           InetAddress,
+                           bgpVpnRouteRtProtocol
+                           INTEGER,                           
+                           bgpVpnRouteRt
+                           OCTET STRING
+                         }        
+          bgpVpnRouteRtRD OBJECT-TYPE
+                    SYNTAX     OCTET STRING(SIZE(0..32)) 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "destination"
+                    ::= { bgpVpnRouteRtEntry 1 } 
+                                               
+          bgpVpnRouteRtDest OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "prefix len"
+                    ::= { bgpVpnRouteRtEntry 2 }
+                                         
+          bgpVpnRouteRtMask OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "destination"
+                    ::= { bgpVpnRouteRtEntry 3} 
+                    
+          bgpVpnRouteRtNexthop OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "destination"
+                    ::= { bgpVpnRouteRtEntry 4} 
+                       
+          bgpVpnRouteRtProtocol OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        embgp(1),
+                                        imbgp(2),
+                                        local(3),
+                                        static(4),
+                                        rip(5),
+                                        ospf(6),
+                                        global(7),
+                                        bgp(8)                                        
+                                       }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "destination"
+                    ::= { bgpVpnRouteRtEntry 5} 
+                    
+          bgpVpnRouteRt OBJECT-TYPE
+                    SYNTAX     OCTET STRING(SIZE(0..16))
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "destination"
+                    ::= { bgpVpnRouteRtEntry 6}    
+
+
+ -- 40,RFC2547 MPLS L2VPN RIB information
+    -- index:RD,CEID,OFFSET
+            bgpL2VpnRibTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpL2VpnRibEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "MPLS L2VPN Kompella information"
+                    ::= { bgp 36 }
+            bgpL2VpnRibEntry OBJECT-TYPE
+                    SYNTAX     BgpL2VpnRibEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Information about Kompella MPLS L2VPN rib info"
+                    INDEX {
+                           bgpL2VpnRibRD,bgpL2VpnRibCeId,bgpL2VpnRibCeOffset 
+                          }
+                    ::= { bgpL2VpnRibTable 1 }
+           BgpL2VpnRibEntry ::= SEQUENCE {                           
+                           bgpL2VpnRibRD
+                           OCTET STRING ,
+                           bgpL2VpnRibCeId
+                           INTEGER,
+                           bgpL2VpnRibCeOffset
+                           INTEGER,
+                           bgpL2VpnRibCeLabel
+                           INTEGER,
+                           bgpL2VpnRibNexthop
+                           InetAddress,                           
+                           bgpL2VpnRibEncapsultaion
+                           INTEGER,
+                           bgpL2VpnRibMtu
+                           INTEGER,
+                           bgpL2VpnRibControlWord
+                           INTEGER,
+                           bgpL2VpnRibSequencedDelivery
+                           INTEGER,
+                            bgpL2VpnRibFlooding
+                           INTEGER,
+                            bgpL2VpnRibStripOutmostVlan
+                           INTEGER
+                         }        
+                  bgpL2VpnRibRD OBJECT-TYPE
+                    SYNTAX     OCTET STRING(SIZE(0..8)) 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "route distinghuer"
+                    ::= { bgpL2VpnRibEntry 1 }                                      
+                  bgpL2VpnRibCeId OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ce id"
+                    ::= { bgpL2VpnRibEntry 2 }
+                   bgpL2VpnRibCeOffset OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ce offset"
+                    ::= { bgpL2VpnRibEntry 3 }    
+                   bgpL2VpnRibCeLabel OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ce label"
+                    ::= { bgpL2VpnRibEntry 4 }   
+                   bgpL2VpnRibNexthop OBJECT-TYPE
+                    SYNTAX     InetAddress 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ce nexthop"
+                    ::= { bgpL2VpnRibEntry 5 }    
+                   bgpL2VpnRibEncapsultaion OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        ethernet(5),
+                                        vpls(12)  
+                                       }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "service"
+                    ::= { bgpL2VpnRibEntry 6 }     
+                   bgpL2VpnRibMtu OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "mtu configured"
+                    ::= { bgpL2VpnRibEntry 7 }  
+                   bgpL2VpnRibControlWord OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        notuse(0),
+                                        use(1)
+                                       }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "controlword configured"
+                    ::= { bgpL2VpnRibEntry 8 }
+                   bgpL2VpnRibSequencedDelivery OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        disable(0),
+                                        enable(1)
+                                       }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "controlword configured"
+                    ::= { bgpL2VpnRibEntry 9 }
+                   bgpL2VpnRibFlooding OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        disable(0),
+                                        enable(1)
+                                       }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "flooding configured"
+                    ::= { bgpL2VpnRibEntry 10 }
+                   bgpL2VpnRibStripOutmostVlan OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                        disable(0),
+                                        enable(1)
+                                       }
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "StripOutmostVlan configured"
+                    ::= { bgpL2VpnRibEntry 11 }        
+
+ -- 41,RFC2547 MPLS L2VPN RIB information
+    -- index:RD,CEID,OFFSET
+            bgpL2VpnRibRtTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpL2VpnRibRtEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "MPLS L2VPN Kompella information route-target"
+                    ::= { bgp 37}
+            bgpL2VpnRibRtEntry OBJECT-TYPE
+                    SYNTAX     BgpL2VpnRibRtEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Information about Kompella MPLS L2VPN rib route-target info"
+                    INDEX {
+                           bgpL2VpnRibRtRD,bgpL2VpnRibRtCeId,bgpL2VpnRibRtCeOffset,bgpL2VpnRibRouteTarget 
+                          }
+                    ::= { bgpL2VpnRibRtTable 1 }
+           BgpL2VpnRibRtEntry ::= SEQUENCE {                           
+                           bgpL2VpnRibRtRD
+                           OCTET STRING ,
+                           bgpL2VpnRibRtCeId
+                           INTEGER,
+                           bgpL2VpnRibRtCeOffset
+                           INTEGER,
+                           bgpL2VpnRibRouteTarget OCTET STRING
+                         }        
+                  bgpL2VpnRibRtRD OBJECT-TYPE
+                    SYNTAX     OCTET STRING(SIZE(0..8)) 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "route distinghuer"
+                    ::= { bgpL2VpnRibRtEntry 1 }                                      
+                  bgpL2VpnRibRtCeId OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ce id"
+                    ::= { bgpL2VpnRibRtEntry 2 }
+                   bgpL2VpnRibRtCeOffset OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ce offset"
+                    ::= { bgpL2VpnRibRtEntry 3 }    
+                   bgpL2VpnRibRouteTarget OBJECT-TYPE
+                    SYNTAX     OCTET STRING(SIZE(0..64)) 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "route target"
+                    ::= { bgpL2VpnRibRtEntry 4 }          
+
+-- private bgp log information
+    -- index:index
+            bgpLogTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpLogEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp event log table"
+                    ::= { bgp 38}
+            bgpLogEntry OBJECT-TYPE
+                    SYNTAX     BgpLogEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    INDEX {bgpLogIndex}
+                    ::= { bgpLogTable 1 }
+           BgpLogEntry ::= SEQUENCE {                           
+                           bgpLogIndex INTEGER,
+                           bgpLogInformation OCTET STRING
+                         }        
+                  bgpLogIndex OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpLogEntry 1 }                                      
+                 
+                   bgpLogInformation OBJECT-TYPE
+                    SYNTAX     OCTET STRING 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpLogEntry 2 }
+-- private bgp route-map information
+    -- index:index
+            bgpRouteMapTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpRouteMapEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp route-map table"
+                    ::= { bgp 39}
+            bgpRouteMapEntry OBJECT-TYPE
+                    SYNTAX     BgpRouteMapEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp Route Map Information"
+                    INDEX {bgpRouteMapIndex}
+                    ::= { bgpRouteMapTable 1 }
+           BgpRouteMapEntry ::= SEQUENCE {                           
+                           bgpRouteMapIndex INTEGER,
+                           bgpRouteMapStatus INTEGER,
+                           bgpRouteMapAction INTEGER,
+                           bgpRouteMapMatch INTEGER,
+                           bgpRouteMapSetAttrFlag INTEGER,
+                           bgpRouteMapSetAttr OCTET STRING,
+                           bgpRouteMapDestAddr InetAddress,
+                           bgpRouteMapDestMask InetAddress,
+                           bgpRouteMapSetOrigin INTEGER,
+                           bgpRouteMapSetMetric INTEGER
+                         }        
+         
+         bgpRouteMapIndex OBJECT-TYPE
+                    SYNTAX     INTEGER (1..65535)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Unique Index of route map table"
+                    ::= { bgpRouteMapEntry 1 }                                      
+
+         bgpRouteMapStatus OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                           up(1),down(2),delete(3),create(4)
+                                       }
+                    MAX-ACCESS read-write 
+                    STATUS     current
+                    DESCRIPTION
+                            "Status of route map table,if routemap is up,can not set any attribute"
+                    ::= { bgpRouteMapEntry 2 }                            
+ 
+         bgpRouteMapAction OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                           permit(0),deny(1)
+                                       }
+                    MAX-ACCESS read-write 
+                    STATUS     current
+                    DESCRIPTION
+                            "Match Action of route map table"
+                    ::= { bgpRouteMapEntry 3 }                            
+ 
+              bgpRouteMapMatch OBJECT-TYPE
+                    SYNTAX     INTEGER {
+                                           ipv4(1),ipv6(2)
+                                       }
+                    MAX-ACCESS read-write 
+                    STATUS     current
+                    DESCRIPTION
+                            "Match Type of route map table"
+                    ::= { bgpRouteMapEntry 4 }
+              bgpRouteMapSetAttrFlag OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Attribute Setting of route map table.0x01-origin,0x02-metric"
+                    ::= { bgpRouteMapEntry 5 }
+              bgpRouteMapSetAttr OBJECT-TYPE
+                    SYNTAX     OCTET STRING
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Attribute Setting of route map table.0x01-origin,0x02-metric"
+                    ::= { bgpRouteMapEntry 6 }
+              bgpRouteMapDestAddr OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Matched Ip Address of route map table,0 means all address"
+                    ::= { bgpRouteMapEntry 7 }
+              bgpRouteMapDestMask OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Matched Mask of route map table"
+                    ::= { bgpRouteMapEntry 8 }
+              bgpRouteMapSetOrigin OBJECT-TYPE
+                    SYNTAX     INTEGER {igp(0),egp(1),incomplete(2)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Origin Attribute Configured"
+                    ::= { bgpRouteMapEntry 9 }
+              bgpRouteMapSetMetric OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Metric Attribute Configured"
+                    ::= { bgpRouteMapEntry 10 }                    
+
+-- 44,private bgp redistribute using route-map information
+    -- index:index
+            bgpRedTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpRedEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp route-map redistrubute table"
+                    ::= { bgp 40}
+            bgpRedEntry OBJECT-TYPE
+                    SYNTAX     BgpRedEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp Route Map reistribute Information"
+                    INDEX {bgpRedProtocol,bgpRedRouteMapIndex,bgpRedAddressFamily,bgpRedSubAddressFamily}
+                    ::= { bgpRedTable 1 }
+           BgpRedEntry ::= SEQUENCE {                           
+                           bgpRedProtocol INTEGER,
+                           bgpRedRouteMapIndex INTEGER,
+                           bgpRedStatus INTEGER,
+                           bgpRedAddressFamily INTEGER,
+                           bgpRedSubAddressFamily INTEGER
+                         }        
+
+            bgpRedProtocol OBJECT-TYPE
+                    SYNTAX     INTEGER {connected(2),static(3),rip(8),isis(9),ospf(13)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Protocol of Redistribute"
+                    ::= { bgpRedEntry 1 }                                      
+            bgpRedRouteMapIndex OBJECT-TYPE
+                    SYNTAX     INTEGER (0..65535)
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "RouteMap used by Redistribute,0 means no route-map used"
+                    ::= { bgpRedEntry 2 }                                      
+            bgpRedStatus OBJECT-TYPE
+                    SYNTAX     INTEGER {delete(0),create(1),active(2)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Status of Redistribute"
+                    ::= { bgpRedEntry 3 }
+           bgpRedAddressFamily OBJECT-TYPE
+                    SYNTAX     INTEGER {ipv4(1),ipv6(2)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "address family of redistribute"
+                    ::= { bgpRedEntry 4 } 
+           bgpRedSubAddressFamily OBJECT-TYPE
+                    SYNTAX     INTEGER {unicast(1),multicast(2)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "sub address family of redistribute"
+                    ::= { bgpRedEntry 5 }
+
+-- 45,multilink protocol,direct nexthop table
+    -- index:index
+            bgpPeerNexthopTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpPeerNexthopEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp peer direct nexthop table"
+                    ::= { bgp 41}
+            bgpPeerNexthopEntry OBJECT-TYPE
+                    SYNTAX     BgpPeerNexthopEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp peer direct nexthop Information"
+                    INDEX {bgpPeerNexthopPeerAddress,bgpPeerNexthopAddress}
+                    ::= { bgpPeerNexthopTable 1 }
+           BgpPeerNexthopEntry ::= SEQUENCE {                           
+                           bgpPeerNexthopPeerAddress InetAddress,
+                           bgpPeerNexthopAddress InetAddress,
+                           bgpPeerNexthopPriority INTEGER,
+                           bgpPeerNexthopStatus INTEGER
+                         }        
+           bgpPeerNexthopPeerAddress OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Peer Address"
+                    ::= { bgpPeerNexthopEntry 1 }
+           bgpPeerNexthopAddress OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Nexthop Address"
+                    ::= { bgpPeerNexthopEntry 2 }
+           bgpPeerNexthopPriority OBJECT-TYPE
+                    SYNTAX     INTEGER (1..255)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Priority of Nexthop Address"
+                    ::= { bgpPeerNexthopEntry 3 }
+           bgpPeerNexthopStatus OBJECT-TYPE
+                    SYNTAX     INTEGER {up(1),down(0),create(2),delete(3)}
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Status of Nexthop Address"
+                    ::= { bgpPeerNexthopEntry 4 }  
+          
+  -- peer orf Capability table
+		    bgpPeerOrfCapabilityTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpPeerOrfCapabilityEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp neighbor Orf Capability table"
+                    ::= { bgp 42}     
+                    
+            bgpPeerOrfCapabilityEntry OBJECT-TYPE
+                    SYNTAX     BgpPeerOrfCapabilityEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp ORF"
+                    INDEX {bgpPeerOrfCapabilityVrid,bgpPeerOrfCapabilityAddrType,
+                           bgpPeerOrfCapabilityAddr,bgpPeerOrfCapabilityAf}
+                    ::= { bgpPeerOrfCapabilityTable 1 }
+                    
+           BgpPeerOrfCapabilityEntry ::= SEQUENCE {   
+           				   bgpPeerOrfCapabilityVrid	       INTEGER,
+           				   bgpPeerOrfCapabilityAddrType    InetAddressType,
+           				   bgpPeerOrfCapabilityAddr        InetAddress,
+           				   bgpPeerOrfCapabilityAf          INTEGER,
+           				   bgpPeerOrfCapabilityState       INTEGER
+           				   }
+           				   
+           bgpPeerOrfCapabilityVrid OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer vrid "
+                    ::= { bgpPeerOrfCapabilityEntry 1 }
+                    
+           bgpPeerOrfCapabilityAddrType  OBJECT-TYPE
+                    SYNTAX     InetAddressType 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer address type "
+                    ::= { bgpPeerOrfCapabilityEntry 2 }  
+                    
+           bgpPeerOrfCapabilityAddr  OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer address"
+                    ::= { bgpPeerOrfCapabilityEntry 3 }    
+                    
+           bgpPeerOrfCapabilityAf  OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer vrid "
+                    ::= { bgpPeerOrfCapabilityEntry 4 }
+                    
+           bgpPeerOrfCapabilityState  OBJECT-TYPE
+                    SYNTAX     INTEGER{
+                    capabilityNone(0), 
+                    capabilityRx(1),
+                    capabilityTx(2),
+                    capabilityBoth(3)
+                    } 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Capability value  "
+                    ::= { bgpPeerOrfCapabilityEntry 5 }  
+       
+    
+    -- peer remote orf Capability table
+		    bgpPeerRemoteOrfCapabilityTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpPeerRemoteOrfCapabilityEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp neighbor Remote Orf Capability table"
+                    ::= { bgp 54}     
+                    
+            bgpPeerRemoteOrfCapabilityEntry OBJECT-TYPE
+                    SYNTAX     BgpPeerRemoteOrfCapabilityEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp ORF"
+                    INDEX {bgpPeerRemoteOrfCapabilityVrid,bgpPeerRemoteOrfCapabilityAddrType,
+                           bgpPeerRemoteOrfCapabilityAddr,bgpPeerRemoteOrfCapabilityAf}
+                    ::= { bgpPeerRemoteOrfCapabilityTable 1 }
+                    
+           BgpPeerRemoteOrfCapabilityEntry ::= SEQUENCE {   
+           				   bgpPeerRemoteOrfCapabilityVrid	     INTEGER,
+           				   bgpPeerRemoteOrfCapabilityAddrType    InetAddressType,
+           				   bgpPeerRemoteOrfCapabilityAddr        InetAddress,
+           				   bgpPeerRemoteOrfCapabilityAf          INTEGER,
+           				   bgpPeerRemoteOrfCapabilityState       INTEGER
+           				   }
+           				   
+           bgpPeerRemoteOrfCapabilityVrid OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer vrid "
+                    ::= { bgpPeerRemoteOrfCapabilityEntry 1 }
+                    
+           bgpPeerRemoteOrfCapabilityAddrType  OBJECT-TYPE
+                    SYNTAX     InetAddressType 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Remote address type "
+                    ::= { bgpPeerRemoteOrfCapabilityEntry 2 }  
+                    
+           bgpPeerRemoteOrfCapabilityAddr  OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Remote address"
+                    ::= { bgpPeerRemoteOrfCapabilityEntry 3 }    
+                    
+           bgpPeerRemoteOrfCapabilityAf  OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Remote vrid "
+                    ::= { bgpPeerRemoteOrfCapabilityEntry 4 }
+                    
+           bgpPeerRemoteOrfCapabilityState  OBJECT-TYPE
+                    SYNTAX     INTEGER{
+                    capabilityNone(0), 
+                    capabilityRx(1),
+                    capabilityTx(2),
+                    capabilityBoth(3)
+                    } 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Remote Capability value  "
+                    ::= { bgpPeerRemoteOrfCapabilityEntry 5 }  
+                                                   				                  
+	-- Peer orf table
+            bgpPeerOrfTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpPeerOrfEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp Peer Orf table"
+                    ::= { bgp 43}     
+                    
+            bgpPeerOrfEntry OBJECT-TYPE
+                    SYNTAX     BgpPeerOrfEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp ORF"
+                    INDEX{bgpPeerOrfVrid,bgpPeerOrfAddrType,
+                           bgpPeerOrfAddr,bgpPeerOrfAf,bgpPeerOrfSeqnum}
+                    ::= { bgpPeerOrfTable 1 }
+                    
+           BgpPeerOrfEntry ::= SEQUENCE {                           
+                           bgpPeerOrfVrid   INTEGER,
+                           bgpPeerOrfAddrType InetAddressType,
+                           bgpPeerOrfAddr InetAddress,
+                           bgpPeerOrfAf     INTEGER,
+                           bgpPeerOrfSeqnum INTEGER,
+                           bgpPeerOrfMatchAction  INTEGER,             
+                           bgpPeerOrfMinPrefixLen INTEGER,
+                           bgpPeerOrfMaxPrefixLen INTEGER,
+                           bgpPeerOrfPrefixLen INTEGER,
+                           bgpPeerOrfDestAddress  InetAddress,
+                           bgpPeerOrfRowStatus RowStatus
+                         }  
+                               
+           bgpPeerOrfVrid OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer vrid "
+                    ::= { bgpPeerOrfEntry 1 }   
+                               
+           bgpPeerOrfAddrType OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Address type"
+                    ::= { bgpPeerOrfEntry 2 }               
+                           
+           bgpPeerOrfAddr OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Address "
+                    ::= { bgpPeerOrfEntry 3 }
+
+          bgpPeerOrfAf OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Address Family"
+                    ::= { bgpPeerOrfEntry 4 }
+                    
+          bgpPeerOrfSeqnum OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Seqnum"
+                    ::= { bgpPeerOrfEntry 5 }     
+                    
+          bgpPeerOrfMatchAction OBJECT-TYPE
+                    SYNTAX     INTEGER{permit(0),deny(1)} 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Local ORF or Remote ORF"
+                    ::= { bgpPeerOrfEntry 6 }    
+                    
+          bgpPeerOrfMinPrefixLen OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF min match PrefixLen"
+                    ::= { bgpPeerOrfEntry 7 }
+                    
+         bgpPeerOrfMaxPrefixLen OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF max match PrefixLen"
+                    ::= { bgpPeerOrfEntry 8 }
+            
+         bgpPeerOrfPrefixLen  OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF match PrefixLen"
+                    ::= { bgpPeerOrfEntry 9 }
+                    
+          bgpPeerOrfDestAddress OBJECT-TYPE
+                    SYNTAX     InetAddress 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF max match address"
+                    ::= { bgpPeerOrfEntry 10} 
+                    
+          bgpPeerOrfRowStatus  OBJECT-TYPE
+                    SYNTAX     RowStatus 
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Rowstatus"
+                    ::= { bgpPeerOrfEntry 11} 
+                                           
+     
+   -- Peer remote orf table
+            bgpPeerRemoteOrfTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpPeerRemoteOrfEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp Peer Remote Orf table"
+                    ::= { bgp 55}     
+                    
+            bgpPeerRemoteOrfEntry OBJECT-TYPE
+                    SYNTAX     BgpPeerRemoteOrfEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp Remote ORF"
+                    INDEX{bgpPeerRemoteOrfVrid,bgpPeerRemoteOrfAddrType,
+                          bgpPeerRemoteOrfAddr,bgpPeerRemoteOrfAf,bgpPeerRemoteOrfSeqnum}
+                    ::= { bgpPeerRemoteOrfTable 1 }
+                    
+           BgpPeerRemoteOrfEntry ::= SEQUENCE {                           
+                           bgpPeerRemoteOrfVrid   INTEGER,
+                           bgpPeerRemoteOrfAddrType InetAddressType,
+                           bgpPeerRemoteOrfAddr InetAddress,
+                           bgpPeerRemoteOrfAf     INTEGER,
+                           bgpPeerRemoteOrfSeqnum INTEGER,
+                           bgpPeerRemoteOrfMatchAction  INTEGER,             
+                           bgpPeerRemoteOrfMinPrefixLen INTEGER,
+                           bgpPeerRemoteOrfMaxPrefixLen INTEGER,
+                           bgpPeerRemoteOrfPrefixLen INTEGER,
+                           bgpPeerRemoteOrfDestAddress  InetAddress,
+                           bgpPeerRemoteOrfRowStatus RowStatus
+                         }  
+                               
+           bgpPeerRemoteOrfVrid OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer vrid "
+                    ::= { bgpPeerRemoteOrfEntry 1 }   
+                               
+           bgpPeerRemoteOrfAddrType OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Address type"
+                    ::= { bgpPeerRemoteOrfEntry 2 }               
+                           
+           bgpPeerRemoteOrfAddr OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Peer Address "
+                    ::= { bgpPeerRemoteOrfEntry 3 }
+
+          bgpPeerRemoteOrfAf OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Address Family"
+                    ::= { bgpPeerRemoteOrfEntry 4 }
+                    
+          bgpPeerRemoteOrfSeqnum OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Seqnum"
+                    ::= { bgpPeerRemoteOrfEntry 5 }     
+                    
+          bgpPeerRemoteOrfMatchAction OBJECT-TYPE
+                    SYNTAX     INTEGER{permit(0),deny(1)} 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Local ORF or Remote ORF"
+                    ::= { bgpPeerRemoteOrfEntry 6 }    
+                    
+          bgpPeerRemoteOrfMinPrefixLen OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF min match PrefixLen"
+                    ::= { bgpPeerRemoteOrfEntry 7 }
+                    
+         bgpPeerRemoteOrfMaxPrefixLen OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF max match PrefixLen"
+                    ::= { bgpPeerRemoteOrfEntry 8 }
+            
+         bgpPeerRemoteOrfPrefixLen  OBJECT-TYPE
+                    SYNTAX     INTEGER 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF match PrefixLen"
+                    ::= { bgpPeerRemoteOrfEntry 9 }
+                    
+          bgpPeerRemoteOrfDestAddress OBJECT-TYPE
+                    SYNTAX     InetAddress 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF max match address"
+                    ::= { bgpPeerRemoteOrfEntry 10} 
+                    
+          bgpPeerRemoteOrfRowStatus  OBJECT-TYPE
+                    SYNTAX     RowStatus 
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "ORF Rowstatus"
+                    ::= { bgpPeerRemoteOrfEntry 11}   
+                       
+   --  extern community table
+    -- index:as , address
+        bgpExternCommTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpExternCommEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp Orf List table"
+                    ::= { bgp 44}
+            bgpExternCommEntry OBJECT-TYPE
+                    SYNTAX     BgpExternCommEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp ORF List"
+                    INDEX {bgpExternCommAs,bgpExternCommAddress}
+                    ::= { bgpExternCommTable 1 }
+                    
+           BgpExternCommEntry ::= SEQUENCE {
+                           bgpExternCommAs INTEGER,
+                           bgpExternCommAddress InetAddress,
+                           bgpExternCommMaster INTEGER,
+                           bgpExternCommSub INTEGER,
+                           bgpExternCommAdditive INTEGER,
+                           bgpExternCommStatus INTEGER
+                          }
+           bgpExternCommAs OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpExternCommEntry 1 }   
+                                     
+           bgpExternCommAddress OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpExternCommEntry 2 }     
+            
+            bgpExternCommMaster OBJECT-TYPE
+                    SYNTAX     INTEGER(1..255)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpExternCommEntry 3 }   
+                    
+           bgpExternCommSub OBJECT-TYPE
+                    SYNTAX     INTEGER(1..255)
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpExternCommEntry 4 }
+                    
+         bgpExternCommAdditive   OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpExternCommEntry 5 }                              
+           
+          bgpExternCommStatus  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            ""
+                    ::= { bgpExternCommEntry 6 }                   
+                                                       
+                                                       
+                                                       
+     --  Redistribute table
+    -- index:bgpRedistributeFreeIndex  
+          bgpRedistributeTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpRedistributeEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp Redistribute table"
+                    ::= { bgp 45}    
+                    
+            bgpRedistributeEntry OBJECT-TYPE
+                    SYNTAX     BgpRedistributeEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp Redistribute List"
+                    INDEX {bgpRedistributeVrid,bgpRedistributeAf,bgpRedistributeProtocol,bgpRedistributeRoutePolicy}
+                    ::= { bgpRedistributeTable 1 }
+                    
+           BgpRedistributeEntry ::= SEQUENCE {
+                           bgpRedistributeVrid INTEGER,
+                           bgpRedistributeAf INTEGER,
+                           bgpRedistributeProtocol INTEGER,
+                           bgpRedistributeRoutePolicy INTEGER,
+                           bgpRedistributeMed INTEGER,
+                           bgpRedistributeStatus RowStatus
+                          }
+           bgpRedistributeVrid OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Redistribute vpn instance id"
+                    ::= { bgpRedistributeEntry 1 } 
+                    
+          bgpRedistributeAf OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Redistribute protocol family"
+                    ::= { bgpRedistributeEntry 2 }           
+                                                        
+          bgpRedistributeProtocol  OBJECT-TYPE
+                    SYNTAX     INTEGER {  
+                    		other(1),
+							local(2),
+							netmgmt(3),
+							icmp(4),
+							egp(5),
+							ggp(6),
+							hello(7),
+							rip(8),
+							isis(9),
+							esis(10),
+							ciscoIgrp(11),
+							bbnSpfIgp(12),
+							ospf(13),
+							bgp(14)
+                    		}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Redistribute protocol"
+                    ::= { bgpRedistributeEntry 3 } 
+                    
+          bgpRedistributeRoutePolicy  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Redistribute Route Policy index"
+                    ::= { bgpRedistributeEntry 4 }
+                    
+         bgpRedistributeMed  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Redistribute med index"
+                    ::= { bgpRedistributeEntry 5 }             
+                          
+           bgpRedistributeStatus   OBJECT-TYPE
+                    SYNTAX     RowStatus
+                     MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Redistribute  RowStatus"
+                    ::= { bgpRedistributeEntry 6}     
+                    
+                    
+    --  filter table
+    -- index:filterFreeIndex  
+          bgpFilterTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpFilterEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp Filter table"
+                    ::= { bgp 46}    
+                    
+            bgpFilterEntry OBJECT-TYPE
+                    SYNTAX     BgpFilterEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "Bgp Filter List"
+                    INDEX {bgpFilterVrid,bgpFilterAf,bgpFilterProtocol,bgpFilterRoutePolicy,bgpFilterDir}
+                    ::= { bgpFilterTable 1 }
+                    
+           BgpFilterEntry ::= SEQUENCE {
+                           bgpFilterVrid INTEGER,
+                           bgpFilterAf INTEGER,
+                           bgpFilterProtocol INTEGER,
+                           bgpFilterRoutePolicy INTEGER,
+                           bgpFilterDir INTEGER,  
+                           bgpFilterStatus RowStatus
+                          }
+           bgpFilterVrid OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Filter vpn instance id"
+                    ::= { bgpFilterEntry 1 } 
+                    
+          bgpFilterAf OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Filter protocol family"
+                    ::= { bgpFilterEntry 2 }           
+                                                        
+          bgpFilterProtocol  OBJECT-TYPE
+                    SYNTAX     INTEGER {  
+                    		other(1),
+							local(2),
+							netmgmt(3),
+							icmp(4),
+							egp(5),
+							ggp(6),
+							hello(7),
+							rip(8),
+							isis(9),
+							esis(10),
+							ciscoIgrp(11),
+							bbnSpfIgp(12),
+							ospf(13),
+							bgp(14)
+                    		}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Filter protocol"
+                    ::= { bgpFilterEntry 3 } 
+                    
+          bgpFilterRoutePolicy  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Filter Route Policy index"
+                    ::= { bgpFilterEntry 4 }
+                    
+         bgpFilterDir  OBJECT-TYPE
+                    SYNTAX     INTEGER{import(1),export(2)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Filter direction"
+                    ::= { bgpFilterEntry 5 }        
+                         
+                          
+           bgpFilterStatus   OBJECT-TYPE
+                    SYNTAX     RowStatus
+                     MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Filter RowStatus"
+                    ::= { bgpFilterEntry 6 }  
+                    
+                    
+       --  peer routepolicy table
+    -- index:peerAddrType,peerAddr,perrRoutePlocyFreeIndex  
+          bgpPeerRoutePolicyTable   OBJECT-TYPE
+                    SYNTAX     SEQUENCE OF BgpPeerRoutePolicyEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp Peer Route Policy table"
+                    ::= { bgp 47}    
+                    
+            bgpPeerRoutePolicyEntry OBJECT-TYPE
+                    SYNTAX     BgpPeerRoutePolicyEntry
+                    MAX-ACCESS not-accessible
+                    STATUS     current
+                    DESCRIPTION
+                            "bgp Peer Route Policy List"
+                    INDEX {bgpPeerRoutePolicyVrid,bgpPeerRoutePolicyAddrType,bgpPeerRoutePolicyAddress,
+                    	   bgpPeerRoutePolicyDir,bgpPeerRoutePolicyAf,bgpPeerRoutePolicy}
+                    ::= { bgpPeerRoutePolicyTable 1 }
+                    
+           BgpPeerRoutePolicyEntry ::= SEQUENCE { 
+           				   bgpPeerRoutePolicyVrid      INTEGER,
+           				   bgpPeerRoutePolicyAddrType  InetAddressType, 
+           				   bgpPeerRoutePolicyAddress   InetAddress,
+                           bgpPeerRoutePolicyAf        InetAddressType,
+                           bgpPeerRoutePolicyDir       INTEGER,
+                           bgpPeerRoutePolicy           INTEGER,                                
+                           bgpPeerRoutePolicyStatus    RowStatus
+                          }     
+        	bgpPeerRoutePolicyVrid OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "peer vpn instance id"
+                    ::= { bgpPeerRoutePolicyEntry 1 }
+                                 
+           bgpPeerRoutePolicyAddrType OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "peer address type.this peer must be existed"
+                    ::= { bgpPeerRoutePolicyEntry 2 }   
+                    
+          bgpPeerRoutePolicyAddress OBJECT-TYPE
+                    SYNTAX     InetAddress
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "peer address.this peer must be existed"
+                    ::= { bgpPeerRoutePolicyEntry 3 }          
+               
+          bgpPeerRoutePolicyAf OBJECT-TYPE
+                    SYNTAX     InetAddressType
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Peer Route Policy  protocol family"
+                    ::= { bgpPeerRoutePolicyEntry 4 }           
+                                                                           
+         bgpPeerRoutePolicyDir  OBJECT-TYPE
+                    SYNTAX     INTEGER{import(1),export(2)}
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Peer Route Policy direction"
+                    ::= { bgpPeerRoutePolicyEntry 5 }  
+                    
+          bgpPeerRoutePolicy  OBJECT-TYPE
+                    SYNTAX     INTEGER
+                    MAX-ACCESS read-only
+                    STATUS     current
+                    DESCRIPTION
+                            "Peer Route Policy direction"
+                    ::= { bgpPeerRoutePolicyEntry 6 }                
+                         
+           bgpPeerRoutePolicyStatus   OBJECT-TYPE
+                    SYNTAX     RowStatus
+                     MAX-ACCESS read-write
+                    STATUS     current
+                    DESCRIPTION
+                            "Filter RowStatus"
+                    ::= { bgpPeerRoutePolicyEntry 7}                                                                                         
+          
+    --  multicast route table
+    -- index:RD,dest,mask,nexthop
+		bgpMcastRouteTable   OBJECT-TYPE
+		        SYNTAX     SEQUENCE OF BgpMcastRouteEntry
+		        MAX-ACCESS not-accessible
+		        STATUS     current
+		        DESCRIPTION
+		                "multicast route information"
+		        ::= { bgp 57 }                 
+		        
+		bgpMcastRouteEntry OBJECT-TYPE
+		        SYNTAX     BgpMcastRouteEntry
+		        MAX-ACCESS not-accessible
+		        STATUS     current
+		        DESCRIPTION
+		                "Information about MPLS VPN RD info"
+		        INDEX {bgpMcastRouteVrid,bgpMcastRouteProtocol,
+		        	   bgpMcastRouteDestAddrType,bgpMcastRouteDestAddrPrefix,bgpMcastRouteDestAddr,
+		               bgpMcastRoutePeerVrid,bgpMcastRoutePeerAddrType,bgpMcastRoutePeerAddr,
+		               bgpMcastRouteNexthop 
+		              }
+		        ::= { bgpMcastRouteTable 1 }               
+                    
+        BgpMcastRouteEntry ::= SEQUENCE {
+				bgpMcastRouteVrid
+					INTEGER,     
+				bgpMcastRouteProtocol
+					INTEGER,	                      
+				bgpMcastRouteDestAddrType
+					InetAddressType,
+				bgpMcastRouteDestAddrPrefix
+					INTEGER,	
+				bgpMcastRouteDestAddr
+					InetAddress,  
+				bgpMcastRoutePeerVrid
+					INTEGER,	        
+				bgpMcastRoutePeerAddrType	
+					InetAddressType ,
+				bgpMcastRoutePeerAddr
+					InetAddress,                     	
+				bgpMcastRouteNexthop
+					InetAddress,        
+				bgpMcastRouteMed
+					INTEGER,
+				bgpMcastRouteLocalPref
+					INTEGER,
+				bgpMcastRouteAsSquence
+					OCTET STRING,
+				bgpMcastRouteOrigin
+					INTEGER,
+				bgpMcastRouteAtomicAggr
+					INTEGER,
+				bgpMcastRouteAggregatorAddr
+					InetAddress,
+				bgpMcastRouteCalcLocalPref
+					INTEGER,
+				bgpMcastRouteBest
+					INTEGER, 
+				bgpMcastRouteAttrUnknown
+					OCTET STRING,
+				bgpMcastRouteInLable
+					INTEGER, 
+				bgpMcastRouteOutLable
+					INTEGER,	
+				bgpMcastRouteRDString
+					OCTET STRING,
+				bgpMcastCommunity
+					OCTET STRING,
+		        bgpMcastExCommunity
+					OCTET STRING,
+                bgpMcastRouteClusterId
+					OCTET STRING
+
+            }     
+            
+         bgpMcastRouteVrid OBJECT-TYPE
+               SYNTAX     INTEGER 
+               MAX-ACCESS read-only
+               STATUS     current
+               DESCRIPTION
+                       "Route vpn instance id"
+               ::= { bgpMcastRouteEntry 1 }    
+         
+         bgpMcastRouteProtocol OBJECT-TYPE
+              SYNTAX INTEGER{  
+					other(1),
+					local(2),
+					netmgmt(3),
+					icmp(4),
+					egp(5),
+					ggp(6),
+					hello(7 ),
+					rip(8),
+					isis(9),
+					esis(10),
+					ciscoIgrp(11),
+					bbnSpfIgp(12),
+					ospf(13),
+					bgp(14)
+                 }
+              MAX-ACCESS read-only
+              STATUS     current
+              DESCRIPTION
+					"Protocol type:
+					other           	1
+					local           	2
+					netmgmt         	3
+					icmp            	4
+					egp             	5
+					ggp             	6
+					hello           	7
+					rip             	8
+					is_is           	9
+					es_is				10
+					ciscoIgrp			11
+					bbnSpfIgp			12
+					ospf				13
+					bgp     			14"
+                ::= { bgpMcastRouteEntry 2 }
+
+         	                               
+           bgpMcastRouteDestAddrType OBJECT-TYPE
+                SYNTAX     InetAddressType
+                MAX-ACCESS read-only
+                STATUS     current
+                DESCRIPTION
+                    "destination address type"
+                ::= { bgpMcastRouteEntry 3 }    
+           
+           bgpMcastRouteDestAddrPrefix OBJECT-TYPE
+				SYNTAX     INTEGER 
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+					"destination address prefixlen"
+				::= { bgpMcastRouteEntry 4 } 
+
+                 
+           bgpMcastRouteDestAddr OBJECT-TYPE
+				SYNTAX     InetAddress
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+					"destination address"
+				::= { bgpMcastRouteEntry 5 }
+                        
+                                                         
+          bgpMcastRoutePeerVrid   OBJECT-TYPE
+				SYNTAX     INTEGER 
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+					"peer address vpn instance id"
+				::= { bgpMcastRouteEntry 6 }                                 
+                                              
+           bgpMcastRoutePeerAddrType OBJECT-TYPE
+				SYNTAX     InetAddressType
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				     "peer address type"
+				::= { bgpMcastRouteEntry 7 } 
+                 
+           bgpMcastRoutePeerAddr OBJECT-TYPE
+				SYNTAX     InetAddress
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       "peer address"
+				::= { bgpMcastRouteEntry 8 }
+            
+                    
+           bgpMcastRouteNexthop OBJECT-TYPE
+				SYNTAX     InetAddress
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        "next hop"
+				::= { bgpMcastRouteEntry 9} 
+          
+           bgpMcastRouteMed  OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpMcastRouteEntry 10} 
+                 
+           bgpMcastRouteLocalPref  OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpMcastRouteEntry 11} 
+                       
+           bgpMcastRouteAsSquence     OBJECT-TYPE
+				SYNTAX     OCTET STRING
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				      ""
+				::= { bgpMcastRouteEntry 12}
+                        
+           bgpMcastRouteOrigin OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpMcastRouteEntry 13} 
+				
+         bgpMcastRouteAtomicAggr  OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpMcastRouteEntry 14}  
+                 
+         bgpMcastRouteAggregatorAddr   OBJECT-TYPE
+				SYNTAX     InetAddress
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpMcastRouteEntry 15}  
+                  
+                      
+        bgpMcastRouteCalcLocalPref   OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpMcastRouteEntry 16}
+				
+        bgpMcastRouteBest  OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				        ""
+				::= { bgpMcastRouteEntry 17}
+
+       bgpMcastRouteAttrUnknown  OBJECT-TYPE
+				SYNTAX     OCTET STRING  
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpMcastRouteEntry 18}     
+                  
+        bgpMcastRouteInLable   OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpMcastRouteEntry 19}                           
+		
+		bgpMcastRouteOutLable   OBJECT-TYPE
+				SYNTAX     INTEGER
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       ""
+				::= { bgpMcastRouteEntry 20}
+				
+		bgpMcastRouteRDString  OBJECT-TYPE
+				SYNTAX     OCTET STRING  
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       "RD string"
+				::= { bgpMcastRouteEntry 21}
+      
+        bgpMcastCommunity    OBJECT-TYPE
+				SYNTAX     OCTET STRING  
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       "RD string"
+				::= { bgpMcastRouteEntry 22}    
+				
+	    bgpMcastExCommunity  OBJECT-TYPE
+				SYNTAX     OCTET STRING  
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       "RD string"
+				::= { bgpMcastRouteEntry 23}  
+				
+		bgpMcastRouteClusterId  OBJECT-TYPE
+				SYNTAX     OCTET STRING  
+				MAX-ACCESS read-only
+				STATUS     current
+				DESCRIPTION
+				       "RD string"
+				::= { bgpMcastRouteEntry 24}		
+								  			           
+     -- Traps.
+
+                bgpTraps                OBJECT IDENTIFIER ::= { bgp 48}
+
+                bgpEstablished NOTIFICATION-TYPE
+                    OBJECTS { bgpPeerLastError,
+                               bgpPeerState      }
+                    STATUS  current
+                    DESCRIPTION
+                            "The BGP Established event is generated when
+                            the BGP FSM enters the ESTABLISHED state."
+                    ::= { bgpTraps 1 }
+
+                bgpBackwardTransition NOTIFICATION-TYPE
+                    OBJECTS { bgpPeerLastError,
+                              bgpPeerState    }
+                    STATUS  current
+                    DESCRIPTION
+                            "The BGPBackwardTransition Event is generated
+                            when the BGP FSM moves from a higher numbered
+                            state to a lower numbered state."
+                    ::= { bgpTraps 2 }
+
+                 
+END

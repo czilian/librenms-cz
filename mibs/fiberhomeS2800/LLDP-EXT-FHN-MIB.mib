@@ -1,0 +1,659 @@
+LLDP-EXT-FHN-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32, Gauge32, Unsigned32, 
+    NOTIFICATION-TYPE
+        FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION, TruthValue
+        FROM SNMPv2-TC
+    MODULE-COMPLIANCE, OBJECT-GROUP, NOTIFICATION-GROUP
+        FROM SNMPv2-CONF
+    lldpExtensions, lldpLocPortNum, 
+    lldpRemTimeMark, lldpRemLocalPortNum, lldpRemIndex,
+    lldpPortConfigEntry, lldpRemChassisIdSubtype, lldpRemChassisId
+        FROM LLDP-MIB
+    Dscp
+        FROM DIFFSERV-DSCP-TC
+    SnmpAdminString
+        FROM SNMP-FRAMEWORK-MIB;
+
+lldpXFhnMIB MODULE-IDENTITY
+    LAST-UPDATED "200905250000Z" -- May 25th, 2009
+    ORGANIZATION "Fiberhome networks"
+    CONTACT-INFO 
+"  WG-URL: http://www.fhn.com.cn
+             WG-EMail: lshxxl@fhn.com.cn
+              Contact: lsh, fiberhome networks
+               Postal: Telecommunications Industry Association
+                       2500 Wilson Blvd., Suite 300
+                       Arlington, VA 22201 USA
+                  Tel: (027) 87693442
+               E-mail: lshxxl@fhn.com.cn"
+    DESCRIPTION
+            "The LLDP Management Information Base extension module for
+            F-engine discovery information.
+
+            In order to assure the uniqueness of the LLDP-MIB,
+            lldpXMedMIB is branched from lldpExtensions using the TIA OUI 
+            value as the node.  An OUI/'company_id' is a 24 bit globally 
+            unique assigned number referenced by various standards.
+
+            Copyright (C) F-engine (2009).  This version of this MIB module
+            is published.
+
+            See the standard itself for full legal notices."
+    REVISION        "200905250000Z" -- May 25th, 2009
+    DESCRIPTION
+            "Published as part of ANSI/TIA-1057."
+   -- OUI for TIA is 4795 (00-04-67)
+   ::= { lldpExtensions 1127 } 
+
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+--
+-- LLDP-FHN Information
+--
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+lldpXFhnNotifications    OBJECT IDENTIFIER ::= { lldpXFhnMIB 0 }
+lldpXFhnObjects          OBJECT IDENTIFIER ::= { lldpXFhnMIB 1 }
+
+-- LLDP FHN Extension Notifications
+-- Transmission of LLDP FHN Extension Notification is controlled by the
+-- lldpNotificationInterval object in the LLDP MIB defined in 
+-- IEEE 802.1AB-2005
+
+
+-- LLDP FHN extension MIB groups
+
+lldpXFhnConfig     OBJECT IDENTIFIER ::= { lldpXFhnObjects 1 }
+lldpXFhnLocalData  OBJECT IDENTIFIER ::= { lldpXFhnObjects 2 }
+lldpXFhnRemoteData OBJECT IDENTIFIER ::= { lldpXFhnObjects 3 }
+
+-- textual conventions
+
+-- LLDP-FHN Capabilities TC
+
+LldpXFhnCapabilities  ::= TEXTUAL-CONVENTION
+    STATUS     current
+    DESCRIPTION
+            "Bitmap that includes the FHN organizationally defined set of LLDP
+            TLVs the device is capable of and whose transmission is allowed on 
+            the local LLDP agent by network management.  
+
+            Each bit in the bitmap corresponds to an LLDP-FHN subtype associated  
+            with a specific TIA TR41.4 FHN TLV.  
+
+            Having the bit 'capabilities(0)' set indicates that the LLDP 
+            agent refers to the Capabilities TLVs.
+
+            Having the bit 'sysObjectID(1)' set indicates that the LLDP 
+            agent refers to the Network Policy TLVs.
+
+            Having the bit 'inventory(2)' set indicates that 
+            the LLDP agent refers to the Hardware Revision, Firmware 
+            Revision, Software Revision, Serial Number, Manufacturer Name, 
+            Model Name, and Asset ID TLVs."
+    
+    SYNTAX      BITS {
+            capabilities(0),
+            sysObjectID(1),
+            inventory(2),
+            l2tcp(3)
+    }
+
+
+    
+------------------------------------------------------------------------------
+-- FHN - Configuration
+------------------------------------------------------------------------------
+
+lldpXFhnConfigMaxRemotes OBJECT-TYPE
+    SYNTAX      OBJECT IDENTIFIER
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+            "The location subtype advertised by the local device."
+    REFERENCE 
+            "ANSI/TIA-1057, Section 10.2.4.2"
+    ::= { lldpXFhnConfig 1 }
+
+lldpXFhnPortConfigTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF LldpXFhnPortConfigEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "A table that controls selection of LLDP TLVs to be transmitted 
+            on individual ports."
+    ::= { lldpXFhnConfig 2 }
+
+lldpXFhnPortConfigEntry  OBJECT-TYPE
+    SYNTAX      LldpXFhnPortConfigEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "LLDP configuration information that controls the
+            transmission of the FHN organizationally defined TLVs on
+            LLDP transmission capable ports.
+
+            This configuration object augments the lldpPortConfigEntry of
+            the LLDP-MIB, therefore it is only present along with the port
+            configuration defined by the associated lldpPortConfigEntry
+            entry.
+
+            Each active lldpXFhnPortConfigEntry must be stored and 
+            retrieved from non-volatile storage (along with the 
+            corresponding lldpPortConfigEntry) after a re-initialization 
+            of the management system."
+    AUGMENTS { lldpPortConfigEntry }
+    ::= { lldpXFhnPortConfigTable 1 }
+
+LldpXFhnPortConfigEntry ::= SEQUENCE {
+    lldpXFhnPortCapSupported        LldpXFhnCapabilities,  
+    lldpXFhnPortConfigTLVsTxEnable  LldpXFhnCapabilities
+}
+
+lldpXFhnPortCapSupported  OBJECT-TYPE
+    SYNTAX      LldpXFhnCapabilities
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The bitmap includes the FHN organizationally defined set of LLDP
+            TLVs whose transmission is possible for the respective port
+            on the LLDP agent of the device. Each bit in the bitmap corresponds
+            to an LLDP-FHN subtype associated with a specific TIA TR41.4 FHN 
+            optional TLV. If the bit is set, the agent supports the 
+            corresponding TLV."
+    REFERENCE 
+            "ANSI/TIA-1057, Section 10.2.2.3"
+    ::= { lldpXFhnPortConfigEntry  1 }
+
+lldpXFhnPortConfigTLVsTxEnable  OBJECT-TYPE
+    SYNTAX      LldpXFhnCapabilities
+    MAX-ACCESS  read-write
+    STATUS      current
+    DESCRIPTION
+            "The lldpXFhnPortConfigTLVsTxEnable, defined as a bitmap,
+            includes the FHN organizationally defined set of LLDP
+            TLVs whose transmission is allowed on the local LLDP agent by
+            the network management.  Each bit in the bitmap corresponds
+            to an LLDP-FHN subtype associated with a specific TIA TR41.4 FHN 
+            optional TLV. If the bit is set, the agent will send the 
+            corresponding TLV if the respective capability is supported per 
+            port.
+
+            Setting a bit with in this object for a non-supported capability
+            shall have no functional effect and will result in an inconsistent
+            value error returned to the management application. 
+ 
+            There are other rules and restrictions that prevent arbitrary
+            combinations of TLVs to be enabled on LLDP-FHN devices according to
+            the device classes. These rules are defined in Section 10.2.1, 
+            Tables 5 - 9 of ANSI/TIA-1057. In case a management application 
+            attempts to set this object to a value that does not follow the rules, 
+            the set operation shall have and will result in an inconsistent 
+            value error returned to the management application. 
+
+            Setting this object to an empty set is valid and effectively 
+            disables LLDP-FHN on a per-port basis by disabling transmission of 
+            all FHN organizational TLVs. In this case the remote tables objects 
+            in the LLDP-FHN MIB corresponding to the respective port will not 
+            be populated. 
+             
+            The default value for lldpXFhnPortConfigTLVsTxEnable object
+            is an empty set, which means no enumerated values are set.
+
+            The value of this object must be restored from non-volatile
+            storage after a re-initialization of the management system."
+    REFERENCE 
+            "ANSI/TIA-1057, Section 10.2.2.3"
+    DEFVAL  { { } }
+    ::= { lldpXFhnPortConfigEntry  2 }
+
+
+
+
+
+------------------------------------------------------------------------------
+-- LLDP-FHN - Local Device Information 
+------------------------------------------------------------------------------
+
+lldpXFhnLocSysObjectID OBJECT-TYPE
+    SYNTAX      OBJECT IDENTIFIER
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The location subtype advertised by the local device."
+    REFERENCE 
+            "ANSI/TIA-1057, Section 10.2.4.2"
+    ::= { lldpXFhnLocalData 1 }
+
+
+--- Inventory Information
+--- Local Inventory Information transmitted by an endpoint
+
+lldpXFhnLocHardwareRev    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific hardware revision string
+            as advertised by the endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.1"
+    ::= { lldpXFhnLocalData 2 }
+
+lldpXFhnLocFirmwareRev    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific firmware revision string
+            as advertised by the endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.2"
+    ::= { lldpXFhnLocalData 3 }
+
+lldpXFhnLocSoftwareRev    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific software revision string
+            as advertised by the endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.3"
+    ::= { lldpXFhnLocalData 4 }
+
+lldpXFhnLocSerialNum    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific serial number
+            as advertised by the endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.4"
+    ::= { lldpXFhnLocalData 5 }
+
+lldpXFhnLocMfgName    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific manufacturer name
+            as advertised by the endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.5"
+    ::= { lldpXFhnLocalData 6 }
+
+lldpXFhnLocModelName    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific model name
+            as advertised by the endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.6"
+    ::= { lldpXFhnLocalData 7 }
+
+lldpXFhnLocAssetID    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific asset tracking identifier
+            as advertised by the endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.7"
+    ::= { lldpXFhnLocalData 8 }
+
+
+lldpXFhnLocPortTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF LldpXFhnLocPortEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "A table that displays LLDP-FHN ports."
+    ::= { lldpXFhnLocalData 9 }
+
+lldpXFhnLocPortEntry  OBJECT-TYPE
+    SYNTAX      LldpXFhnLocPortEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "LLDP-FHN port table. "
+    INDEX   { lldpLocPortNum }
+    ::= { lldpXFhnLocPortTable 1 }
+
+LldpXFhnLocPortEntry ::= SEQUENCE {
+      lldpXFhnLocPortUnit    Unsigned32
+}
+
+lldpXFhnLocPortUnit  OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "."
+    REFERENCE 
+            "ANSI/TIA-1057, Sections 10.2.2.1"
+    ::= { lldpXFhnLocPortEntry  1 }
+
+
+------------------------------------------------------------------------------
+-- LLDP-FHN  - Remote Devices Information
+------------------------------------------------------------------------------
+
+
+
+-- LLdpXFhnRemCapabilitiesTable
+-- this table is read by a manager to determine what capabilities
+-- exists and are enabled on the remote system connected to the port
+ 
+-- The information in this table is based upon the information advertised 
+-- by the remote device and received on each port in the capabilities TLV
+ 
+lldpXFhnRemCapabilitiesTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF LldpXFhnRemCapabilitiesEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "A table that displays LLDP-FHN capabilities of remote devices 
+            connected to individual ports."
+    ::= { lldpXFhnRemoteData 1 }
+
+lldpXFhnRemCapabilitiesEntry  OBJECT-TYPE
+    SYNTAX      LldpXFhnRemCapabilitiesEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "LLDP-FHN capabilities of remote devices connected to the device 
+            ports and communicating via LLDP-FHN.
+
+            The remote tables in the LLDP-FHN MIB excepting this table may be 
+            sparsely populate. An entry in one of these table is meaningful 
+            and shall be populated by the agent only if the corresponding bits
+            for the respective function are set in the objects in this table. "
+    INDEX   { lldpRemTimeMark,
+              lldpRemLocalPortNum,
+              lldpRemIndex }
+    ::= { lldpXFhnRemCapabilitiesTable 1 }
+
+LldpXFhnRemCapabilitiesEntry ::= SEQUENCE {
+      lldpXFhnRemCapSupported  LldpXFhnCapabilities,
+      lldpXFhnRemCapCurrent    LldpXFhnCapabilities
+}
+
+lldpXFhnRemCapSupported  OBJECT-TYPE
+    SYNTAX      LldpXFhnCapabilities
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The bitmap includes the FHN organizationally defined set of LLDP
+            TLVs whose transmission is possible on the LLDP agent of the remote
+            device connected to this port. Each bit in the bitmap corresponds
+            to an LLDP-FHN subtype associated with a specific TIA TR41.4 FHN                
+            optional TLV. If the bit is set, the agent has the capability 
+            to support the corresponding TLV."
+    REFERENCE 
+            "ANSI/TIA-1057, Sections 10.2.2.1"
+    ::= { lldpXFhnRemCapabilitiesEntry  1 }
+
+lldpXFhnRemCapCurrent  OBJECT-TYPE
+    SYNTAX      LldpXFhnCapabilities
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The bitmap includes the FHN organizationally defined set of LLDP
+            TLVs whose transmission is possible on the LLDP agent of the remote
+            device connected to this port. Each bit in the bitmap corresponds
+            to an LLDP-FHN subtype associated with a specific TIA TR41.4 FHN                
+            optional TLV. If the bit is set, the agent currently supports the 
+            corresponding TLV."
+    REFERENCE 
+            "ANSI/TIA-1057, Sections 10.2.2.1"
+    ::= { lldpXFhnRemCapabilitiesEntry  2 }
+
+
+
+
+---
+---
+--- lldpXFhnRemSysObjectIDTable: system object ID Table
+---
+---
+lldpXFhnRemSysObjectIDTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF LldpXFhnRemSysObjectIDEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "This table contains media policy information as advertised
+            by the remote system.
+
+            This table may be sparsely populated. Entries in this table are
+            relevant only if the networkPolicy(0) bits in the 
+            lldpXFhnRemCapSupported and lldpXFhnRemCapCurrent objects of the 
+            corresponding ports are set."
+    ::= { lldpXFhnRemoteData 2 }
+
+lldpXFhnRemSysObjectIDEntry OBJECT-TYPE
+    SYNTAX      LldpXFhnRemSysObjectIDEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "Information about the per port per policy type policy 
+             information for a particular physical network connection."
+    INDEX   { lldpRemTimeMark,
+              lldpRemLocalPortNum,
+              lldpRemIndex }
+    ::= { lldpXFhnRemSysObjectIDTable 1 }
+ 
+
+LldpXFhnRemSysObjectIDEntry ::= SEQUENCE {
+              lldpXFhnRemSysObjectID        OBJECT IDENTIFIER
+}
+
+lldpXFhnRemSysObjectID OBJECT-TYPE
+    SYNTAX      OBJECT IDENTIFIER
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The media type that defines the primary function of the
+             application for the policy advertised by the endpoint connected 
+             remotely to this port." 
+    REFERENCE 
+            "ANSI/TIA-1057, Section 10.2.3.1"
+    ::= { lldpXFhnRemSysObjectIDEntry 1 }
+
+
+
+--- lldpXFhnRemInventoryTable - Remote Inventory Information
+--- 
+
+lldpXFhnRemInventoryTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF LldpXFhnRemInventoryEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "This table contains inventory information as advertised
+            by the remote system.
+            
+            This table may be sparsely populated. Entries in this table are
+            relevant only if the inventory(2) bits in the 
+            lldpXFhnRemCapSupported and lldpXFhnRemCapCurrent objects of the 
+            corresponding ports are set "
+    ::= { lldpXFhnRemoteData 3 }
+
+lldpXFhnRemInventoryEntry OBJECT-TYPE
+    SYNTAX      LldpXFhnRemInventoryEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+            "Information about inventory information for the remote devices
+             connected to the ports." 
+    INDEX   { lldpRemTimeMark,
+              lldpRemLocalPortNum,
+              lldpRemIndex }
+    ::= { lldpXFhnRemInventoryTable 1 }
+
+LldpXFhnRemInventoryEntry ::= SEQUENCE {
+              lldpXFhnRemHardwareRev           SnmpAdminString,
+              lldpXFhnRemFirmwareRev           SnmpAdminString,
+              lldpXFhnRemSoftwareRev           SnmpAdminString,
+              lldpXFhnRemSerialNum             SnmpAdminString,
+              lldpXFhnRemMfgName               SnmpAdminString,
+              lldpXFhnRemModelName             SnmpAdminString,
+              lldpXFhnRemAssetID               SnmpAdminString
+              } 
+
+lldpXFhnRemHardwareRev    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific hardware revision string
+            as advertised by the remote endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.1"
+    ::= { lldpXFhnRemInventoryEntry 1 }
+
+lldpXFhnRemFirmwareRev    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific firmware revision string
+            as advertised by the remote endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.2"
+    ::= { lldpXFhnRemInventoryEntry 2 }
+
+lldpXFhnRemSoftwareRev    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific software revision string
+            as advertised by the remote endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.3"
+    ::= { lldpXFhnRemInventoryEntry 3 }
+
+lldpXFhnRemSerialNum    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific serial number
+            as advertised by the remote endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.4"
+    ::= { lldpXFhnRemInventoryEntry 4 }
+
+lldpXFhnRemMfgName    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific manufacturer name
+            as advertised by the remote endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.5"
+    ::= { lldpXFhnRemInventoryEntry 5 }
+
+lldpXFhnRemModelName    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific model name
+            as advertised by the remote endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.6"
+    ::= { lldpXFhnRemInventoryEntry 6 }
+
+lldpXFhnRemAssetID    OBJECT-TYPE
+    SYNTAX      SnmpAdminString (SIZE (0..32))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+            "The vendor-specific asset tracking identifier
+            as advertised by the remote endpoint."
+    REFERENCE 
+            " ANSI/TIA-1057, Section 10.2.6.7"
+    ::= { lldpXFhnRemInventoryEntry 7 }
+
+---
+
+
+-- conformance information
+
+lldpXFhnConformance OBJECT IDENTIFIER ::= { lldpXFhnMIB 2 }
+lldpXFhnCompliances OBJECT IDENTIFIER ::= { lldpXFhnConformance 1 }
+lldpXFhnGroups      OBJECT IDENTIFIER ::= { lldpXFhnConformance 2 }
+
+-- compliance statements
+
+lldpXFhnCompliance MODULE-COMPLIANCE
+    STATUS  current
+    DESCRIPTION
+            "The compliance statement for SNMP entities which implement
+            the LLDP Fhn extension MIB."
+ 
+    MODULE  -- this module
+        MANDATORY-GROUPS { lldpXFhnConfigGroup, 
+                           lldpXFhnRemSysGroup
+        }
+        GROUP lldpXFhnOptSysOjbectIDGroup
+            DESCRIPTION
+                "This group represents the information associated with
+                the LLDP-FHN optional Media Policy TLVs, 
+                therefore the agent may not implement them."
+           ::= { lldpXFhnCompliances 1 }
+
+-- MIB groupings
+
+lldpXFhnConfigGroup    OBJECT-GROUP
+    OBJECTS {
+        lldpXFhnPortCapSupported, 
+        lldpXFhnPortConfigTLVsTxEnable
+    }
+    STATUS  current
+    DESCRIPTION
+            "The collection of objects which are used to configure or
+            describe the configuration or behavior of the LLDP-FHN
+            organizational extension implementation."
+    ::= { lldpXFhnGroups 1 }
+
+lldpXFhnOptSysOjbectIDGroup  OBJECT-GROUP
+    OBJECTS {
+        lldpXFhnLocSysObjectID 
+        }
+    STATUS  current
+    DESCRIPTION
+            "The collection of objects which are used to represent LLDP
+            FHN organizational extension for Location Information."
+    ::= { lldpXFhnGroups 2 }
+
+
+
+lldpXFhnRemSysGroup  OBJECT-GROUP
+    OBJECTS {
+        lldpXFhnRemCapSupported,
+        lldpXFhnRemCapCurrent,
+        lldpXFhnRemSysObjectID
+    }
+     STATUS  current
+    DESCRIPTION
+            "The collection of objects which are used to represent LLDP-
+            FHN organizational extension Remote Device Information."
+    ::= { lldpXFhnGroups 3 }
+
+
+
+
+
+END
