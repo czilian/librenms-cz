@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 if ($device['os_group'] == 'cisco') {
     $cefs   = array();
     $cefs   = snmpwalk_cache_threepart_oid($device, 'CISCO-CEF-MIB::cefSwitchingStatsEntry', $cefs, 'CISCO-CEF-MIB');
@@ -11,6 +12,21 @@ if ($device['os_group'] == 'cisco') {
         $cefs_db[$cef_id] = $ceftmp['cef_switching_id'];
     }
 
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+if ($device['os_group'] == 'cisco') {
+    $cefs   = array();
+    $cefs   = snmpwalk_cache_threepart_oid($device, 'CISCO-CEF-MIB::cefSwitchingStatsEntry', $cefs, 'CISCO-CEF-MIB');
+    $polled = time();
+
+    $cefs_query = dbFetchRows('SELECT * FROM `cef_switching` WHERE `device_id` = ?', array($device['device_id']));
+    foreach ($cefs_query as $ceftmp) {
+        $cef_id           = $device['device_id'].'-'.$ceftmp['entPhysicalIndex'].'-'.$ceftmp['afi'].'-'.$ceftmp['cef_index'];
+        $cefs_db[$cef_id] = $ceftmp['cef_switching_id'];
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     d_echo($cefs);
 
     if (is_array($cefs)) {
@@ -46,11 +62,18 @@ if ($device['os_group'] == 'cisco') {
                     $cef_entry = dbFetchRow('SELECT * FROM `cef_switching` WHERE `device_id` = ? AND `entPhysicalIndex` = ? AND `afi` = ? AND `cef_index` = ?', array($device['device_id'], $entity, $afi, $index));
 
                     $rrd_name = array('cefswitching', $entity, $afi, $index);
+<<<<<<< HEAD
                     $rrd_def = array(
                         'DS:drop:DERIVE:600:0:1000000',
                         'DS:punt:DERIVE:600:0:1000000',
                         'DS:hostpunt:DERIVE:600:0:1000000'
                     );
+=======
+                    $rrd_def = RrdDefinition::make()
+                        ->addDataset('drop', 'DERIVE', 0, 1000000)
+                        ->addDataset('punt', 'DERIVE', 0, 1000000)
+                        ->addDataset('hostpunt', 'DERIVE', 0, 1000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
                     // Copy HC to non-HC if they exist
                     if (is_numeric($cef_stat['cefSwitchingHCDrop'])) {
@@ -99,6 +122,19 @@ if ($device['os_group'] == 'cisco') {
         dbDelete('cef_switching', '`cef_switching_id` =  ?', array($cef_switching_id));
         echo '-';
     }
+<<<<<<< HEAD
 
     echo "\n";
 } //end if
+=======
+
+    echo "\n";
+} //end if
+
+unset(
+    $cefs,
+    $polled,
+    $cefs_query,
+    $entity_array
+);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

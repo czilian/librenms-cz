@@ -37,9 +37,15 @@ echo "<br>\n";
 
 echo '</td><td width=120>';
 
+<<<<<<< HEAD
 echo "<img src='images/icons/wireless.png' style='height:20px; width:20px;' align=absmiddle /> ".format_bi($ap[numasoclients]).' Clients<br />';
 echo "<img src='images/icons/wireless.png' style='height:20px; width:20px;' align=absmiddle /> ".format_bi($ap[radioutil]).' % busy<br />';
 echo "<img src='images/icons/wireless.png' style='height:20px; width:20px;' align=absmiddle /> ".format_bi($ap[interference]).' interference index<br />';
+=======
+echo "<i class='fa fa-wifi fa-lg icon-theme' aria-hidden='true'></i> ".format_bi($ap[numasoclients]).' Clients<br />';
+echo "<i class='fa fa-wifi fa-lg icon-theme' aria-hidden='true'></i> ".format_bi($ap[radioutil]).' % busy<br />';
+echo "<i class='fa fa-wifi fa-lg icon-theme' aria-hidden='true'></i> ".format_bi($ap[interference]).' interference index<br />';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 echo '</td></tr>';
 

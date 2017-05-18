@@ -40,7 +40,14 @@ $app->group(
                         // api/v0/devices/$hostname/vlans
                         $app->get('/:hostname/graphs', 'authToken', 'get_graphs')->name('get_graphs');
                         // api/v0/devices/$hostname/graphs
+<<<<<<< HEAD
                         $app->get('/:hostname/ports', 'authToken', 'get_port_graphs')->name('get_port_graphs');
+=======
+                        $app->get('/:hostname/health(/:type)(/:sensor_id)', 'authToken', 'list_available_health_graphs')->name('list_available_health_graphs');
+                        // api/v0/devices/$hostname/health
+                        $app->get('/:hostname/ports', 'authToken', 'get_port_graphs')->name('get_port_graphs');
+                        $app->get('/:hostname/ip', 'authToken', 'get_ip_addresses')->name('get_device_ip_addresses');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         $app->get('/:hostname/port_stack', 'authToken', 'get_port_stack')->name('get_port_stack');
                         // api/v0/devices/$hostname/ports
                         $app->get('/:hostname/components', 'authToken', 'get_components')->name('get_components');
@@ -48,6 +55,10 @@ $app->group(
                         $app->put('/:hostname/components', 'authToken', 'edit_components')->name('edit_components');
                         $app->delete('/:hostname/components/:component', 'authToken', 'delete_components')->name('delete_components');
                         $app->get('/:hostname/groups', 'authToken', 'get_device_groups')->name('get_device_groups');
+<<<<<<< HEAD
+=======
+                        $app->get('/:hostname/graphs/health/:type(/:sensor_id)', 'authToken', 'get_graph_generic_by_hostname')->name('get_health_graph');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         $app->get('/:hostname/:type', 'authToken', 'get_graph_generic_by_hostname')->name('get_graph_generic_by_hostname');
                         // api/v0/devices/$hostname/$type
                         $app->get('/:hostname/ports/:ifname', 'authToken', 'get_port_stats_by_port_hostname')->name('get_port_stats_by_port_hostname');
@@ -68,10 +79,25 @@ $app->group(
                 );
                 $app->get('/devicegroups', 'authToken', 'get_device_groups')->name('get_devicegroups');
                 $app->group(
+<<<<<<< HEAD
                     '/portgroups',
                     function () use ($app) {
                         $app->get('/:group', 'authToken', 'get_graph_by_portgroup')->name('get_graph_by_portgroup');
                         // api/v0/portgroups/$group
+=======
+                    '/ports',
+                    function () use ($app) {
+                        $app->get('/:portid', 'authToken', 'get_port_info')->name('get_port_info');
+                        $app->get('/:portid/ip', 'authToken', 'get_ip_addresses')->name('get_port_ip_info');
+                    }
+                );
+                $app->get('/ports', 'authToken', 'get_all_ports')->name('get_all_ports');
+                $app->group(
+                    '/portgroups',
+                    function () use ($app) {
+                        $app->get('/multiport/bits/:id', 'authToken', 'get_graph_by_portgroup')->name('get_graph_by_portgroup_multiport_bits');
+                        $app->get('/:group', 'authToken', 'get_graph_by_portgroup')->name('get_graph_by_portgroup');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     }
                 );
                 $app->group(
@@ -141,7 +167,11 @@ $app->group(
                         $app->group(
                             '/ip',
                             function () use ($app) {
+<<<<<<< HEAD
                                 $app->get('/arp/:ip', 'authToken', 'list_arp')->name('list_arp');
+=======
+                                $app->get('/arp/:ip', 'authToken', 'list_arp')->name('list_arp')->conditions(array('ip' => '[^?]+'));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                             }
                         );
                     }

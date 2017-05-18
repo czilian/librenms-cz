@@ -8,16 +8,26 @@ source: Installation/Installation-Ubuntu-1604-Nginx.md
 #### Install / Configure MySQL
 ```bash
 apt-get install mariadb-server mariadb-client
+<<<<<<< HEAD
 service mysql restart
+=======
+systemctl restart mysql
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 mysql -uroot -p
 ```
 
 ```sql
+<<<<<<< HEAD
 CREATE DATABASE librenms;
 GRANT ALL PRIVILEGES ON librenms.*
   TO 'librenms'@'localhost'
   IDENTIFIED BY '<password>'
 ;
+=======
+CREATE DATABASE librenms CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER 'librenms'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON librenms.* TO 'librenms'@'localhost';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 FLUSH PRIVILEGES;
 exit
 ```
@@ -31,7 +41,11 @@ innodb_file_per_table=1
 sql-mode=""
 ```
 
+<<<<<<< HEAD
 ```service mysql restart```
+=======
+```systemctl restart mysql```
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 ### Web Server ###
 
@@ -42,7 +56,11 @@ sql-mode=""
 In `/etc/php/7.0/fpm/php.ini` and `/etc/php/7.0/cli/php.ini`, ensure date.timezone is set to your preferred time zone.  See http://php.net/manual/en/timezones.php for a list of supported timezones.  Valid examples are: "America/New_York", "Australia/Brisbane", "Etc/UTC".
 
 ```bash
+<<<<<<< HEAD
 service php7.0-fpm restart
+=======
+systemctl restart php7.0-fpm
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 phpenmod mcrypt
 ```
 
@@ -79,6 +97,11 @@ server {
  index       index.php;
  access_log  /opt/librenms/logs/access_log;
  error_log   /opt/librenms/logs/error_log;
+<<<<<<< HEAD
+=======
+ gzip on;
+ gzip_types text/css application/javascript text/javascript application/x-javascript image/svg+xml text/plain text/xsd text/xsl text/xml image/x-icon;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  location / {
   try_files $uri $uri/ @librenms;
  }
@@ -98,7 +121,12 @@ server {
 ```
 
 ```bash
+<<<<<<< HEAD
 service nginx restart
+=======
+rm /etc/nginx/sites-enabled/default
+systemctl restart nginx
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Web installer
@@ -108,8 +136,13 @@ Now head to: http://librenms.example.com/install.php and follow the on-screen in
 #### Configure snmpd
 
 ```bash
+<<<<<<< HEAD
 cp /opt/librenms/snmpd.conf.example /etc/snmpd/snmpd.conf
 vim /etc/snmpd/snmpd.conf
+=======
+cp /opt/librenms/snmpd.conf.example /etc/snmp/snmpd.conf
+vim /etc/snmp/snmpd.conf
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 Edit the text which says `RANDOMSTRINGGOESHERE` and set your own community string.
@@ -117,13 +150,26 @@ Edit the text which says `RANDOMSTRINGGOESHERE` and set your own community strin
 ```bash
 curl -o /usr/bin/distro https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro
 chmod +x /usr/bin/distro
+<<<<<<< HEAD
 service snmpd restart
+=======
+systemctl restart snmpd
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Cron job
 
 `cp librenms.nonroot.cron /etc/cron.d/librenms`
 
+<<<<<<< HEAD
+=======
+#### Copy logrotate config
+
+LibreNMS keeps logs in `/opt/librenms/logs`. Over time these can become large and be rotated out.  To rotate out the old logs you can use the provided logrotate config file:
+
+    cp misc/librenms.logrotate /etc/logrotate.d/librenms
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 #### Final steps
 
 ```bash

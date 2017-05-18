@@ -26,6 +26,10 @@ class MethodNode
     private $static = false;
     private $returnsReference = false;
     private $returnType;
+<<<<<<< HEAD
+=======
+    private $nullableReturnType = false;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     /**
      * @var ArgumentNode[]
@@ -122,6 +126,11 @@ class MethodNode
             case 'bool':
             case 'array':
             case 'callable':
+<<<<<<< HEAD
+=======
+            case 'iterable':
+            case 'void':
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $this->returnType = $type;
                 break;
 
@@ -149,6 +158,25 @@ class MethodNode
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * @param bool $bool
+     */
+    public function setNullableReturnType($bool = true)
+    {
+        $this->nullableReturnType = (bool) $bool;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasNullableReturnType()
+    {
+        return $this->nullableReturnType;
+    }
+
+    /**
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
      * @param string $code
      */
     public function setCode($code)

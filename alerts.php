@@ -27,6 +27,7 @@
 
 $init_modules = array('alerts');
 require __DIR__ . '/includes/init.php';
+<<<<<<< HEAD
 
 $options = getopt('d::');
 
@@ -611,3 +612,39 @@ function populate($txt, $wrap = true)
 
     return $txt;
 }//end populate()
+=======
+
+$options = getopt('d::');
+
+set_lock('alerts');
+
+if (isset($options['d'])) {
+    echo "DEBUG!\n";
+    $debug = true;
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    ini_set('log_errors', 1);
+    ini_set('error_reporting', 1);
+} else {
+    $debug = false;
+    // ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
+    ini_set('log_errors', 0);
+    // ini_set('error_reporting', 0);
+}
+
+if (!defined('TEST') && $config['alert']['disable'] != 'true') {
+    echo 'Start: '.date('r')."\r\n";
+    echo "ClearStaleAlerts():" . PHP_EOL;
+    ClearStaleAlerts();
+    echo "RunFollowUp():\r\n";
+    RunFollowUp();
+    echo "RunAlerts():\r\n";
+    RunAlerts();
+    echo "RunAcks():\r\n";
+    RunAcks();
+    echo 'End  : '.date('r')."\r\n";
+}
+
+release_lock('alerts');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

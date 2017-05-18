@@ -1,3 +1,9 @@
 os: packetshaper
 text: 'Blue Coat Packetshaper'
 type: network
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - PacketShaper
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

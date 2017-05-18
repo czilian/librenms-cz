@@ -30,6 +30,7 @@ any other means), you assert that:
   systems.
 
 
+<<<<<<< HEAD
 To agree with these assertions, please submit a GitHub pull request against
 [AUTHORS.md][5], adding or altering a **single line** *containing your name,
 email address, and GitHub user id* in the file (so that it can be matched to
@@ -38,6 +39,21 @@ your commits), and stating in the *commit log* (not the pull request text):
 ```
 I agree to the conditions of the Contributor Agreement contained in doc/General/Contributing.md.
 ```
+=======
+To agree with these assertions, when you submit your first pull request you 
+will be asked after submitting to sign the CLA, you do this by following the 
+link provided in the PR and agreeing to the CLA using your GitHub account. 
+
+Local patches
+-------------
+
+Please note that the above contributor agreement means that if you have
+developed a feature for a non-GPL version of Observium, we can't include it
+in LibreNMS, even if you have not released it to the public.  If there's a
+feature you use to which this applies, please document its functionality in
+an issue, and we'll do our best to include equivalent functionality in
+LibreNMS.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 Local patches
 -------------
@@ -71,7 +87,11 @@ the package information to the header.
  * @package    LibreNMS
  * @subpackage webui
  * @link       http://librenms.org
+<<<<<<< HEAD
  * @copyright  2016 Internet Widgitz Pty Ltd <info@widgitz.com>
+=======
+ * @copyright  2017 Internet Widgitz Pty Ltd <info@widgitz.com>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  * @author     Me <me@infowidgitz.com>
 
 ```

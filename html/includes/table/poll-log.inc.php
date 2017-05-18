@@ -26,9 +26,18 @@ if (!isset($sort) || empty($sort)) {
     $sort = 'last_polled_timetaken DESC';
 }
 
+<<<<<<< HEAD
 $sql .= " AND D.status ='1' AND D.ignore='0' AND D.disabled='0' ORDER BY $sort";
 
 $count_sql = "SELECT COUNT(`D`.`device_id`) $sql";
+=======
+$sql .= " AND D.status ='1' AND D.ignore='0' AND D.disabled='0'";
+
+$count_sql = "SELECT COUNT(`D`.`device_id`) $sql";
+
+$sql .= " ORDER BY $sort";
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $total     = dbFetchCell($count_sql);
 if (empty($total)) {
     $total = 0;

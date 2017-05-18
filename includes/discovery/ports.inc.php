@@ -4,6 +4,10 @@
 $port_stats = array();
 $port_stats = snmpwalk_cache_oid($device, 'ifDescr', $port_stats, 'IF-MIB');
 $port_stats = snmpwalk_cache_oid($device, 'ifName', $port_stats, 'IF-MIB');
+<<<<<<< HEAD
+=======
+$port_stats = snmpwalk_cache_oid($device, 'ifAlias', $port_stats, 'IF-MIB');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $port_stats = snmpwalk_cache_oid($device, 'ifType', $port_stats, 'IF-MIB');
 
 // End Building SNMP Cache Array
@@ -42,6 +46,7 @@ foreach ($port_stats as $ifIndex => $port) {
     // Store ifIndex in port entry and prefetch ifName as we'll need it multiple times
     $port['ifIndex'] = $ifIndex;
     $ifName = $port['ifName'];
+<<<<<<< HEAD
 
     // Get port_id according to port_association_mode used for this device
     $port_id = get_port_id($ports_mapped, $port, $port_association_mode);
@@ -50,6 +55,17 @@ foreach ($port_stats as $ifIndex => $port) {
         // Port newly discovered?
         if (! is_array($ports_db[$port_id])) {
             $port_id         = dbInsert(array('device_id' => $device['device_id'], 'ifIndex' => $ifIndex, 'ifName' => $ifName), 'ports');
+=======
+    $ifAlias = $port['ifAlias'];
+    $ifDescr = $port['ifDescr'];
+
+    // Get port_id according to port_association_mode used for this device
+    $port_id = get_port_id($ports_mapped, $port, $port_association_mode);
+    if (is_port_valid($port, $device)) {
+        // Port newly discovered?
+        if (! is_array($ports_db[$port_id])) {
+            $port_id         = dbInsert(array('device_id' => $device['device_id'], 'ifIndex' => $ifIndex, 'ifName' => $ifName, 'ifAlias' => $ifAlias, 'ifDescr' => $ifDescr), 'ports');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $ports[$port_id] = dbFetchRow('SELECT * FROM `ports` WHERE `device_id` = ? AND `port_id` = ?', array($device['device_id'], $port_id));
             echo 'Adding: '.$ifName.'('.$ifIndex.')('.$port_id.')';
         } // Port re-discovered after previous deletion?
@@ -67,7 +83,11 @@ foreach ($port_stats as $ifIndex => $port) {
     else {
         if (is_array($ports_db[$port_id])) {
             if ($ports_db[$port_id]['deleted'] != '1') {
+<<<<<<< HEAD
                 dbUpdate(array('deleted' => '1'), 'ports', '`port_id` = ?', array($port_id));
+=======
+                dbUpdate(array('deleted' => '1'), 'ports', "`port_id` = ?, `ifName` => '?', `ifAlias` => '?', `ifDescr` => '?'", array($port_id, $ifName, $ifAlias, $ifDescr));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $ports_db[$port_id]['deleted'] = '1';
                 echo '-';
             }
@@ -77,6 +97,14 @@ foreach ($port_stats as $ifIndex => $port) {
     }//end if
 }//end foreach
 
+<<<<<<< HEAD
+=======
+unset(
+    $ports_mapped,
+    $port
+);
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 // End New interface detection
 // Interface Deletion
 // If it's in our $ports_l list, that means it's not been seen. Mark it deleted.

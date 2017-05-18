@@ -22,12 +22,20 @@ if (file_exists($rrd_filename)) {
     $rrd_options .= " LINE1.25:Total#0000ee:'PRI Channels total      ' ";
     $rrd_options .= " GPRINT:Total:LAST:%3.0lf ";
     $rrd_options .= " GPRINT:Total:MIN:%3.0lf ";
+<<<<<<< HEAD
     $rrd_options .= " GPRINT:Total:MAX:%3.0lf\\\l ";
+=======
+    $rrd_options .= " GPRINT:Total:MAX:%3.0lf\l ";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $rrd_options .= " DEF:Active=" . $rrd_filename . ":active:AVERAGE ";
     $rrd_options .= " AREA:Active#aaff99 ";
     $rrd_options .= " LINE1.25:Active#00ee00:'PRI Channels in use     ' ";
     $rrd_options .= " GPRINT:Active:LAST:%3.0lf ";
     $rrd_options .= " GPRINT:Active:MIN:%3.0lf ";
+<<<<<<< HEAD
     $rrd_options .= " GPRINT:Active:MAX:%3.0lf\\\l ";
+=======
+    $rrd_options .= " GPRINT:Active:MAX:%3.0lf\l ";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

@@ -6,3 +6,10 @@ over:
     - { graph: device_processor, text: 'CPU Usage' }
 icon: watchguard
 group: watchguard
+<<<<<<< HEAD
+=======
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.3097.1.4
+        - .1.3.6.1.4.1.3097.1.5
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -38,6 +38,11 @@
  */
 
 
+<<<<<<< HEAD
+=======
+use LibreNMS\Exceptions\AuthenticationException;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (! isset($_SESSION['username'])) {
     $_SESSION['username'] = '';
 }
@@ -71,6 +76,7 @@ function authenticate($username, $password)
         $_SESSION['username'] = mres($_SERVER['REMOTE_USER']);
 
         if (user_exists($_SESSION['username'])) {
+<<<<<<< HEAD
             return 1;
         }
 
@@ -86,6 +92,22 @@ function reauthenticate($sess_id = '', $token = '')
 {
     // Not supported
     return 0;
+=======
+            return true;
+        }
+
+        $_SESSION['username'] = $config['http_auth_guest'];
+        return true;
+    }
+
+    throw new AuthenticationException();
+}
+
+
+function reauthenticate($sess_id, $token)
+{
+    return false;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 
@@ -110,7 +132,11 @@ function auth_usermanagement()
 }
 
 
+<<<<<<< HEAD
 function adduser($username, $password, $level, $email = '', $realname = '', $can_modify_passwd = 1, $description = '', $twofactor = 0)
+=======
+function adduser($username, $password, $level, $email = '', $realname = '', $can_modify_passwd = 1, $description = '')
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     // Not supported
     return false;

@@ -1,6 +1,10 @@
 <?php
 // check_cmd is the command that is run to execute the check
+<<<<<<< HEAD
 $check_cmd = $config['nagios_plugins'] . "/check_icmp ".($service['service_ip'] ? $service['service_ip'] : $service['hostname']);
+=======
+$check_cmd = $config['nagios_plugins'] . "/check_icmp ".($service['service_ip'] ? $service['service_ip'] : $service['hostname'])." ".$service['service_param'];
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 // Check DS is a json array of the graphs that are available
 $check_ds = '{"rtt":"s","pl":"%"}';

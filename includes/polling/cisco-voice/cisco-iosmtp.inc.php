@@ -11,6 +11,11 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if ($device['os_group'] == "cisco") {
     // Total
     $total = snmpwalk_cache_oid_num($device, "1.3.6.1.4.1.9.9.86.1.6.4.1.3", null);
@@ -24,10 +29,16 @@ if ($device['os_group'] == "cisco") {
         // Active
         $active = $total - $available;
 
+<<<<<<< HEAD
         $rrd_def = array(
             'DS:total:GAUGE:600:0:U',
             'DS:active:GAUGE:600:0:U'
         );
+=======
+        $rrd_def = RrdDefinition::make()
+            ->addDataset('total', 'GAUGE', 0)
+            ->addDataset('active', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         $fields = array(
             'total'  => $total,

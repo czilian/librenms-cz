@@ -1,5 +1,9 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\Exceptions\AuthenticationException;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 use Phpass\PasswordHash;
 
 function authenticate($username, $password)
@@ -14,7 +18,11 @@ function authenticate($username, $password)
                 changepassword($username, $password);
             }
 
+<<<<<<< HEAD
             return 1;
+=======
+            return true;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         } elseif (substr($row['password'], 0, 3) == '$1$') {
             $row_type = dbFetchRow('DESCRIBE users password');
             if ($row_type['Type'] == 'varchar(60)') {
@@ -26,15 +34,24 @@ function authenticate($username, $password)
 
         $hasher = new PasswordHash(8, false);
         if ($hasher->CheckPassword($password, $row['password'])) {
+<<<<<<< HEAD
             return 1;
         }
     }//end if
 
     return 0;
+=======
+            return true;
+        }
+    }//end if
+
+    throw new AuthenticationException();
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }//end authenticate()
 
 
 function reauthenticate($sess_id, $token)
+<<<<<<< HEAD
 {
     $sess_id = clean($sess_id);
     $token = clean($token);
@@ -52,6 +69,15 @@ function reauthenticate($sess_id, $token)
 
 function passwordscanchange($username = '')
 {
+=======
+{
+    return check_remember_me($sess_id, $token);
+}//end reauthenticate()
+
+
+function passwordscanchange($username = '')
+{
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     /*
      * By default allow the password to be modified, unless the existing
      * user is explicitly prohibited to do so.
@@ -100,12 +126,20 @@ function auth_usermanagement()
 }//end auth_usermanagement()
 
 
+<<<<<<< HEAD
 function adduser($username, $password, $level, $email = '', $realname = '', $can_modify_passwd = 1, $description = '', $twofactor = 0)
+=======
+function adduser($username, $password, $level, $email = '', $realname = '', $can_modify_passwd = 1, $description = '')
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     if (!user_exists($username)) {
         $hasher    = new PasswordHash(8, false);
         $encrypted = $hasher->HashPassword($password);
+<<<<<<< HEAD
         $userid    = dbInsert(array('username' => $username, 'password' => $encrypted, 'level' => $level, 'email' => $email, 'realname' => $realname, 'can_modify_passwd' => $can_modify_passwd, 'descr' => $description, 'twofactor' => $twofactor), 'users');
+=======
+        $userid    = dbInsert(array('username' => $username, 'password' => $encrypted, 'level' => $level, 'email' => $email, 'realname' => $realname, 'can_modify_passwd' => $can_modify_passwd, 'descr' => $description), 'users');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($userid == false) {
             return false;
         } else {
@@ -137,6 +171,7 @@ function get_userid($username)
 {
     return dbFetchCell('SELECT `user_id` FROM `users` WHERE `username` = ?', array($username), true);
 }//end get_userid()
+<<<<<<< HEAD
 
 
 function deluser($username)
@@ -154,6 +189,25 @@ function deluser($username)
 function get_userlist()
 {
     return dbFetchRows('SELECT * FROM `users`');
+=======
+
+
+function deluser($userid)
+{
+    dbDelete('bill_perms', '`user_id` =  ?', array($userid));
+    dbDelete('devices_perms', '`user_id` =  ?', array($userid));
+    dbDelete('ports_perms', '`user_id` =  ?', array($userid));
+    dbDelete('users_prefs', '`user_id` =  ?', array($userid));
+    dbDelete('users', '`user_id` =  ?', array($userid));
+
+    return dbDelete('users', '`user_id` =  ?', array($userid));
+}//end deluser()
+
+
+function get_userlist()
+{
+    return dbFetchRows('SELECT * FROM `users` ORDER BY `username`');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }//end get_userlist()
 
 

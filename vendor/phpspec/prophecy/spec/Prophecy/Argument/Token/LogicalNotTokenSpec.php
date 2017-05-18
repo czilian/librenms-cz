@@ -7,10 +7,14 @@ use Prophecy\Argument\Token\TokenInterface;
 
 class LogicalNotTokenSpec extends ObjectBehavior
 {
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $token
      */
     function let($token)
+=======
+    function let(TokenInterface $token)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith($token);
     }

@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if ($device['os'] == 'netscaler') {
     echo ' IP';
 
@@ -97,6 +102,7 @@ if ($device['os'] == 'netscaler') {
 
     $data = snmpwalk_cache_oid($device, 'nsTcpStatsGroup', array(), 'NS-ROOT-MIB');
 
+<<<<<<< HEAD
     $rrd_def = array();
     foreach ($oids_gauge as $oid) {
         $oid_ds    = substr(str_replace('tcp', '', str_replace('Active', 'Ac', str_replace('Passive', 'Ps', str_replace('Zombie', 'Zom', $oid)))), 0, 19);
@@ -105,6 +111,30 @@ if ($device['os'] == 'netscaler') {
     foreach ($oids_counter as $oid) {
         $oid_ds    = substr(str_replace('tcp', '', str_replace('Active', 'Ac', str_replace('Passive', 'Ps', str_replace('Zombie', 'Zom', $oid)))), 0, 19);
         $rrd_def[] = "DS:$oid_ds:COUNTER:600:U:100000000000";
+=======
+
+    $shorten = array(
+        'tcp',
+        'Active',
+        'Passive',
+        'Zombie',
+    );
+    $short_replacement = array(
+        '',
+        'Ac',
+        'Ps',
+        'Zom',
+    );
+
+    $rrd_def = new RrdDefinition();
+    foreach ($oids_gauge as $oid) {
+        $oid_ds    = str_replace($shorten, $short_replacement, $oid);
+        $rrd_def->addDataset($oid_ds, 'GAUGE', null, 100000000000);
+    }
+    foreach ($oids_counter as $oid) {
+        $oid_ds    = str_replace($shorten, $short_replacement, $oid);
+        $rrd_def->addDataset($oid_ds, 'COUNTER', null, 100000000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     $fields = array();
@@ -125,4 +155,8 @@ if ($device['os'] == 'netscaler') {
     $graphs['netscaler_tcp_pkts'] = true;
 }//end if
 
+<<<<<<< HEAD
 unset($oids_gauge, $oids_counter, $oids, $data, $tags, $fields, $rrd_def);
+=======
+unset($oids_gauge, $oids_counter, $oids, $data, $tags, $fields, $rrd_def, $shorten, $short_replacement);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

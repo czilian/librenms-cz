@@ -11,6 +11,7 @@ $no_refresh = true;
 </div>
 <?php
 if (isset($_POST['create-default'])) {
+<<<<<<< HEAD
     $default_rules[] = array(
         'device_id' => '-1',
         'rule'      => '%macros.device_down = "1"',
@@ -90,6 +91,42 @@ if (isset($_POST['create-default'])) {
     }
 }//end if
 
+=======
+    $default_rules = array_filter(get_rules_from_json(), function ($rule) {
+        return isset($rule['default']) && $rule['default'];
+    });
+
+    $default_extra = array(
+        'mute' => false,
+        'count' => -1,
+        'delay' => 300,
+        'invert' => false,
+        'interval' => 300,
+    );
+
+    require_once '../includes/alerts.inc.php';
+
+    foreach ($default_rules as $add_rule) {
+        $extra = $default_extra;
+        if (isset($add_rule['extra'])) {
+            $extra = array_replace($extra, json_decode($add_rule['extra'], true));
+        }
+
+        $insert = array(
+            'device_id' => -1,
+            'rule'      => $add_rule['rule'],
+            'query'     => GenSQL($add_rule['rule']),
+            'severity'  => 'critical',
+            'extra'     => json_encode($extra),
+            'disabled'  => 0,
+            'name'      => $add_rule['name']
+        );
+
+        dbInsert($insert, 'alert_rules');
+    }
+}//end if
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 require_once 'includes/modal/new_alert_rule.inc.php';
 require_once 'includes/modal/delete_alert_rule.inc.php';
 require_once 'includes/modal/alert_rule_collection.inc.php';
@@ -143,7 +180,11 @@ foreach ($result_options as $option) {
 
 echo '</select></td>';
 
+<<<<<<< HEAD
 $count_query = 'SELECT COUNT(id)';
+=======
+$count_query = 'SELECT COUNT(*)';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $full_query  = 'SELECT *';
 $sql         = '';
 $param       = array();
@@ -152,7 +193,11 @@ if (isset($device['device_id']) && $device['device_id'] > 0) {
     $param = array($device['device_id']);
 }
 
+<<<<<<< HEAD
 $query       = " FROM alert_rules $sql ORDER BY id ASC";
+=======
+$query       = " FROM alert_rules $sql";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $count_query = $count_query.$query;
 $count       = dbFetchCell($count_query, $param);
 if (!isset($_POST['page_number']) && $_POST['page_number'] < 1) {
@@ -162,7 +207,11 @@ if (!isset($_POST['page_number']) && $_POST['page_number'] < 1) {
 }
 
 $start      = (($page_number - 1) * $results);
+<<<<<<< HEAD
 $full_query = $full_query.$query." LIMIT $start,$results";
+=======
+$full_query = $full_query.$query." ORDER BY id ASC LIMIT $start,$results";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 foreach (dbFetchRows($full_query, $param) as $rule) {
     $sub   = dbFetchRows('SELECT * FROM alerts WHERE rule_id = ? ORDER BY `state` DESC, `id` DESC LIMIT 1', array($rule['id']));
@@ -180,6 +229,7 @@ foreach (dbFetchRows($full_query, $param) as $rule) {
             $extra = 'danger';
         }
     }
+<<<<<<< HEAD
 
     $alert_checked = '';
     $orig_ico      = $ico;
@@ -232,6 +282,60 @@ foreach (dbFetchRows($full_query, $param) as $rule) {
     echo "</tr>\r\n";
 }//end foreach
 
+=======
+
+    $alert_checked = '';
+    $orig_ico      = $ico;
+    $orig_col      = $col;
+    $orig_class    = $extra;
+    if ($rule['disabled']) {
+        $ico   = 'pause';
+        $col   = '';
+        $extra = 'active';
+    } else {
+        $alert_checked = 'checked';
+    }
+
+    $rule_extra = json_decode($rule['extra'], true);
+    if ($rule['device_id'] == ':-1' || $rule['device_id'] == '-1') {
+        $popover_msg = 'Global alert rule';
+    } else {
+        $popover_msg = 'Device specific rule';
+    }
+    echo "<tr class='".$extra."' id='row_".$rule['id']."'>";
+    echo '<td><i>#'.((int) $rule['id']).'</i></td>';
+    echo '<td>'.$rule['name'].'</td>';
+    echo "<td class='col-sm-4'>";
+    if ($rule_extra['invert'] === true) {
+        echo '<strong><em>Inverted</em></strong> ';
+    }
+
+    echo '<i>'.htmlentities($rule['rule']).'</i></td>';
+    echo '<td>'.$rule['severity'].'</td>';
+    echo "<td><span id='alert-rule-".$rule['id']."' class='fa fa-fw fa-2x fa-".$ico.' text-'.$col."'></span> ";
+    if ($rule_extra['mute'] === true) {
+        echo "<i class='fa fa-fw fa-2x fa-volume-off text-primary' aria-hidden='true'></i></td>";
+    }
+
+    echo '<td><small>Max: '.$rule_extra['count'].'<br />Delay: '.$rule_extra['delay'].'<br />Interval: '.$rule_extra['interval'].'</small></td>';
+    echo '<td>';
+    if ($_SESSION['userlevel'] >= '10') {
+        echo "<input id='".$rule['id']."' type='checkbox' name='alert-rule' data-orig_class='".$orig_class."' data-orig_colour='".$orig_col."' data-orig_state='".$orig_ico."' data-alert_id='".$rule['id']."' ".$alert_checked." data-size='small' data-content='".$popover_msg."' data-toggle='modal'>";
+    }
+
+    echo '</td>';
+    echo '<td>';
+    if ($_SESSION['userlevel'] >= '10') {
+        echo "<div class='btn-group btn-group-sm' role='group'>";
+        echo "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#create-alert' data-device_id='".$rule['device_id']."' data-alert_id='".$rule['id']."' name='edit-alert-rule' data-content='".$popover_msg."' data-container='body'><i class='fa fa-lg fa-pencil' aria-hidden='true'></i></button> ";
+        echo "<button type='button' class='btn btn-danger' aria-label='Delete' data-toggle='modal' data-target='#confirm-delete' data-alert_id='".$rule['id']."' name='delete-alert-rule' data-content='".$popover_msg."' data-container='body'><i class='fa fa-lg fa-trash' aria-hidden='true'></i></button>";
+    }
+
+    echo '</td>';
+    echo "</tr>\r\n";
+}//end foreach
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (($count % $results) > 0) {
     echo '    <tr>
         <td colspan="8" align="center">'.generate_pagination($count, $results, $page_number).'</td>

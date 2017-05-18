@@ -18,6 +18,14 @@ if ($config['enable_inventory']) {
             dbDelete('entPhysical', 'entPhysical_id = ?', array ($test['entPhysical_id']));
         }
     }
+<<<<<<< HEAD
+=======
+    unset(
+        $sql,
+        $test,
+        $valid
+    );
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 } else {
     echo 'Disabled!';
 }//end if

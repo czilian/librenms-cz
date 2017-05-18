@@ -11,9 +11,16 @@
  */
 
 d_echo('EdgeSwitch CPU usage:');
+<<<<<<< HEAD
 if ($device['os'] == 'edgeswitch') {
     //SNMPv2-SMI::enterprises.4413.1.1.1.1.4.9.0
     $proc_usage = snmp_get($device, '.1.3.6.1.4.1.4413.1.1.1.1.4.9.0', '-Ovq');
     preg_match('/([0-9]+.[0-9]+)/', $proc_usage, $usage);
     $proc = $usage[0];
 }
+=======
+//SNMPv2-SMI::enterprises.4413.1.1.1.1.4.9.0
+$proc_usage = snmp_get($device, '.1.3.6.1.4.1.4413.1.1.1.1.4.9.0', '-Ovq');
+preg_match('/([0-9]+.[0-9]+)/', $proc_usage, $usage);
+$proc = $usage[0];
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

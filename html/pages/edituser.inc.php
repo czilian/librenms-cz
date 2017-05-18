@@ -12,7 +12,11 @@ if ($_SESSION['userlevel'] != '10') {
     include 'includes/error-no-perm.inc.php';
 } else {
     if ($vars['user_id'] && !$vars['edit']) {
+<<<<<<< HEAD
         $user_data = dbFetchRow('SELECT * FROM users WHERE user_id = ?', array($vars['user_id']));
+=======
+        $user_data = get_user($vars['user_id']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo '<p><h2>'.$user_data['realname']."</h2><a href='edituser/'>Change...</a></p>";
         // Perform actions if requested
         if ($vars['action'] == 'deldevperm') {
@@ -66,7 +70,11 @@ if ($_SESSION['userlevel'] != '10') {
 
         $device_perms = dbFetchRows('SELECT * from devices_perms as P, devices as D WHERE `user_id` = ? AND D.device_id = P.device_id', array($vars['user_id']));
         foreach ($device_perms as $device_perm) {
+<<<<<<< HEAD
             echo '<tr><td><strong>'.$device_perm['hostname']."</td><td> <a href='edituser/action=deldevperm/user_id=".$vars['user_id'].'/device_id='.$device_perm['device_id']."'><img src='images/16/cross.png' align=absmiddle border=0></a></strong></td></tr>";
+=======
+            echo '<tr><td><strong>'.$device_perm['hostname']."</td><td> <a href='edituser/action=deldevperm/user_id=".$vars['user_id'].'/device_id='.$device_perm['device_id']."'><i class='fa fa-trash fa-lg icon-theme' aria-hidden='true'></i></a></strong></td></tr>";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $access_list[] = $device_perm['device_id'];
             $permdone      = 'yes';
         }
@@ -98,7 +106,11 @@ if ($_SESSION['userlevel'] != '10') {
             }
 
             if (!$done) {
+<<<<<<< HEAD
                 echo "<option value='".$device['device_id']."'>".$device['hostname'].'</option>';
+=======
+                echo "<option value='".$device['device_id']."'>".format_hostname($device, $device['hostname']).'</option>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             }
         }
 
@@ -124,7 +136,11 @@ if ($_SESSION['userlevel'] != '10') {
                 <strong>'.$interface_perm['hostname'].' - '.$interface_perm['ifDescr'].'</strong>'.''.display($interface_perm['ifAlias'])."
               </td>
               <td>
+<<<<<<< HEAD
                 &nbsp;&nbsp;<a href='edituser/action=delifperm/user_id=".$vars['user_id'].'/port_id='.$interface_perm['port_id']."'><img src='images/16/cross.png' align=absmiddle border=0></a>
+=======
+                &nbsp;&nbsp;<a href='edituser/action=delifperm/user_id=".$vars['user_id'].'/port_id='.$interface_perm['port_id']."'><i class='fa fa-trash fa-lg icon-theme' aria-hidden='true'></i></a>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
               </td>
             </tr>";
             $ipermdone = 'yes';
@@ -132,6 +148,7 @@ if ($_SESSION['userlevel'] != '10') {
 
         echo '</table>
           </div>';
+<<<<<<< HEAD
 
         if (!$ipermdone) {
             echo 'None Configured';
@@ -140,6 +157,16 @@ if ($_SESSION['userlevel'] != '10') {
         // Display devices this user doesn't have access to
         echo '<h4>Grant access to new interface</h4>';
 
+=======
+
+        if (!$ipermdone) {
+            echo 'None Configured';
+        }
+
+        // Display devices this user doesn't have access to
+        echo '<h4>Grant access to new interface</h4>';
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo "<form action='' method='post' class='form-horizontal' role='form'>
         <input type='hidden' value='".$vars['user_id']."' name='user_id'>
         <input type='hidden' value='edituser' name='page'>
@@ -159,7 +186,11 @@ if ($_SESSION['userlevel'] != '10') {
             }
 
             if (!$done) {
+<<<<<<< HEAD
                 echo "<option value='".$device['device_id']."'>".$device['hostname'].'</option>';
+=======
+                echo "<option value='".$device['device_id']."'>".format_hostname($device, $device['hostname']).'</option>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             }
         }
 
@@ -196,7 +227,11 @@ if ($_SESSION['userlevel'] != '10') {
         foreach ($bill_perms as $bill_perm) {
             echo '<tr>
               <td>
+<<<<<<< HEAD
                 <strong>'.$bill_perm['bill_name']."</strong></td><td width=50>&nbsp;&nbsp;<a href='edituser/action=delbillperm/user_id=".$vars['user_id'].'/bill_id='.$bill_perm['bill_id']."'><img src='images/16/cross.png' align=absmiddle border=0></a>
+=======
+                <strong>'.$bill_perm['bill_name']."</strong></td><td width=50>&nbsp;&nbsp;<a href='edituser/action=delbillperm/user_id=".$vars['user_id'].'/bill_id='.$bill_perm['bill_id']."'><i class='fa fa-trash fa-lg icon-theme' aria-hidden='true'></i></a>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
               </td>
             </tr>";
             $bill_access_list[] = $bill_perm['bill_id'];
@@ -265,7 +300,11 @@ if ($_SESSION['userlevel'] != '10') {
             $users_details = get_user($vars['user_id']);
             if (!empty($users_details)) {
                 if (!empty($vars['dashboard']) && $vars['dashboard'] != $users_details['dashboard']) {
+<<<<<<< HEAD
                     dbUpdate(array('dashboard'=>$vars['dashboard']), 'users', 'user_id = ?', array($vars['user_id']));
+=======
+                    set_user_pref('dashboard', $vars['dashboard']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     print_message("User default dashboard updated");
                 }
                 echo "<form class='form-horizontal' role='form' method='post' action=''>
@@ -359,7 +398,11 @@ if ($_SESSION['userlevel'] != '10') {
           <input type='checkbox' ";
                     if ($vars['can_modify_passwd'] == '1') {
                         echo "checked='checked'";
+<<<<<<< HEAD
                     } echo " name='can_modify_passwd'> Allow the user to change his password.
+=======
+                    } echo " name='can_modify_passwd'> Allow the user to change their password.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         </label>
       </div>
     </div>
@@ -372,9 +415,14 @@ if ($_SESSION['userlevel'] != '10') {
        <div class='form-group'>
            <label for='dashboard' class='col-sm-2 control-label'>Dashboard</label>
            <div class='col-sm-4'><select class='form-control' name='dashboard'>";
+<<<<<<< HEAD
                 $defdash = dbFetchCell("SELECT dashboard FROM users WHERE user_id = ?", array($vars['user_id']));
                 foreach (dbFetchRows("SELECT dashboards.*,users.username FROM `dashboards` INNER JOIN `users` ON users.user_id = dashboards.user_id WHERE (dashboards.access > 0 && dashboards.user_id != ?) || dashboards.user_id = ?", array($vars['user_id'],$vars['user_id'])) as $dash) {
                     echo "<option value='".$dash['dashboard_id']."'".($defdash == $dash['dashboard_id'] ? ' selected' : '').">".$dash['username'].':'.$dash['dashboard_name']."</option>";
+=======
+                foreach (get_dashboards($vars['user_id']) as $dash) {
+                    echo "<option value='".$dash['dashboard_id']."'".($dash['default'] ? ' selected' : '').">".$dash['username'].':'.$dash['dashboard_name']."</option>";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 }
                 echo "</select>
            </div>
@@ -384,7 +432,11 @@ if ($_SESSION['userlevel'] != '10') {
 
                 if ($config['twofactor']) {
                     if ($vars['twofactorremove']) {
+<<<<<<< HEAD
                         if (dbUpdate(array('twofactor' => ''), users, 'user_id = ?', array($vars['user_id']))) {
+=======
+                        if (set_user_pref('twofactor', array(), $vars['user_id'])) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                             echo "<div class='alert alert-success'>TwoFactor credentials removed.</div>";
                         } else {
                             echo "<div class='alert alert-danger'>Couldnt remove user's TwoFactor credentials.</div>";
@@ -392,18 +444,28 @@ if ($_SESSION['userlevel'] != '10') {
                     }
 
                     if ($vars['twofactorunlock']) {
+<<<<<<< HEAD
                         $twofactor          = dbFetchRow('SELECT twofactor FROM users WHERE user_id = ?', array($vars['user_id']));
                         $twofactor          = json_decode($twofactor['twofactor'], true);
                         $twofactor['fails'] = 0;
                         if (dbUpdate(array('twofactor' => json_encode($twofactor)), users, 'user_id = ?', array($vars['user_id']))) {
+=======
+                        $twofactor = get_user_pref('twofactor', array(), $vars['user_id']);
+                        $twofactor['fails'] = 0;
+                        if (set_user_pref('twofactor', $twofactor, $vars['user_id'])) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                             echo "<div class='alert alert-success'>User unlocked.</div>";
                         } else {
                             echo "<div class='alert alert-danger'>Couldnt reset user's TwoFactor failures.</div>";
                         }
                     }
                     echo "<br/><div class='well'><h3>Two-Factor Authentication</h3>";
+<<<<<<< HEAD
                     $twofactor = dbFetchRow('SELECT twofactor FROM users WHERE user_id = ?', array($vars['user_id']));
                     $twofactor = json_decode($twofactor['twofactor'], true);
+=======
+                    $twofactor = get_user_pref('twofactor', array(), $vars['user_id']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     if ($twofactor['fails'] >= 3 && (!$config['twofactor_lock'] || (time() - $twofactor['last']) < $config['twofactor_lock'])) {
                         echo "<form class='form-horizontal' role='form' method='post' action=''>
   <input type='hidden' name='user_id' value='".$vars['user_id']."'>
@@ -434,9 +496,15 @@ if ($_SESSION['userlevel'] != '10') {
         }//end if
     } else {
         $user_list = get_userlist();
+<<<<<<< HEAD
 
         echo '<h3>Select a user to edit</h3>';
 
+=======
+
+        echo '<h3>Select a user to edit</h3>';
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo "<form method='post' action='' class='form-horizontal' role='form'>
             <input type='hidden' value='edituser' name='page'>
               <div class='form-group'>
@@ -444,7 +512,21 @@ if ($_SESSION['userlevel'] != '10') {
                 <div class='col-sm-4'>
                   <select name='user_id' class='form-control input-sm'>";
         foreach ($user_list as $user_entry) {
+<<<<<<< HEAD
             echo "<option value='".$user_entry['user_id']."'>".$user_entry['username'].'</option>';
+=======
+            switch ($user_entry['level']) {
+                case "10":
+                    $user_level = ' (admin)';
+                    break;
+                case "11":
+                    $user_level = ' (demo)';
+                    break;
+                default:
+                    $user_level = '';
+            }
+            echo "<option value='".$user_entry['user_id']."'>".$user_entry['username'].$user_level.'</option>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
 
         echo "</select>

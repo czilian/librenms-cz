@@ -33,6 +33,7 @@ if ($data[1]['entPhysicalContainedIn'] == '0') {
     if (!empty($data[1]['entPhysicalModelName'])) {
         $hardware = $data[1]['entPhysicalModelName'];
     }
+<<<<<<< HEAD
 }
 if (!empty($data[1001]['entPhysicalModelName'])) {
     $hardware = $data[1001]['entPhysicalModelName'];
@@ -40,6 +41,20 @@ if (!empty($data[1001]['entPhysicalModelName'])) {
     $hardware = $data[$data[1001]['entPhysicalContainedIn']]['entPhysicalName'];
 }
 
+=======
+}
+
+if (!empty($data[1000]['entPhysicalModelName'])) {
+    $hardware = $data[1000]['entPhysicalModelName'];
+} elseif (!empty($data[1000]['entPhysicalContainedIn'])) {
+    $hardware = $data[$data[1000]['entPhysicalContainedIn']]['entPhysicalName'];
+} elseif (!empty($data[1001]['entPhysicalModelName'])) {
+    $hardware = $data[1001]['entPhysicalModelName'];
+} elseif (!empty($data[1001]['entPhysicalContainedIn'])) {
+    $hardware = $data[$data[1001]['entPhysicalContainedIn']]['entPhysicalName'];
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (empty($hardware)) {
     $hardware = snmp_get($device, 'sysObjectID.0', '-Osqv', 'SNMPv2-MIB:CISCO-PRODUCTS-MIB');
 }

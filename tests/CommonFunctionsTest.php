@@ -83,4 +83,52 @@ class CommonFunctionsTest extends \PHPUnit_Framework_TestCase
         $data = 'Toner, S/N:CR_UM-16021314488.';
         $this->assertEquals('Toner, S/N CR_UM-16021314488.', safedescr($data));
     }
+<<<<<<< HEAD
+=======
+
+    public function testSetNull()
+    {
+        $this->assertNull(set_null('BAD-DATA'));
+        $this->assertEquals(0, set_null(0));
+        $this->assertEquals(25, set_null(25));
+        $this->assertEquals(-25, set_null(-25));
+        $this->assertEquals(99, set_null(' ', 99));
+        $this->assertNull(set_null(-25, null, 0));
+        $this->assertEquals(2, set_null(2, 0, 2));
+    }
+
+    public function testIsIp()
+    {
+        $this->assertTrue(is_ip('192.168.0.1'));
+        $this->assertTrue(is_ip('192.168.0.1', 'ipv4'));
+        $this->assertTrue(is_ip('2001:4860:4860::8888', 'ipv6'));
+        $this->assertFalse(is_ip('2001:4860:4860::8888', 'ipv4'));
+        $this->assertFalse(is_ip('192.168.0.1', 'ipv6'));
+        $this->assertFalse(is_ip('not_an_ip'));
+    }
+
+    public function testDisplay()
+    {
+        $this->assertEquals('&lt;html&gt;string&lt;/html&gt;', display('<html>string</html>'));
+        $this->assertEquals('&lt;script&gt;alert("test")&lt;/script&gt;', display('<script>alert("test")</script>'));
+
+        $tmp_config = array(
+            'HTML.Allowed'    => 'b,iframe,i,ul,li,h1,h2,h3,h4,br,p',
+            'HTML.Trusted'    => true,
+            'HTML.SafeIframe' => true,
+        );
+
+        $this->assertEquals('<b>Bold</b>', display('<b>Bold</b>', $tmp_config));
+        $this->assertEquals('', display('<script>alert("test")</script>', $tmp_config));
+    }
+
+    public function testStringToClass()
+    {
+        $this->assertSame('LibreNMS\OS\Os', str_to_class('OS', 'LibreNMS\\OS\\'));
+        $this->assertSame('SpacesName', str_to_class('spaces name'));
+        $this->assertSame('DashName', str_to_class('dash-name'));
+        $this->assertSame('UnderscoreName', str_to_class('underscore_name'));
+        $this->assertSame('LibreNMS\\AllOfThemName', str_to_class('all OF-thEm_NaMe', 'LibreNMS\\'));
+    }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

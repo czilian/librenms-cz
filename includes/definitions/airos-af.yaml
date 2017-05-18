@@ -1,9 +1,18 @@
 os: airos-af
 text: 'Ubiquiti AirFiber'
+<<<<<<< HEAD
 type: network
+=======
+type: wireless
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 icon: ubiquiti
 nobulk: 1
 group: ubnt
 over:
     - { graph: device_bits }
     - { graph: device_processor }
+<<<<<<< HEAD
+=======
+poller_modules:
+    wifi: 1
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

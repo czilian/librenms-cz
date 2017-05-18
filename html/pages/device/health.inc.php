@@ -1,7 +1,11 @@
 <?php
 
 $storage   = dbFetchCell('select count(*) from storage WHERE device_id = ?', array($device['device_id']));
+<<<<<<< HEAD
 $diskio    = dbFetchCell('select count(*) from ucd_diskio WHERE device_id = ?', array($device['device_id']));
+=======
+$diskio    = get_disks($device['device_id']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $mempools  = dbFetchCell('select count(*) from mempools WHERE device_id = ?', array($device['device_id'])) + count_mib_mempools($device);
 $processor = dbFetchCell('select count(*) from processors WHERE device_id = ?', array($device['device_id'])) + count_mib_processors($device);
 
@@ -18,6 +22,10 @@ $dBm          = dbFetchCell("select count(*) from sensors WHERE sensor_class='dB
 $states       = dbFetchCell("select count(*) from sensors WHERE sensor_class='state' AND device_id = ?", array($device['device_id']));
 $load         = dbFetchCell("select count(*) from sensors WHERE sensor_class='load' AND device_id = ?", array($device['device_id']));
 $signal       = dbFetchCell("select count(*) from sensors WHERE sensor_class='signal' AND device_id = ?", array($device['device_id']));
+<<<<<<< HEAD
+=======
+$airflow      = dbFetchCell("select count(*) from sensors WHERE sensor_class='airflow' AND device_id = ?", array($device['device_id']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 unset($datas);
 $datas[] = 'overview';
@@ -89,6 +97,13 @@ if ($signal) {
     $datas[] = 'signal';
 }
 
+<<<<<<< HEAD
+=======
+if ($airflow) {
+    $datas[] = 'airflow';
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $type_text['overview']    = 'Overview';
 $type_text['charge']      = 'Battery Charge';
 $type_text['temperature'] = 'Temperature';
@@ -107,6 +122,10 @@ $type_text['dbm']         = 'dBm';
 $type_text['state']       = 'State';
 $type_text['load']        = 'Load';
 $type_text['signal']      = 'Signal';
+<<<<<<< HEAD
+=======
+$type_text['airflow']     = 'Airflow';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $link_array = array(
     'page'   => 'device',

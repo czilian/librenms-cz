@@ -23,10 +23,19 @@ if (isset($data_param) && isset($query_param)) {
     $status  = 'error';
     $message = 'ERROR: Could not query';
 }
+<<<<<<< HEAD
 die(json_encode(array(
+=======
+die(display(json_encode(array(
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
      'status'       => $status,
      'message'      => $message,
      'data_param'    => $data_param,
      'query_param'    => $query_param,
+<<<<<<< HEAD
      'output'       => $output
 )));
+=======
+     'output'       => $output,
+))));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -18,7 +18,11 @@ if (is_numeric($vars['id'])) {
                 d_echo('exists');
 
                 $rrd_filename = $filename;
+<<<<<<< HEAD
                 $port         = get_port_by_id($acc['port_id']);
+=======
+                $port         = cleanPort(get_port_by_id($acc['port_id']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $device       = device_by_id_cache($port['device_id']);
                 $title        = generate_device_link($device);
                 $title       .= ' :: Port  '.generate_port_link($port);

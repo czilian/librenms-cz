@@ -1,3 +1,8 @@
+<script>
+$(function () {
+    $('[data-toggle="popover"]').popover()
+})
+</script>
 <?php
 
 // This file prints a table row for each interface
@@ -6,10 +11,11 @@ $port['hostname']  = $device['hostname'];
 
 $if_id = $port['port_id'];
 
-$port = ifLabel($port);
+$port = cleanPort($port);
 
 if ($int_colour) {
     $row_colour = $int_colour;
+<<<<<<< HEAD
 } else {
     if (!is_integer($i / 2)) {
         $row_colour = $list_colour_a;
@@ -95,6 +101,91 @@ if ($port['ifSpeed']) {
     echo '<span class=box-desc>'.humanspeed($port['ifSpeed']).'</span>';
 }
 
+=======
+} else {
+    if (!is_integer($i / 2)) {
+        $row_colour = $list_colour_a;
+    } else {
+        $row_colour = $list_colour_b;
+    }
+}
+
+$port_adsl = dbFetchRow('SELECT * FROM `ports_adsl` WHERE `port_id` = ?', array($port['port_id']));
+
+if ($port['ifInErrors_delta'] > 0 || $port['ifOutErrors_delta'] > 0) {
+    $error_img = generate_port_link($port, "<i class='fa fa-flag fa-lg' style='color:red' aria-hidden='true'></i>", 'port_errors');
+} else {
+    $error_img = '';
+}
+
+if (dbFetchCell('SELECT COUNT(*) FROM `mac_accounting` WHERE `port_id` = ?', array($port['port_id']))) {
+    $mac = "<a href='".generate_port_url($port, array('view' => 'macaccounting'))."'><i class='fa fa-pie-chart fa-lg icon-theme' aria-hidden='true'></i></a>";
+} else {
+    $mac = '';
+}
+
+echo "<tr style=\"background-color: $row_colour;\" valign=top onmouseover=\"this.style.backgroundColor='$list_highlight';\" onmouseout=\"this.style.backgroundColor='$row_colour';\" style='cursor: pointer;'>
+    <td valign=top width=350>";
+
+if (is_admin() || is_read()) {
+    $port_data = array_to_htmljson($port);
+    echo '<i class="fa fa-tag" data-toggle="popover" data-content="'.$port_data.'" data-html="true"></i>';
+}
+
+    echo '        <span class=list-large>
+        '.generate_port_link($port, $port['label'])." $error_img $mac
+        </span><br /><span class=interface-desc>".$port['ifAlias'].'</span>';
+
+if ($port['ifAlias']) {
+    echo '<br />';
+}
+
+unset($break);
+
+if ($port_details) {
+    foreach (dbFetchRows('SELECT * FROM `ipv4_addresses` WHERE `port_id` = ?', array($port['port_id'])) as $ip) {
+        echo "$break <a class=interface-desc href=\"javascript:popUp('netcmd.php?cmd=whois&amp;query=$ip[ipv4_address]')\">".$ip['ipv4_address'].'/'.$ip['ipv4_prefixlen'].'</a>';
+        $break = '<br />';
+    }
+
+    foreach (dbFetchRows('SELECT * FROM `ipv6_addresses` WHERE `port_id` = ?', array($port['port_id'])) as $ip6) {
+        echo "$break <a class=interface-desc href=\"javascript:popUp('netcmd.php?cmd=whois&amp;query=".$ip6['ipv6_address']."')\">".Net_IPv6::compress($ip6['ipv6_address']).'/'.$ip6['ipv6_prefixlen'].'</a>';
+        $break = '<br />';
+    }
+}
+
+echo '</span>';
+
+echo "</td><td width=100 onclick=\"location.href='".generate_port_url($port)."'\" >";
+
+if ($port_details) {
+    $port['graph_type'] = 'port_bits';
+    echo generate_port_link($port, "<img src='graph.php?type=port_bits&amp;id=".$port['port_id'].'&amp;from='.$config['time']['day'].'&amp;to='.$config['time']['now'].'&amp;width=100&amp;height=20&amp;legend=no&amp;bg='.str_replace('#', '', $row_colour)."'>");
+    $port['graph_type'] = 'port_upkts';
+    echo generate_port_link($port, "<img src='graph.php?type=port_upkts&amp;id=".$port['port_id'].'&amp;from='.$config['time']['day'].'&amp;to='.$config['time']['now'].'&amp;width=100&amp;height=20&amp;legend=no&amp;bg='.str_replace('#', '', $row_colour)."'>");
+    $port['graph_type'] = 'port_errors';
+    echo generate_port_link($port, "<img src='graph.php?type=port_errors&amp;id=".$port['port_id'].'&amp;from='.$config['time']['day'].'&amp;to='.$config['time']['now'].'&amp;width=100&amp;height=20&amp;legend=no&amp;bg='.str_replace('#', '', $row_colour)."'>");
+}
+
+echo "</td><td width=120 onclick=\"location.href='".generate_port_url($port)."'\" >";
+
+if ($port['ifOperStatus'] == 'up') {
+    $port['in_rate']  = ($port['ifInOctets_rate'] * 8);
+    $port['out_rate'] = ($port['ifOutOctets_rate'] * 8);
+    $in_perc          = @round(($port['in_rate'] / $port['ifSpeed'] * 100));
+    $out_perc         = @round(($port['in_rate'] / $port['ifSpeed'] * 100));
+    echo "<i class='fa fa-long-arrow-left fa-lg' style='color:green' aria-hidden='true'></i> <span style='color: ".percent_colour($in_perc)."'>".formatRates($port['in_rate'])."<br />
+        <i class='fa fa-long-arrow-right fa-lg' style='color:blue' aria-hidden='true'></i> <span style='color: ".percent_colour($out_perc)."'>".formatRates($port['out_rate'])."<br />
+        <i class='fa fa-long-arrow-left fa-lg' style='color:purple' aria-hidden='true'></i> ".format_bi($port['ifInUcastPkts_rate'])."pps</span><br />
+        <i class='fa fa-long-arrow-right fa-lg' style='color:darkorange' aria-hidden='true'></i> ".format_bi($port['ifOutUcastPkts_rate']).'pps</span>';
+}
+
+echo "</td><td width=75 onclick=\"location.href='".generate_port_url($port)."'\" >";
+if ($port['ifSpeed']) {
+    echo '<span class=box-desc>'.humanspeed($port['ifSpeed']).'</span>';
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 echo '<br />';
 
 if ($port[ifDuplex] != 'unknown') {
@@ -175,8 +266,11 @@ $neighborsCount=0;
 $nbLinks=0;
 if (strpos($port['label'], 'oopback') === false && !$graph_type) {
     foreach (dbFetchRows('SELECT * FROM `links` AS L, `ports` AS I, `devices` AS D WHERE L.local_port_id = ? AND L.remote_port_id = I.port_id AND I.device_id = D.device_id', array($if_id)) as $link) {
+<<<<<<< HEAD
         // echo("<img src='images/16/connect.png' align=absmiddle alt='Directly Connected' /> " . generate_port_link($link, makeshortif($link['label'])) . " on " . generate_device_link($link, shorthost($link['hostname'])) . "</a><br />");
         // $br = "<br />";
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $int_links[$link['port_id']]      = $link['port_id'];
         $int_links_phys[$link['port_id']] = 1;
         $nbLinks++;
@@ -231,7 +325,11 @@ if (strpos($port['label'], 'oopback') === false && !$graph_type) {
     }//end if
 
     if (count($int_links) > 3) {
+<<<<<<< HEAD
         echo '<div class="collapse-neighbors"><i class="neighbors-button fa fa-plus" aria-hidden="true"></i>
+=======
+        echo '<div class="collapse-neighbors"><i class="neighbors-button fa fa-plus fa-lg" aria-hidden="true"></i>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                <span class="neighbors-interface-list-firsts" style="display: inline;">';
     }
 
@@ -245,12 +343,22 @@ if (strpos($port['label'], 'oopback') === false && !$graph_type) {
                 echo '<span class="neighbors-interface-list" style="display: none;">';
             }
             $link_if = dbFetchRow('SELECT * from ports AS I, devices AS D WHERE I.device_id = D.device_id and I.port_id = ?', array($int_link));
+<<<<<<< HEAD
             echo "$br";
 
             if ($int_links_phys[$int_link]) {
                 echo "<img align=absmiddle src='images/16/connect.png'> ";
             } else {
                 echo "<img align=absmiddle src='images/16/bullet_go.png'> ";
+=======
+            $link_if = cleanPort($link_if);
+            echo "$br";
+
+            if ($int_links_phys[$int_link]) {
+                echo "<i class='fa fa-plus fa-lg' style='color:black' aria-hidden='true'></i> ";
+            } else {
+                echo "<i class='fa fa-arrow-right fa-lg' style='color:green' aria-hidden='true'></i> ";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             }
 
             echo '<b>'.generate_port_link($link_if, makeshortif($link_if['label'])).' on '.generate_device_link($link_if, shorthost($link_if['hostname']));
@@ -276,26 +384,46 @@ if ($port_details && $config['enable_port_relationship'] === true && port_permit
         $pw_peer_dev = dbFetchRow('SELECT * FROM `devices` WHERE `device_id` = ?', array($pseudowire['peer_device_id']));
         $pw_peer_int = dbFetchRow('SELECT * FROM `ports` AS I, pseudowires AS P WHERE I.device_id = ? AND P.cpwVcID = ? AND P.port_id = I.port_id', array($pseudowire['peer_device_id'], $pseudowire['cpwVcID']));
 
+<<<<<<< HEAD
         $pw_peer_int = ifNameDescr($pw_peer_int);
         echo "$br<img src='images/16/arrow_switch.png' align=absmiddle><b> ".generate_port_link($pw_peer_int, makeshortif($pw_peer_int['label'])).' on '.generate_device_link($pw_peer_dev, shorthost($pw_peer_dev['hostname'])).'</b>';
+=======
+        $pw_peer_int = cleanPort($pw_peer_int);
+        echo "$br<i class='fa fa-cube fa-lg' style='color:green' aria-hidden='true'></i><b> ".generate_port_link($pw_peer_int, makeshortif($pw_peer_int['label'])).' on '.generate_device_link($pw_peer_dev, shorthost($pw_peer_dev['hostname'])).'</b>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $br = '<br />';
     }
 
     foreach (dbFetchRows('SELECT * FROM `ports` WHERE `pagpGroupIfIndex` = ? and `device_id` = ?', array($port['ifIndex'], $device['device_id'])) as $member) {
+<<<<<<< HEAD
         echo "$br<img src='images/16/brick_link.png' align=absmiddle> <strong>".generate_port_link($member).' (PAgP)</strong>';
+=======
+        $member = cleanPort($member);
+        echo "$br<i class='fa fa-cube fa-lg icon-theme' aria-hidden='true'></i> <strong>".generate_port_link($member).' (PAgP)</strong>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $br = '<br />';
     }
 
     if ($port['pagpGroupIfIndex'] && $port['pagpGroupIfIndex'] != $port['ifIndex']) {
         $parent = dbFetchRow('SELECT * FROM `ports` WHERE `ifIndex` = ? and `device_id` = ?', array($port['pagpGroupIfIndex'], $device['device_id']));
+<<<<<<< HEAD
         echo "$br<img src='images/16/bricks.png' align=absmiddle> <strong>".generate_port_link($parent).' (PAgP)</strong>';
+=======
+        $parent = cleanPort($parent);
+        echo "$br<i class='fa fa-cube fa-lg icon-theme' aria-hidden='true'></i> <strong>".generate_port_link($parent).' (PAgP)</strong>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $br = '<br />';
     }
 
     foreach (dbFetchRows('SELECT * FROM `ports_stack` WHERE `port_id_low` = ? and `device_id` = ?', array($port['ifIndex'], $device['device_id'])) as $higher_if) {
         if ($higher_if['port_id_high']) {
             $this_port = get_port_by_index_cache($device['device_id'], $higher_if['port_id_high']);
+<<<<<<< HEAD
             echo "$br<img src='images/16/arrow_divide.png' align=absmiddle> <strong>".generate_port_link($this_port).'</strong>';
+=======
+            $this_port = cleanPort($this_port);
+            echo "$br<i class='fa fa-expand fa-lg icon-theme' aria-hidden='true'></i> <strong>".generate_port_link($this_port).'</strong>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $br = '<br />';
         }
     }
@@ -303,7 +431,12 @@ if ($port_details && $config['enable_port_relationship'] === true && port_permit
     foreach (dbFetchRows('SELECT * FROM `ports_stack` WHERE `port_id_high` = ? and `device_id` = ?', array($port['ifIndex'], $device['device_id'])) as $lower_if) {
         if ($lower_if['port_id_low']) {
             $this_port = get_port_by_index_cache($device['device_id'], $lower_if['port_id_low']);
+<<<<<<< HEAD
             echo "$br<img src='images/16/arrow_join.png' align=absmiddle> <strong>".generate_port_link($this_port).'</strong>';
+=======
+            $this_port = cleanPort($this_port);
+            echo "$br<i class='fa fa-compress fa-lg icon-theme' aria-hidden='true'></i> <strong>".generate_port_link($this_port).'</strong>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $br = '<br />';
         }
     }

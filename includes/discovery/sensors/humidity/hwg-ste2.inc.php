@@ -10,6 +10,7 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 if ($device['os'] == 'hwg-ste2') {
     d_echo('HWg STE2 Humidity ');
     $oid = '.1.3.6.1.4.1.21796.4.9.3.1.4.1';
@@ -20,4 +21,14 @@ if ($device['os'] == 'hwg-ste2') {
     if ($humidity !== false) {
         discover_sensor($valid['sensor'], 'humidity', $device, $oid, '1', $sensorType, $descr, '1', '1', null, null, null, null, $humidity);
     }
+=======
+d_echo('HWg STE2 Humidity ');
+$oid = '.1.3.6.1.4.1.21796.4.9.3.1.4.1';
+$sensorType = 'ste2_humidity';
+$descr = 'Input 1 Humidity';
+$humidity = snmp_get($device, $oid, '-Osqnv');
+
+if ($humidity !== false) {
+    discover_sensor($valid['sensor'], 'humidity', $device, $oid, '1', $sensorType, $descr, '1', '1', null, null, null, null, $humidity);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

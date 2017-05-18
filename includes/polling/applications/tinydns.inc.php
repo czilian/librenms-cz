@@ -24,6 +24,7 @@
  * @subpackage Polling
  */
 
+<<<<<<< HEAD
 $name = 'tinydns';
 $app_id = $app['app_id'];
 if (!empty($agent_data['app'][$name]) && $app_id > 0) {
@@ -51,6 +52,37 @@ if (!empty($agent_data['app'][$name]) && $app_id > 0) {
         'DS:badclass:COUNTER:600:0:125000000000',
         'DS:noquery:COUNTER:600:0:125000000000'
     );
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+$name = 'tinydns';
+$app_id = $app['app_id'];
+if (!empty($agent_data['app'][$name]) && $app_id > 0) {
+    update_application($app, $name);
+    echo ' tinydns';
+    $rrd_name = array('app', $name, $app_id);
+    $rrd_def = RrdDefinition::make()
+        ->addDataset('a', 'COUNTER', 0, 125000000000)
+        ->addDataset('ns', 'COUNTER', 0, 125000000000)
+        ->addDataset('cname', 'COUNTER', 0, 125000000000)
+        ->addDataset('soa', 'COUNTER', 0, 125000000000)
+        ->addDataset('ptr', 'COUNTER', 0, 125000000000)
+        ->addDataset('hinfo', 'COUNTER', 0, 125000000000)
+        ->addDataset('mx', 'COUNTER', 0, 125000000000)
+        ->addDataset('txt', 'COUNTER', 0, 125000000000)
+        ->addDataset('rp', 'COUNTER', 0, 125000000000)
+        ->addDataset('sig', 'COUNTER', 0, 125000000000)
+        ->addDataset('key', 'COUNTER', 0, 125000000000)
+        ->addDataset('aaaa', 'COUNTER', 0, 125000000000)
+        ->addDataset('axfr', 'COUNTER', 0, 125000000000)
+        ->addDataset('any', 'COUNTER', 0, 125000000000)
+        ->addDataset('total', 'COUNTER', 0, 125000000000)
+        ->addDataset('other', 'COUNTER', 0, 125000000000)
+        ->addDataset('notauth', 'COUNTER', 0, 125000000000)
+        ->addDataset('notimpl', 'COUNTER', 0, 125000000000)
+        ->addDataset('badclass', 'COUNTER', 0, 125000000000)
+        ->addDataset('noquery', 'COUNTER', 0, 125000000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $tags = compact('name', 'app_id', 'rrd_name', 'rrd_def');
     data_update($device, 'app', $tags, $fields);

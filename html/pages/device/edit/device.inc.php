@@ -24,17 +24,40 @@ if ($_POST['editing']) {
             dbUpdate(array('location'=>$override_sysLocation_string), 'devices', '`device_id`=?', array($device['device_id']));
         }
 
+<<<<<<< HEAD
         #FIXME needs more sanity checking! and better feedback
 
         $param = array('purpose' => $vars['descr'], 'type' => $vars['type'], 'ignore' => $vars['ignore'], 'disabled' => $vars['disabled']);
+=======
+        if ($device['type'] != $vars['type']) {
+            $param['type'] = $vars['type'];
+            $update_type = true;
+        }
+
+        #FIXME needs more sanity checking! and better feedback
+
+        $param['purpose']  = $vars['descr'];
+        $param['ignore']   = set_numeric($vars['ignore']);
+        $param['disabled'] = set_numeric($vars['disabled']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         $rows_updated = dbUpdate($param, 'devices', '`device_id` = ?', array($device['device_id']));
 
         if ($rows_updated > 0 || $updated) {
+<<<<<<< HEAD
             $update_message = "Device record updated.";
             $updated = 1;
             $device = dbFetchRow("SELECT * FROM `devices` WHERE `device_id` = ?", array($device['device_id']));
         } elseif ($rows_updated = '-1') {
+=======
+            if ($update_type === true) {
+                set_dev_attrib($device, 'override_device_type', true);
+            }
+            $update_message = "Device record updated.";
+            $updated = 1;
+            $device = dbFetchRow("SELECT * FROM `devices` WHERE `device_id` = ?", array($device['device_id']));
+        } elseif ($rows_updated == 0) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $update_message = "Device record unchanged. No update necessary.";
             $updated = -1;
         } else {
@@ -162,6 +185,7 @@ if ($updated && $update_message) {
        <input name="ignore" type="checkbox" id="ignore" value="1" <?php if ($device['ignore']) {
             echo("checked=checked");
 } ?> />
+<<<<<<< HEAD
     </div>
 </div>
 <div class="row">
@@ -169,6 +193,15 @@ if ($updated && $update_message) {
         <button type="submit" name="Submit"  class="btn btn-default"><i class="fa fa-check"></i> Save</button>
     </div>
 </div>
+=======
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1 col-md-offset-2">
+        <button type="submit" name="Submit"  class="btn btn-default"><i class="fa fa-check"></i> Save</button>
+    </div>
+</div>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 </form>
 <br />
 <script>

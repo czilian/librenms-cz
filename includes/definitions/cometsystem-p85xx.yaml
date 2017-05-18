@@ -4,3 +4,8 @@ type: environment
 icon: comet
 over:
     - { graph: device_temperature, text: temperature }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysObjectId: .1.3.6.1.4.1.22626.1.5
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

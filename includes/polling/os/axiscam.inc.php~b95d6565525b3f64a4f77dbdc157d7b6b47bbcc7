@@ -1,0 +1,29 @@
+<?php
+
+/*
+ * LibreNMS
+ *
+ * Copyright (c) 2014 Neil Lathwood <https://github.com/laf/ http://www.lathwood.co.uk/fa>
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.  Please see LICENSE.txt at the top level of
+ * the source code distribution for details.
+ */
+
+<<<<<<< HEAD:includes/polling/os/axiscam.inc.php:includes/polling/os/axiscam.inc.php
+$data = explode('; ', $poll_device['sysDescr']);
+
+if (isset($data[1])) {
+    $hardware = $data[1];
+}
+
+if (isset($data[3])) {
+    $version = $data[3];
+}
+=======
+if (str_contains($sysDescr, 'Powercode BMU')) {
+    $os = 'powercode';
+}
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7:includes/discovery/os/powercode.inc.php:includes/discovery/os/powercode.inc.php

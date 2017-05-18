@@ -20,6 +20,7 @@
     "require": {
         "php":                               "^5.3|^7.0",
         "phpdocumentor/reflection-docblock": "^2.0|^3.0.2",
+<<<<<<< HEAD
         "sebastian/comparator":              "^1.1",
         "doctrine/instantiator":             "^1.0.2",
         "sebastian/recursion-context":       "^1.0"
@@ -27,6 +28,16 @@
 
     "require-dev": {
         "phpspec/phpspec": "^2.0"
+=======
+        "sebastian/comparator":              "^1.1|^2.0",
+        "doctrine/instantiator":             "^1.0.2",
+        "sebastian/recursion-context":       "^1.0|^2.0|^3.0"
+    },
+
+    "require-dev": {
+        "phpspec/phpspec": "^2.5|^3.2",
+        "phpunit/phpunit": "^4.8 || ^5.6.5"
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     },
 
     "autoload": {
@@ -35,6 +46,15 @@
         }
     },
 
+<<<<<<< HEAD
+=======
+    "autoload-dev": {
+        "psr-4": {
+            "Fixtures\\Prophecy\\": "fixtures"
+        }
+    },
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     "extra": {
         "branch-alias": {
             "dev-master": "1.6.x-dev"

@@ -22,8 +22,13 @@ if (!$_SESSION['authenticated']) {
 
 if (is_numeric($_GET['device_id'])) {
     foreach (dbFetch('SELECT * FROM ports WHERE device_id = ?', array($_GET['device_id'])) as $interface) {
+<<<<<<< HEAD
         $interface  = ifNameDescr($interface);
         $string = display($interface['label'].' - '.$interface['ifAlias']);
+=======
+        $interface  = cleanPort($interface);
+        $string = addslashes(html_entity_decode($interface['label'].' - '.$interface['ifAlias']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo "obj.options[obj.options.length] = new Option('".$string."','".$interface['port_id']."');\n";
     }
 }

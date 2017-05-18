@@ -19,7 +19,11 @@ require 'includes/graphs/common.inc.php';
 $rrd_filename = rrd_name($device['hostname'], 'ping-perf');
 
 $rrd_options .= ' DEF:ping='.$rrd_filename.':ping:AVERAGE';
+<<<<<<< HEAD
 $rrd_options .= " 'COMMENT:Seconds      Current  Minimum  Maximum  Average\\n'";
+=======
+$rrd_options .= " 'COMMENT:Milliseconds      Cur    Min    Max    Avg\\n'";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $rrd_options .= ' LINE1.25:ping#36393D:Ping';
 $rrd_options .= ' GPRINT:ping:LAST:%6.2lf  GPRINT:ping:AVERAGE:%6.2lf';
 $rrd_options .= " GPRINT:ping:MAX:%6.2lf  'GPRINT:ping:AVERAGE:%6.2lf\\n'";

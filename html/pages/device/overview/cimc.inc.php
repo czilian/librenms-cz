@@ -13,7 +13,11 @@ if (count($components) > 0) {
             <div class="col-md-12">
                 <div class="panel panel-default panel-condensed">
                     <div class="panel-heading">
+<<<<<<< HEAD
                         <img src='images/16/cog.png'><strong> Hardware Components</strong>
+=======
+                    <i class="fa fa-cogs fa-lg icon-theme" aria-hidden="true"></i> <strong>Hardware Components</strong>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     </div>
                     <table class="table table-hover table-condensed table-striped">
     <?php

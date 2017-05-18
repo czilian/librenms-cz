@@ -1,0 +1,21 @@
+<?php
+/*
+ * LibreNMS
+ *
+ * Copyright (c) 2014 Neil Lathwood <https://github.com/laf/ http://www.lathwood.co.uk/fa>
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.  Please see LICENSE.txt at the top level of
+ * the source code distribution for details.
+ */
+
+<<<<<<< HEAD:includes/polling/os/siklu.inc.php:includes/polling/os/siklu.inc.php
+$version  = snmp_get($device, 'rbSwBank1Version.0', '-Osqnv', '+RADIO-BRIDGE-MIB');
+$hardware = $poll_device['sysDescr'];
+=======
+if (starts_with($sysObjectId, array('.1.3.6.1.4.1.3097.1.4', '.1.3.6.1.4.1.3097.1.5'))) {
+    $os = 'fireware';
+}
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7:includes/discovery/os/fireware.inc.php:includes/discovery/os/fireware.inc.php

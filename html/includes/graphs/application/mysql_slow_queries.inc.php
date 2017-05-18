@@ -8,12 +8,21 @@ $array = array('SQs' => 'Slow queries');
 
 $i = 0;
 if (rrdtool_check_rrd_exists($rrd_filename)) {
+<<<<<<< HEAD
     foreach ($array as $ds => $vars) {
         $rrd_list[$i]['filename'] = $rrd_filename;
         if (is_array($vars)) {
             $rrd_list[$i]['descr'] = $vars['descr'];
         } else {
             $rrd_list[$i]['descr'] = $vars;
+=======
+    foreach ($array as $ds => $var) {
+        $rrd_list[$i]['filename'] = $rrd_filename;
+        if (is_array($var)) {
+            $rrd_list[$i]['descr'] = $var['descr'];
+        } else {
+            $rrd_list[$i]['descr'] = $var;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
 
         $rrd_list[$i]['ds'] = $ds;

@@ -92,18 +92,30 @@ foreach (dbFetchRows($sql, $param) as $interface) {
     }
 
     if ($interface['in_errors'] > 0 || $interface['out_errors'] > 0) {
+<<<<<<< HEAD
         $error_img = generate_port_link($interface, "<img src='images/16/chart_curve_error.png' alt='Interface Errors' border=0>", errors);
+=======
+        $error_img = generate_port_link($interface, "<i class='fa fa-flag fa-lg' style='color:red' aria-hidden='true'></i>", errors);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     } else {
         $error_img = '';
     }
 
     if (port_permitted($interface['port_id'])) {
+<<<<<<< HEAD
         $interface  = ifLabel($interface, $interface);
+=======
+        $interface  = cleanPort($interface, $interface);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $response[] = array(
             'hostname'    => generate_device_link($interface),
             'interface'   => generate_port_link($interface).' '.$error_img,
             'address'     => $address,
+<<<<<<< HEAD
             'description' => display($interface['ifAlias']),
+=======
+            'description' => $interface['ifAlias'],
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         );
     }
 }//end foreach

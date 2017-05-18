@@ -8,6 +8,7 @@ source: Installation/Installation-CentOS-7-Nginx.md
 #### Install / Configure MySQL
 ```bash
 yum install mariadb-server mariadb
+<<<<<<< HEAD
 service mariadb restart
 mysql -uroot -p
 ```
@@ -18,6 +19,16 @@ GRANT ALL PRIVILEGES ON librenms.*
   TO 'librenms'@'localhost'
   IDENTIFIED BY '<password>'
 ;
+=======
+systemctl restart mariadb
+mysql -uroot
+```
+
+```sql
+CREATE DATABASE librenms CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER 'librenms'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON librenms.* TO 'librenms'@'localhost';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 FLUSH PRIVILEGES;
 exit
 ```
@@ -31,11 +42,22 @@ innodb_file_per_table=1
 sql-mode=""
 ```
 
+<<<<<<< HEAD
 ```service mariadb restart```
 
 ### Web Server ###
 
 #### Install / Configure Nginx 
+=======
+```
+systemctl enable mariadb  
+systemctl restart mariadb
+```
+
+### Web Server ###
+
+#### Install / Configure Nginx
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 ```bash
 yum install epel-release
@@ -50,8 +72,25 @@ pear install Net_IPv6-1.2.2b2
 
 In `/etc/php.ini` ensure date.timezone is set to your preferred time zone.  See http://php.net/manual/en/timezones.php for a list of supported timezones.  Valid examples are: "America/New_York", "Australia/Brisbane", "Etc/UTC".
 
+<<<<<<< HEAD
 ```bash
 service php-fpm restart
+=======
+In `/etc/php-fpm.d/www.conf` make these changes:
+
+```nginx
+;listen = 127.0.0.1:9000
+listen = /var/run/php-fpm/php7.0-fpm.sock
+
+listen.owner = nginx
+listen.group = nginx
+listen.mode = 0660
+```
+Restart PHP.
+
+```bash
+systemctl restart php-fpm
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Add librenms user
@@ -59,6 +98,10 @@ service php-fpm restart
 ```bash
 useradd librenms -d /opt/librenms -M -r
 usermod -a -G librenms nginx
+<<<<<<< HEAD
+=======
+usermod -a -G librenms apache
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Clone repo
@@ -87,13 +130,22 @@ server {
  index       index.php;
  access_log  /opt/librenms/logs/access_log;
  error_log   /opt/librenms/logs/error_log;
+<<<<<<< HEAD
+=======
+ gzip on;
+ gzip_types text/css application/javascript text/javascript application/x-javascript image/svg+xml text/plain text/xsd text/xsl text/xml image/x-icon;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  location / {
   try_files $uri $uri/ @librenms;
  }
  location ~ \.php {
   include fastcgi.conf;
   fastcgi_split_path_info ^(.+\.php)(/.+)$;
+<<<<<<< HEAD
   fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+=======
+  fastcgi_pass unix:/var/run/php-fpm/php7.0-fpm.sock;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  }
  location ~ /\.ht {
   deny all;
@@ -115,10 +167,24 @@ server {
     setsebool -P httpd_can_sendmail=1
 ```
 
+<<<<<<< HEAD
 #### Restart Web server
 
 ```bash
 service nginx restart
+=======
+#### Allow access through firewall
+
+```bash
+firewall-cmd --zone public --add-service http
+firewall-cmd --permanent --zone public --add-service http
+```
+
+#### Restart Web server
+
+```bash
+systemctl restart nginx
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Web installer
@@ -141,19 +207,36 @@ Edit the text which says `RANDOMSTRINGGOESHERE` and set your own community strin
 ```bash
 curl -o /usr/bin/distro https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro
 chmod +x /usr/bin/distro
+<<<<<<< HEAD
 service snmpd restart
+=======
+systemctl restart snmpd
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Cron job
 
 `cp librenms.nonroot.cron /etc/cron.d/librenms`
 
+<<<<<<< HEAD
+=======
+#### Copy logrotate config
+
+LibreNMS keeps logs in `/opt/librenms/logs`. Over time these can become large and be rotated out.  To rotate out the old logs you can use the provided logrotate config file:
+
+    cp misc/librenms.logrotate /etc/logrotate.d/librenms
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 #### Final steps
 
 ```bash
 chown -R librenms:librenms /opt/librenms
+<<<<<<< HEAD
 systemctl enable nginx
 systemctl enable mariadb
+=======
+systemctl enable nginx mariadb
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 Run validate.php as root in the librenms directory:

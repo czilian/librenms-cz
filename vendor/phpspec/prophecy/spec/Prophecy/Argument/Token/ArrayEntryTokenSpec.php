@@ -4,15 +4,24 @@ namespace spec\Prophecy\Argument\Token;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+<<<<<<< HEAD
+=======
+use Prophecy\Argument\Token\ExactValueToken;
+use Prophecy\Argument\Token\TokenInterface;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 use Prophecy\Exception\InvalidArgumentException;
 
 class ArrayEntryTokenSpec extends ObjectBehavior
 {
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $key
      * @param \Prophecy\Argument\Token\TokenInterface $value
      */
     function let($key, $value)
+=======
+    function let(TokenInterface $key, TokenInterface $value)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith($key, $value);
     }
@@ -40,21 +49,29 @@ class ArrayEntryTokenSpec extends ObjectBehavior
         $this->__toString()->shouldBe('[..., key => value, ...]');
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $key
      * @param \stdClass                               $object
      */
     function it_wraps_non_token_value_into_ExactValueToken($key, $object)
+=======
+    function it_wraps_non_token_value_into_ExactValueToken(TokenInterface $key, \stdClass $object)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith($key, $object);
         $this->getValue()->shouldHaveType('\Prophecy\Argument\Token\ExactValueToken');
     }
 
+<<<<<<< HEAD
     /**
      * @param \stdClass                               $object
      * @param \Prophecy\Argument\Token\TokenInterface $value
      */
     function it_wraps_non_token_key_into_ExactValueToken($object, $value)
+=======
+    function it_wraps_non_token_key_into_ExactValueToken(\stdClass $object, TokenInterface $value)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith($object, $value);
         $this->getKey()->shouldHaveType('\Prophecy\Argument\Token\ExactValueToken');
@@ -67,6 +84,7 @@ class ArrayEntryTokenSpec extends ObjectBehavior
         $this->scoreArgument(array('key'=>'value'))->shouldBe(5);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $key
      * @param \Prophecy\Argument\Token\TokenInterface $value
@@ -74,6 +92,13 @@ class ArrayEntryTokenSpec extends ObjectBehavior
      */
     function it_scores_traversable_object_half_of_combined_scores_from_key_and_value_tokens($key, $value, $object)
     {
+=======
+    function it_scores_traversable_object_half_of_combined_scores_from_key_and_value_tokens(
+        TokenInterface $key,
+        TokenInterface $value,
+        \Iterator $object
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $object->current()->will(function () use ($object) {
             $object->valid()->willReturn(false);
 
@@ -88,6 +113,7 @@ class ArrayEntryTokenSpec extends ObjectBehavior
         $this->scoreArgument($object)->shouldBe(4);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\AnyValuesToken $key
      * @param \Prophecy\Argument\Token\TokenInterface $value
@@ -95,6 +121,13 @@ class ArrayEntryTokenSpec extends ObjectBehavior
      */
     function it_throws_exception_during_scoring_of_array_accessible_object_if_key_is_not_ExactValueToken($key, $value, $object)
     {
+=======
+    function it_throws_exception_during_scoring_of_array_accessible_object_if_key_is_not_ExactValueToken(
+        TokenInterface $key,
+        TokenInterface $value,
+        \ArrayAccess $object
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $key->__toString()->willReturn('any_token');
         $this->beConstructedWith($key,$value);
         $errorMessage = 'You can only use exact value tokens to match key of ArrayAccess object'.PHP_EOL.
@@ -102,6 +135,7 @@ class ArrayEntryTokenSpec extends ObjectBehavior
         $this->shouldThrow(new InvalidArgumentException($errorMessage))->duringScoreArgument($object);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\ExactValueToken $key
      * @param \Prophecy\Argument\Token\TokenInterface  $value
@@ -109,6 +143,13 @@ class ArrayEntryTokenSpec extends ObjectBehavior
      */
     function it_scores_array_accessible_object_half_of_combined_scores_from_key_and_value_tokens($key, $value, $object)
     {
+=======
+    function it_scores_array_accessible_object_half_of_combined_scores_from_key_and_value_tokens(
+        ExactValueToken $key,
+        TokenInterface $value,
+        \ArrayAccess $object
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $object->offsetExists('key')->willReturn(true);
         $object->offsetGet('key')->willReturn('value');
         $key->getValue()->willReturn('key');
@@ -117,6 +158,7 @@ class ArrayEntryTokenSpec extends ObjectBehavior
         $this->scoreArgument($object)->shouldBe(2);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\AnyValuesToken $key
      * @param \Prophecy\Argument\Token\TokenInterface $value
@@ -124,6 +166,13 @@ class ArrayEntryTokenSpec extends ObjectBehavior
      */
     function it_accepts_any_key_token_type_to_score_object_that_is_both_traversable_and_array_accessible($key, $value, $object)
     {
+=======
+    function it_accepts_any_key_token_type_to_score_object_that_is_both_traversable_and_array_accessible(
+        TokenInterface $key,
+        TokenInterface $value,
+        \ArrayIterator $object
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $this->beConstructedWith($key, $value);
         $object->current()->will(function () use ($object) {
             $object->valid()->willReturn(false);
@@ -158,10 +207,14 @@ class ArrayEntryTokenSpec extends ObjectBehavior
         $this->scoreArgument($argument)->shouldBe(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Iterator $object
      */
     function it_does_not_score_traversable_object_without_entries($object)
+=======
+    function it_does_not_score_traversable_object_without_entries(\Iterator $object)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $object->rewind()->willReturn(null);
         $object->next()->willReturn(null);
@@ -169,6 +222,7 @@ class ArrayEntryTokenSpec extends ObjectBehavior
         $this->scoreArgument($object)->shouldBe(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $key
      * @param \Prophecy\Argument\Token\TokenInterface $value
@@ -176,6 +230,13 @@ class ArrayEntryTokenSpec extends ObjectBehavior
      */
     function it_does_not_score_traversable_object_if_key_and_value_tokens_do_not_score_same_entry($key, $value, $object)
     {
+=======
+    function it_does_not_score_traversable_object_if_key_and_value_tokens_do_not_score_same_entry(
+        TokenInterface $key,
+        TokenInterface $value,
+        \Iterator $object
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $object->current()->willReturn('foo');
         $object->current()->will(function () use ($object) {
             $object->valid()->willReturn(false);
@@ -194,17 +255,25 @@ class ArrayEntryTokenSpec extends ObjectBehavior
         $this->scoreArgument($object)->shouldBe(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\ExactValueToken $key
      * @param \ArrayAccess                             $object
      */
     function it_does_not_score_array_accessible_object_if_it_has_no_offset_with_key_token_value($key, $object)
     {
+=======
+    function it_does_not_score_array_accessible_object_if_it_has_no_offset_with_key_token_value(
+        ExactValueToken $key,
+        \ArrayAccess $object
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $object->offsetExists('key')->willReturn(false);
         $key->getValue()->willReturn('key');
         $this->scoreArgument($object)->shouldBe(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\ExactValueToken $key
      * @param \Prophecy\Argument\Token\TokenInterface  $value
@@ -212,6 +281,13 @@ class ArrayEntryTokenSpec extends ObjectBehavior
      */
     function it_does_not_score_array_accessible_object_if_key_and_value_tokens_do_not_score_same_entry($key, $value, $object)
     {
+=======
+    function it_does_not_score_array_accessible_object_if_key_and_value_tokens_do_not_score_same_entry(
+        ExactValueToken $key,
+        TokenInterface $value,
+        \ArrayAccess $object
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $object->offsetExists('key')->willReturn(true);
         $object->offsetGet('key')->willReturn('value');
         $key->getValue()->willReturn('key');

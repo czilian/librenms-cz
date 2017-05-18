@@ -11,6 +11,11 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if ($device['os_group'] == "cisco") {
     // TODO: Need to test partial PRI.
 
@@ -29,11 +34,22 @@ if ($device['os_group'] == "cisco") {
         $active = snmpwalk_cache_oid_num($device, "1.3.6.1.4.1.9.10.19.1.1.4.0", null);
         $active = $active['1.3.6.1.4.1.9.10.19.1.1.4.0'];
 
+<<<<<<< HEAD
         if (isset($active) && $active > 0) {
             $rrd_def = array(
                 'DS:total:GAUGE:600:0:U',
                 'DS:active:GAUGE:600:0:U'
             );
+=======
+        if (is_array($active)) {
+            $active = $active[''];
+        }
+
+        if (isset($total) && $total > 0) {
+            $rrd_def = RrdDefinition::make()
+                ->addDataset('total', 'GAUGE', 0)
+                ->addDataset('active', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
             $fields = array(
                 'total' => $total,

@@ -1,4 +1,9 @@
 <?php
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $radios = snmpwalk_cache_oid($device, 'XIRRUS-MIB::realtimeMonitorIfaceName', array(), 'XIRRUS-MIB');
 $rssi = snmpwalk_cache_oid($device, 'XIRRUS-MIB::realtimeMonitorAverageRSSI', array(), 'XIRRUS-MIB');
 $dataRate = snmpwalk_cache_oid($device, 'XIRRUS-MIB::realtimeMonitorAverageDataRate', array(), 'XIRRUS-MIB');
@@ -11,11 +16,18 @@ foreach ($radios as $idx => $radio) {
 
     $measurement = 'xirrus_stats';
     $rrd_name = array($measurement, $radioName);
+<<<<<<< HEAD
     $rrd_def = array(
         'DS:rssi:GAUGE:600:-150:0',
         'DS:dataRate:GAUGE:600:0:1400',
         'DS:noiseFloor:GAUGE:600:-150:0'
     );
+=======
+    $rrd_def = RrdDefinition::make()
+        ->addDataset('rssi', 'GAUGE', -150, 0)
+        ->addDataset('dataRate', 'GAUGE', 0, 1400)
+        ->addDataset('noiseFloor', 'GAUGE', -150, 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $fields = array(
         'rssi' => $rssi[$idx]['realtimeMonitorAverageRSSI'],
         'dataRate' => $dataRate[$idx]['realtimeMonitorAverageDataRate'],
@@ -42,7 +54,11 @@ if ($config['xirrus_disable_stations']!=true) {
     foreach ($associations as $radio => $count) {
         $measurement = 'xirrus_users';
         $rrd_name = array($measurement, $radio);
+<<<<<<< HEAD
         $rrd_def = 'DS:stations:GAUGE:600:0:3200';
+=======
+        $rrd_def = RrdDefinition::make()->addDataset('stations', 'GAUGE', 0, 3200);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $fields = array(
             'stations' => $count
         );

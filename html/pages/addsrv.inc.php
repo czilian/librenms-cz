@@ -23,7 +23,11 @@ if ($_SESSION['userlevel'] < '10') {
     }
 
     foreach (dbFetchRows('SELECT * FROM `devices` ORDER BY `hostname`') as $device) {
+<<<<<<< HEAD
         $devicesform .= "<option value='".$device['device_id']."'>".$device['hostname'].'</option>';
+=======
+        $devicesform .= "<option value='".$device['device_id']."'>".format_hostname($device).'</option>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     if ($updated) {

@@ -158,11 +158,20 @@ class ExportUtil
                 return 'Array &' . $key;
             }
 
+<<<<<<< HEAD
             $key    = $processed->add($value);
             $values = '';
 
             if (count($value) > 0) {
                 foreach ($value as $k => $v) {
+=======
+            $array  = $value;
+            $key    = $processed->add($value);
+            $values = '';
+
+            if (count($array) > 0) {
+                foreach ($array as $k => $v) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     $values .= sprintf(
                         '%s    %s => %s' . "\n",
                         $whitespace,

@@ -12,6 +12,10 @@ Now onto the bit you're interested in, what is submitted and what we do with tha
 #### What is submitted ####
 - All data is anonymous.
 - Generic statistics are taken from the database, these include things like device total, type and os, port types, speeds and total, total bgp peers. Take a look at the code for full details.
+<<<<<<< HEAD
+=======
+- Pairs of sysDescr and sysObjectID from devices with a small amount of sanitation to prevent things like hostnames from being submitted.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - We record version numbers of php, mysql, net-snmp and rrdtool
 - A random UUID is generated on your own install.
 - That's it!
@@ -21,6 +25,7 @@ Now onto the bit you're interested in, what is submitted and what we do with tha
 - We store it, not for long - 3 months at the moment although this could change.
 - We use it to generate pretty graphs for people to see.
 - We use it to help prioritise issues and features that need to be worked on.
+- We use sysDescr and sysObjectID to create unit tests and improve OS discovery
 
 #### Questions? ####
 - Q. How often is data submitted? A. We submit the data once a day according to running daily.sh via cron. If you disable this then opting in will not have any affect.

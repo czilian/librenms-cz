@@ -16,6 +16,12 @@ $version  = preg_replace('/^VMware /', '', $data[0]['vmwProdName']).' '.$data[0]
 $features = 'build-'.$data[0]['vmwProdBuild'];
 $hardware = snmp_get($device, 'entPhysicalDescr.1', '-OsvQU', 'ENTITY-MIB');
 $serial   = snmp_get($device, 'entPhysicalSerialNum.1', '-OsvQU', 'ENTITY-MIB');
+<<<<<<< HEAD
+=======
+
+# Clean up Generic hardware descriptions
+$hardware = rewrite_generic_hardware($hardware);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 /*
  * CONSOLE: Start the VMware discovery process.
@@ -59,6 +65,7 @@ foreach ($db_info_list as $db_info) {
         $vm_info['vmwVmMemSize'] = $matches[1];
     }
 
+<<<<<<< HEAD
     /*
      * If VMware Tools is not running then don't overwrite the GuesOS with the error
      * message, but just leave it as it currently is.
@@ -67,6 +74,29 @@ foreach ($db_info_list as $db_info) {
         $vm_info['vmwVmGuestOS'] = $db_info['vmwVmGuestOS'];
     }
 
+    /*
+     * Process all the VMware Virtual Machine properties.
+=======
+    /*
+     * If VMware Tools is not running then don't overwrite the GuesOS with the error
+     * message, but just leave it as it currently is.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+     */
+    if (stristr($vm_info['vmwVmGuestOS'], 'tools not running') !== false) {
+        $vm_info['vmwVmGuestOS'] = $db_info['vmwVmGuestOS'];
+    }
+
+<<<<<<< HEAD
+    foreach ($vm_info as $property => $value) {
+        /*
+         * Check the property for any modifications.
+         */
+
+        if ($vm_info[$property] != $db_info[$property]) {
+            // FIXME - this should loop building a query and then run the query after the loop (bad geert!)
+            dbUpdate(array($property => $vm_info[$property]), 'vminfo', '`id` = ?', array($db_info['id']));
+            log_event($db_info['vmwVmDisplayName'].' ('.preg_replace('/^vmwVm/', '', $property).') -> '.$vm_info[$property], $device);
+=======
     /*
      * Process all the VMware Virtual Machine properties.
      */
@@ -79,7 +109,10 @@ foreach ($db_info_list as $db_info) {
         if ($vm_info[$property] != $db_info[$property]) {
             // FIXME - this should loop building a query and then run the query after the loop (bad geert!)
             dbUpdate(array($property => $vm_info[$property]), 'vminfo', '`id` = ?', array($db_info['id']));
-            log_event($db_info['vmwVmDisplayName'].' ('.preg_replace('/^vmwVm/', '', $property).') -> '.$vm_info[$property], $device);
+            if ($db_info['vmwVmDisplayName'] != null) {
+                log_event($db_info['vmwVmDisplayName'] . ' (' . preg_replace('/^vmwVm/', '', $property) . ') -> ' . $vm_info[$property], $device, null, 3);
+            }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
     }
 }//end foreach

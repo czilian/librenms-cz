@@ -1,9 +1,19 @@
 <?php
+<<<<<<< HEAD
 //
 // NO CHANGES TO THIS FILE, IT IS NOT USER-EDITABLE   #
 //
 // YES, THAT MEANS YOU                   #
 //
+=======
+/*
+ NO CHANGES TO THIS FILE, IT IS NOT USER-EDITABLE
+
+ YES, THAT MEANS YOU
+
+ Any changes you want to make here, make in config.php instead.
+*/
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $config['os']['default']['over'][0]['graph'] = 'device_processor';
 $config['os']['default']['over'][0]['text']  = 'Processor Usage';
@@ -17,6 +27,7 @@ $config['os_group'][$os_group]['over'][0]['graph']  = 'device_processor';
 $config['os_group'][$os_group]['over'][0]['text']   = 'Processor Usage';
 $config['os_group'][$os_group]['over'][1]['graph']  = 'device_ucd_memory';
 $config['os_group'][$os_group]['over'][1]['text']   = 'Memory Usage';
+<<<<<<< HEAD
 
 $os = 'generic';
 $config['os'][$os]['text'] = 'Generic Device';
@@ -2354,6 +2365,62 @@ $config['graph_types']['device']['ubnt_airmax_AirMaxQuality']['section'] = 'wire
 $config['graph_types']['device']['ubnt_airmax_AirMaxQuality']['order'] = '13';
 $config['graph_types']['device']['ubnt_airmax_AirMaxQuality']['descr'] = 'AirMax Quality';
 
+=======
+
+// Device - Wireless - AirMAX
+$config['graph_types']['device']['ubnt_airmax_WlStatStaCount']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_WlStatStaCount']['order'] = '0';
+$config['graph_types']['device']['ubnt_airmax_WlStatStaCount']['descr'] = 'Wireless Clients';
+
+$config['graph_types']['device']['ubnt_airmax_RadioDistance']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_RadioDistance']['order'] = '1';
+$config['graph_types']['device']['ubnt_airmax_RadioDistance']['descr'] = 'Radio Distance';
+
+$config['graph_types']['device']['ubnt_airmax_RadioFreq']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_RadioFreq']['order'] = '2';
+$config['graph_types']['device']['ubnt_airmax_RadioFreq']['descr'] = 'Radio Frequency';
+
+$config['graph_types']['device']['ubnt_airmax_RadioTxPower']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_RadioTxPower']['order'] = '3';
+$config['graph_types']['device']['ubnt_airmax_RadioTxPower']['descr'] = 'Radio Tx Power';
+
+$config['graph_types']['device']['ubnt_airmax_RadioRssi_0']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_RadioRssi_0']['order'] = '4';
+$config['graph_types']['device']['ubnt_airmax_RadioRssi_0']['descr'] = 'Radio Rssi Chain 0';
+
+$config['graph_types']['device']['ubnt_airmax_RadioRssi_1']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_RadioRssi_1']['order'] = '5';
+$config['graph_types']['device']['ubnt_airmax_RadioRssi_1']['descr'] = 'Radio Rssi Chain 1';
+
+$config['graph_types']['device']['ubnt_airmax_WlStatSignal']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_WlStatSignal']['order'] = '6';
+$config['graph_types']['device']['ubnt_airmax_WlStatSignal']['descr'] = 'Radio Signal';
+
+$config['graph_types']['device']['ubnt_airmax_WlStatRssi']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_WlStatRssi']['order'] = '7';
+$config['graph_types']['device']['ubnt_airmax_WlStatRssi']['descr'] = 'Radio Overall RSSI';
+
+$config['graph_types']['device']['ubnt_airmax_WlStatCcq']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_WlStatCcq']['order'] = '8';
+$config['graph_types']['device']['ubnt_airmax_WlStatCcq']['descr'] = 'Radio CCQ';
+
+$config['graph_types']['device']['ubnt_airmax_WlStatNoiseFloor']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_WlStatNoiseFloor']['order'] = '10';
+$config['graph_types']['device']['ubnt_airmax_WlStatNoiseFloor']['descr'] = 'Radio Noise Floor';
+
+$config['graph_types']['device']['ubnt_airmax_WlStatTxRate']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_WlStatTxRate']['order'] = '11';
+$config['graph_types']['device']['ubnt_airmax_WlStatTxRate']['descr'] = 'Radio Tx Rate';
+
+$config['graph_types']['device']['ubnt_airmax_WlStatRxRate']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_WlStatRxRate']['order'] = '12';
+$config['graph_types']['device']['ubnt_airmax_WlStatRxRate']['descr'] = 'Radio Rx Rate';
+
+$config['graph_types']['device']['ubnt_airmax_AirMaxQuality']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airmax_AirMaxQuality']['order'] = '13';
+$config['graph_types']['device']['ubnt_airmax_AirMaxQuality']['descr'] = 'AirMax Quality';
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $config['graph_types']['device']['ubnt_airmax_AirMaxCapacity']['section'] = 'wireless';
 $config['graph_types']['device']['ubnt_airmax_AirMaxCapacity']['order'] = '14';
 $config['graph_types']['device']['ubnt_airmax_AirMaxCapacity']['descr'] = 'AirMax Capacity';
@@ -2395,6 +2462,13 @@ $config['graph_types']['device']['ubnt_airfiber_RFTotPktsRx']['section'] = 'wire
 $config['graph_types']['device']['ubnt_airfiber_RFTotPktsRx']['order'] = '7';
 $config['graph_types']['device']['ubnt_airfiber_RFTotPktsRx']['descr'] = 'RF Total Packets Rx';
 
+<<<<<<< HEAD
+=======
+$config['graph_types']['device']['ubnt_airfiber_RxPower']['section'] = 'wireless';
+$config['graph_types']['device']['ubnt_airfiber_RxPower']['order'] = '8';
+$config['graph_types']['device']['ubnt_airfiber_RxPower']['descr'] = 'Radio Rx Power';
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 // Unifi Support
 $config['graph_types']['device']['ubnt_unifi_RadioCu_0']['section'] = 'wireless';
 $config['graph_types']['device']['ubnt_unifi_RadioCu_0']['order'] = '0';
@@ -2591,6 +2665,12 @@ $config['graph_types']['device']['canopy_generic_errorCount']['descr']   = 'Erro
 $config['graph_types']['device']['canopy_generic_crcErrors']['section'] = 'wireless';
 $config['graph_types']['device']['canopy_generic_crcErrors']['order']   = '15';
 $config['graph_types']['device']['canopy_generic_crcErrors']['descr']   = 'CRC Errors';
+<<<<<<< HEAD
+=======
+$config['graph_types']['device']['canopy-generic-frameUtilization']['section'] = 'wireless';
+$config['graph_types']['device']['canopy-generic-frameUtilization']['order']   = '16';
+$config['graph_types']['device']['canopy-generic-frameUtilization']['descr']   = 'Frame Utilization';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $config['graph_types']['device']['cambium_epmp_RFStatus']['section'] = 'wireless';
 $config['graph_types']['device']['cambium_epmp_RFStatus']['order']   = '0';
@@ -2613,6 +2693,12 @@ $config['graph_types']['device']['cambium_epmp_gpsSync']['descr']   = 'GPS Sync 
 $config['graph_types']['device']['cambium_epmp_freq']['section'] = 'wireless';
 $config['graph_types']['device']['cambium_epmp_freq']['order']   = '6';
 $config['graph_types']['device']['cambium_epmp_freq']['descr']   = 'Frequency';
+<<<<<<< HEAD
+=======
+$config['graph_types']['device']['cambium-epmp-frameUtilization']['section'] = 'wireless';
+$config['graph_types']['device']['ccambium-epmp-frameUtilization']['order']   = '7';
+$config['graph_types']['device']['cambium-epmp-frameUtilization']['descr']   = 'Frame Utilization';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $config['graph_types']['device']['wifi_clients']['section'] = 'wireless';
 $config['graph_types']['device']['wifi_clients']['order']   = '0';
@@ -2857,6 +2943,22 @@ $config['graph_types']['device']['sgos_average_requests']['section']  = 'network
 $config['graph_types']['device']['sgos_average_requests']['order']    = '0';
 $config['graph_types']['device']['sgos_average_requests']['descr']    = 'Average HTTP Requests';
 
+<<<<<<< HEAD
+=======
+//riverbed specific graphs
+$config['graph_types']['device']['riverbed_connections']['section'] = 'network';
+$config['graph_types']['device']['riverbed_connections']['order'] = 0;
+$config['graph_types']['device']['riverbed_connections']['descr'] = 'Connections';
+$config['graph_types']['device']['riverbed_optimization']['section'] = 'network';
+$config['graph_types']['device']['riverbed_optimization']['order'] = 1;
+$config['graph_types']['device']['riverbed_optimization']['descr'] = 'Optimization';
+$config['graph_types']['device']['riverbed_datastore']['section'] = 'network';
+$config['graph_types']['device']['riverbed_datastore']['order'] = 2;
+$config['graph_types']['device']['riverbed_datastore']['descr'] = 'Data store productivity';
+$config['graph_types']['device']['riverbed_passthrough']['section'] = 'network';
+$config['graph_types']['device']['riverbed_passthrough']['order'] = 3;
+$config['graph_types']['device']['riverbed_passthrough']['descr'] = 'Bandwidth Passthrough';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 // Device Types
 $i = 0;
@@ -2908,11 +3010,29 @@ $i++;
 $config['device_types'][$i]['text'] = 'Printers';
 $config['device_types'][$i]['type'] = 'printer';
 $config['device_types'][$i]['icon'] = 'printer.png';
+<<<<<<< HEAD
 
 $i++;
 $config['device_types'][$i]['text'] = 'Appliance';
 $config['device_types'][$i]['type'] = 'appliance';
 $config['device_types'][$i]['icon'] = 'appliance.png';
+=======
+
+$i++;
+$config['device_types'][$i]['text'] = 'Appliance';
+$config['device_types'][$i]['type'] = 'appliance';
+$config['device_types'][$i]['icon'] = 'appliance.png';
+
+$i++;
+$config['device_types'][$i]['text'] = 'Collaboration';
+$config['device_types'][$i]['type'] = 'collaboration';
+$config['device_types'][$i]['icon'] = 'collaboration.png';
+
+$i++;
+$config['device_types'][$i]['text'] = 'Workstation';
+$config['device_types'][$i]['type'] = 'workstation';
+$config['device_types'][$i]['icon'] = 'workstation.png';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 //
 // No changes below this line #
@@ -2973,6 +3093,8 @@ $config['ipmi_unit']['Volts']     = 'voltage';
 $config['ipmi_unit']['degrees C'] = 'temperature';
 $config['ipmi_unit']['RPM']       = 'fanspeed';
 $config['ipmi_unit']['Watts']     = 'power';
+$config['ipmi_unit']['Amps']      = 'current';
+$config['ipmi_unit']['percent']   = 'load';
 $config['ipmi_unit']['discrete']  = '';
 
 // Define some variables if they aren't set by user definition in config.php
@@ -2995,8 +3117,11 @@ if (!isset($config['log_file'])) {
 if (!isset($config['plugin_dir'])) {
     $config['plugin_dir'] = $config['html_dir'].'/plugins';
 }
+<<<<<<< HEAD
 
 if (!isset($config['title_image'])) {
     $config['title_image'] = 'images/librenms_logo_'.$config['site_style'].'.png';
 }
 
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

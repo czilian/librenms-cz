@@ -21,9 +21,14 @@ poller_modules:
     cipsec-tunnels: 1
     cisco-otv: 1
     ipmi: 0
+<<<<<<< HEAD
     toner: 0
 discovery_modules:
     toner: 0
+=======
+    cisco-vpdn: 1
+discovery_modules:
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     cisco-cef: 1
     cisco-sla: 1
     cisco-mac-accounting: 1
@@ -32,4 +37,11 @@ discovery_modules:
     cisco-vrf: 1
     cisco-vrf-lite: 1
 register_mibs:
+<<<<<<< HEAD
     ciscoAAASessionMIB: CISCO-AAA-SESSION-MIB
+=======
+    ciscoAAASessionMIB: CISCO-AAA-SESSION-MIB
+discovery:
+    - sysDescr:
+        - IOS XR
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

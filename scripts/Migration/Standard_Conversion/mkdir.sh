@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/bin/bash
+=======
+#!/usr/bin/env bash
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 # Observium to LibreNMS conversion
 
 ####################### SCRIPT DESCRIPTION ########################
@@ -23,4 +27,8 @@ L_RRDPATH=/opt/librenms/rrd/
 # This loop enters the RRD folder and creates dir based on contents of node list text file
 while read line 
 	do mkdir -p $L_RRDPATH"${line%/*}"
+<<<<<<< HEAD
 done < $NODELIST
+=======
+done < $NODELIST
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

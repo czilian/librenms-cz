@@ -29,6 +29,7 @@ if ($_SESSION['userlevel'] < '7') {
 
     $panes['ipmi']     = 'IPMI';
 
+<<<<<<< HEAD
     if (dbFetchCell("SELECT COUNT(sensor_id) FROM `sensors` WHERE device_id = ? AND sensor_deleted='0' LIMIT 1", array($device['device_id'])) > 0) {
         $panes['health'] = 'Health';
     }
@@ -64,6 +65,46 @@ if ($_SESSION['userlevel'] < '7') {
 
     print_optionbar_end();
 
+=======
+    if (dbFetchCell("SELECT COUNT(*) FROM `sensors` WHERE `device_id` = ? AND `sensor_deleted`='0' LIMIT 1", array($device['device_id'])) > 0) {
+        $panes['health'] = 'Health';
+    }
+
+    if (dbFetchCell("SELECT COUNT(*) FROM `wireless_sensors` WHERE `device_id` = ? AND `sensor_deleted`='0' LIMIT 1", array($device['device_id'])) > 0) {
+        $panes['wireless-sensors'] = 'Wireless Sensors';
+    }
+
+    $panes['storage']  = 'Storage';
+    $panes['processors']  = 'Processors';
+    $panes['mempools']  = 'Memory';
+    $panes['misc']     = 'Misc';
+
+    $panes['component'] = 'Components';
+
+    print_optionbar_start();
+
+    unset($sep);
+    foreach ($panes as $type => $text) {
+        if (!isset($vars['section'])) {
+            $vars['section'] = $type;
+        }
+        echo($sep);
+        if ($vars['section'] == $type) {
+            echo("<span class='pagemenu-selected'>");
+        } else {
+        }
+
+        echo(generate_link($text, $link_array, array('section'=>$type)));
+
+        if ($vars['section'] == $type) {
+            echo("</span>");
+        }
+        $sep = " | ";
+    }
+
+    print_optionbar_end();
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if (is_file("pages/device/edit/".mres($vars['section']).".inc.php")) {
         require "pages/device/edit/".mres($vars['section']).".inc.php";
     }

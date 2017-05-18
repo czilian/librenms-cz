@@ -28,6 +28,7 @@ print_optionbar_start();
                         <select name="device" id="device" class="form-control input-sm">
                             <option value="">All Devices</option>
                             <?php
+<<<<<<< HEAD
                             foreach (get_all_devices() as $hostname) {
                                 $device_id = getidbyname($hostname);
                                 if (device_permitted($device_id)) {
@@ -36,6 +37,15 @@ print_optionbar_start();
                                         echo ' selected';
                                     }
                                     echo '>' . $hostname . '</option>';
+=======
+                            foreach (get_all_devices() as $data) {
+                                if (device_permitted($data['device_id'])) {
+                                    echo '"<option value="' . $data['device_id'] . '"';
+                                    if ($data['device_id'] == $vars['device']) {
+                                        echo ' selected';
+                                    }
+                                    echo '>' . format_hostname($data) . '</option>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                                 }
                             }
                             ?>

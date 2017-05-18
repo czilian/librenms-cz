@@ -1,5 +1,9 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $name = 'drbd';
 $app_instance = $app['app_instance'];
@@ -10,6 +14,7 @@ foreach (explode('|', $agent_data['app'][$name][$app_instance]) as $part) {
         $drbd[$stat] = $val;
     }
 }
+<<<<<<< HEAD
 
 $rrd_name = array('app', $name, $app_instance);
 $rrd_def = array(
@@ -25,6 +30,23 @@ $rrd_def = array(
     'DS:ap:GAUGE:600:0:125000000000',
     'DS:oos:GAUGE:600:0:125000000000'
 );
+=======
+update_application($app, $agent_data['app'][$name][$app_instance]);
+
+$rrd_name = array('app', $name, $app_instance);
+$rrd_def = RrdDefinition::make()
+    ->addDataset('ns', 'DERIVE', 0, 125000000000)
+    ->addDataset('nr', 'DERIVE', 0, 125000000000)
+    ->addDataset('dw', 'DERIVE', 0, 125000000000)
+    ->addDataset('dr', 'DERIVE', 0, 125000000000)
+    ->addDataset('al', 'DERIVE', 0, 125000000000)
+    ->addDataset('bm', 'DERIVE', 0, 125000000000)
+    ->addDataset('lo', 'GAUGE', 0, 125000000000)
+    ->addDataset('pe', 'GAUGE', 0, 125000000000)
+    ->addDataset('ua', 'GAUGE', 0, 125000000000)
+    ->addDataset('ap', 'GAUGE', 0, 125000000000)
+    ->addDataset('oos', 'GAUGE', 0, 125000000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 
 $fields = array(

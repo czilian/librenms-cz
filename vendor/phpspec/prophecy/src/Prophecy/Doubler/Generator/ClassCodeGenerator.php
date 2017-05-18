@@ -60,20 +60,56 @@ class ClassCodeGenerator
             $method->returnsReference() ? '&':'',
             $method->getName(),
             implode(', ', $this->generateArguments($method->getArguments())),
+<<<<<<< HEAD
             version_compare(PHP_VERSION, '7.0', '>=') && $method->hasReturnType()
                 ? sprintf(': %s', $method->getReturnType())
                 : ''
+=======
+            $this->getReturnType($method)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         );
         $php .= $method->getCode()."\n";
 
         return $php.'}';
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @return string
+     */
+    private function getReturnType(Node\MethodNode $method)
+    {
+        if (version_compare(PHP_VERSION, '7.1', '>=')) {
+            if ($method->hasReturnType()) {
+                return $method->hasNullableReturnType()
+                    ? sprintf(': ?%s', $method->getReturnType())
+                    : sprintf(': %s', $method->getReturnType());
+            }
+        }
+
+        if (version_compare(PHP_VERSION, '7.0', '>=')) {
+            return $method->hasReturnType() && $method->getReturnType() !== 'void'
+                ? sprintf(': %s', $method->getReturnType())
+                : '';
+        }
+
+        return '';
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     private function generateArguments(array $arguments)
     {
         return array_map(function (Node\ArgumentNode $argument) {
             $php = '';
 
+<<<<<<< HEAD
+=======
+            if (version_compare(PHP_VERSION, '7.1', '>=')) {
+                $php .= $argument->isNullable() ? '?' : '';
+            }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             if ($hint = $argument->getTypeHint()) {
                 switch ($hint) {
                     case 'array':
@@ -81,6 +117,18 @@ class ClassCodeGenerator
                         $php .= $hint;
                         break;
 
+<<<<<<< HEAD
+=======
+                    case 'iterable':
+                        if (version_compare(PHP_VERSION, '7.1', '>=')) {
+                            $php .= $hint;
+                            break;
+                        }
+
+                        $php .= '\\'.$hint;
+                        break;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     case 'string':
                     case 'int':
                     case 'float':

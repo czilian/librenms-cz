@@ -15,7 +15,11 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 $productmib = trim(snmp_get($device, '.1.3.6.1.2.1.1.2.0', '-Oqv'), '" ');
+=======
+$productmib = trim($poll_device['sysObjectId'], '" ');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $ruckusmodels    = array(
     "$productmib.5.0",

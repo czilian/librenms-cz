@@ -3,6 +3,7 @@
 namespace spec\Prophecy\Argument\Token;
 
 use PhpSpec\ObjectBehavior;
+<<<<<<< HEAD
 use Prophecy\Argument;
 
 class ArrayEveryEntryTokenSpec extends ObjectBehavior
@@ -11,6 +12,13 @@ class ArrayEveryEntryTokenSpec extends ObjectBehavior
      * @param \Prophecy\Argument\Token\TokenInterface $value
      */
     function let($value)
+=======
+use Prophecy\Argument\Token\TokenInterface;
+
+class ArrayEveryEntryTokenSpec extends ObjectBehavior
+{
+    function let(TokenInterface $value)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith($value);
     }
@@ -36,10 +44,14 @@ class ArrayEveryEntryTokenSpec extends ObjectBehavior
         $this->__toString()->shouldBe('[value, ..., value]');
     }
 
+<<<<<<< HEAD
     /**
      * @param \stdClass $stdClass
      */
     function it_wraps_non_token_value_into_ExactValueToken($stdClass)
+=======
+    function it_wraps_non_token_value_into_ExactValueToken(\stdClass $stdClass)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith($stdClass);
         $this->getValue()->shouldHaveType('Prophecy\Argument\Token\ExactValueToken');
@@ -56,10 +68,14 @@ class ArrayEveryEntryTokenSpec extends ObjectBehavior
         $this->scoreArgument(array())->shouldBe(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Iterator $object
      */
     function it_does_not_score_traversable_object_without_entries($object)
+=======
+    function it_does_not_score_traversable_object_without_entries(\Iterator $object)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $object->rewind()->willReturn(null);
         $object->next()->willReturn(null);
@@ -88,11 +104,15 @@ class ArrayEveryEntryTokenSpec extends ObjectBehavior
         $this->scoreArgument(array('key' => 'value'))->shouldBe(6);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $value
      * @param \Iterator                               $object
      */
     function it_scores_traversable_object_from_value_token($value, $object)
+=======
+    function it_scores_traversable_object_from_value_token(TokenInterface $value, \Iterator $object)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $object->current()->will(function ($args, $object) {
             $object->valid()->willReturn(false);

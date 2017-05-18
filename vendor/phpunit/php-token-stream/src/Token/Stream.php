@@ -157,6 +157,10 @@ class PHP_Token_Stream implements ArrayAccess, Countable, SeekableIterator
      */
     protected function scan($sourceCode)
     {
+<<<<<<< HEAD
+=======
+        $id        = 0;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $line      = 1;
         $tokens    = token_get_all($sourceCode);
         $numTokens = count($tokens);
@@ -165,7 +169,11 @@ class PHP_Token_Stream implements ArrayAccess, Countable, SeekableIterator
 
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i];
+<<<<<<< HEAD
             unset($tokens[$i]);
+=======
+            $skip  = 0;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
             if (is_array($token)) {
                 $name = substr(token_name($token[0]), 2);
@@ -173,6 +181,12 @@ class PHP_Token_Stream implements ArrayAccess, Countable, SeekableIterator
 
                 if ($lastNonWhitespaceTokenWasDoubleColon && $name == 'CLASS') {
                     $name = 'CLASS_NAME_CONSTANT';
+<<<<<<< HEAD
+=======
+                } elseif ($name == 'USE' && isset($tokens[$i+2][0]) && $tokens[$i+2][0] == T_FUNCTION) {
+                    $name = 'USE_FUNCTION';
+                    $skip = 2;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 }
 
                 $tokenClass = 'PHP_Token_' . $name;
@@ -181,7 +195,11 @@ class PHP_Token_Stream implements ArrayAccess, Countable, SeekableIterator
                 $tokenClass = self::$customTokens[$token];
             }
 
+<<<<<<< HEAD
             $this->tokens[] = new $tokenClass($text, $line, $this, $i);
+=======
+            $this->tokens[] = new $tokenClass($text, $line, $this, $id++);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $lines          = substr_count($text, "\n");
             $line          += $lines;
 
@@ -197,6 +215,11 @@ class PHP_Token_Stream implements ArrayAccess, Countable, SeekableIterator
             } elseif ($name != 'WHITESPACE') {
                 $lastNonWhitespaceTokenWasDoubleColon = false;
             }
+<<<<<<< HEAD
+=======
+
+            $i += $skip;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
 
         $this->linesOfCode['loc']   = substr_count($sourceCode, "\n");

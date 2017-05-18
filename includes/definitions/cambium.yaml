@@ -5,3 +5,13 @@ icon: cambium
 over:
     - { graph: device_bits, text: 'Device Traffic' }
 group: cambium
+<<<<<<< HEAD
+=======
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.17713.21
+    - sysDescr_regex:
+        - '/^Cambium PTP 50650/'
+        - '/^PTP250/'
+        - '/^Cambium/'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

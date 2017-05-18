@@ -3,5 +3,9 @@ text: 'Huawei UPS'
 group: ups
 type: power
 icon: huawei
+<<<<<<< HEAD
+=======
+rfc1628_compat: 1
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 over:
     - { graph: device_current, text: Current }

@@ -4,6 +4,10 @@ namespace spec\Prophecy\Argument\Token;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+<<<<<<< HEAD
+=======
+use Prophecy\Argument\Token\TokenInterface;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 class LogicalAndTokenSpec extends ObjectBehavior
 {
@@ -19,6 +23,7 @@ class LogicalAndTokenSpec extends ObjectBehavior
         $this->shouldNotBeLast();
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $token1
      * @param \Prophecy\Argument\Token\TokenInterface $token2
@@ -26,6 +31,13 @@ class LogicalAndTokenSpec extends ObjectBehavior
      */
     function it_generates_string_representation_from_all_tokens_imploded($token1, $token2, $token3)
     {
+=======
+    function it_generates_string_representation_from_all_tokens_imploded(
+        TokenInterface $token1,
+        TokenInterface $token2,
+        TokenInterface $token3
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $token1->__toString()->willReturn('token_1');
         $token2->__toString()->willReturn('token_2');
         $token3->__toString()->willReturn('token_3');
@@ -40,11 +52,15 @@ class LogicalAndTokenSpec extends ObjectBehavior
         $this->__toString()->shouldReturn("bool(exact(15) AND exact(\"1985\"))");
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $token1
      * @param \Prophecy\Argument\Token\TokenInterface $token2
      */
     function it_scores_the_maximum_score_from_all_scores_returned_by_tokens($token1, $token2)
+=======
+    function it_scores_the_maximum_score_from_all_scores_returned_by_tokens(TokenInterface $token1, TokenInterface $token2)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $token1->scoreArgument(1)->willReturn(10);
         $token2->scoreArgument(1)->willReturn(5);
@@ -58,11 +74,15 @@ class LogicalAndTokenSpec extends ObjectBehavior
         $this->scoreArgument('any')->shouldReturn(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $token1
      * @param \Prophecy\Argument\Token\TokenInterface $token2
      */
     function it_does_not_score_if_either_of_tokens_does_not_score($token1, $token2)
+=======
+    function it_does_not_score_if_either_of_tokens_does_not_score(TokenInterface $token1, TokenInterface $token2)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $token1->scoreArgument(1)->willReturn(10);
         $token1->scoreArgument(2)->willReturn(false);

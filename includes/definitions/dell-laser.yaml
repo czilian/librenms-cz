@@ -8,3 +8,16 @@ over:
     - { graph: device_toner, text: Toner }
 mib_dir:
     - dell
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - 'Dell Color Laser'
+        - 'Dell Laser Printer'
+    - sysDescr_regex: '/^Dell.*(MFP|Printer|Laser)/'
+discovery_modules:
+    toner: 1
+poller_modules:
+    toner: 1
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

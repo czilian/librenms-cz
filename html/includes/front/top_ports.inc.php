@@ -49,6 +49,10 @@ if (is_admin() === true || is_read() === true) {
 echo "<strong>Top $top ports (last $minutes minutes)</strong>\n";
 echo "<table class='simple'>\n";
 foreach (dbFetchRows($query, $param) as $result) {
+<<<<<<< HEAD
+=======
+    $result = cleanPort($result);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     echo '<tr class=top10>'.'<td class=top10>'.generate_device_link($result, shorthost($result['hostname'])).'</td>'.'<td class=top10>'.generate_port_link($result).'</td>'.'<td class=top10>'.generate_port_link($result, generate_port_thumbnail($result)).'</td>'."</tr>\n";
 }
 

@@ -10,6 +10,7 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 if ($device['os'] == 'ciscosb') {
     echo 'CiscoSB: ';
     $temp = snmpwalk_cache_multi_oid($device, 'rlPethPsePortEntry', array(), 'CISCOSB-POE-MIB');
@@ -23,6 +24,19 @@ if ($device['os'] == 'ciscosb') {
                 $highlimit = $temp[$index]['rlPethPsePortOperPowerLimit'] / $divisor;
                 discover_sensor($valid['sensor'], 'power', $device, $cur_oid . $index, $index, 'ciscosb', $descr, $divisor, '1', null, null, null, $highlimit, $temp[$index]['rlPethPsePortOutputPower'] / $divisor, 'snmp', $index);
             }
+=======
+echo 'CiscoSB: ';
+$temp = snmpwalk_cache_multi_oid($device, 'rlPethPsePortEntry', array(), 'CISCOSB-POE-MIB');
+if (is_array($temp)) {
+    $cur_oid = '.1.3.6.1.4.1.9.6.1.101.108.1.1.5.';
+    $divisor = '1000';
+    foreach ($temp as $index => $entry) {
+        if (is_numeric($temp[$index]['rlPethPsePortOutputPower']) && $temp[$index]['rlPethPsePortOutputPower'] > 0) {
+            $port_descr = get_port_by_index_cache($device, str_replace('1.', '', $index));
+            $descr = $port_descr['ifDescr'] . ' PoE';
+            $highlimit = $temp[$index]['rlPethPsePortOperPowerLimit'] / $divisor;
+            discover_sensor($valid['sensor'], 'power', $device, $cur_oid . $index, $index, 'ciscosb', $descr, $divisor, '1', null, null, null, $highlimit, $temp[$index]['rlPethPsePortOutputPower'] / $divisor, 'snmp', $index);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
     }
 }

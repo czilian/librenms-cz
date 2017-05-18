@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $ospf_instance_count  = 0;
 $ospf_port_count      = 0;
 $ospf_area_count      = 0;
@@ -198,7 +203,11 @@ foreach ($vrfs_lite_cisco as $vrf_lite) {
                 unset($ospf_area_db);
                 $ospf_area_count++;
             } else {
+<<<<<<< HEAD
                 dbDelete('ospf_ports', '`device_id` = ? AND `ospfAreaId` = ? AND `context_name` = ?', array($device['device_id'], $ospf_area_db['ospfAreaId'], $device['context_name']));
+=======
+                dbDelete('ospf_ports', '`device_id` = ? AND `ospfIfAreaId` = ? AND `context_name` = ?', array($device['device_id'], $ospf_area_db['ospfAreaId'], $device['context_name']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             }//end if
         }//end foreach
     }//end if
@@ -275,7 +284,11 @@ foreach ($vrfs_lite_cisco as $vrf_lite) {
             }//end if
         }//end foreach
     }//end if
+<<<<<<< HEAD
 
+=======
+    unset($ospf_ports_poll);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 // OSPF-MIB::ospfNbrIpAddr.172.22.203.98.0 172.22.203.98
 // OSPF-MIB::ospfNbrAddressLessIndex.172.22.203.98.0 0
@@ -366,6 +379,7 @@ foreach ($vrfs_lite_cisco as $vrf_lite) {
     unset($ospf_nbrs_poll);
     echo "\n";
 }
+<<<<<<< HEAD
 unset($device['context_name']);
 unset($vrfs_lite_cisco);
 // Create device-wide statistics RRD
@@ -375,6 +389,15 @@ $rrd_def = array(
     'DS:ports:GAUGE:600:0:1000000',
     'DS:neighbours:GAUGE:600:0:1000000'
 );
+=======
+unset($device['context_name'], $vrfs_lite_cisco, $vrf_lite);
+// Create device-wide statistics RRD
+$rrd_def = RrdDefinition::make()
+    ->addDataset('instances', 'GAUGE', 0, 1000000)
+    ->addDataset('areas', 'GAUGE', 0, 1000000)
+    ->addDataset('ports', 'GAUGE', 0, 1000000)
+    ->addDataset('neighbours', 'GAUGE', 0, 1000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $fields = array(
     'instances'   => $ospf_instance_count,
@@ -387,3 +410,22 @@ $tags = compact('rrd_def');
 data_update($device, 'ospf-statistics', $tags, $fields);
 
 echo "\n";
+<<<<<<< HEAD
+=======
+
+unset(
+    $ospf_instance_count,
+    $ospf_port_count,
+    $ospf_area_count,
+    $ospf_neighbour_count,
+    $ospf_oids_db,
+    $ospf_area_oids,
+    $ospf_port_oids,
+    $ospf_nbr_oids_db,
+    $ospf_nbr_oids_rrd,
+    $ospf_nbr_oids,
+    $rrd_def,
+    $fields,
+    $tags
+);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

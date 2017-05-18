@@ -42,7 +42,11 @@ if ($options['f'] === 'rrd_purge') {
 
 if ($options['f'] === 'syslog') {
     if (is_numeric($config['syslog_purge'])) {
+<<<<<<< HEAD
         $rows = dbFetchRow('SELECT MIN(seq) FROM syslog');
+=======
+        $rows = (int)dbFetchCell('SELECT MIN(seq) FROM syslog');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         while (true) {
             $limit = dbFetchRow('SELECT seq FROM syslog WHERE seq >= ? ORDER BY seq LIMIT 1000,1', array($rows));
             if (empty($limit)) {
@@ -95,6 +99,7 @@ if ($options['f'] === 'device_perf') {
             echo 'Device performance times cleared for entries over '.$config['device_perf_purge']." days\n";
         }
     }
+<<<<<<< HEAD
 }
 
 if ($options['f'] === 'notifications') {
@@ -130,6 +135,43 @@ if ($options['f'] === 'alert_log') {
     }
 }
 
+=======
+}
+
+if ($options['f'] === 'notifications') {
+    include_once 'includes/notifications.php';
+}
+
+if ($options['f'] === 'bill_data') {
+    if (is_numeric($config['billing_data_purge']) && $config['billing_data_purge'] > 0) {
+        # Deletes data older than XX months before the start of the last complete billing period
+        $months = $config['billing_data_purge'];
+        echo "Deleting billing data more than $months month before the last completed billing cycle\n";
+        $sql = "DELETE bill_data
+                FROM bill_data
+                    INNER JOIN (SELECT bill_id, 
+                        SUBDATE(
+                            SUBDATE(
+                                ADDDATE(
+                                    subdate(curdate(), (day(curdate())-1)),             # Start of this month
+                                    bill_day - 1),                                      # Billing anniversary
+                                INTERVAL IF(bill_day > DAY(curdate()), 1, 0) MONTH),    # Deal with anniversary not yet happened this month
+                            INTERVAL ? MONTH) AS threshold                              # Adjust based on config threshold
+                FROM bills) q
+                ON bill_data.bill_id = q.bill_id AND bill_data.timestamp < q.threshold;";
+        dbQuery($sql, array($months));
+    }
+}
+
+if ($options['f'] === 'alert_log') {
+    if (is_numeric($config['alert_log_purge']) && $config['alert_log_purge'] > 0) {
+        if (dbDelete('alert_log', 'time_logged < DATE_SUB(NOW(),INTERVAL ? DAY)', array($config['alert_log_purge']))) {
+            echo 'Alert log data cleared for entries over '.$config['alert_log_purge']." days\n";
+        }
+    }
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if ($options['f'] === 'purgeusers') {
     $purge = 0;
     if (is_numeric($config['radius']['users_purge']) && $config['auth_mechanism'] === 'radius') {
@@ -170,3 +212,10 @@ if ($options['f'] === 'notify') {
         );
     }
 }
+<<<<<<< HEAD
+=======
+
+if ($options['f'] === 'peeringdb') {
+    cache_peeringdb();
+}
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

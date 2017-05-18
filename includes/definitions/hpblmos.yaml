@@ -1,8 +1,18 @@
 os: hpblmos
 text: 'HP Blade Management'
 type: appliance
+<<<<<<< HEAD
 icon: hp
+=======
+icon: hpe
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 over:
     - { graph: device_bits, text: Traffic }
     - { graph: device_processor, text: 'CPU Usage' }
     - { graph: device_mempool, text: 'Memory Usage' }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.11.5.7.1.2
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -118,9 +118,15 @@ if (isset($_GET['format']) && preg_match("/^[a-z]*$/", $_GET['format'])) {
                             $src = md5($src);
                         }
 
+<<<<<<< HEAD
                         $sif = ifNameDescr(dbFetchRow("SELECT * FROM ports WHERE `port_id` = ?", array($link['local_port_id'])), $device);
                         if ($remote_port_id) {
                             $dif = ifNameDescr(dbFetchRow("SELECT * FROM ports WHERE `port_id` = ?", array($link['remote_port_id'])));
+=======
+                        $sif = cleanPort(dbFetchRow("SELECT * FROM ports WHERE `port_id` = ?", array($link['local_port_id'])), $device);
+                        if ($remote_port_id) {
+                            $dif = cleanPort(dbFetchRow("SELECT * FROM ports WHERE `port_id` = ?", array($link['remote_port_id'])));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         } else {
                             $dif['label'] = $link['remote_port'];
                             $dif['port_id'] = $link['remote_hostname'] . '/' . $link['remote_port'];

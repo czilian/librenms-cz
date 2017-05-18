@@ -34,8 +34,15 @@ if (strpos($_SERVER['REQUEST_URI'], 'debug')) {
 $init_modules = array('web', 'auth');
 require realpath(__DIR__ . '/..') . '/includes/init.php';
 
+<<<<<<< HEAD
 if (get_client_ip() != $_SERVER['SERVER_ADDR']) {
     if (!$_SESSION['authenticated']) {
+=======
+$auth = is_client_authorized($_SERVER['REMOTE_ADDR']);
+
+if (get_client_ip() != $_SERVER['SERVER_ADDR']) {
+    if ($auth === false && !$_SESSION['authenticated']) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo 'unauthenticated';
         exit;
     }
@@ -43,7 +50,11 @@ if (get_client_ip() != $_SERVER['SERVER_ADDR']) {
 
 if (is_numeric($_GET['bill_id'])) {
     if (get_client_ip() != $_SERVER['SERVER_ADDR']) {
+<<<<<<< HEAD
         if (bill_permitted($_GET['bill_id'])) {
+=======
+        if ($auth === true || bill_permitted($_GET['bill_id'])) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $bill_id = $_GET['bill_id'];
         } else {
             echo 'Unauthorised Access Prohibited.';

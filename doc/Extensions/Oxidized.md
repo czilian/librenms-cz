@@ -1,7 +1,23 @@
 source: Extensions/Oxidized.md
 # Oxidized integration
 
+<<<<<<< HEAD
 You can integrate LibreNMS with [Oxidized](https://github.com/ytti/oxidized-web) in two ways:
+=======
+Integrating LibreNMS with [Oxidized](https://github.com/ytti/oxidized-web) brings the following benefits:
+
+  - Config viewing: Current, History, and Diffs all under the Configs tab of each device
+  - Automatic addition of devices to Oxidized: Including filtering and grouping to ease credential management
+  - Configuration searching (Requires oxidized-web 0.8.0 or newer)
+
+First you will need to [install Oxidized following their documentation](https://github.com/ytti/oxidized#installation).
+
+Then you can procede to the LibreNMS Web UI and go to Oxidized Settings in the External Settings section of Global Settings. Enable it and enter the url to your oxidized instance.
+
+To have devices automatically added, you will need to configure oxidized to pull them from LibreNMS [Feeding Oxidized](#feeding-oxidized)
+
+## Detailed integration information
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 ### Config viewing
 
@@ -31,6 +47,17 @@ You can set a default group that devices will fall back to with:
 $config['oxidized']['default_group'] = 'default';
 ```
 
+<<<<<<< HEAD
+=======
+##### SELinux
+If you're runnng SELinux, you'll need to allow httpd to connect outbound to the network, otherwise Oxidized integration in the web UI will silently fail:
+
+```
+setsebool -P httpd_can_network_connect 1
+```
+
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ### Feeding Oxidized
 
 Oxidized has support for feeding devices into it via an API call, support for Oxidized has been added to the LibreNMS API. A sample config for Oxidized is provided below.
@@ -100,3 +127,7 @@ It's also possible to exclude certain device types and OS' from being output via
 $config['oxidized']['ignore_types'] = array('server');
 $config['oxidized']['ignore_os'] = array('linux');
 ```
+<<<<<<< HEAD
+=======
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

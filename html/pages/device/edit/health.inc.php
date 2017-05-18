@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 /*
  * LibreNMS
  *
@@ -187,3 +188,10 @@ $("[name='remove-custom']").on('click', function(event) {
 });
 
 </script>
+=======
+$title = 'Health settings';
+$table = 'sensors';
+$ajax_prefix = 'sensor';
+
+include 'sensors-common.php';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

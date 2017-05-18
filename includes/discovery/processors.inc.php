@@ -16,6 +16,7 @@ foreach (dbFetchRows($sql) as $test_processor) {
     $processor_index = $test_processor['processor_index'];
     $processor_type  = $test_processor['processor_type'];
     d_echo($processor_index.' -> '.$processor_type."\n");
+<<<<<<< HEAD
 
     if (!$valid['processor'][$processor_type][$processor_index]) {
         echo '-';
@@ -28,3 +29,21 @@ foreach (dbFetchRows($sql) as $test_processor) {
 }
 
 echo "\n";
+=======
+
+    if (!$valid['processor'][$processor_type][$processor_index]) {
+        echo '-';
+        dbDelete('processors', '`processor_id` = ?', array($test_processor['processor_id']));
+        log_event('Processor removed: type ' . $processor_type . ' index ' . $processor_index . ' descr ' . $test_processor['processor_descr'], $device, 'processor', 4, $test_processor['processor_id']);
+    }
+
+    unset($processor_oid);
+    unset($processor_type);
+}
+
+echo "\n";
+
+unset(
+    $sql
+);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

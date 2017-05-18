@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 // FIXME -- we're walking, so we can discover here too.
 if ($device['os_group'] == 'cisco') {
     $cip_oids = array(
@@ -60,12 +65,20 @@ if ($device['os_group'] == 'cisco') {
             d_echo("\n".$acc['hostname'].' '.$acc['ifDescr']."  $mac -> $b_in:$b_out:$p_in:$p_out ");
 
             $rrd_name = array('cip', $ifIndex, $mac);
+<<<<<<< HEAD
             $rrd_dev = array(
                 'DS:IN:COUNTER:600:0:12500000000',
                 'DS:OUT:COUNTER:600:0:12500000000',
                 'DS:PIN:COUNTER:600:0:12500000000',
                 'DS:POUT:COUNTER:600:0:12500000000'
             );
+=======
+            $rrd_dev = RrdDefinition::make()
+                ->addDataset('IN', 'COUNTER', 0, 12500000000)
+                ->addDataset('OUT', 'COUNTER', 0, 12500000000)
+                ->addDataset('PIN', 'COUNTER', 0, 12500000000)
+                ->addDataset('POUT', 'COUNTER', 0, 12500000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
             // FIXME - use memcached to make sure these values don't go backwards?
             $fields = array(
@@ -90,6 +103,20 @@ if ($device['os_group'] == 'cisco') {
     if ($mac_entries) {
         echo " $mac_entries MAC accounting entries\n";
     }
+<<<<<<< HEAD
 
     echo "\n";
 }//end if
+=======
+
+    echo "\n";
+}//end if
+
+unset(
+    $cip_oids,
+    $oid,
+    $polled,
+    $mac_entries,
+    $acc_rows
+);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

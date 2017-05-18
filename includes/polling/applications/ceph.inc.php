@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $name = 'ceph';
 if (!empty($agent_data['app'][$name])) {
     $app_id = $app['app_id'];
@@ -10,12 +15,21 @@ if (!empty($agent_data['app'][$name])) {
         }
         list($section, $data) = explode('>', $section);
 
+<<<<<<< HEAD
         if ($section == "poolstats") {
             $rrd_def = array(
                 'DS:ops:GAUGE:600:0:U',
                 'DS:wrbytes:GAUGE:600:0:U',
                 'DS:rbytes:GAUGE:600:0:U'
             );
+=======
+        update_application($app, $section);
+        if ($section == "poolstats") {
+            $rrd_def = RrdDefinition::make()
+                ->addDataset('ops', 'GAUGE', 0)
+                ->addDataset('wrbytes', 'GAUGE', 0)
+                ->addDataset('rbytes', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
             foreach (explode("\n", $data) as $line) {
                 if (empty($line)) {
@@ -34,10 +48,16 @@ if (!empty($agent_data['app'][$name])) {
                 data_update($device, 'app', $tags, $fields);
             }
         } elseif ($section == "osdperformance") {
+<<<<<<< HEAD
             $rrd_def = array(
                 'DS:apply_ms:GAUGE:600:0:U',
                 'DS:commit_ms:GAUGE:600:0:U'
             );
+=======
+            $rrd_def = RrdDefinition::make()
+                ->addDataset('apply_ms', 'GAUGE', 0)
+                ->addDataset('commit_ms', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
             foreach (explode("\n", $data) as $line) {
                 if (empty($line)) {
@@ -55,11 +75,18 @@ if (!empty($agent_data['app'][$name])) {
                 data_update($device, 'app', $tags, $fields);
             }
         } elseif ($section == "df") {
+<<<<<<< HEAD
             $rrd_def = array(
                 'DS:avail:GAUGE:600:0:U',
                 'DS:used:GAUGE:600:0:U',
                 'DS:objects:GAUGE:600:0:U'
             );
+=======
+            $rrd_def = RrdDefinition::make()
+                ->addDataset('avail', 'GAUGE', 0)
+                ->addDataset('used', 'GAUGE', 0)
+                ->addDataset('objects', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
             foreach (explode("\n", $data) as $line) {
                 if (empty($line)) {

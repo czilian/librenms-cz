@@ -1,7 +1,14 @@
 <?php
 
+<<<<<<< HEAD
 $ldap_connection = @ldap_connect($config['auth_ldap_server'], $config['auth_ldap_port']);
 
+=======
+use LibreNMS\Exceptions\AuthenticationException;
+
+$ldap_connection = @ldap_connect($config['auth_ldap_server'], $config['auth_ldap_port']);
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if ($config['auth_ldap_starttls'] && ($config['auth_ldap_starttls'] == 'optional' || $config['auth_ldap_starttls'] == 'require')) {
     $tls = ldap_start_tls($ldap_connection);
     if ($config['auth_ldap_starttls'] == 'require' && $tls === false) {
@@ -15,14 +22,26 @@ function authenticate($username, $password)
 {
     global $config, $ldap_connection;
 
+<<<<<<< HEAD
     if ($username && $ldap_connection) {
+=======
+    if (!$ldap_connection) {
+        throw new AuthenticationException('Unable to connect to ldap server');
+    }
+
+    if ($username) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($config['auth_ldap_version']) {
             ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, $config['auth_ldap_version']);
         }
 
         if ($password && ldap_bind($ldap_connection, $config['auth_ldap_prefix'].$username.$config['auth_ldap_suffix'], $password)) {
             if (!$config['auth_ldap_group']) {
+<<<<<<< HEAD
                 return 1;
+=======
+                return true;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             } else {
                 $ldap_groups = get_group_list();
                 foreach ($ldap_groups as $ldap_group) {
@@ -33,6 +52,7 @@ function authenticate($username, $password)
                         get_membername($username)
                     );
                     if ($ldap_comparison === true) {
+<<<<<<< HEAD
                         return 1;
                     }
                 }
@@ -47,12 +67,32 @@ function authenticate($username, $password)
     }
 
     return 0;
+=======
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (!isset($password) || $password == '') {
+            throw new AuthenticationException('A password is required');
+        }
+
+        throw new AuthenticationException(ldap_error($ldap_connection));
+    }
+
+    throw new AuthenticationException();
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 
 function reauthenticate($sess_id, $token)
 {
+<<<<<<< HEAD
     return 0;
+=======
+    return false;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 

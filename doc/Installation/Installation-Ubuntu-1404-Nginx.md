@@ -29,11 +29,17 @@ Input the MySQL root password to enter the MySQL command-line interface.
 Create the database:
 
 ```sql
+<<<<<<< HEAD
 CREATE DATABASE librenms;
 GRANT ALL PRIVILEGES ON librenms.*
   TO 'librenms'@'<ip>'
   IDENTIFIED BY '<password>'
 ;
+=======
+CREATE DATABASE librenms CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER 'librenms'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON librenms.* TO 'librenms'@'localhost';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 FLUSH PRIVILEGES;
 exit
 ```
@@ -123,6 +129,11 @@ server {
  index       index.php;
  access_log  /opt/librenms/logs/access_log;
  error_log   /opt/librenms/logs/error_log;
+<<<<<<< HEAD
+=======
+ gzip on;
+ gzip_types text/css application/x-javascript text/richtext image/svg+xml text/plain    text/xsd text/xsl text/xml image/x-icon;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  location / {
   try_files $uri $uri/ @librenms;
  }
@@ -212,6 +223,15 @@ Create the cronjob
 
     cp librenms.nonroot.cron /etc/cron.d/librenms
 
+<<<<<<< HEAD
+=======
+### Copy logrotate config ###
+
+LibreNMS keeps logs in `/opt/librenms/logs`. Over time these can become large and be rotated out.  To rotate out the old logs you can use the provided logrotate config file:
+
+    cp misc/librenms.logrotate /etc/logrotate.d/librenms
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ### Daily Updates ###
 
 LibreNMS performs daily updates by default.  At 00:15 system time every day, a `git pull --no-edit --quiet` is performed.  You can override this default by editing your `config.php` file.  Remove the comment (the `#` mark) on the line:

@@ -25,7 +25,11 @@ if (isset($searchPhrase) && !empty($searchPhrase)) {
     $sql .= " AND (`S`.`title` LIKE '%$searchPhrase%' OR `S`.`start` LIKE '%$searchPhrase%' OR `S`.`end` LIKE '%$searchPhrase%')";
 }
 
+<<<<<<< HEAD
 $count_sql = "SELECT COUNT(`id`) $sql";
+=======
+$count_sql = "SELECT COUNT(`schedule_id`) $sql";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $total     = dbFetchCell($count_sql, $param);
 if (empty($total)) {
     $total = 0;
@@ -46,6 +50,7 @@ if ($rowCount != -1) {
     $sql .= " LIMIT $limit_low,$limit_high";
 }
 
+<<<<<<< HEAD
 $sql = "SELECT `S`.`schedule_id`, DATE_FORMAT(NOW(), '".$config['dateformat']['mysql']['compact']."') AS now, DATE_FORMAT(`S`.`start`, '".$config['dateformat']['mysql']['compact']."') AS `start`, DATE_FORMAT(`S`.`end`, '".$config['dateformat']['mysql']['compact']."') AS `end`, `S`.`title` $sql";
 
 foreach (dbFetchRows($sql, $param) as $schedule) {
@@ -67,6 +72,67 @@ foreach (dbFetchRows($sql, $param) as $schedule) {
         'end'    => $schedule['end'],
         'id'     => $schedule['schedule_id'],
         'status' => $status,
+=======
+$sql = "SELECT `S`.`schedule_id`, `S`.`recurring`, DATE_FORMAT(NOW(), '".$config['dateformat']['mysql']['compact']."') AS now, DATE_FORMAT(`S`.`start`, '".$config['dateformat']['mysql']['compact']."') AS `start`, DATE_FORMAT(`S`.`end`, '".$config['dateformat']['mysql']['compact']."') AS `end`,  DATE_FORMAT(`S`.`start_recurring_dt`, '".$config['dateformat']['mysql']['date']."') AS `start_recurring_dt`, DATE_FORMAT(`S`.`end_recurring_dt`, '".$config['dateformat']['mysql']['date']."') AS `end_recurring_dt`, `S`.`start_recurring_hr`, `S`.`end_recurring_hr`, `S`.`recurring_day`, `S`.`title` $sql";
+
+foreach (dbFetchRows($sql, $param) as $schedule) {
+    $status = 0;
+    if ($schedule['recurring'] == 0) {
+        $start  = strtotime($schedule['start']);
+        $end    = strtotime($schedule['end']);
+        $now    = strtotime($schedule['now']);
+        if ($end < $now) {
+            $status = 1;
+        }
+    
+        if ($now >= $start && $now < $end) {
+            $status = 2;
+        }
+    } else {
+        $start = strtotime($schedule['start_recurring_dt']);
+        $end = $schedule['end_recurring_dt'] != '' && $schedule['end_recurring_dt'] != '0000-00-00' ? strtotime($schedule['end_recurring_dt'].' '. $schedule['end_recurring_hr']) : 0;
+        $now    = strtotime($schedule['now']);
+        if ($end < $now && $end != 0) {
+            $status =1;
+        }
+        if ($start <= $now && ($now <= $end || $end == 0)) {
+            $status = 2;
+        }
+    }
+    $table_rd = '';
+    if ($schedule['recurring_day'] != '') {
+        $array_days = array(
+            0 => 'Su',
+            1 => 'Mo',
+            2 => 'Tu',
+            3 => 'We',
+            4 => 'Th',
+            5 => 'Fr',
+            6 => 'Sa'
+        );
+        $array_rd = explode(',', $schedule['recurring_day']);
+
+        foreach ($array_rd as $key_rd => $val_rd) {
+            if (array_key_exists($val_rd, $array_days)) {
+                $table_rd .= $table_rd != '' ? ','. $array_days[$val_rd] : $array_days[$val_rd];
+            }
+        }
+    }
+
+
+    $response[] = array(
+        'title'                  => $schedule['title'],
+        'recurring'              => $schedule['recurring'] == 1 ? 'yes' : 'no',
+        'start'                  => $schedule['recurring'] == 1 ? '' : $schedule['start'],
+        'end'                    => $schedule['recurring'] == 1 ? '' : $schedule['end'],
+        'start_recurring_dt'      => $schedule['recurring'] == 0 || $schedule['start_recurring_dt'] == '0000-00-00' ? '' : $schedule['start_recurring_dt'],
+        'end_recurring_dt'         => $schedule['recurring'] == 0 || $schedule['end_recurring_dt'] == '0000-00-00' ? '' : $schedule['end_recurring_dt'],
+        'start_recurring_hr'      => $schedule['recurring'] == 0 ? '' : substr($schedule['start_recurring_hr'], 0, 5),
+        'end_recurring_hr'         => $schedule['recurring'] == 0 ? '' : substr($schedule['end_recurring_hr'], 0, 5),
+        'recurring_day'             => $schedule['recurring'] == 0 ? '' : $table_rd,
+        'id'                    => $schedule['schedule_id'],
+        'status'                => $status,
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     );
 }
 

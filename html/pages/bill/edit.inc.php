@@ -1,4 +1,11 @@
 <?php
+<<<<<<< HEAD
+=======
+
+// Don't refresh this page to stop adding multiple ports
+$no_refresh = true;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
   require 'includes/javascript-interfacepicker.inc.php';
   
   // This needs more verification. Is it already added? Does it exist?
@@ -102,8 +109,14 @@ if ($bill_data['bill_type'] == 'cdr') {
         ?>
             <div class="list-group">
         <?php   foreach ($ports as $port) {
+<<<<<<< HEAD
                     $emptyCheck = true;
                     $portalias  = (empty($port['ifAlias']) ? '' : ' - '.display($port['ifAlias']).'');
+=======
+            $port = cleanPort($port);
+                    $emptyCheck = true;
+                    $portalias  = (empty($port['ifAlias']) ? '' : ' - '.$port['ifAlias'].'');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         ?>
                 <div class="list-group-item">

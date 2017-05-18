@@ -41,7 +41,11 @@ foreach (dbFetchRows($sql, array($deviceid)) as $entry) {
     $ip    = $entry['ipv4_address'];
     $mac   = $entry['mac_address'];
     $if    = $entry['port_id'];
+<<<<<<< HEAD
     $int   = ifLabel($if);
+=======
+    $int   = cleanPort($if);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $label = $int['label'];
 
     // Even though match_network is done inside discover_new_device, we do it here
@@ -53,7 +57,11 @@ foreach (dbFetchRows($sql, array($deviceid)) as $entry) {
 
     if (!match_network($config['nets'], $ip)) {
         echo 'i';
+<<<<<<< HEAD
         log_event("Ignored $ip", $deviceid, 'interface', $if);
+=======
+        log_event("Ignored $ip", $deviceid, 'interface', 3, $if);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         continue;
     }
 

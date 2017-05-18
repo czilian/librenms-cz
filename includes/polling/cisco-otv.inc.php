@@ -11,6 +11,11 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if ($device['os_group'] == "cisco") {
     // Define some error messages
     $error_vpn = array();
@@ -56,10 +61,17 @@ if ($device['os_group'] == "cisco") {
     $error_overlay[5] = "createAndWait";
     $error_overlay[6] = "destroy";
 
+<<<<<<< HEAD
     $module = 'Cisco-OTV';
 
     $component = new LibreNMS\Component();
     $options['filter']['type'] = array('=',$module);
+=======
+    $tmp_module = 'Cisco-OTV';
+
+    $component = new LibreNMS\Component();
+    $options['filter']['type'] = array('=',$tmp_module);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $options['filter']['disabled'] = array('=',0);
     $components = $component->getComponents($device['device_id'], $options);
 
@@ -127,7 +139,11 @@ if ($device['os_group'] == "cisco") {
 
                 $label = $array['label'];
                 $rrd_name = array('cisco', 'otv', $label, 'vlan');
+<<<<<<< HEAD
                 $rrd_def = 'DS:count:GAUGE:600:0:U';
+=======
+                $rrd_def = RrdDefinition::make()->addDataset('count', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
                 $fields = array(
                     'count' => $count_vlan
@@ -174,7 +190,11 @@ if ($device['os_group'] == "cisco") {
                 d_echo("    MAC Count: ".$count."\n");
 
                 $rrd_name = array('cisco', 'otv', $endpoint, 'mac');
+<<<<<<< HEAD
                 $rrd_def = 'DS:count:GAUGE:600:0:U';
+=======
+                $rrd_def = RrdDefinition::make()->addDataset('count', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $fields = array(
                     'count' => $count
                 );
@@ -189,5 +209,16 @@ if ($device['os_group'] == "cisco") {
     } // end if count components
 
     // Clean-up after yourself!
+<<<<<<< HEAD
     unset($components, $component, $module);
+=======
+    unset(
+        $components,
+        $component,
+        $tmp_module,
+        $error_vpn,
+        $error_aed,
+        $error_overlay
+    );
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

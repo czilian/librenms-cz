@@ -10,8 +10,13 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 if ($device['os'] == 'poweralert') {
     echo 'Pre-cache PowerAlert: ';
 
     $_tmp_serial = trim(snmp_get($device, '.1.3.6.1.4.1.850.100.1.1.4.0', '-Ovq', 'TRIPPLITE-MIB'), '"');
 }
+=======
+echo 'tlUpsSnmpCardSerialNum ';
+$pre_cache['poweralert_serial'] = trim(snmp_get($device, '.1.3.6.1.4.1.850.100.1.1.4.0', '-Ovq', 'TRIPPLITE-MIB'), '"');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

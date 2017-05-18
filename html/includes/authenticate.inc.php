@@ -1,13 +1,24 @@
 <?php
 
+<<<<<<< HEAD
 use Phpass\PasswordHash;
 
 @ini_set('session.use_only_cookies', 1);
 @ini_set('session.cookie_httponly', 1);
+=======
+use LibreNMS\Exceptions\AuthenticationException;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
-session_start();
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_strict_mode', 1); // php >= 5.5.2
+ini_set('session.use_trans_sid', 0);   // insecure feature, be sure it is disabled
 
+<<<<<<< HEAD
 // Preflight checks
+=======
+// Pre-flight checks
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (!is_dir($config['rrd_dir'])) {
     echo "<div class='errorbox'>RRD Log Directory is missing ({$config['rrd_dir']}).  Graphing may fail.</div>";
 }
@@ -22,6 +33,7 @@ if (!is_writable($config['temp_dir'])) {
 
 // Clear up any old sessions
 dbDelete('session', '`session_expiry` <  ?', array(time()));
+<<<<<<< HEAD
 
 if ($vars['page'] == 'logout' && $_SESSION['authenticated']) {
     dbInsert(array('user' => $_SESSION['username'], 'address' => get_client_ip(), 'result' => 'Logged Out'), 'authlog');
@@ -109,3 +121,77 @@ if ((isset($_SESSION['username'])) || (isset($_COOKIE['sess_id'],$_COOKIE['token
         dbInsert(array('user' => $_SESSION['username'], 'address' => get_client_ip(), 'result' => 'Authentication Failure'), 'authlog');
     }
 }
+=======
+
+session_start();
+
+if ($vars['page'] == 'logout' && $_SESSION['authenticated']) {
+    log_out_user();
+    header('Location: ' . $config['base_url']);
+    exit;
+}
+
+try {
+    if (isset($_SESSION['authenticated']) && $_SESSION['authenticated']) {
+        // session authenticated already
+        log_in_user();
+    } else {
+        // try authentication methods
+
+        // cookie authentication
+        if (isset($_COOKIE['sess_id'], $_COOKIE['token']) &&
+            reauthenticate(clean($_COOKIE['sess_id']), clean($_COOKIE['token']))
+        ) {
+            log_in_user();
+
+            // update cookie expiry times
+            set_remember_me();
+        } else {
+            // collect username and password
+            $password = null;
+            if (isset($_REQUEST['username']) && isset($_REQUEST['password'])) {
+                $username = clean($_REQUEST['username']);
+                $password = $_REQUEST['password'];
+            } elseif (isset($_SERVER['REMOTE_USER'])) {
+                $username = $_SERVER['REMOTE_USER'];
+            } elseif (isset($_SERVER['PHP_AUTH_USER']) && $config['auth_mechanism'] === 'http-auth') {
+                $username = $_SERVER['PHP_AUTH_USER'];
+            }
+
+            // form authentication
+            if (isset($username) && authenticate($username, $password)) {
+                $_SESSION['username'] = $username;
+                log_in_user();
+
+                // set cookie if requested
+                if (isset($_POST['remember'])) {
+                    set_remember_me();
+                }
+
+                // redirect to original uri or home page.
+                header('Location: '.rtrim($config['base_url'], '/').$_SERVER['REQUEST_URI'], true, 303);
+            }
+        }
+    }
+} catch (AuthenticationException $ae) {
+    $auth_message = $ae->getMessage();
+    if ($debug) {
+        $auth_message .= '<br /> ' . $ae->getFile() . ': ' . $ae->getLine();
+    }
+
+    dbInsert(
+        array('user' => $_SESSION['username'], 'address' => get_client_ip(), 'result' => $auth_message),
+        'authlog'
+    );
+    log_out_user($auth_message);
+}
+
+session_write_close();
+
+// populate the permissions cache
+if (isset($_SESSION['user_id'])) {
+    $permissions = permissions_cache($_SESSION['user_id']);
+}
+
+unset($username, $password);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

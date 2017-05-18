@@ -2,7 +2,11 @@
 
 $row = 1;
 
+<<<<<<< HEAD
 foreach (dbFetchRows('SELECT * FROM `ucd_diskio` WHERE device_id = ? ORDER BY diskio_descr', array($device['device_id'])) as $drive) {
+=======
+foreach (get_disks($device['device_id']) as $drive) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if (is_integer($row / 2)) {
         $row_colour = $list_colour_a;
     } else {

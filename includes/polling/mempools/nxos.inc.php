@@ -10,6 +10,7 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 if ($device['os'] == "nxos") {
     echo "Cisco Nexus";
     $used = snmp_get($device, '.1.3.6.1.4.1.9.9.109.1.1.1.1.12.1', '-OvQ');
@@ -19,3 +20,12 @@ if ($device['os'] == "nxos") {
     $mempool['free'] = ($free * 1024);
     $mempool['total'] = (($used + $free) * 1024);
 }
+=======
+echo "Cisco Nexus";
+$used = snmp_get($device, '.1.3.6.1.4.1.9.9.109.1.1.1.1.12.1', '-OvQ');
+$free = snmp_get($device, '.1.3.6.1.4.1.9.9.109.1.1.1.1.13.1', '-OvQ');
+
+$mempool['used'] = ($used * 1024);
+$mempool['free'] = ($free * 1024);
+$mempool['total'] = (($used + $free) * 1024);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

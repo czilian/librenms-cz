@@ -243,6 +243,10 @@ var alerts_grid = $("#alerts_'.$unique_id.'").bootgrid({
     templates: {
     }
 }).on("loaded.rs.jquery.bootgrid", function() {
+<<<<<<< HEAD
+=======
+    alerts_grid = $(this);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     alerts_grid.find(".incident-toggle").each( function() {
       $(this).parent().addClass(\'incident-toggle-td\');
     }).on("click", function(e) {
@@ -293,8 +297,16 @@ var alerts_grid = $("#alerts_'.$unique_id.'").bootgrid({
             success: function(msg){
                 toastr.success(msg);
                 if(msg.indexOf("ERROR:") <= -1) {
+<<<<<<< HEAD
                     var $sortDictionary = alerts_grid.bootgrid("getSortDictionary");
                     alerts_grid.bootgrid("sort", $sortDictionary); 
+=======
+                    $(".alerts").each(function(index) {
+                        var $sortDictionary = $(this).bootgrid("getSortDictionary");
+                        $(this).reload;
+                        $(this).bootgrid("sort", $sortDictionary);
+                    });
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 }
             },
             error: function(){

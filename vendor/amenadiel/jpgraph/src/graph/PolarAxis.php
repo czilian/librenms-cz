@@ -96,7 +96,11 @@ class PolarAxis extends Axis
         $this->scale->ticks->Stroke($this->img, $this->scale, $pos);
 
         // Stroke the minor arcs
+<<<<<<< HEAD
         $pmin = [];
+=======
+        $pmin = array();
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $p = $this->scale->ticks->ticks_pos;
         $n = count($p);
         $i = 0;

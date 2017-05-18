@@ -32,6 +32,27 @@ Features: Supported features in the version indicated.
 | >=1.5.5 | No        | G,C,U    |
 | >=1.6.x | No        | G,C,U    |
 
+<<<<<<< HEAD
+=======
+### RRDCached installation Debian Jessie (rrdcached 1.4.8)
+```ssh
+sudo apt-get install rrdcached
+```
+
+- Edit /opt/librenms/config.php to include:
+```php
+$config['rrdcached']    = "unix:/var/run/rrdcached.sock";
+```
+- Edit /etc/default/rrdcached to include:
+```ssh
+OPTS="-s librenms"
+OPTS="$OPTS -l unix:/var/run/rrdcached.sock"
+OPTS="$OPTS -j /var/lib/rrdcached/journal/ -F"
+OPTS="$OPTS -b /opt/librenms/rrd/ -B"
+OPTS="$OPTS -w 1800 -z 1800 -f 3600 -t 4"
+```
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ### RRDCached installation Ubuntu 16
 ```ssh
 sudo apt-get install rrdcached
@@ -138,12 +159,15 @@ systemctl enable --now rrdcached.service
 ```ssh
 $config['rrdcached']    = "unix:/var/run/rrdcached/rrdcached.sock";
 ```
+<<<<<<< HEAD
 
 - Restart Apache
 ```ssh
 systemctl restart httpd
 ```
 
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 Check to see if the graphs are being drawn in LibreNMS. This might take a few minutes.
 After at least one poll cycle (5 mins), check the LibreNMS disk I/O performance delta.
 Disk I/O can be found under the menu Devices>All Devices>[localhost hostname]>Health>Disk I/O.

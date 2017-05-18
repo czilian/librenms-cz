@@ -8,7 +8,11 @@ if ($config['enable_syslog']) {
           <div class="col-md-12">
             <div class="panel panel-default panel-condensed">
               <div class="panel-heading">';
+<<<<<<< HEAD
         echo '<a href="device/device='.$device['device_id'].'/tab=logs/section=syslog/"><img src="images/16/printer.png" /> <strong>Recent Syslog</strong></a>';
+=======
+        echo '<a href="device/device='.$device['device_id'].'/tab=logs/section=syslog/"><i class="fa fa-clone fa-lg icon-theme" aria-hidden="true"></i> <strong>Recent Syslog</strong></a>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo '        </div>
               <table class="table table-hover table-condensed table-striped">';
         foreach ($syslog as $entry) {

@@ -75,7 +75,12 @@ if (bill_permitted($bill_id)) {
 
         // Collected Earlier
         foreach ($ports as $port) {
+<<<<<<< HEAD
             $portalias = (empty($port['ifAlias']) ? '' : ' - '.display($port['ifAlias']).'');
+=======
+            $port = cleanPort($port);
+            $portalias = (empty($port['ifAlias']) ? '' : ' - '.$port['ifAlias'].'');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
             echo '<div class="list-group-item">';
             echo generate_port_link($port, $port['ifName'].$portalias).' on '.generate_device_link($port);
@@ -118,7 +123,11 @@ if (bill_permitted($bill_id)) {
         $sep = ' | ';
     }
     
+<<<<<<< HEAD
     echo '<div style="font-weight: bold; float: right;"><a href="'.generate_url(array('page' => 'bills')).'/"><img align=absmiddle src="images/16/arrow_left.png"> Back to Bills</a></div>';
+=======
+    echo '<div style="font-weight: bold; float: right;"><a href="'.generate_url(array('page' => 'bills')).'/"><i class="fa fa-arrow-left fa-lg icon-theme" aria-hidden="true"></i> Back to Bills</a></div>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     print_optionbar_end();
 

@@ -11,7 +11,11 @@ if (count($toners)) {
             <div class="panel panel-default panel-condensed">
               <div class="panel-heading">';
     echo '<a href="device/device='.$device['device_id'].'/tab=toner/">';
+<<<<<<< HEAD
     echo "<img src='images/icons/toner.png'> <strong>Toner</strong></a>";
+=======
+    echo '<i class="fa fa-print fa-lg icon-theme" aria-hidden="true"></i> <strong>Toner</strong></a>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     echo '</div>
         <table class="table table-hover table-condensed table-striped">';
 
@@ -58,7 +62,10 @@ if (count($toners)) {
     echo '</div>';
     echo '</div>';
     echo '</div>';
+<<<<<<< HEAD
     echo '</div>';
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }//end if
 
 unset($toner_rows);

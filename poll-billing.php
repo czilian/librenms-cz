@@ -23,9 +23,15 @@ $poller_start = microtime(true);
 echo "Starting Polling Session ... \n\n";
 
 // Wait for schema update, as running during update can break update
+<<<<<<< HEAD
 $dbVersion = dbFetchCell('SELECT version FROM dbSchema');
 if ($dbVersion < 107) {
     logfile("BILLING: Cannot continue until dbSchema update to >= 107 is complete");
+=======
+$dbVersion = get_db_schema();
+if ($dbVersion < 107) {
+    logfile("BILLING: Cannot continue until the database schema update to >= 107 is complete");
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     exit(1);
 }
 
@@ -91,7 +97,11 @@ function CollectData($bill_id)
             $port_data['out_delta'] = '0';
         }
 
+<<<<<<< HEAD
         $fields = array('timestamp' => $now, 'in_counter' => $port_data['in_measurement'], 'out_counter' => $port_data['out_measurement'], 'in_delta' => $port_data['in_delta'], 'out_delta' => $port_data['out_delta']);
+=======
+        $fields = array('timestamp' => $now, 'in_counter' => set_numeric($port_data['in_measurement']), 'out_counter' => set_numeric($port_data['out_measurement']), 'in_delta' => set_numeric($port_data['in_delta']), 'out_delta' => set_numeric($port_data['out_delta']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if (dbUpdate($fields, 'bill_port_counters', "`port_id`='" . mres($port_id) . "' AND `bill_id`='$bill_id'") == 0) {
             $fields['bill_id'] = $bill_id;
             $fields['port_id'] = $port_id;

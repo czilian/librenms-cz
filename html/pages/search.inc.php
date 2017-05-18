@@ -39,11 +39,19 @@ foreach ($sections as $type => $texttype) {
 
     $sep = ' | ';
 }
+<<<<<<< HEAD
+
+unset($sep);
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 unset($sep);
 
-print_optionbar_end('', '');
+<<<<<<< HEAD
+=======
+print_optionbar_end();
 
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (file_exists('pages/search/'.$vars['search'].'.inc.php')) {
     include 'pages/search/'.$vars['search'].'.inc.php';
 } else {

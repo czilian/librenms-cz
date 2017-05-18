@@ -2,10 +2,16 @@
 
 require 'includes/graphs/common.inc.php';
 
+<<<<<<< HEAD
 $scale_min       = 0;
 $ds              = 'frequency';
 $colour_area     = 'F6F6F6';
 $colour_line     = 'B3D0DB';
+=======
+$ds              = 'frequency';
+$colour_area     = $config['graph_colours']['pinks'][0].'33';
+$colour_line     = $config['graph_colours']['pinks'][0];
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $colour_area_max = 'FFEE99';
 $graph_max       = 100;
 $unit_text       = 'Frequency';

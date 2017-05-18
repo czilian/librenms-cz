@@ -118,7 +118,11 @@ foreach ($pkgs_id as $pkg) {
             }
 
             echo '+'.$name.'-'.$version.$dbuild.'-'.$arch;
+<<<<<<< HEAD
             log_event('Package installed: '.$name.' ('.$arch.') version '.$version.$dbuild, $device, 'package');
+=======
+            log_event('Package installed: ' . $name . ' (' . $arch . ') version ' . $version . $dbuild, $device, 'package', 3);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         } elseif (count($pkgs_db[$manager][$name][$arch], 1)) {
             $pkg_c = dbFetchRow('SELECT * FROM `packages` WHERE `device_id` = ? AND `manager` = ? AND `name` = ? and `arch` = ? ORDER BY version DESC, build DESC', array($device['device_id'], $manager, $name, $arch));
             if ($pkg_c['build'] != '') {
@@ -135,7 +139,11 @@ foreach ($pkgs_id as $pkg) {
                 'size'    => $size,
             );
             dbUpdate($pkg_update, 'packages', '`pkg_id` = ?', array($pkg_c['pkg_id']));
+<<<<<<< HEAD
             log_event('Package updated: '.$name.' ('.$arch.') from '.$pkg_c['version'].$pkg_c_dbuild.' to '.$version.$dbuild, $device, 'package');
+=======
+            log_event('Package updated: ' . $name . ' (' . $arch . ') from ' . $pkg_c['version'] . $pkg_c_dbuild . ' to ' . $version . $dbuild, $device, 'package', 3);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             unset($pkgs_db_id[$pkg_c['pkg_id']]);
         }//end if
     }//end if
@@ -146,7 +154,11 @@ foreach ($pkgs_id as $pkg) {
 foreach ($pkgs_db_id as $id => $pkg) {
     dbDelete('packages', '`pkg_id` =  ?', array($id));
     echo '-'.$pkg['text'];
+<<<<<<< HEAD
     log_event('Package removed: '.$pkg['name'].' '.$pkg['arch'].' '.$pkg['version'].($pkg['build'] != '' ? '-'.$pkg['build'] : ''), $device, 'package');
+=======
+    log_event('Package removed: ' . $pkg['name'] . ' ' . $pkg['arch'] . ' ' . $pkg['version'] . ($pkg['build'] != '' ? '-' . $pkg['build'] : ''), $device, 'package', 3);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 echo "\n";

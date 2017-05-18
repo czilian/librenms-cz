@@ -11,9 +11,16 @@
 
 namespace Symfony\Component\Yaml\Tests;
 
+<<<<<<< HEAD
 use Symfony\Component\Yaml\Inline;
 
 class InlineTest extends \PHPUnit_Framework_TestCase
+=======
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Inline;
+
+class InlineTest extends TestCase
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     /**
      * @dataProvider getTestsForParse
@@ -192,6 +199,7 @@ class InlineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group legacy
+<<<<<<< HEAD
      * @dataProvider getReservedIndicators
      * throws \Symfony\Component\Yaml\Exception\ParseException in 3.0
      */
@@ -203,16 +211,53 @@ class InlineTest extends \PHPUnit_Framework_TestCase
     public function getReservedIndicators()
     {
         return array(array('@'), array('`'));
+=======
+     * @expectedDeprecation Not quoting the scalar "@foo " starting with "@" is deprecated since Symfony 2.8 and will throw a ParseException in 3.0.
+     * throws \Symfony\Component\Yaml\Exception\ParseException in 3.0
+     */
+    public function testParseUnquotedScalarStartingWithReservedAtIndicator()
+    {
+        Inline::parse('{ foo: @foo }');
     }
 
     /**
      * @group legacy
+     * @expectedDeprecation Not quoting the scalar "`foo " starting with "`" is deprecated since Symfony 2.8 and will throw a ParseException in 3.0.
+     * throws \Symfony\Component\Yaml\Exception\ParseException in 3.0
+     */
+    public function testParseUnquotedScalarStartingWithReservedBacktickIndicator()
+    {
+        Inline::parse('{ foo: `foo }');
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Not quoting the scalar "|foo " starting with "|" is deprecated since Symfony 2.8 and will throw a ParseException in 3.0.
+     * throws \Symfony\Component\Yaml\Exception\ParseException in 3.0
+     */
+    public function testParseUnquotedScalarStartingWithLiteralStyleIndicator()
+    {
+        Inline::parse('{ foo: |foo }');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+    }
+
+    /**
+     * @group legacy
+<<<<<<< HEAD
      * @dataProvider getScalarIndicators
      * throws \Symfony\Component\Yaml\Exception\ParseException in 3.0
      */
     public function testParseUnquotedScalarStartingWithScalarIndicator($indicator)
     {
         Inline::parse(sprintf('{ foo: %sfoo }', $indicator));
+=======
+     * @expectedDeprecation Not quoting the scalar ">foo " starting with ">" is deprecated since Symfony 2.8 and will throw a ParseException in 3.0.
+     * throws \Symfony\Component\Yaml\Exception\ParseException in 3.0
+     */
+    public function testParseUnquotedScalarStartingWithFoldedStyleIndicator()
+    {
+        Inline::parse('{ foo: >foo }');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     public function getScalarIndicators()
@@ -457,4 +502,28 @@ class InlineTest extends \PHPUnit_Framework_TestCase
     {
         Inline::parse('{this, is not, supported}');
     }
+<<<<<<< HEAD
+=======
+
+    public function testVeryLongQuotedStrings()
+    {
+        $longStringWithQuotes = str_repeat("x\r\n\\\"x\"x", 1000);
+
+        $yamlString = Inline::dump(array('longStringWithQuotes' => $longStringWithQuotes));
+        $arrayFromYaml = Inline::parse($yamlString);
+
+        $this->assertEquals($longStringWithQuotes, $arrayFromYaml['longStringWithQuotes']);
+    }
+
+    public function testBooleanMappingKeysAreConvertedToStrings()
+    {
+        $this->assertSame(array('false' => 'foo'), Inline::parse('{false: foo}'));
+        $this->assertSame(array('true' => 'foo'), Inline::parse('{true: foo}'));
+    }
+
+    public function testTheEmptyStringIsAValidMappingKey()
+    {
+        $this->assertSame(array('' => 'foo'), Inline::parse('{ "": foo }'));
+    }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

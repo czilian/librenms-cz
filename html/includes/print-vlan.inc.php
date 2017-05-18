@@ -32,7 +32,11 @@ if ($traverse_ifvlan) {
 ksort($vlan_ports);
 
 foreach ($vlan_ports as $port) {
+<<<<<<< HEAD
     $port = ifLabel($port, $device);
+=======
+    $port = cleanPort($port, $device);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if ($vars['view'] == 'graphs') {
         echo "<div style='display: block; padding: 2px; margin: 2px; min-width: 139px; max-width:139px; min-height:85px; max-height:85px; text-align: center; float: left; background-color: ".$list_colour_b_b.";'>
     <div style='font-weight: bold;'>".makeshortif($port['ifDescr'])."</div>

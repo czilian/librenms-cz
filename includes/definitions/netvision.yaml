@@ -3,3 +3,9 @@ text: 'Socomec Net Vision'
 type: power
 over:
     - { graph: device_current, text: Current }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - Net Vision
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

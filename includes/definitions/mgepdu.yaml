@@ -1,6 +1,19 @@
 os: mgepdu
+<<<<<<< HEAD
 text: 'MGE PDU'
 type: power
 icon: mge
 mib_dir:
     - mge
+=======
+text: 'Eaton MGE PDU'
+type: power
+icon: eaton
+mib_dir:
+    - mge
+over:
+    - { graph: device_current, text: Current }
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.705.2
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -77,6 +77,37 @@ $no_refresh = true;
 </div>
 <!-- End Slack Modal -->
 
+<<<<<<< HEAD
+=======
+<!-- Rocket.Chat Modal -->
+<div class="modal fade" id="new-config-rocket" role="dialog" aria-hidden="true" title="Create new config item">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form role="form" class="new_config_form">
+                    <div class="form-group">
+                        <span class="message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="rocket_value">Rocket.Chat API URL</label>
+                        <input type="text" class="form-control" name="rocket_value" id="rocket_value" placeholder="Enter the Rocket.Chat API url">
+                    </div>
+                    <div class="form-group">
+                        <label for="rocket_extra">Rocket.Chat options (specify one per line key=value)</label>
+                        <textarea class="form-control" name="rocket_extra" id="rocket_extra" placeholder="Enter the config options"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="submit-rocket">Add config</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End RocketChat Modal -->
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 <!-- Hipchat Modal -->
 <div class="modal fade" id="new-config-hipchat" role="dialog" aria-hidden="true" title="Create new config item">
     <div class="modal-dialog">
@@ -155,11 +186,19 @@ $no_refresh = true;
                         <span class="message"></span>
                     </div>
                     <div class="form-group">
+<<<<<<< HEAD
                         <label for="pushover_value">Boxcar Access token</label>
                         <input type="text" class="form-control" name="boxcar_value" id="boxcar_value" placeholder="Enter the Boxcar Access token">
                     </div>
                     <div class="form-group">
                         <label for="pushover_extra">Boxcar options (specify one per line key=value)</label>
+=======
+                        <label for="boxcar_value">Boxcar Access token</label>
+                        <input type="text" class="form-control" name="boxcar_value" id="boxcar_value" placeholder="Enter the Boxcar Access token">
+                    </div>
+                    <div class="form-group">
+                        <label for="boxcar_extra">Boxcar options (specify one per line key=value)</label>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         <textarea class="form-control" name="boxcar_extra" id="boxcar_extra" placeholder="Enter the config options"></textarea>
                     </div>
                 </form>
@@ -173,6 +212,37 @@ $no_refresh = true;
 </div>
 <!-- End Boxcar Modal -->
 
+<<<<<<< HEAD
+=======
+<!-- Telegram Modal -->
+<div class="modal fade" id="new-config-telegram" role="dialog" aria-hidden="true" title="Create new config item">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form role="form" class="new_config_form">
+                    <div class="form-group">
+                        <span class="message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="telegram_value">Telegram Chat ID</label>
+                        <input type="text" class="form-control" name="telegram_value" id="telegram_value" placeholder="Enter the Telegram Chat ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="telegram_token">Telegram Token</label>
+                        <input type="text" class="form-control" name="telegram_token" id="telegram_token" placeholder="Enter the Telegram Token">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="submit-telegram">Add config</button>
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Telegram Modal -->
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 <?php
 if (isset($_GET['error'])) {
     print_error('We had issues connecting to your Pager Duty account, please try again');
@@ -213,6 +283,13 @@ $general_conf = array(
           'descr'              => 'Issue alerts to read only users',
           'type'               => 'checkbox',
     ),
+<<<<<<< HEAD
+=======
+    array('name'               => 'alert.users',
+        'descr'                => 'Issue alerts to normal users',
+        'type'                 => 'checkbox',
+    ),
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     array('name'               => 'alert.syscontact',
           'descr'              => 'Issue alerts to sysContact',
           'type'               => 'checkbox',
@@ -278,6 +355,14 @@ $mail_conf = array(
           'type'               => 'select',
           'options'            => $dyn_config['email_smtp_secure'],
     ),
+<<<<<<< HEAD
+=======
+    array('name'               => 'email_auto_tls',
+        'descr'                => 'SMTP Auto TLS Support',
+        'type'                 => 'select',
+        'options'              => array('true', 'false'),
+    ),
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     array('name'               => 'email_smtp_auth',
           'descr'              => 'SMTP Authentication',
           'type'               => 'checkbox',
@@ -489,6 +574,81 @@ foreach ($slack_urls as $slack_url) {
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
+<<<<<<< HEAD
+=======
+                    <a data-toggle="collapse" data-parent="#accordion" href="#rocket_transport_expand"><i class="fa fa-caret-down"></i> Rocket.chat transport</a> <button name="test-alert" id="test-alert" type="button" data-transport="rocket" class="btn btn-primary btn-xs pull-right">Test transport</button>
+                </h4>
+            </div>
+            <div id="rocket_transport_expand" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <button class="btn btn-success btn-xs" type="button" name="new_config" id="new_config_item" data-toggle="modal" data-target="#new-config-rocket">Add rocket URL</button>
+                        </div>
+                    </div>';
+                    $rocket_urls = get_config_like_name('alert.transports.rocket.%.url');
+foreach ($rocket_urls as $rocket_url) {
+    unset($upd_rocket_extra);
+    $new_rocket_extra = array();
+    $rocket_extras    = get_config_like_name('alert.transports.rocket.'.$rocket_url['config_id'].'.%');
+    foreach ($rocket_extras as $extra) {
+        $split_extra = explode('.', $extra['config_name']);
+        if ($split_extra[4] != 'url') {
+            $new_rocket_extra[] = $split_extra[4].'='.$extra['config_value'];
+        }
+    }
+
+    $upd_rocket_extra = implode(PHP_EOL, $new_rocket_extra);
+    echo '<div id="'.$rocket_url['config_id'].'">
+                        <div class="form-group has-feedback">
+                            <label for="rocket_url" class="col-sm-4 control-label">rocket URL </label>
+                            <div class="col-sm-4">
+                                <input id="rocket_url" class="form-control" type="text" name="global-config-input" value="'.$rocket_url['config_value'].'" data-config_id="'.$rocket_url['config_id'].'">
+                                <span class="form-control-feedback">
+                                    <i class="fa" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-danger del-rocket-config" name="del-rocket-call" data-config_id="'.$rocket_url['config_id'].'"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <div class="col-sm-offset-4 col-sm-4">
+                                <textarea class="form-control" name="global-config-textarea" id="upd_rocket_extra" placeholder="Enter the config options" data-config_id="'.$rocket_url['config_id'].'" data-type="rocket">'.$upd_rocket_extra.'</textarea>
+                                <span class="form-control-feedback">
+                                    <i class="fa" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>';
+}//end foreach
+
+                    echo '<div class="hide" id="rocket_url_template">
+                        <div class="form-group has-feedback">
+                            <label for="rocket_url" class="col-sm-4 control-label api-method">rocket URL </label>
+                            <div class="col-sm-4">
+                                <input id="rocket_url" class="form-control" type="text" name="global-config-input" value="" data-config_id="">
+                                <span class="form-control-feedback">
+                                    <i class="fa" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-danger del-rocket-config" name="del-rocket-call" data-config_id=""><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <div class="col-sm-offset-4 col-sm-4">
+                                <textarea class="form-control" name="global-config-textarea" id="upd_rocket_extra" placeholder="Enter the config options" data-config_id="" data-type="rocket"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     <a data-toggle="collapse" data-parent="#accordion" href="#hipchat_transport_expand"><i class="fa fa-caret-down"></i> Hipchat transport</a> <button name="test-alert" id="test-alert" type="button" data-transport="hipchat" class="btn btn-primary btn-xs pull-right">Test transport</button>
                 </h4>
             </div>
@@ -759,6 +919,72 @@ echo '<div id="boxcar_appkey_template" class="hide">
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
+=======
+        <!-- Telegram -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#telegram_transport_expand"><i class="fa fa-caret-down"></i> Telegram transport</a> <button name="test-alert" id="test-alert" type="button" data-transport="telegram" class="btn btn-primary btn-xs pull-right">Test transport</button>
+                </h4>
+            </div>
+            <div id="telegram_transport_expand" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <button class="btn btn-success btn-xs" type="button" name="new_config" id="new_config_item" data-toggle="modal" data-target="#new-config-telegram">Add Telegram config</button>
+                        </div>
+                    </div>';
+$telegram_chatids = get_config_like_name('alert.transports.telegram.%.chat_id');
+foreach ($telegram_chatids as $index => $chat_id) {
+    $telegram_token   = get_config_by_name('alert.transports.telegram.'.$chat_id['config_id'].'.token');
+    echo '<div id="'.$chat_id['config_id'].'">
+                        <div class="form-group has-feedback">
+                            <label for="telegram_chat_id" class="col-sm-4 control-label">Telegram Chat ID</label>
+                            <div class="col-sm-4">
+                                <input id="telegram_chat_id" class="form-control" type="text" name="global-config-input" value="'.$chat_id['config_value'].'" data-config_id="'.$chat_id['config_id'].'">
+                                <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="telegram_token" class="col-sm-4 control-label">Telegram token</label>
+                            <div class="col-sm-4">
+                                <input id="telegram_token" class="form-control" type="text" name="telegram_token" value="'.$telegram_token['config_value'].'" data-config_id="'.$chat_id['config_id'].'">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-danger del-telegram-config" name="del-telegram-call" data-config_id="'.$chat_id['config_id'].'"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                    </div>';
+}//end foreach
+
+echo '<div id="telegram_chat_id_template" class="hide">
+                        <div class="form-group has-feedback">
+                            <label for="telegram_chat_id" class="col-sm-4 control-label api-method">Telegram Chat ID</label>
+                            <div class="col-sm-4">
+                                <input id="telegram_chat_id" class="form-control" type="text" name="global-config-input" value="" data-config_id="">
+                                <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="telegram_token" class="col-sm-4 control-label">Telegram token</label>
+                            <div class="col-sm-4">
+                                <input id="telegram_token" class="form-control" type="text" name="telegram_token" value="" data-config_id="">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-danger del-telegram-config" id="del-telegram-call" name="del-telegram-call" data-config_id=""><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Pushbullet -->
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
@@ -1022,6 +1248,140 @@ echo '
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
+=======
+        </div>';
+$ciscospark_token   = get_config_by_name('alert.transports.ciscospark.token');
+$ciscospark_roomid   = get_config_by_name('alert.transports.ciscospark.roomid');
+echo '
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#ciscospark_transport_expand"><i class="fa fa-caret-down"></i> Cisco Spark transport</a> <button name="test-alert" id="test-alert" type="button" data-transport="ciscospark" class="btn btn-primary btn-xs pull-right">Test transport</button>
+                </h4>
+            </div>
+            <div id="ciscospark_transport_expand" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form-group has-feedback">
+                        <label for="ciscospark_token" class="col-sm-4 control-label">Cisco Spark API Token</label>
+                        <div class="col-sm-4">
+                            <input id="ciscospark_token" class="form-control" type="text" name="global-config-input" value="'.$ciscospark_token['config_value'].'" data-config_id="'.$ciscospark_token['config_id'].'">
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="ciscospark_roomid" class="col-sm-4 control-label">Cisco Spark RoomID</label>
+                        <div class="col-sm-4">
+                            <input id="ciscospark_roomid" class="form-control" type="text" name="global-config-input" value="'.$ciscospark_roomid['config_value'].'" data-config_id="'.$ciscospark_roomid['config_id'].'">
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>';
+$smseagle_url     = get_config_by_name('alert.transports.smseagle.url');
+$smseagle_user    = get_config_by_name('alert.transports.smseagle.user');
+$smseagle_token   = get_config_by_name('alert.transports.smseagle.token');
+$mobiles         = get_config_like_name('alert.transports.smseagle.to.%');
+$new_mobiles = array();
+foreach ($mobiles as $mobile) {
+    $new_mobiles[] = $mobile['config_value'];
+}
+$upd_mobiles = implode(PHP_EOL, $new_mobiles);
+echo '
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#smseagle_transport_expand"><i class="fa fa-caret-down"></i> SMSEagle transport</a> <button name="test-alert" id="test-alert" type="button" data-transport="smseagle" class="btn btn-primary btn-xs pull-right">Test transport</button>
+                </h4>
+            </div>
+            <div id="smseagle_transport_expand" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form-group has-feedback">
+                        <label for="smseagle_url" class="col-sm-4 control-label">SMSEagle URL </label>
+                        <div class="col-sm-4">
+                            <input id="smseagle_url" class="form-control" type="text" name="global-config-input" value="'.$smseagle_url['config_value'].'" data-config_id="'.$smseagle_url['config_id'].'">
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="smseagle_user" class="col-sm-4 control-label">User</label>
+                        <div class="col-sm-4">
+                            <input id="smseagle_user" class="form-control" type="text" name="global-config-input" value="'.$smseagle_user['config_value'].'" data-config_id="'.$smseagle_user['config_id'].'">
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="smseagle_token" class="col-sm-4 control-label">Password</label>
+                        <div class="col-sm-4">
+                            <input id="smseagle_token" class="form-control" type="text" name="global-config-input" value="'.$smseagle_token['config_value'].'" data-config_id="'.$smseagle_token['config_id'].'">
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="smseagle_to" class="col-sm-4 control-label">Mobiles</label>
+                        <div class="col-sm-4">
+                            <textarea class="form-control" name="global-config-textarea" id="smseagle_to" placeholder="Enter mobile phone numbers, one per line" data-config_id="'.$smseagle_url['config_id'].'" data-type="smseagle">'.$upd_mobiles.'</textarea>
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>';
+$syslog_host     = get_config_by_name('alert.transports.syslog.syslog_host');
+$syslog_port    = get_config_by_name('alert.transports.syslog.syslog_port');
+$syslog_facility   = get_config_by_name('alert.transports.syslog.syslog_facility');
+echo '
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#syslog_transport_expand"><i class="fa fa-caret-down"></i> Syslog transport</a> <button name="test-alert" id="test-alert" type="button" data-transport="syslog" class="btn btn-primary btn-xs pull-right">Test transport</button>
+                </h4>
+            </div>
+            <div id="syslog_transport_expand" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form-group has-feedback">
+                        <label for="syslog_host" class="col-sm-4 control-label">Syslog Host </label>
+                        <div class="col-sm-4">
+                            <input id="syslog_host" class="form-control" type="text" name="global-config-input" value="'.$syslog_host['config_value'].'" data-config_id="'.$syslog_host['config_id'].'">
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="syslog_port" class="col-sm-4 control-label">Syslog Port </label>
+                        <div class="col-sm-4">
+                            <input id="syslog_port" class="form-control" type="text" name="global-config-input" value="'.$syslog_port['config_value'].'" data-config_id="'.$syslog_port['config_id'].'">
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="syslog_facility" class="col-sm-4 control-label">Syslog Facility </label>
+                        <div class="col-sm-4">
+                            <input id="syslog_facility" class="form-control" type="text" name="global-config-input" value="'.$syslog_facility['config_value'].'" data-config_id="'.$syslog_facility['config_id'].'">
+                            <span class="form-control-feedback">
+    <i class="fa" aria-hidden="true"></i>
+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         </div>
     </form>
 </div>
@@ -1143,6 +1503,45 @@ echo '
         });
     });// End Add Slack config
 
+<<<<<<< HEAD
+=======
+    // Add RocketChat config
+    rocketIndex = 0;
+    $("button#submit-rocket").click(function(){
+        var config_value = $('#rocket_value').val();
+        var config_extra = $('#rocket_extra').val();
+        $.ajax({
+            type: "POST",
+            url: "ajax_form.php",
+            data: {type: "config-item", action: 'add-rocket', config_group: "alerting", config_sub_group: "transports", config_extra: config_extra, config_value: config_value},
+            dataType: "json",
+            success: function(data){
+                if (data.status == 'ok') {
+                    rocketIndex++;
+                    var $template = $('#rocket_url_template'),
+                        $clone    = $template
+                            .clone()
+                            .removeClass('hide')
+                            .attr('id',data.config_id)
+                            .attr('rocket-url-index', rocketIndex)
+                            .insertBefore($template);
+                        $clone.find('[name="global-config-input"]').attr('data-config_id',data.config_id);
+                        $clone.find('[name="del-rocket-call"]').attr('data-config_id',data.config_id);
+                        $clone.find('[name="global-config-input"]').attr('value', config_value);
+                        $clone.find('[name="global-config-textarea"]').val(config_extra);
+                        $clone.find('[name="global-config-textarea"]').attr('data-config_id',data.config_id);
+                    $("#new-config-rocket").modal('hide');
+                } else {
+                    $("#message").html('<div class="alert alert-info">' + data.message + '</div>');
+                }
+            },
+            error: function(){
+                $("#message").html('<div class="alert alert-info">Error creating config item</div>');
+            }
+        });
+    });// End Add Slack config
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     // Add Hipchat config
     hipchatIndex = 0;
     $("button#submit-hipchat").click(function(){
@@ -1258,6 +1657,45 @@ echo '
         });
     });// End Add Boxcar config
 
+<<<<<<< HEAD
+=======
+
+    // Add Telegram config
+    itemIndex = 0;
+    $("button#submit-telegram").click(function(){
+        var config_value = $('#telegram_value').val();
+        var config_extra = $('#telegram_token').val();
+        $.ajax({
+            type: "POST",
+            url: "ajax_form.php",
+            data: {type: "config-item", action: 'add-telegram', config_group: "alerting", config_sub_group: "transports", config_extra: config_extra, config_value: config_value},
+            dataType: "json",
+            success: function(data){
+                if (data.status == 'ok') {
+                    itemIndex++;
+                    var $template = $('#telegram_chat_id_template'),
+                        $clone    = $template
+                            .clone()
+                            .removeClass('hide')
+                            .attr('id',data.config_id)
+                            .attr('telegram-appkey-index', itemIndex)
+                            .insertBefore($template);
+                    $clone.find('[id="telegram_chat_id"]').attr('data-config_id',data.config_id);
+                    $clone.find('[id="del-telegram-call"]').attr('data-config_id',data.config_id);
+                    $clone.find('[name="global-config-input"]').attr('value', config_value);
+                    $clone.find('[name="telegram_token"]').attr('value', config_extra);
+                    $("#new-config-telegram").modal('hide');
+                } else {
+                    $("#message").html('<div class="alert alert-info">' + data.message + '</div>');
+                }
+            },
+            error: function(){
+                $("#message").html('<div class="alert alert-info">Error creating config item</div>');
+            }
+        });
+    });// End Add Telegram config
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     // Delete api config
     $(document).on('click', 'button[name="del-api-call"]', function(event) {
         var config_id = $(this).data('config_id');
@@ -1300,6 +1738,30 @@ echo '
         });
     });// End delete slack config
 
+<<<<<<< HEAD
+=======
+    // Delete Rocket.Chat config
+    $(document).on('click', 'button[name="del-rocket-call"]', function(event) {
+        var config_id = $(this).data('config_id');
+        $.ajax({
+            type: 'POST',
+            url: 'ajax_form.php',
+            data: {type: "config-item", action: 'remove-rocket', config_id: config_id},
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 'ok') {
+                    $("#"+config_id).remove();
+                } else {
+                    $("#message").html('<div class="alert alert-info">' + data.message + '</div>');
+                }
+            },
+            error: function () {
+                $("#message").html('<div class="alert alert-info">An error occurred.</div>');
+            }
+        });
+    });// End delete rocket config
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     // Delete hipchat config
     $(document).on('click', 'button[name="del-hipchat-call"]', function(event) {
         var config_id = $(this).data('config_id');
@@ -1363,6 +1825,31 @@ echo '
         });
     });// End delete Boxcar config
 
+<<<<<<< HEAD
+=======
+
+    // Delete Telegram config
+    $(document).on('click', 'button[name="del-telegram-call"]', function(event) {
+        var config_id = $(this).data('config_id');
+        $.ajax({
+            type: 'POST',
+            url: 'ajax_form.php',
+            data: {type: "config-item", action: 'remove-telegram', config_id: config_id},
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 'ok') {
+                    $("#"+config_id).remove();
+                } else {
+                    $("#message").html('<div class="alert alert-info">' + data.message + '</div>');
+                }
+            },
+            error: function () {
+                $("#message").html('<div class="alert alert-info">An error occurred.</div>');
+            }
+        });
+    });// End delete Telegram config
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $( 'select[name="global-config-select"]').change(function(event) {
         event.preventDefault();
         var $this = $(this);

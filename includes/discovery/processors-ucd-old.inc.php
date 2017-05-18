@@ -2,7 +2,11 @@
 
 $count = dbFetchCell("SELECT COUNT(*) FROM `processors` WHERE `device_id` = ? AND `processor_type` != 'ucd-old'", array($device['device_id']));
 
+<<<<<<< HEAD
 if ($device['os_group'] == 'unix' && $count == '0') {
+=======
+if (($device['os_group'] == 'unix' && $count == '0') || $device['os'] === 'kemp') {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     echo 'UCD Old: ';
 
     $system = snmp_get($device, 'ssCpuSystem.0', '-OvQ', 'UCD-SNMP-MIB');

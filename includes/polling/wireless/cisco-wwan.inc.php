@@ -9,9 +9,17 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 $rssi = snmp_get($device, "CISCO-WAN-3G-MIB::c3gCurrentGsmRssi.13", "-Ovqn", "CISCO-WAN-3G-MIB");
 if (is_numeric($rssi)) {
     $rrd_def = 'DS:rssi:GAUGE:600:-150:5000';
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+$rssi = snmp_get($device, "CISCO-WAN-3G-MIB::c3gCurrentGsmRssi.13", "-Ovqn", "CISCO-WAN-3G-MIB");
+if (is_numeric($rssi)) {
+    $rrd_def = RrdDefinition::make()->addDataset('rssi', 'GAUGE', -150, 5000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $fields = array(
         'rssi' => $rssi,
     );
@@ -22,7 +30,11 @@ if (is_numeric($rssi)) {
 
 $mnc = snmp_get($device, "CISCO-WAN-3G-MIB::c3gGsmMnc.13", "-Ovqn", "CISCO-WAN-3G-MIB");
 if (is_numeric($mnc)) {
+<<<<<<< HEAD
     $rrd_def = 'DS:mnc:GAUGE:600:0:U';
+=======
+    $rrd_def = RrdDefinition::make()->addDataset('mnc', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $fields = array(
         'mnc' => $mnc,
     );

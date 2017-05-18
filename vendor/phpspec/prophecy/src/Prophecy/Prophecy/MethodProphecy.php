@@ -33,6 +33,10 @@ class MethodProphecy
     private $prediction;
     private $checkedPredictions = array();
     private $bound = false;
+<<<<<<< HEAD
+=======
+    private $voidReturnType = false;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     /**
      * Initializes method prophecy.
@@ -71,6 +75,15 @@ class MethodProphecy
 
         if (version_compare(PHP_VERSION, '7.0', '>=') && true === $reflectedMethod->hasReturnType()) {
             $type = (string) $reflectedMethod->getReturnType();
+<<<<<<< HEAD
+=======
+
+            if ('void' === $type) {
+                $this->voidReturnType = true;
+                return;
+            }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $this->will(function () use ($type) {
                 switch ($type) {
                     case 'string': return '';
@@ -163,6 +176,16 @@ class MethodProphecy
      */
     public function willReturn()
     {
+<<<<<<< HEAD
+=======
+        if ($this->voidReturnType) {
+            throw new MethodProphecyException(
+                "The method \"$this->methodName\" has a void return type, and so cannot return anything",
+                $this
+            );
+        }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         return $this->will(new Promise\ReturnPromise(func_get_args()));
     }
 
@@ -177,6 +200,13 @@ class MethodProphecy
      */
     public function willReturnArgument($index = 0)
     {
+<<<<<<< HEAD
+=======
+        if ($this->voidReturnType) {
+            throw new MethodProphecyException("The method \"$this->methodName\" has a void return type", $this);
+        }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         return $this->will(new Promise\ReturnArgumentPromise($index));
     }
 
@@ -282,7 +312,11 @@ class MethodProphecy
             ));
         }
 
+<<<<<<< HEAD
         if (null === $this->promise) {
+=======
+        if (null === $this->promise && !$this->voidReturnType) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $this->willReturn();
         }
 
@@ -426,6 +460,17 @@ class MethodProphecy
         return $this->argumentsWildcard;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @return bool
+     */
+    public function hasReturnVoid()
+    {
+        return $this->voidReturnType;
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     private function bindToObjectProphecy()
     {
         if ($this->bound) {

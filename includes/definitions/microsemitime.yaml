@@ -2,3 +2,9 @@ os: microsemitime
 text: 'Microsemi Timing'
 type: timing
 icon: microsemi
+<<<<<<< HEAD
+=======
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.39165.1.6
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

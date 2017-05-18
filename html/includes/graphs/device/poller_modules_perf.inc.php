@@ -21,7 +21,13 @@ require 'includes/graphs/common.inc.php';
 $count = 0;
 foreach ($config['poller_modules'] as $module => $module_status) {
     $rrd_filename = rrd_name($device['hostname'], array('poller-perf', $module));
+<<<<<<< HEAD
     if ($attribs['poll_'.$module] || ( $module_status && !isset($attribs['poll_'.$module]))) {
+=======
+    if ($attribs['poll_'.$module] || ($module_status && !isset($attribs['poll_'.$module])) ||
+      (isset($config['os'][$device['os']]['poller_modules'][$module]) &&
+      $config['os'][$device['os']]['poller_modules'][$module] && !isset($attribs['poll_'.$module]))) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if (rrdtool_check_rrd_exists($rrd_filename)) {
             $ds['ds']       = 'poller';
             $ds['descr']    = $module;

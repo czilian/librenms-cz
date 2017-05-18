@@ -14,6 +14,7 @@
 
 echo 'Pulse Secure MemPool'.'\n';
 
+<<<<<<< HEAD
 if ($device['os'] == 'pulse') {
     $perc     = str_replace('"', "", snmp_get($device, "PULSESECURE-PSG-MIB::iveMemoryUtil.0", '-OvQ'));
     $memory_available = str_replace('"', "", snmp_get($device, "UCD-SNMP-MIB::memTotalReal.0", '-OvQ'));
@@ -27,3 +28,16 @@ if ($device['os'] == 'pulse') {
     echo "PERC " .$perc."%\n";
     echo "Avail " .$mempool['total']."\n";
 }
+=======
+$perc     = str_replace('"', "", snmp_get($device, "PULSESECURE-PSG-MIB::iveMemoryUtil.0", '-OvQ'));
+$memory_available = str_replace('"', "", snmp_get($device, "UCD-SNMP-MIB::memTotalReal.0", '-OvQ'));
+$mempool['total'] = $memory_available;
+
+if (is_numeric($perc)) {
+    $mempool['used'] = ($memory_available / 100 * $perc);
+    $mempool['free'] = ($memory_available - $mempool['used']);
+}
+
+echo "PERC " .$perc."%\n";
+echo "Avail " .$mempool['total']."\n";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

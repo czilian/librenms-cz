@@ -1,9 +1,18 @@
 <?php
 
+<<<<<<< HEAD
 if ($device['os_group'] == 'cisco') {
     $rserver_array = snmpwalk_cache_oid($device, 'cesServerFarmRserverTable', array(), 'CISCO-ENHANCED-SLB-MIB');
     $rserver_db = dbFetchRows('SELECT * FROM `loadbalancer_rservers` WHERE `device_id` = ?', array($device['device_id']));
 
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+if ($device['os_group'] == 'cisco') {
+    $rserver_array = snmpwalk_cache_oid($device, 'cesServerFarmRserverTable', array(), 'CISCO-ENHANCED-SLB-MIB');
+    $rserver_db = dbFetchRows('SELECT * FROM `loadbalancer_rservers` WHERE `device_id` = ?', array($device['device_id']));
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     foreach ($rserver_db as $serverfarm) {
         $serverfarms[$serverfarm['farm_id']] = $serverfarm;
     }
@@ -38,10 +47,17 @@ if ($device['os_group'] == 'cisco') {
 
         $rrd_name = array('rserver', $serverfarms[$farm_id]['rserver_id']);
 
+<<<<<<< HEAD
         $rrd_def = array();
         foreach ($oids as $oid) {
             $oid_ds = substr(str_replace('cesServerFarm', '', $oid), 0, 19);
             $rrd_def[] = "DS:$oid_ds:GAUGE:600:-1:100000000";
+=======
+        $rrd_def = new RrdDefinition();
+        foreach ($oids as $oid) {
+            $oid_ds = str_replace('cesServerFarm', '', $oid);
+            $rrd_def->addDataset($oid_ds, 'GAUGE', -1, 100000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
 
         $fields = array();
@@ -63,3 +79,11 @@ if ($device['os_group'] == 'cisco') {
 
     unset($rrd_name, $rrd_def, $oids, $oid, $serverfarm);
 }
+<<<<<<< HEAD
+=======
+
+unset(
+    $rserver_array,
+    $rserver_db
+);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

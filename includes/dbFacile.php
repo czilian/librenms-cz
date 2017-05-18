@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 /*
  * dbFacile - A Database API that should have existed from the start
  * Version 0.4.3
@@ -58,6 +59,109 @@ function dbQuery($sql, $parameters = array())
         // trigger_error('QDB - Error in query: ' . $fullSql . ' : ' . mysql_error(), E_USER_WARNING);
     }
 
+=======
+/*
+ * dbFacile - A Database API that should have existed from the start
+ * Version 0.4.3
+ *
+ * This code is covered by the MIT license http://en.wikipedia.org/wiki/MIT_License
+ *
+ * By Alan Szlosek from http://www.greaterscope.net/projects/dbFacile
+ *
+ * The non-OO version of dbFacile. It's a bit simplistic, but gives you the
+ * really useful bits in non-class form.
+ *
+ * Usage
+ * 1. Connect to MySQL as you normally would ... this code uses an existing connection
+ * 2. Use dbFacile as you normally would, without the object context
+ * 3. Oh, and dbFetchAll() is now dbFetchRows()
+ */
+
+use LibreNMS\Exceptions\DatabaseConnectException;
+
+/**
+ * Connect to the database.
+ * Will use global $config variables if they are not sent: db_host, db_user, db_pass, db_name, db_port, db_socket
+ *
+ * @param string $host
+ * @param string $user
+ * @param string $password
+ * @param string $database
+ * @param string $port
+ * @param string $socket
+ * @return mysqli
+ * @throws DatabaseConnectException
+ */
+function dbConnect($host = null, $user = '', $password = '', $database = '', $port = null, $socket = null)
+{
+    global $config, $database_link;
+    $host = empty($host) ? $config['db_host'] : $host;
+    $user = empty($user) ? $config['db_user'] : $user;
+    $password = empty($password) ? $config['db_pass'] : $password;
+    $database = empty($database) ? $config['db_name'] : $database;
+    $port = empty($port) ? $config['db_port'] : $port;
+    $socket = empty($socket) ? $config['db_socket'] : $socket;
+
+    $database_link = mysqli_connect('p:' . $host, $user, $password, null, $port, $socket);
+    if ($database_link === false) {
+        $error = mysqli_connect_error();
+        if ($error == 'No such file or directory') {
+            $error = 'Could not connect to ' . $host;
+        }
+        throw new DatabaseConnectException($error);
+    }
+
+    $database_db = mysqli_select_db($database_link, $config['db_name']);
+    if (!$database_db) {
+        $db_create_sql = "CREATE DATABASE " . $config['db_name'] . " CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+        mysqli_query($database_link, $db_create_sql);
+        $database_db = mysqli_select_db($database_link, $config['db_name']);
+    }
+
+    if (!$database_db) {
+        throw new DatabaseConnectException("Could not select database: $database. " . mysqli_error($database_link));
+    }
+
+    dbQuery("SET NAMES 'utf8'");
+    dbQuery("SET CHARACTER SET 'utf8'");
+    dbQuery("SET COLLATION_CONNECTION = 'utf8_unicode_ci'");
+
+    return $database_link;
+}
+
+/*
+ * Performs a query using the given string.
+ * Used by the other _query functions.
+ * */
+
+
+function dbQuery($sql, $parameters = array())
+{
+    global $fullSql, $debug, $sql_debug, $database_link, $config;
+    $fullSql = dbMakeQuery($sql, $parameters);
+    if ($debug) {
+        if (php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
+            if (preg_match('/(INSERT INTO `alert_log`).*(details)/i', $fullSql)) {
+                echo "\nINSERT INTO `alert_log` entry masked due to binary data\n";
+            } else {
+                c_echo('SQL[%y'.$fullSql."%n] \n");
+            }
+        } else {
+            $sql_debug[] = $fullSql;
+        }
+    }
+
+    $result = mysqli_query($database_link, $fullSql);
+    if (!$result) {
+        $mysql_error = mysqli_error($database_link);
+        if ((in_array($config['mysql_log_level'], array('INFO', 'ERROR')) && !preg_match('/Duplicate entry/', $mysql_error)) || (in_array($config['mysql_log_level'], array('DEBUG')))) {
+            if (!empty($mysql_error)) {
+                logfile(date($config['dateformat']['compact']) . " MySQL Error: $mysql_error ($fullSql)");
+            }
+        }
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     return $result;
 }//end dbQuery()
 
@@ -111,6 +215,7 @@ function dbInsert($data, $table)
  * $data is an array (rows) of key value pairs.  keys are fields.  Rows need to have same fields.
  * Check for boolean false to determine whether insert failed
  * */
+<<<<<<< HEAD
 
 
 function dbBulkInsert($data, $table)
@@ -155,11 +260,58 @@ function dbBulkInsert($data, $table)
     return $result;
 }//end dbBulkInsert()
 
+=======
+
+
+function dbBulkInsert($data, $table)
+{
+    $time_start = microtime(true);
+    // the following block swaps the parameters if they were given in the wrong order.
+    // it allows the method to work for those that would rather it (or expect it to)
+    // follow closer with SQL convention:
+    // insert into the TABLE this DATA
+    if (is_string($data) && is_array($table)) {
+        $tmp   = $data;
+        $data  = $table;
+        $table = $tmp;
+    }
+    if (count($data) === 0) {
+        return false;
+    }
+    if (count($data[0]) === 0) {
+        return false;
+    }
+
+    $sql = 'INSERT INTO `'.$table.'` (`'.implode('`,`', array_keys($data[0])).'`)  VALUES ';
+    $values ='';
+
+    foreach ($data as $row) {
+        if ($values != '') {
+            $values .= ',';
+        }
+        $rowvalues='';
+        foreach ($row as $key => $value) {
+            if ($rowvalues != '') {
+                $rowvalues .= ',';
+            }
+            $rowvalues .= "'".mres($value)."'";
+        }
+        $values .= "(".$rowvalues.")";
+    }
+
+    $result = dbQuery($sql.$values);
+
+    recordDbStatistic('insert', $time_start);
+    return $result;
+}//end dbBulkInsert()
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 /*
  * Passed an array, table name, WHERE clause, and placeholder parameters, it attempts to update a record.
  * Returns the number of affected rows
  * */
+<<<<<<< HEAD
 
 
 function dbUpdate($data, $table, $where = null, $parameters = array())
@@ -225,6 +377,73 @@ function dbDelete($table, $where = null, $parameters = array())
     }
 }//end dbDelete()
 
+=======
+
+
+function dbUpdate($data, $table, $where = null, $parameters = array())
+{
+    global $fullSql, $database_link;
+    $time_start = microtime(true);
+
+    // the following block swaps the parameters if they were given in the wrong order.
+    // it allows the method to work for those that would rather it (or expect it to)
+    // follow closer with SQL convention:
+    // update the TABLE with this DATA
+    if (is_string($data) && is_array($table)) {
+        $tmp   = $data;
+        $data  = $table;
+        $table = $tmp;
+        // trigger_error('QDB - The first two parameters passed to update() were in reverse order, but it has been allowed', E_USER_NOTICE);
+    }
+
+    // need field name and placeholder value
+    // but how merge these field placeholders with actual $parameters array for the WHERE clause
+    $sql = 'UPDATE `'.$table.'` set ';
+    foreach ($data as $key => $value) {
+        $sql .= '`'.$key.'` '.'=:'.$key.',';
+    }
+
+    $sql = substr($sql, 0, -1);
+    // strip off last comma
+    if ($where) {
+        $sql .= ' WHERE '.$where;
+        $data = array_merge($data, $parameters);
+    }
+
+    if (dbQuery($sql, $data)) {
+        $return = mysqli_affected_rows($database_link);
+    } else {
+        // echo("$fullSql");
+        trigger_error('QDB - Update failed.', E_USER_WARNING);
+        $return = false;
+    }
+
+    recordDbStatistic('update', $time_start);
+    return $return;
+}//end dbUpdate()
+
+
+function dbDelete($table, $where = null, $parameters = array())
+{
+    global $database_link;
+    $time_start = microtime(true);
+
+    $sql = 'DELETE FROM `'.$table.'`';
+    if ($where) {
+        $sql .= ' WHERE '.$where;
+    }
+
+    $result = dbQuery($sql, $parameters);
+
+    recordDbStatistic('delete', $time_start);
+    if ($result) {
+        return mysqli_affected_rows($database_link);
+    } else {
+        return false;
+    }
+}//end dbDelete()
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 /*
  * Fetches all of the rows (associatively) from the last performed query.
@@ -296,6 +515,7 @@ function dbFetch($sql, $parameters = array(), $nocache = false)
  * The first argument is an sprintf-ready query stringTypes
  * */
 
+<<<<<<< HEAD
 
 function dbFetchRow($sql = null, $parameters = array(), $nocache = false)
 {
@@ -325,6 +545,37 @@ function dbFetchRow($sql = null, $parameters = array(), $nocache = false)
     }
 }//end dbFetchRow()
 
+=======
+
+function dbFetchRow($sql = null, $parameters = array(), $nocache = false)
+{
+    global $config;
+
+    if ($config['memcached']['enable'] && $nocache === false) {
+        $result = $config['memcached']['resource']->get(hash('sha512', $sql.'|'.serialize($parameters)));
+        if (!empty($result)) {
+            return $result;
+        }
+    }
+
+    $time_start = microtime(true);
+    $result         = dbQuery($sql, $parameters);
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        mysqli_free_result($result);
+
+        recordDbStatistic('fetchrow', $time_start);
+
+        if ($config['memcached']['enable'] && $nocache === false) {
+            $config['memcached']['resource']->set(hash('sha512', $sql.'|'.serialize($parameters)), $row, $config['memcached']['ttl']);
+        }
+        return $row;
+    } else {
+        return null;
+    }
+}//end dbFetchRow()
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 /*
  * Fetches the first call from the first row returned by the query
@@ -395,8 +646,13 @@ function dbFetchKeyValue($sql, $parameters = array(), $nocache = false)
  * This combines a query and parameter array into a final query string for execution
  * PDO drivers don't need to use this
  */
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 function dbMakeQuery($sql, $parameters)
 {
     // bypass extra logic if we have no parameters
@@ -420,7 +676,15 @@ function dbMakeQuery($sql, $parameters)
     krsort($namedParams);
 
     // split on question-mark and named placeholders
+<<<<<<< HEAD
     $result = preg_split('/(\?|:[a-zA-Z0-9_-]+)/', $sql, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+=======
+    if (preg_match('/(\[\[:[\w]+:\]\])/', $sql)) {
+        $result = preg_split('/(\?[a-zA-Z0-9_-]*)/', $sql, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+    } else {
+        $result = preg_split('/(\?|:[a-zA-Z0-9_-]+)/', $sql, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+    }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     // every-other item in $result will be the placeholder that was found
     $query            = '';
@@ -513,3 +777,18 @@ function dbRollbackTransaction()
     global $database_link;
     mysqli_query($database_link, 'rollback');
 }//end dbRollbackTransaction()
+<<<<<<< HEAD
+=======
+
+/**
+ * Generate a string of placeholders to pass to fill in a list
+ * result will look like this: (?, ?, ?, ?)
+ *
+ * @param $count
+ * @return string placholder list
+ */
+function dbGenPlaceholders($count)
+{
+    return '(' . implode(',', array_fill(0, $count, '?')) . ')';
+}
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -8,16 +8,26 @@ source: Installation/Installation-Ubuntu-1604-Apache.md
 #### Install / Configure MySQL
 ```bash
 apt-get install mariadb-server mariadb-client
+<<<<<<< HEAD
 service mysql restart
+=======
+systemctl restart mysql
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 mysql -uroot -p
 ```
 
 ```sql
+<<<<<<< HEAD
 CREATE DATABASE librenms;
 GRANT ALL PRIVILEGES ON librenms.*
   TO 'librenms'@'localhost'
   IDENTIFIED BY '<password>'
 ;
+=======
+CREATE DATABASE librenms CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER 'librenms'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON librenms.* TO 'librenms'@'localhost';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 FLUSH PRIVILEGES;
 exit
 ```
@@ -31,7 +41,11 @@ innodb_file_per_table=1
 sql-mode=""
 ```
 
+<<<<<<< HEAD
 ```service mysql restart```
+=======
+```systemctl restart mysql```
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 ### Web Server ###
 
@@ -91,7 +105,11 @@ Add the following config:
 ```bash
 a2ensite librenms.conf
 a2enmod rewrite
+<<<<<<< HEAD
 service apache2 restart
+=======
+systemctl restart apache2
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 > NOTE: If this is the only site you are hosting on this server (it should be :)) then you will need to disable the default site.
@@ -114,13 +132,26 @@ Edit the text which says `RANDOMSTRINGGOESHERE` and set your own community strin
 ```bash
 curl -o /usr/bin/distro https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro
 chmod +x /usr/bin/distro
+<<<<<<< HEAD
 service snmpd restart
+=======
+systemctl restart snmpd
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Cron job
 
 `cp librenms.nonroot.cron /etc/cron.d/librenms`
 
+<<<<<<< HEAD
+=======
+#### Copy logrotate config
+
+LibreNMS keeps logs in `/opt/librenms/logs`. Over time these can become large and be rotated out.  To rotate out the old logs you can use the provided logrotate config file:
+
+    cp misc/librenms.logrotate /etc/logrotate.d/librenms
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 #### Final steps
 
 ```bash

@@ -19,6 +19,7 @@ if ($device['type'] == 'network' || $device['type'] == 'firewall' || $device['ty
     } elseif ($device['os'] == 'sub10') {
         echo 'It is Sub10' . PHP_EOL;
         include 'includes/polling/mib/sub10-mib.inc.php';
+<<<<<<< HEAD
     } elseif ($device['os'] == 'airport') {
         // # GENERIC FRAMEWORK, FILLING VARIABLES
         echo 'Checking Airport Wireless clients... ';
@@ -99,3 +100,11 @@ if ($device['type'] == 'network' || $device['type'] == 'firewall' || $device['ty
 }//end if
 
 echo "\n";
+=======
+    } elseif ($device['os'] == 'unifi') {
+        include 'includes/polling/mib/ubnt-unifi-mib.inc.php';
+    }
+} else {
+    echo 'Unsupported type: ' . $device['type'] . PHP_EOL;
+}
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

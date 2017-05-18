@@ -10,6 +10,7 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 if ($device['os'] == 'edgeswitch') {
     $total = snmp_get($device, '.1.3.6.1.4.1.4413.1.1.1.1.4.2.0', '-Oqv');
     $free = snmp_get($device, '.1.3.6.1.4.1.4413.1.1.1.1.4.1.0', '-Oqv');
@@ -17,3 +18,10 @@ if ($device['os'] == 'edgeswitch') {
     $mempool['free'] = $free;
     $mempool['used'] = $total - $free;
 }
+=======
+$total = snmp_get($device, '.1.3.6.1.4.1.4413.1.1.1.1.4.2.0', '-Oqv');
+$free = snmp_get($device, '.1.3.6.1.4.1.4413.1.1.1.1.4.1.0', '-Oqv');
+$mempool['total'] = $total;
+$mempool['free'] = $free;
+$mempool['used'] = $total - $free;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -6,7 +6,11 @@ echo '<div class="container-fluid">
         <div class="panel panel-default panel-condensed">
           <div class="panel-heading">';
 echo '<a href="device/device='.$device['device_id'].'/tab=health/metric=mempool/">';
+<<<<<<< HEAD
 echo "<img src='images/16/arrow_switch.png'> <strong>Catalyst 6k Crossbar</strong></a>";
+=======
+echo '<i class="fa fa-arrows fa-lg icon-theme" aria-hidden="true"></i> <strong>Catalyst 6k Crossbar</strong></a>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 echo '          </div>
     <table class="table table-hover table-condensed table-striped">';
 

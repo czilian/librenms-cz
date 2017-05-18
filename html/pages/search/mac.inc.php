@@ -26,7 +26,11 @@ var grid = $("#mac-search").bootgrid({
                 "<select name=\"device_id\" id=\"device_id\" class=\"form-control input-sm\">"+
                 "<option value=\"\">All Devices</option>"+
 <?php
+<<<<<<< HEAD
 $sql = 'SELECT `devices`.`device_id`,`hostname` FROM `devices`';
+=======
+$sql = 'SELECT `devices`.`device_id`,`hostname`, `sysName` FROM `devices`';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 if (is_admin() === false && is_read() === false) {
     $sql    .= ' LEFT JOIN `devices_perms` AS `DP` ON `devices`.`device_id` = `DP`.`device_id`';
@@ -34,14 +38,22 @@ if (is_admin() === false && is_read() === false) {
     $param[] = $_SESSION['user_id'];
 }
 
+<<<<<<< HEAD
 $sql .= " $where GROUP BY `hostname` ORDER BY `hostname`";
+=======
+$sql .= " $where ORDER BY `hostname`";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 foreach (dbFetchRows($sql, $param) as $data) {
     echo '"<option value=\"'.$data['device_id'].'\""+';
     if ($data['device_id'] == $_POST['device_id']) {
         echo '" selected "+';
     }
 
+<<<<<<< HEAD
     echo '">'.$data['hostname'].'</option>"+';
+=======
+    echo '">'.format_hostname($data).'</option>"+';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 ?>
                "</select>"+

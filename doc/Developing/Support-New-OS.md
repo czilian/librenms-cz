@@ -1,4 +1,5 @@
 source: Developing/Support-New-OS.md
+<<<<<<< HEAD
 This document will explain how to add basic and full support for a new OS. **Some knowledge in PHP is needed for the full support.**
 
 
@@ -476,3 +477,15 @@ List of SNMP data types:
 
 You can run `./scripts/pre-commit.php -u` to run the unit tests to check your code.
 If you would like to run tests locally against a full snmpsim instance, run `./scripts/pre-commit.php -u --snmpsim`.
+=======
+
+This document is broken down into the relevant sections depending on what support you are adding.
+During all of these examples we will be using the OS of `pulse` as the example OS we will add. 
+
+>  - [Adding the initial detection.](os/Initial-Detection.md)
+>  - [Adding Memory and CPU information.](os/Mem-CPU-Information.md)
+>  - [Adding Health / Sensor information.](os/Health-Information.md)
+>  - [Adding Wireless Sensor information.](os/Wireless-Sensors.md)
+>  - [Adding custom graphs.](os/Custom-Graphs.md)
+>  - [Adding Unit tests (required).](os/Test-Units.md)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

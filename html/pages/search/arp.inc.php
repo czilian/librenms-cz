@@ -30,7 +30,11 @@ var grid = $("#arp-search").bootgrid({
 <?php
 
 // Select the devices only with ARP tables
+<<<<<<< HEAD
 $sql = 'SELECT D.device_id AS device_id, `hostname` FROM `ipv4_mac` AS M, `ports` AS P, `devices` AS D';
+=======
+$sql = 'SELECT D.device_id AS device_id, `hostname`, `D`.`sysName` AS `sysName` FROM `ipv4_mac` AS M, `ports` AS P, `devices` AS D';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 if (is_admin() === false && is_read() === false) {
     $sql    .= ' LEFT JOIN `devices_perms` AS `DP` ON `D`.`device_id` = `DP`.`device_id`';
@@ -38,14 +42,22 @@ if (is_admin() === false && is_read() === false) {
     $param[] = $_SESSION['user_id'];
 }
 
+<<<<<<< HEAD
 $sql .= " WHERE M.port_id = P.port_id AND P.device_id = D.device_id $where GROUP BY `device_id` ORDER BY `hostname`";
+=======
+$sql .= " WHERE M.port_id = P.port_id AND P.device_id = D.device_id $where GROUP BY `D`.`device_id`, `D`.`hostname`, `D`.`sysName` ORDER BY `hostname`";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 foreach (dbFetchRows($sql, $param) as $data) {
     echo '"<option value=\"'.$data['device_id'].'\""+';
     if ($data['device_id'] == $_POST['device_id']) {
         echo '" selected "+';
     }
 
+<<<<<<< HEAD
     echo '">'.$data['hostname'].'</option>"+';
+=======
+    echo '">'.format_hostname($data).'</option>"+';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 ?>
                 "</select>"+

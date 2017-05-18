@@ -2,7 +2,17 @@ os: arista_eos
 text: 'Arista EOS'
 type: network
 icon: arista
+<<<<<<< HEAD
+=======
+group: arista
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 over:
     - { graph: device_bits, text: 'Device Traffic' }
     - { graph: device_processor, text: 'CPU Usage' }
     - { graph: device_mempool, text: 'Memory Usage' }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - Arista Networks EOS
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

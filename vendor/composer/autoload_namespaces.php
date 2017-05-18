@@ -6,9 +6,21 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+<<<<<<< HEAD
     'Slim' => array($vendorDir . '/slim/slim'),
     'Phpass' => array($vendorDir . '/xjtuwangke/passwordhash/src'),
     'PhpAmqpLib' => array($vendorDir . '/php-amqplib/php-amqplib'),
+=======
+    'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
+    'Ulrichsg\\' => array($vendorDir . '/ulrichsg/getopt-php/src'),
+    'Slim' => array($vendorDir . '/slim/slim'),
+    'Requests' => array($vendorDir . '/rmccue/requests/library'),
+    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
+    'Phpass' => array($vendorDir . '/xjtuwangke/passwordhash/src'),
+    'PhpAmqpLib' => array($vendorDir . '/php-amqplib/php-amqplib'),
+    'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
+    'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Console_Color2' => array($vendorDir . '/pear/console_color2'),
 );

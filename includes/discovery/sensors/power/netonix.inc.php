@@ -23,6 +23,7 @@
  * @author     Tony Murray <murraytony@gmail.com>
  */
 
+<<<<<<< HEAD
 
 if ($device['os'] == 'netonix') {
     echo 'Netonix: ';
@@ -35,4 +36,15 @@ if ($device['os'] == 'netonix') {
     if (is_numeric($power_value) && $power_value > 0) {
         discover_sensor($valid['sensor'], 'power', $device, $power_oid, 0, $device['os'], $descr, $divisor, 1, null, null, null, null, $power_value / $divisor);
     }
+=======
+echo 'Netonix: ';
+
+$power_oid = '.1.3.6.1.4.1.46242.6.0'; // NETONIX-SWITCH-MIB::totalPowerConsumption
+$power_value = snmp_get($device, $power_oid, '-Oqv');
+$descr = 'Total Consumption';
+$divisor = 10;
+
+if (is_numeric($power_value) && $power_value > 0) {
+    discover_sensor($valid['sensor'], 'power', $device, $power_oid, 0, $device['os'], $descr, $divisor, 1, null, null, null, null, $power_value / $divisor);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

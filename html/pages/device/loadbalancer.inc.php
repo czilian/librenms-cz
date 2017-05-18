@@ -6,12 +6,20 @@ $link_array = array(
     'tab'    => 'loadbalancer',
 );
 
+<<<<<<< HEAD
 // Cisco ACE
 $type_text['loadbalancer_rservers'] = 'Rservers';
 $type_text['loadbalancer_vservers'] = 'Serverfarms';
 
 // Citrix Netscaler
 $type_text['netscaler_vsvr'] = 'VServers';
+=======
+$type_text['loadbalancer_rservers'] = 'Rservers';       // Cisco ACE
+$type_text['loadbalancer_vservers'] = 'Serverfarms';    // Cisco ACE
+$type_text['netscaler_vsvr'] = 'VServers';              // Citrix Netscaler
+$type_text['ltm_vs'] = 'LTM Virtual Servers';           // F5 BigIP
+$type_text['ltm_pool'] = 'LTM Pools';                   // F5 BigIP
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 print_optionbar_start();
 

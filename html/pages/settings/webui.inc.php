@@ -12,9 +12,23 @@ $search_conf = array(
 );
 
 $graph_conf = array(
+<<<<<<< HEAD
     array('name'               => 'webui.min_graph_height',
           'descr'              => 'Set the minimum graph height',
           'type'               => 'text',
+=======
+    array('name'             => 'webui.min_graph_height',
+        'descr'              => 'Set the minimum graph height',
+        'type'               => 'text',
+    ),
+    array('name'             => 'webui.graph_type',
+        'descr'              => 'Set the graph type',
+        'type'               => 'select',
+        'options'            => array(
+            'png' => 'png',
+            'svg' => 'svg',
+        ),
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     ),
 );
 

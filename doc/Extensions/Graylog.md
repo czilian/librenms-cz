@@ -34,4 +34,9 @@ If you have altered the default uri for your Graylog setup then you can override
 
 If you choose to use another user besides the admin user, please note that currently you must give the user "admin" permissions from within Graylog, "read" permissions alone are not sufficient.
 
+<<<<<<< HEAD
 
+=======
+If you have enabled TLS for the Graylog API and you are using a self-signed certificate, please make sure that the certificate is trusted by your LibreNMS host, otherwise the connection will fail.
+Additionally, the certificate's Common Name (CN) has to match the FQDN or IP address specified in `$config['graylog']['server']`.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

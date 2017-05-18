@@ -6,8 +6,13 @@ over:
     - { graph: device_bits, text: 'Device Traffic' }
     - { graph: device_processor, text: 'CPU Usage' }
     - { graph: device_mempool, text: 'Memory Usage' }
+<<<<<<< HEAD
     - { graph: device_ciscowlc_numaps, text: 'Number of APs' }
     - { graph: device_ciscowlc_numclients, text: 'Number of Clients' }
+=======
+    - { graph: device_wireless_ap-count, text: 'Connected APs' }
+    - { graph: device_wireless_clients, text: 'Number of Clients' }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 icon: cisco
 poller_modules:
     cisco-cbqos: 1
@@ -29,3 +34,9 @@ discovery_modules:
     cisco-vrf-lite: 1
 mib_dir:
     - cisco
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - Cisco Controller
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

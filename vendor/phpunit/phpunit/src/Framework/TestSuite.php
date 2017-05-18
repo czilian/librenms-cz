@@ -11,6 +11,7 @@
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
  *
+<<<<<<< HEAD
  * Here is an example using the dynamic test definition.
  *
  * <code>
@@ -36,6 +37,8 @@
  * This constructor creates a suite with all the methods starting with
  * "test" that take no arguments.
  *
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  * @since Class available since Release 2.0.0
  */
 class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate

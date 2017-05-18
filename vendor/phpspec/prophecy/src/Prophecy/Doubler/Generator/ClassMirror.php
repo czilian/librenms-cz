@@ -143,7 +143,11 @@ class ClassMirror
             $node->setReturnsReference();
         }
 
+<<<<<<< HEAD
         if (version_compare(PHP_VERSION, '7.0', '>=') && true === $method->hasReturnType()) {
+=======
+        if (version_compare(PHP_VERSION, '7.0', '>=') && $method->hasReturnType()) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $returnType = (string) $method->getReturnType();
             $returnTypeLower = strtolower($returnType);
 
@@ -155,6 +159,13 @@ class ClassMirror
             }
 
             $node->setReturnType($returnType);
+<<<<<<< HEAD
+=======
+
+            if (version_compare(PHP_VERSION, '7.1', '>=') && $method->getReturnType()->allowsNull()) {
+                $node->setNullableReturnType(true);
+            }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
 
         if (is_array($params = $method->getParameters()) && count($params)) {

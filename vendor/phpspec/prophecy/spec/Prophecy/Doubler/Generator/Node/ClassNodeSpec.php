@@ -3,6 +3,10 @@
 namespace spec\Prophecy\Doubler\Generator\Node;
 
 use PhpSpec\ObjectBehavior;
+<<<<<<< HEAD
+=======
+use Prophecy\Doubler\Generator\Node\MethodNode;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 use Prophecy\Exception\Doubler\MethodNotExtendableException;
 
 class ClassNodeSpec extends ObjectBehavior
@@ -67,11 +71,15 @@ class ClassNodeSpec extends ObjectBehavior
         $this->getMethods()->shouldHaveCount(0);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method1
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method2
      */
     function it_can_has_methods($method1, $method2)
+=======
+    function it_can_has_methods(MethodNode $method1, MethodNode $method2)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $method1->getName()->willReturn('__construct');
         $method2->getName()->willReturn('getName');
@@ -85,10 +93,14 @@ class ClassNodeSpec extends ObjectBehavior
         ));
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method
      */
     function its_hasMethod_returns_true_if_method_exists($method)
+=======
+    function its_hasMethod_returns_true_if_method_exists(MethodNode $method)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $method->getName()->willReturn('getName');
 
@@ -97,10 +109,14 @@ class ClassNodeSpec extends ObjectBehavior
         $this->hasMethod('getName')->shouldReturn(true);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method
      */
     function its_getMethod_returns_method_by_name($method)
+=======
+    function its_getMethod_returns_method_by_name(MethodNode $method)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $method->getName()->willReturn('getName');
 
@@ -114,10 +130,14 @@ class ClassNodeSpec extends ObjectBehavior
         $this->hasMethod('getName')->shouldReturn(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method
      */
     function its_hasMethod_returns_false_if_method_has_been_removed($method)
+=======
+    function its_hasMethod_returns_false_if_method_has_been_removed(MethodNode $method)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $method->getName()->willReturn('getName');
         $this->addMethod($method);
@@ -182,10 +202,14 @@ class ClassNodeSpec extends ObjectBehavior
         $this->getUnextendableMethods()->shouldHaveCount(1);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method
      */
     function it_throws_an_exception_when_adding_a_method_that_isnt_extendable($method)
+=======
+    function it_throws_an_exception_when_adding_a_method_that_isnt_extendable(MethodNode $method)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->addUnextendableMethod('testMethod');
         $method->getName()->willReturn('testMethod');

@@ -126,6 +126,7 @@ if ($device['os_group'] == 'cisco') {
 
                 // Check thresholds for this entry (bit dirty, but it works!)
                 if (is_array($t_oids[$index])) {
+<<<<<<< HEAD
                     foreach ($t_oids[$index] as $t_index => $entry) {
                         // Critical Limit
                         if ($entry['entSensorThresholdSeverity'] == 'major' && $entry['entSensorThresholdRelation'] == 'greaterOrEqual') {
@@ -143,6 +144,25 @@ if ($device['os_group'] == 'cisco') {
 
                         if ($entry['entSensorThresholdSeverity'] == 'minor' && $entry['entSensorThresholdRelation'] == 'lessOrEqual') {
                             $warn_limit_low = ($entry['entSensorThresholdValue'] * $multiplier / $divisor);
+=======
+                    foreach ($t_oids[$index] as $t_index => $key) {
+                        // Critical Limit
+                        if ($key['entSensorThresholdSeverity'] == 'major' && $key['entSensorThresholdRelation'] == 'greaterOrEqual') {
+                            $limit = ($key['entSensorThresholdValue'] * $multiplier / $divisor);
+                        }
+
+                        if ($key['entSensorThresholdSeverity'] == 'major' && $key['entSensorThresholdRelation'] == 'lessOrEqual') {
+                            $limit_low = ($key['entSensorThresholdValue'] * $multiplier / $divisor);
+                        }
+
+                        // Warning Limit
+                        if ($key['entSensorThresholdSeverity'] == 'minor' && $key['entSensorThresholdRelation'] == 'greaterOrEqual') {
+                            $warn_limit = ($key['entSensorThresholdValue'] * $multiplier / $divisor);
+                        }
+
+                        if ($key['entSensorThresholdSeverity'] == 'minor' && $key['entSensorThresholdRelation'] == 'lessOrEqual') {
+                            $warn_limit_low = ($key['entSensorThresholdValue'] * $multiplier / $divisor);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         }
                     }//end foreach
                 }//end if
@@ -181,4 +201,10 @@ if ($device['os_group'] == 'cisco') {
             }//end if
         }//end foreach
     }//end if
+<<<<<<< HEAD
+=======
+    unset(
+        $entity_array
+    );
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }//end if

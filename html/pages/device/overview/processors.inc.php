@@ -10,7 +10,11 @@ if (count($processors)) {
             <div class="panel-heading">
 ';
     echo '<a href="device/device='.$device['device_id'].'/tab=health/metric=processor/">';
+<<<<<<< HEAD
     echo "<img src='images/icons/processor.png'> <strong>Processors</strong></a>";
+=======
+    echo '<i class="fa fa-microchip fa-lg icon-theme" aria-hidden="true"></i> <strong>Processors</strong></a>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     echo '</div>
         <table class="table table-hover table-condensed table-striped">';
 
@@ -21,13 +25,21 @@ if (count($processors)) {
     $graph_array['legend'] = 'no';
 
     $totalPercent=0;
+<<<<<<< HEAD
+=======
+    $totalPercentWarn=0;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     foreach ($processors as $proc) {
         $text_descr = rewrite_entity_descr($proc['processor_descr']);
 
         $percent      = $proc['processor_usage'];
         if ($config['cpu_details_overview'] === true) {
+<<<<<<< HEAD
             $background   = get_percentage_colours($percent);
+=======
+            $background   = get_percentage_colours($percent, $proc['processor_perc_warn']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
             $graph_array['id']     = $proc['processor_id'];
 
@@ -54,6 +66,10 @@ if (count($processors)) {
               </tr>';
         } else {
             $totalPercent = $totalPercent + $percent;
+<<<<<<< HEAD
+=======
+            $totalPercentWarn = $totalPercentWarn + $proc['processor_perc_warn'];
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
     }//end foreach
 
@@ -94,7 +110,12 @@ if (count($processors)) {
 
         //Add a row with CPU desc, count and percent graph
         $totalPercent=$totalPercent/count($processors);
+<<<<<<< HEAD
         $background   = get_percentage_colours($totalPercent);
+=======
+        $totalPercentWarn=$totalPercentWarn/count($processors);
+        $background   = get_percentage_colours($totalPercent, $totalPercentWarn);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
          echo '<tr>
              <td class="col-md-4">'.overlib_link($link, $text_descr, $overlib_content).'</td>

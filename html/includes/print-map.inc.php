@@ -51,9 +51,17 @@ if (in_array('mac', $config['network_map_items'])) {
                              `D1`.`device_id` AS `local_device_id`,
                              `D1`.`os` AS `local_os`,
                              `D1`.`hostname` AS `local_hostname`,
+<<<<<<< HEAD
                              `D2`.`device_id` AS `remote_device_id`,
                              `D2`.`os` AS `remote_os`,
                              `D2`.`hostname` AS `remote_hostname`,
+=======
+                             `D1`.`sysName` AS `local_sysName`,
+                             `D2`.`device_id` AS `remote_device_id`,
+                             `D2`.`os` AS `remote_os`,
+                             `D2`.`hostname` AS `remote_hostname`,
+                             `D2`.`sysName` AS `remote_sysName`,
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                              `P1`.`port_id` AS `local_port_id`,
                              `P1`.`device_id` AS `local_port_device_id`,
                              `P1`.`ifName` AS `local_ifname`,
@@ -84,7 +92,11 @@ if (in_array('mac', $config['network_map_items'])) {
                              `D1`.`device_id` != `D2`.`device_id`
                              $where
                              $sql
+<<<<<<< HEAD
                       GROUP BY `P1`.`port_id`,`P2`.`port_id`
+=======
+                      GROUP BY `P1`.`port_id`,`P2`.`port_id`,`D1`.`device_id`, `D1`.`os`, `D1`.`hostname`, `D2`.`device_id`, `D2`.`os`, `D2`.`hostname`, `P1`.`port_id`, `P1`.`device_id`, `P1`.`ifName`, `P1`.`ifSpeed`, `P1`.`ifOperStatus`, `P1`.`ifAdminStatus`, `P1`.`ifInOctets_rate`, `P1`.`ifOutOctets_rate`, `P2`.`port_id`, `P2`.`device_id`, `P2`.`ifName`, `P2`.`ifSpeed`, `P2`.`ifOperStatus`, `P2`.`ifAdminStatus`, `P2`.`ifInOctets_rate`, `P2`.`ifOutOctets_rate`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       ORDER BY `remote_matching_ips` DESC, `local_ifname`, `remote_ifname`
                      ", $sql_array);
 }
@@ -94,9 +106,17 @@ if (in_array('xdp', $config['network_map_items'])) {
                              `D1`.`device_id` AS `local_device_id`,
                              `D1`.`os` AS `local_os`,
                              `D1`.`hostname` AS `local_hostname`,
+<<<<<<< HEAD
                              `D2`.`device_id` AS `remote_device_id`,
                              `D2`.`os` AS `remote_os`,
                              `D2`.`hostname` AS `remote_hostname`,
+=======
+                             `D1`.`sysName` AS `local_sysName`,
+                             `D2`.`device_id` AS `remote_device_id`,
+                             `D2`.`os` AS `remote_os`,
+                             `D2`.`hostname` AS `remote_hostname`,
+                             `D2`.`sysName` AS `remote_sysName`,
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                              `P1`.`port_id` AS `local_port_id`,
                              `P1`.`device_id` AS `local_port_device_id`,
                              `P1`.`ifName` AS `local_ifname`,
@@ -125,7 +145,11 @@ if (in_array('xdp', $config['network_map_items'])) {
                              `remote_device_id` != 0
                              $where
                              $sql
+<<<<<<< HEAD
                       GROUP BY `P1`.`port_id`,`P2`.`port_id`
+=======
+                      GROUP BY `P1`.`port_id`,`P2`.`port_id`,`D1`.`device_id`, `D1`.`os`, `D1`.`hostname`, `D2`.`device_id`, `D2`.`os`, `D2`.`hostname`, `P1`.`port_id`, `P1`.`device_id`, `P1`.`ifName`, `P1`.`ifSpeed`, `P1`.`ifOperStatus`, `P1`.`ifAdminStatus`, `P1`.`ifInOctets_rate`, `P1`.`ifOutOctets_rate`, `P2`.`port_id`, `P2`.`device_id`, `P2`.`ifName`, `P2`.`ifSpeed`, `P2`.`ifOperStatus`, `P2`.`ifAdminStatus`, `P2`.`ifInOctets_rate`, `P2`.`ifOutOctets_rate`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       ORDER BY `local_ifname`, `remote_ifname`
                       ", $sql_array);
 }
@@ -143,12 +167,22 @@ foreach ($list as $items) {
 
     $local_device_id = $items['local_device_id'];
     if (!array_key_exists($local_device_id, $devices_by_id)) {
+<<<<<<< HEAD
         $devices_by_id[$local_device_id] = array('id'=>$local_device_id,'label'=>$items['local_hostname'],'title'=>generate_device_link($local_device, '', array(), '', '', '', 0),'shape'=>'box');
+=======
+        $items['sysName'] = $items['local_sysName'];
+        $devices_by_id[$local_device_id] = array('id'=>$local_device_id,'label'=>shorthost(format_hostname($items, $items['local_hostname']), 1),'title'=>generate_device_link($local_device, '', array(), '', '', '', 0),'shape'=>'box');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     $remote_device_id = $items['remote_device_id'];
     if (!array_key_exists($remote_device_id, $devices_by_id)) {
+<<<<<<< HEAD
         $devices_by_id[$remote_device_id] = array('id'=>$remote_device_id,'label'=>$items['remote_hostname'],'title'=>generate_device_link($remote_device, '', array(), '', '', '', 0),'shape'=>'box');
+=======
+        $items['sysName'] = $items['remote_sysName'];
+        $devices_by_id[$remote_device_id] = array('id'=>$remote_device_id,'label'=>shorthost(format_hostname($items, $items['remote_hostname']), 1),'title'=>generate_device_link($remote_device, '', array(), '', '', '', 0),'shape'=>'box');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     $speed = $items['local_ifspeed']/1000/1000;
@@ -187,8 +221,13 @@ foreach ($list as $items) {
         !array_key_exists($link_id2, $link_assoc_seen) &&
         !array_key_exists($device_id1, $device_assoc_seen) &&
         !array_key_exists($device_id2, $device_assoc_seen)) {
+<<<<<<< HEAD
         $local_port = ifNameDescr($local_port);
         $remote_port = ifNameDescr($remote_port);
+=======
+        $local_port = cleanPort($local_port);
+        $remote_port = cleanPort($remote_port);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $links[] = array('from'=>$items['local_device_id'],'to'=>$items['remote_device_id'],'label'=>shorten_interface_type($local_port['ifName']) . ' > ' . shorten_interface_type($remote_port['ifName']),'title'=>generate_port_link($local_port, "<img src='graph.php?type=port_bits&amp;id=".$items['local_port_id']."&amp;from=".$config['time']['day']."&amp;to=".$config['time']['now']."&amp;width=100&amp;height=20&amp;legend=no&amp;bg=".str_replace("#", "", $row_colour)."'>\n", '', 0, 1),'width'=>$width,'color'=>$link_color);
     }
     $link_assoc_seen[$link_id1] = 1;

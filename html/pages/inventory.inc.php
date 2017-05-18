@@ -62,7 +62,11 @@ foreach (dbFetchRows('SELECT * FROM `devices` ORDER BY `hostname`') as $data) {
             echo '" selected"+';
         }
 
+<<<<<<< HEAD
         echo '">'.$data['hostname'].'</option>"+';
+=======
+        echo '">'.format_hostname($data, $data['hostname']).'</option>"+';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 }
 ?>

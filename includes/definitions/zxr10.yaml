@@ -3,3 +3,11 @@ group: zxr10
 text: 'ZTE ZXR10'
 type: network
 icon: zte
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - ZXR10
+        - ZTE Ethernet Switch
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -157,14 +157,22 @@ var greenMarker = L.AwesomeMarkers.icon({
         // Checking user permissions
         if (is_admin() || is_read()) {
         // Admin or global read-only - show all devices
+<<<<<<< HEAD
             $sql = "SELECT DISTINCT(`device_id`),`devices`.`location`,`hostname`,`os`,`status`,`lat`,`lng` FROM `devices`
+=======
+            $sql = "SELECT DISTINCT(`device_id`),`devices`.`location`,`sysName`,`hostname`,`os`,`status`,`lat`,`lng` FROM `devices`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     LEFT JOIN `locations` ON `devices`.`location`=`locations`.`location`
                     WHERE `disabled`=0 AND `ignore`=0 AND ((`lat` != '' AND `lng` != '') OR (`devices`.`location` REGEXP '\[[0-9\.\, ]+\]'))
                       AND `status` IN (".$widget_settings['status'].")
                     ORDER BY `status` ASC, `hostname`";
         } else {
         // Normal user - grab devices that user has permissions to
+<<<<<<< HEAD
             $sql = "SELECT DISTINCT(`devices`.`device_id`) as `device_id`,`devices`.`location`,`hostname`,`os`,`status`,`lat`,`lng`
+=======
+            $sql = "SELECT DISTINCT(`devices`.`device_id`) as `device_id`,`devices`.`location`,`sysName`,`hostname`,`os`,`status`,`lat`,`lng`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     FROM `devices_perms`, `devices`
                     LEFT JOIN `locations` ON `devices`.`location`=`locations`.`location`
                     WHERE `disabled`=0 AND `ignore`=0 AND ((`lat` != '' AND `lng` != '') OR (`devices`.`location` REGEXP '\[[0-9\.\, ]+\]'))
@@ -177,7 +185,11 @@ var greenMarker = L.AwesomeMarkers.icon({
             $icon = 'greenMarker';
             $z_offset = 0;
             $tmp_loc = parse_location($map_devices['location']);
+<<<<<<< HEAD
             if (!empty($tmp_loc['lat']) && !empty($tmp_loc['lng'])) {
+=======
+            if (is_numeric($tmp_loc['lat']) && is_numeric($tmp_loc['lng'])) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $map_devices['lat'] = $tmp_loc['lat'];
                 $map_devices['lng'] = $tmp_loc['lng'];
             }
@@ -185,8 +197,13 @@ var greenMarker = L.AwesomeMarkers.icon({
                 $icon = 'redMarker';
                 $z_offset = 10000;  // move marker to foreground
             }
+<<<<<<< HEAD
             $temp_output .= "var title = '<a href=\"" . generate_device_url($map_devices) . "\"><img src=\"".getImageSrc($map_devices)."\" width=\"32\" height=\"32\" alt=\"\"> ".$map_devices['hostname']."</a>';
 var tooltip = '".$map_devices['hostname']."';
+=======
+            $temp_output .= "var title = '<a href=\"" . generate_device_url($map_devices) . "\"><img src=\"".getIcon($map_devices)."\" width=\"32\" height=\"32\" alt=\"\"> ".format_hostname($map_devices)."</a>';
+var tooltip = '".format_hostname($map_devices)."';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 var marker = L.marker(new L.LatLng(".$map_devices['lat'].", ".$map_devices['lng']."), {title: tooltip, icon: $icon, zIndexOffset: $z_offset});
 marker.bindPopup(title);
     markers.addLayer(marker);\n";

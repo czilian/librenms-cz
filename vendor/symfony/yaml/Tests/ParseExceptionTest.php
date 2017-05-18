@@ -11,9 +11,16 @@
 
 namespace Symfony\Component\Yaml\Tests;
 
+<<<<<<< HEAD
 use Symfony\Component\Yaml\Exception\ParseException;
 
 class ParseExceptionTest extends \PHPUnit_Framework_TestCase
+=======
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Exception\ParseException;
+
+class ParseExceptionTest extends TestCase
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     public function testGetMessage()
     {

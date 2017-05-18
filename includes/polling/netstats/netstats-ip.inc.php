@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (!starts_with($device['os'], array('Snom', 'asa'))) {
     echo ' IP';
 
@@ -23,11 +28,18 @@ if (!starts_with($device['os'], array('Snom', 'asa'))) {
         'ipInAddrErrors',
     );
 
+<<<<<<< HEAD
     $rrd_def = array();
     $snmpstring = '';
     foreach ($oids as $oid) {
         $oid_ds      = substr($oid, 0, 19);
         $rrd_def[]   = "DS:$oid_ds:COUNTER:600:U:100000000000";
+=======
+    $rrd_def = new RrdDefinition();
+    $snmpstring = '';
+    foreach ($oids as $oid) {
+        $rrd_def->addDataset($oid, 'COUNTER', null, 100000000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $snmpstring .= ' IP-MIB::'.$oid.'.0';
     }
 

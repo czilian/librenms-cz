@@ -8,6 +8,11 @@
  * file that was distributed with this source code.
  */
 
+<<<<<<< HEAD
+=======
+use SebastianBergmann\Version;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 /**
  * This class defines the current version of PHPUnit.
  *
@@ -30,7 +35,11 @@ class PHPUnit_Runner_Version
         }
 
         if (self::$version === null) {
+<<<<<<< HEAD
             $version       = new SebastianBergmann\Version('4.8.28', dirname(dirname(__DIR__)));
+=======
+            $version       = new Version('4.8.35', dirname(dirname(__DIR__)));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             self::$version = $version->getVersion();
         }
 

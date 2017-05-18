@@ -12,12 +12,26 @@
  *
  * This module will display NTP details from various device types.
  * To display, modules must create rrd's named: ntp-%PEER%.rrd with the following DS':
+<<<<<<< HEAD
  *      DS:stratum:GAUGE:600:0:U
  *      DS:offset:GAUGE:600:0:U
  *      DS:delay:GAUGE:600:0:U
  *      DS:dispersion:GAUGE:600:0:U
+=======
+ *      DS:stratum:GAUGE:'.$config['rrd']['heartbeat'].':0:U
+ *      DS:offset:GAUGE:'.$config['rrd']['heartbeat'].':0:U
+ *      DS:delay:GAUGE:'.$config['rrd']['heartbeat'].':0:U
+ *      DS:dispersion:GAUGE:'.$config['rrd']['heartbeat'].':0:U
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  */
 
 if ($device['os_group'] == 'cisco') {
     include 'includes/polling/ntp/cisco.inc.php';
 }
+<<<<<<< HEAD
+=======
+
+unset(
+    $cntpPeersVarEntry
+);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

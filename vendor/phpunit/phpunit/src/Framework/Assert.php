@@ -9,7 +9,11 @@
  */
 
 /**
+<<<<<<< HEAD
  * A set of assert methods.
+=======
+ * A set of assertion methods.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  *
  * @since Class available since Release 2.0.0
  */
@@ -62,14 +66,22 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertArraySubset($subset, $array, $strict = false, $message = '')
     {
+<<<<<<< HEAD
         if (!is_array($subset)) {
+=======
+        if (!(is_array($subset) || $subset instanceof ArrayAccess)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 1,
                 'array or ArrayAccess'
             );
         }
 
+<<<<<<< HEAD
         if (!is_array($array)) {
+=======
+        if (!(is_array($array) || $array instanceof ArrayAccess)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 2,
                 'array or ArrayAccess'

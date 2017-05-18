@@ -25,6 +25,7 @@ if (!empty($_POST['hostname'])) {
 if (!empty($_POST['os'])) {
     $sql .= ' AND os = ?';
     $param[] = $_POST['os'];
+<<<<<<< HEAD
 }
 
 if (!empty($_POST['version'])) {
@@ -42,6 +43,25 @@ if (!empty($_POST['features'])) {
     $param[] = $_POST['features'];
 }
 
+=======
+}
+
+if (!empty($_POST['version'])) {
+    $sql .= ' AND version = ?';
+    $param[] = $_POST['version'];
+}
+
+if (!empty($_POST['hardware'])) {
+    $sql .= ' AND hardware = ?';
+    $param[] = $_POST['hardware'];
+}
+
+if (!empty($_POST['features'])) {
+    $sql .= ' AND features = ?';
+    $param[] = $_POST['features'];
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (!empty($_POST['type'])) {
     if ($_POST['type'] == 'generic') {
         $sql .= " AND ( type = ? OR type = '')";
@@ -58,6 +78,7 @@ if (!empty($_POST['state'])) {
         $param[] = $_POST['state'];
     } else {
         $param[] = str_replace(array('up', 'down'), array(1, 0), $_POST['state']);
+<<<<<<< HEAD
     }
 }
 
@@ -94,6 +115,44 @@ if (!empty($_POST['group'])) {
 
 $count_sql = "SELECT COUNT(`devices`.`device_id`) $sql";
 
+=======
+    }
+}
+
+if (!empty($_POST['disabled'])) {
+    $sql .= ' AND disabled= ?';
+    $param[] = $_POST['disabled'];
+}
+
+if (!empty($_POST['ignore'])) {
+    $sql .= ' AND `ignore`= ?';
+    $param[] = $_POST['ignore'];
+}
+
+if (!empty($_POST['location']) && $_POST['location'] == 'Unset') {
+    $location_filter = '';
+}
+
+if (!empty($_POST['location'])) {
+    $sql .= " AND `location` = ?";
+    $param[] = $_POST['location'];
+}
+
+if (!empty($_POST['group'])) {
+    include_once '../includes/device-groups.inc.php';
+    $sql .= ' AND ( ';
+    foreach (GetDevicesFromGroup($_POST['group']) as $dev) {
+        $sql .= '`devices`.`device_id` = ? OR ';
+        $param[] = $dev;
+    }
+
+    $sql = substr($sql, 0, (strlen($sql) - 3));
+    $sql .= ' )';
+}
+
+$count_sql = "SELECT COUNT(`devices`.`device_id`) $sql";
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $total = dbFetchCell($count_sql, $param);
 if (empty($total)) {
     $total = 0;
@@ -153,7 +212,11 @@ foreach (dbFetchRows($sql, $param) as $device) {
 
     $type = strtolower($device['os']);
 
+<<<<<<< HEAD
     $image = getImage($device);
+=======
+    $image = getIconTag($device);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     if ($device['os'] == 'ios') {
         formatCiscoHardware($device, true);
@@ -162,16 +225,29 @@ foreach (dbFetchRows($sql, $param) as $device) {
     $device['os_text'] = $config['os'][$device['os']]['text'];
     $port_count = dbFetchCell('SELECT COUNT(*) FROM `ports` WHERE `device_id` = ?', array($device['device_id']));
     $sensor_count = dbFetchCell('SELECT COUNT(*) FROM `sensors` WHERE `device_id` = ?', array($device['device_id']));
+<<<<<<< HEAD
+=======
+    $wireless_count = dbFetchCell('SELECT COUNT(*) FROM `wireless_sensors` WHERE `device_id` = ?', array($device['device_id']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $actions = '
         <div class="container-fluid">
             <div class="row">
+<<<<<<< HEAD
                 <div class="col-xs-1"><a href="' . generate_device_url($device) . '"> <img src="images/16/server.png" border="0" align="absmiddle" alt="View device" title="View device"></a></div>
                 <div class="col-xs-1"><a href="' . generate_device_url($device, array('tab' => 'alerts')) . '"> <img src="images/16/bell.png" border="0" align="absmiddle" alt="View alerts" title="View alerts"></a></div>
     ';
 
     if ($_SESSION['userlevel'] >= '7') {
         $actions .= '<div class="col-xs-1"><a href="' . generate_device_url($device, array('tab' => 'edit')) . '"> <img src="images/16/wrench.png" border="0" align="absmiddle" alt="Edit device" title="Edit device"></a></div>';
+=======
+                <div class="col-xs-1"><a href="' . generate_device_url($device) . '"> <i class="fa fa-id-card fa-lg icon-theme" title="View device"></i></a></div>
+                <div class="col-xs-1"><a href="' . generate_device_url($device, array('tab' => 'alerts')) . '"> <i class="fa fa-exclamation-circle fa-lg icon-theme" title="View alerts"></i></a></div>
+    ';
+
+    if ($_SESSION['userlevel'] >= '7') {
+        $actions .= '<div class="col-xs-1"><a href="' . generate_device_url($device, array('tab' => 'edit')) . '"> <i class="fa fa-pencil fa-lg icon-theme" title="Edit device"></i></a></div>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     if ($subformat == 'detail') {
@@ -179,9 +255,15 @@ foreach (dbFetchRows($sql, $param) as $device) {
     }
 
     $actions .= '
+<<<<<<< HEAD
                 <div class="col-xs-1"><a href="telnet://' . $device['hostname'] . '"><img src="images/16/telnet.png" alt="telnet" title="Telnet to ' . $device['hostname'] . '" border="0" width="16" height="16"></a></div>
                 <div class="col-xs-1"><a href="ssh://' . $device['hostname'] . '"><img src="images/16/ssh.png" alt="ssh" title="SSH to ' . $device['hostname'] . '" border="0" width="16" height="16"></a></div>
                 <div class="col-xs-1"><a href="https://' . $device['hostname'] . '"><img src="images/16/http.png" alt="https" title="Launch browser https://' . $device['hostname'] . '" border="0" width="16" height="16" target="_blank" rel="noopener"></a></div>
+=======
+                <div class="col-xs-1"><a href="telnet://' . $device['hostname'] . '"><i class="fa fa-terminal fa-lg icon-theme" title="Telnet to ' . $device['hostname'] . '"></i></a></div>
+                <div class="col-xs-1"><a href="ssh://' . $device['hostname'] . '"><i class="fa fa-lock fa-lg icon-theme" title="SSH to ' . $device['hostname'] . '"></i></a></div>
+                <div class="col-xs-1"><a href="https://' . $device['hostname'] . '" target="_blank" rel="noopener"><i class="fa fa-globe fa-lg icon-theme" title="Launch browser https://' . $device['hostname'] . '"></i></a></div>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             </div>
         </div>
     ';
@@ -196,6 +278,7 @@ foreach (dbFetchRows($sql, $param) as $device) {
     if ($subformat == 'detail') {
         $platform = $device['hardware'] . '<br>' . $device['features'];
         $os = $device['os_text'] . '<br>' . $device['version'];
+<<<<<<< HEAD
         $uptime = formatUptime($device['uptime'], 'short');
         $hostname .= '<br>' . $device['sysName'];
         if (empty($port_count)) {
@@ -209,10 +292,49 @@ foreach (dbFetchRows($sql, $param) as $device) {
         if ($sensor_count) {
             $col_port .= '<img src="images/icons/sensors.png" align="absmiddle"> ' . $sensor_count;
         }
+=======
+        $device['ip'] = inet6_ntop($device['ip']);
+        $uptime = formatUptime($device['uptime'], 'short');
+        if (format_hostname($device) !== $device['sysName']) {
+            $hostname .= '<br />' . $device['sysName'];
+        } elseif ($device['hostname'] !== $device['ip']) {
+            $hostname .= '<br />' . $device['hostname'];
+        }
+
+        $metrics = array();
+        if ($port_count) {
+            $port_widget = '<a href="' . generate_device_url($device, array('tab' => 'ports')) . '">';
+            $port_widget .= '<span><i class="fa fa-link fa-lg icon-theme"></i> ' . $port_count;
+            $port_widget .= '</span></a> ';
+            $metrics[] = $port_widget;
+        }
+
+        if ($sensor_count) {
+            $sensor_widget = '<a href="' . generate_device_url($device, array('tab' => 'health')) . '">';
+            $sensor_widget .= '<span><i class="fa fa-dashboard fa-lg icon-theme"></i> ' . $sensor_count;
+            $sensor_widget .= '</span></a> ';
+            $metrics[] = $sensor_widget;
+        }
+
+        if ($wireless_count) {
+            $wireless_widget = '<a href="' . generate_device_url($device, array('tab' => 'wireless')) . '">';
+            $wireless_widget .= '<span><i class="fa fa-wifi fa-lg icon-theme"></i> ' . $wireless_count;
+            $wireless_widget .= '</span></a> ';
+            $metrics[] = $wireless_widget;
+        }
+
+        $col_port = '<div class="device-table-metrics">';
+        $col_port .= implode(count($metrics) == 2 ? '<br />' : '', $metrics);
+        $col_port .= '</div>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     } else {
         $platform = $device['hardware'];
         $os = $device['os_text'] . ' ' . $device['version'];
         $uptime = formatUptime($device['uptime'], 'short');
+<<<<<<< HEAD
+=======
+        $col_port = '';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     $response[] = array(

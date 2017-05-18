@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\Exceptions\AuthenticationException;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (! isset($_SESSION['username'])) {
     $_SESSION['username'] = '';
 }
@@ -47,6 +52,7 @@ function authenticate($username, $password)
         }
 
         $_SESSION['username'] = $config['http_auth_guest'];
+<<<<<<< HEAD
         return 1;
     }
 
@@ -58,6 +64,18 @@ function reauthenticate()
 {
     // not supported so return 0
     return 0;
+=======
+        return true;
+    }
+
+    throw new AuthenticationException();
+}
+
+
+function reauthenticate($sess_id, $token)
+{
+    return false;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 
@@ -82,11 +100,19 @@ function auth_usermanagement()
 }
 
 
+<<<<<<< HEAD
 function adduser($username, $level = 0, $email = '', $realname = '', $can_modify_passwd = 0, $description = '', $twofactor = 0)
 {
     // Check to see if user is already added in the database
     if (!user_exists_in_db($username)) {
         $userid = dbInsert(array('username' => $username, 'realname' => $realname, 'email' => $email, 'descr' => $description, 'level' => $level, 'can_modify_passwd' => $can_modify_passwd, 'twofactor' => $twofactor, 'user_id' => get_userid($username)), 'users');
+=======
+function adduser($username, $level = 0, $email = '', $realname = '', $can_modify_passwd = 0, $description = '')
+{
+    // Check to see if user is already added in the database
+    if (!user_exists_in_db($username)) {
+        $userid = dbInsert(array('username' => $username, 'realname' => $realname, 'email' => $email, 'descr' => $description, 'level' => $level, 'can_modify_passwd' => $can_modify_passwd, 'user_id' => get_userid($username)), 'users');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($userid == false) {
             return false;
         } else {
@@ -197,6 +223,7 @@ function get_userid($username)
 }
 
 
+<<<<<<< HEAD
 function deluser($username)
 {
     dbDelete('bill_perms', '`user_name` =  ?', array($username));
@@ -205,6 +232,16 @@ function deluser($username)
     dbDelete('users_prefs', '`user_name` =  ?', array($username));
     dbDelete('users', '`user_name` =  ?', array($username));
     return dbDelete('users', '`username` =  ?', array($username));
+=======
+function deluser($userid)
+{
+    dbDelete('bill_perms', '`user_id` =  ?', array($userid));
+    dbDelete('devices_perms', '`user_id` =  ?', array($userid));
+    dbDelete('ports_perms', '`user_id` =  ?', array($userid));
+    dbDelete('users_prefs', '`user_id` =  ?', array($userid));
+    dbDelete('users', '`user_id` =  ?', array($userid));
+    return dbDelete('users', '`user_id` =  ?', array($userid));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 

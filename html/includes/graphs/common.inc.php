@@ -9,7 +9,11 @@ if ($_GET['to']) {
 }
 
 if ($_GET['width']) {
+<<<<<<< HEAD
     $width = mres($_GET['width']);
+=======
+    $width = mres($vars['width']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 if ($config['trim_tobias']) {
@@ -17,7 +21,11 @@ if ($config['trim_tobias']) {
 }
 
 if ($_GET['height']) {
+<<<<<<< HEAD
     $height = mres($_GET['height']);
+=======
+    $height = mres($vars['height']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 if ($_GET['inverse']) {

@@ -1,12 +1,16 @@
 language: php
 
 php:
+<<<<<<< HEAD
   - 5.3.3
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
   - 5.3
   - 5.4
   - 5.5
   - 5.6
   - 7.0
+<<<<<<< HEAD
   - nightly
   - hhvm
 
@@ -28,3 +32,24 @@ notifications:
     on_failure: always
     on_start: false
 
+=======
+  - 7.0snapshot
+  - 7.1
+  - 7.1snapshot
+  - master
+
+sudo: false
+
+before_install:
+  - composer self-update
+  - composer clear-cache
+
+install:
+  - travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable
+
+script:
+  - ./vendor/bin/phpunit
+
+notifications:
+  email: false
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

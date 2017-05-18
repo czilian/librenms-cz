@@ -17,6 +17,15 @@ $config['vmware_guestid']['debian4_64Guest']         = 'Debian GNU/Linux 4 (64 b
 $config['vmware_guestid']['debian4Guest']            = 'Debian GNU/Linux 4';
 $config['vmware_guestid']['debian5_64Guest']         = 'Debian GNU/Linux 5 (64 bit)';
 $config['vmware_guestid']['debian5Guest']            = 'Debian GNU/Linux 5';
+<<<<<<< HEAD
+=======
+$config['vmware_guestid']['debian6_64Guest']         = 'Debian GNU/Linux 6 (64 bit)';
+$config['vmware_guestid']['debian6Guest']            = 'Debian GNU/Linux 6';
+$config['vmware_guestid']['debian7_64Guest']         = 'Debian GNU/Linux 7 (64 bit)';
+$config['vmware_guestid']['debian7Guest']            = 'Debian GNU/Linux 7';
+$config['vmware_guestid']['debian8_64Guest']         = 'Debian GNU/Linux 8 (64 bit)';
+$config['vmware_guestid']['debian8Guest']            = 'Debian GNU/Linux 8';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $config['vmware_guestid']['dosGuest']                = 'MS-DOS.';
 $config['vmware_guestid']['eComStationGuest']        = 'eComStation';
 $config['vmware_guestid']['freebsd64Guest']          = 'FreeBSD x64';

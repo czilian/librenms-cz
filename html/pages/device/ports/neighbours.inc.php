@@ -11,6 +11,10 @@ echo '<tr><th>Local Port</th>
       </tr>';
 
 foreach (dbFetchRows('SELECT * FROM links AS L, ports AS I WHERE I.device_id = ? AND I.port_id = L.local_port_id', array($device['device_id'])) as $neighbour) {
+<<<<<<< HEAD
+=======
+    $neighbour = cleanPort($neighbour);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if ($bg_colour == $list_colour_b) {
         $bg_colour = $list_colour_a;
     } else {
@@ -18,12 +22,21 @@ foreach (dbFetchRows('SELECT * FROM links AS L, ports AS I WHERE I.device_id = ?
     }
 
     echo '<tr bgcolor="'.$bg_colour.'">';
+<<<<<<< HEAD
     echo '<td><span style="font-weight: bold;">'.generate_port_link($neighbour).'</span><br />'.display($neighbour['ifAlias']).'</td>';
 
     if (is_numeric($neighbour['remote_port_id']) && $neighbour['remote_port_id']) {
         $remote_port   = get_port_by_id($neighbour['remote_port_id']);
         $remote_device = device_by_id_cache($remote_port['device_id']);
         echo '<td>'.generate_port_link($remote_port).'<br />'.display($remote_port['ifAlias']).'</td>';
+=======
+    echo '<td><span style="font-weight: bold;">'.generate_port_link($neighbour).'</span><br />'.$neighbour['ifAlias'].'</td>';
+
+    if (is_numeric($neighbour['remote_port_id']) && $neighbour['remote_port_id']) {
+        $remote_port   = cleanPort(get_port_by_id($neighbour['remote_port_id']));
+        $remote_device = device_by_id_cache($remote_port['device_id']);
+        echo '<td>'.generate_port_link($remote_port).'<br />'.$remote_port['ifAlias'].'</td>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo '<td>'.generate_device_link($remote_device).'<br />'.$remote_device['hardware'].'</td>';
     } else {
         echo '<td>'.$neighbour['remote_port'].'</td>';

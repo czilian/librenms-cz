@@ -8,12 +8,18 @@
  * file that was distributed with this source code.
  */
 
+<<<<<<< HEAD
 /**
  * Tests for PHP_Timer.
  *
  * @since      Class available since Release 1.0.0
  */
 class PHP_TimerTest extends PHPUnit_Framework_TestCase
+=======
+use PHPUnit\Framework\TestCase;
+
+class PHP_TimerTest extends TestCase
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     /**
      * @covers PHP_Timer::start

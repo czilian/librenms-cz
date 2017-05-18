@@ -4,6 +4,13 @@ namespace spec\Prophecy\Prediction;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+<<<<<<< HEAD
+=======
+use Prophecy\Argument\ArgumentsWildcard;
+use Prophecy\Call\Call;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 class CallPredictionSpec extends ObjectBehavior
 {
@@ -12,6 +19,7 @@ class CallPredictionSpec extends ObjectBehavior
         $this->shouldHaveType('Prophecy\Prediction\PredictionInterface');
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Prophecy\ObjectProphecy $object
      * @param \Prophecy\Prophecy\MethodProphecy $method
@@ -29,6 +37,21 @@ class CallPredictionSpec extends ObjectBehavior
      */
     function it_throws_NoCallsException_if_no_calls_found($object, $method, $arguments)
     {
+=======
+    function it_does_nothing_if_there_is_more_than_one_call_been_made(
+        ObjectProphecy $object,
+        MethodProphecy $method,
+        Call $call
+    ) {
+        $this->check(array($call), $object, $method)->shouldReturn(null);
+    }
+
+    function it_throws_NoCallsException_if_no_calls_found(
+        ObjectProphecy $object,
+        MethodProphecy $method,
+        ArgumentsWildcard $arguments
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $method->getObjectProphecy()->willReturn($object);
         $method->getMethodName()->willReturn('getName');
         $method->getArgumentsWildcard()->willReturn($arguments);

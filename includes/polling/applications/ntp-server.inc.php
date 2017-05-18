@@ -1,14 +1,26 @@
 <?php
+<<<<<<< HEAD
+=======
+
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 //NET-SNMP-EXTEND-MIB::nsExtendOutputFull."ntp-server"
 $name = 'ntp-server';
 $app_id = $app['app_id'];
 $oid = '.1.3.6.1.4.1.8072.1.3.2.3.1.2.10.110.116.112.45.115.101.114.118.101.114';
 $ntpserver_data = snmp_get($device, $oid, '-Oqv');
+<<<<<<< HEAD
+=======
+$ntpserver_data = str_replace('"', '', $ntpserver_data);
+update_application($app, $ntpserver_data);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 list ($stratum, $offset, $frequency, $jitter, $noise, $stability, $uptime, $buffer_recv, $buffer_free, $buffer_used, $packets_drop, $packets_ignore, $packets_recv, $packets_sent) = explode("\n", $ntpserver_data);
 
 echo ' '.$name;
 
 $rrd_name = array('app', $name, $app_id);
+<<<<<<< HEAD
 $rrd_def = array(
     'DS:stratum:GAUGE:600:0:1000',
     'DS:offset:GAUGE:600:-1000:1000',
@@ -25,6 +37,23 @@ $rrd_def = array(
     'DS:packets_recv:DERIVE:600:0:125000000000',
     'DS:packets_sent:DERIVE:600:0:125000000000'
 );
+=======
+$rrd_def = RrdDefinition::make()
+    ->addDataset('stratum', 'GAUGE', 0, 1000)
+    ->addDataset('offset', 'GAUGE', -1000, 1000)
+    ->addDataset('frequency', 'GAUGE', -1000, 1000)
+    ->addDataset('jitter', 'GAUGE', -1000, 1000)
+    ->addDataset('noise', 'GAUGE', -1000, 1000)
+    ->addDataset('stability', 'GAUGE', -1000, 1000)
+    ->addDataset('uptime', 'GAUGE', 0, 125000000000)
+    ->addDataset('buffer_recv', 'GAUGE', 0, 100000)
+    ->addDataset('buffer_free', 'GAUGE', 0, 100000)
+    ->addDataset('buffer_used', 'GAUGE', 0, 100000)
+    ->addDataset('packets_drop', 'DERIVE', 0, 125000000000)
+    ->addDataset('packets_ignore', 'DERIVE', 0, 125000000000)
+    ->addDataset('packets_recv', 'DERIVE', 0, 125000000000)
+    ->addDataset('packets_sent', 'DERIVE', 0, 125000000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 
 $fields = array(

@@ -31,7 +31,11 @@ $period = ($to - $from);
 
 $prev_from = ($from - $period);
 
+<<<<<<< HEAD
 $graphfile = $config['temp_dir'].'/'.strgen().'.png';
+=======
+$graphfile = $config['temp_dir'].'/'.strgen();
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $type    = $graphtype['type'];
 $subtype = $graphtype['subtype'];
@@ -42,11 +46,19 @@ if ($auth !== true && $auth != 1) {
 
 require $config['install_dir']."/html/includes/graphs/$type/auth.inc.php";
 
+<<<<<<< HEAD
 if ($auth === true && is_custom_graph($type, $subtype, $device)) {
     include($config['install_dir'] . "/html/includes/graphs/custom.inc.php");
 } elseif ($auth === true && is_mib_graph($type, $subtype)) {
     include $config['install_dir']."/html/includes/graphs/$type/mib.inc.php";
 } elseif ($auth === true && is_file($config['install_dir']."/html/includes/graphs/$type/$subtype.inc.php")) {
+=======
+if ($auth && is_custom_graph($type, $subtype, $device)) {
+    include($config['install_dir'] . "/html/includes/graphs/custom.inc.php");
+} elseif ($auth && is_mib_graph($type, $subtype)) {
+    include $config['install_dir']."/html/includes/graphs/$type/mib.inc.php";
+} elseif ($auth && is_file($config['install_dir']."/html/includes/graphs/$type/$subtype.inc.php")) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     include $config['install_dir']."/html/includes/graphs/$type/$subtype.inc.php";
 } else {
     graph_error("$type*$subtype ");
@@ -58,6 +70,7 @@ function graph_error($string)
     global $vars, $config, $debug, $graphfile;
 
     $vars['bg'] = 'FFBBBB';
+<<<<<<< HEAD
 
     include 'includes/graphs/common.inc.php';
 
@@ -82,6 +95,32 @@ function graph_error($string)
             header('Content-type: image/png');
         }
 
+=======
+
+    include 'includes/graphs/common.inc.php';
+
+    $rrd_options .= ' HRULE:0#555555';
+    $rrd_options .= " --title='".$string."'";
+
+    rrdtool_graph($graphfile, $rrd_options);
+
+    if ($height > '99') {
+        shell_exec($rrd_cmd);
+        d_echo('<pre>'.$rrd_cmd.'</pre>');
+
+        if (is_file($graphfile) && !$debug) {
+            header('Content-type: image/png');
+            $fd = fopen($graphfile, 'r');
+            fpassthru($fd);
+            fclose($fd);
+            unlink($graphfile);
+        }
+    } else {
+        if (!$debug) {
+            header('Content-type: image/png');
+        }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $im = imagecreate($width, $height);
         $px = ((imagesx($im) - 7.5 * strlen($string)) / 2);
         imagestring($im, 3, $px, ($height / 2 - 8), $string, imagecolorallocate($im, 128, 0, 0));
@@ -99,9 +138,22 @@ if ($error_msg) {
         graph_error('No Auth');
     } else {
         graph_error('No Authorisation');
+<<<<<<< HEAD
     }
 } else {
     // $rrd_options .= " HRULE:0#999999";
+=======
+    }
+} else {
+    // $rrd_options .= " HRULE:0#999999";
+    if ($config['webui']['graph_type'] === 'svg') {
+        $rrd_options .= " --imgformat=SVG";
+        if ($width < 350) {
+            $rrd_options .= " -m 0.75 -R light";
+        }
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if ($no_file) {
         if ($width < 200) {
             graph_error('No RRD');
@@ -111,11 +163,22 @@ if ($error_msg) {
     } elseif ($command_only) {
         echo "<div class='infobox'>";
         echo "<p style='font-size: 16px; font-weight: bold;'>RRDTool Command</p>";
+<<<<<<< HEAD
         echo "rrdtool graph $graphfile $rrd_options";
         echo '</span>';
         $return = rrdtool_graph($graphfile, $rrd_options);
         echo '<br /><br />';
         echo "<p style='font-size: 16px; font-weight: bold;'>RRDTool Output</p>$return";
+=======
+        echo "<pre class='rrd-pre'>";
+        echo "rrdtool graph $graphfile $rrd_options";
+        echo "</pre>";
+        $return = rrdtool_graph($graphfile, $rrd_options);
+        echo "<p style='font-size: 16px; font-weight: bold;'>RRDTool Output</p>";
+        echo "<pre class='rrd-pre'>";
+        echo "$return";
+        echo "</pre>";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         unlink($graphfile);
         echo '</div>';
     } else {
@@ -125,8 +188,13 @@ if ($error_msg) {
 
             if (is_file($graphfile)) {
                 if (!$debug) {
+<<<<<<< HEAD
                     header('Content-type: image/png');
                     if ($config['trim_tobias']) {
+=======
+                    set_image_type();
+                    if ($config['trim_tobias'] && $config['webui']['graph_type'] !== 'svg') {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         list($w, $h, $type, $attr) = getimagesize($graphfile);
                         $src_im                    = imagecreatefrompng($graphfile);
                         $src_x = '0';
@@ -156,7 +224,11 @@ if ($error_msg) {
                     }
                 } else {
                     echo `ls -l $graphfile`;
+<<<<<<< HEAD
                     echo '<img src="'.data_uri($graphfile, 'image/png').'" alt="graph" />';
+=======
+                    echo '<img src="'.data_uri($graphfile, 'image/svg+xml').'" alt="graph" />';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 }
                 unlink($graphfile);
             } else {

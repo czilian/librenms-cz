@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 list($hardware, $version, ) = explode(',', str_replace(', ', ',', $poll_device['sysDescr']));
 
 // Clean up hardware
@@ -27,6 +28,37 @@ if (preg_match('/^PROCURVE (.*) - (.*)/', $poll_device['sysDescr'], $regexp_resu
     $version  = $regexp_result[2];
 }
 
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+list($hardware, $version, ) = explode(',', str_replace(', ', ',', $poll_device['sysDescr']));
+
+// Clean up hardware
+$hardware = str_replace('PROCURVE', 'ProCurve', $hardware);
+if (substr($hardware, 0, 3) == 'HP ') {
+    $hardware = substr($hardware, 3);
+}
+
+if (substr($hardware, 0, 24) == 'Hewlett-Packard Company ') {
+    $hardware = substr($hardware, 24);
+}
+
+$altversion = trim(snmp_get($device, 'hpSwitchOsVersion.0', '-Oqv', 'NETSWITCH-MIB'), '"');
+if ($altversion) {
+    $version = $altversion;
+}
+
+$altversion = trim(snmp_get($device, '.1.3.6.1.4.1.11.2.3.7.11.12.1.2.1.11.0', '-Oqv'), '"');
+if ($altversion) {
+    $version = $altversion;
+}
+
+if (preg_match('/^PROCURVE (.*) - (.*)/', $poll_device['sysDescr'], $regexp_result)) {
+    $hardware = 'ProCurve '.$regexp_result[1];
+    $version  = $regexp_result[2];
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $serial = snmp_get($device, '.1.3.6.1.4.1.11.2.36.1.1.2.9.0', '-Oqv', 'SEMI-MIB');
 $serial = trim(str_replace('"', '', $serial));
 
@@ -34,7 +66,11 @@ $serial = trim(str_replace('"', '', $serial));
 $FdbAddressCount = snmp_get($device, 'hpSwitchFdbAddressCount.0', '-Ovqn', 'STATISTICS-MIB');
 
 if (is_numeric($FdbAddressCount)) {
+<<<<<<< HEAD
     $rrd_def = 'DS:value:GAUGE:600:-1:100000';
+=======
+    $rrd_def = RrdDefinition::make()->addDataset('value', 'GAUGE', -1, 100000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $fields = array(
         'value' => $FdbAddressCount,

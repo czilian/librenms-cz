@@ -1,7 +1,14 @@
 <?php
 
+<<<<<<< HEAD
 echo "Polling SNOM device...\n";
 
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+echo "Polling SNOM device...\n";
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 // Get SNOM specific version string from silly SNOM location. Silly SNOM!
 // FIXME - This needs a good cleanup...
 $cmd = 'snmpget -O qv '.snmp_gen_auth($device).' '.$device['hostname'].':'.$device['port'].' 1.3.6.1.2.1.7526.2.4';
@@ -24,6 +31,7 @@ $rxbytes = (0 - $rxbytes * 8);
 echo "$rxbytes, $rxpkts, $txbytes, $txpkts, $calls, $registrations";
 
 $rrd_name = 'data';
+<<<<<<< HEAD
 $rrd_def = array(
     'DS:INOCTETS:COUNTER:600:U:100000000000',
     'DS:OUTOCTETS:COUNTER:600:U:10000000000',
@@ -32,6 +40,15 @@ $rrd_def = array(
     'DS:CALLS:COUNTER:600:U:10000000000',
     'DS:REGISTRATIONS:COUNTER:600:U:10000000000'
 );
+=======
+$rrd_def = RrdDefinition::make()
+    ->addDataset('INOCTETS', 'COUNTER', null, 100000000000)
+    ->addDataset('OUTOCTETS', 'COUNTER', null, 10000000000)
+    ->addDataset('INPKTS', 'COUNTER', null, 10000000000)
+    ->addDataset('OUTPKTS', 'COUNTER', null, 10000000000)
+    ->addDataset('CALLS', 'COUNTER', null, 10000000000)
+    ->addDataset('REGISTRATIONS', 'COUNTER', null, 10000000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $fields = array(
     'INOCTETS'      => $rxbytes,

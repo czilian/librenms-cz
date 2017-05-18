@@ -1,6 +1,10 @@
 site_name: LibreNMS Docs
 docs_dir: doc
 theme_dir: 'librenms_theme'
+<<<<<<< HEAD
+=======
+theme: null
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 site_dir: out
 site_url: http://docs.librenms.org
 markdown_extensions:
@@ -49,6 +53,10 @@ pages:
     - Extensions/Email-Alerting.md
     - Extensions/Globe-Frontpage.md
     - Extensions/Graylog.md
+<<<<<<< HEAD
+=======
+    - Extensions/Graphite.md
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     - Extensions/IRC-Bot.md
     - Extensions/IRC-Bot-Extensions.md
     - Extensions/InfluxDB.md
@@ -58,6 +66,10 @@ pages:
     - Extensions/Network-Map.md
     - Extensions/NFSen.md
     - Extensions/Oxidized.md
+<<<<<<< HEAD
+=======
+    - Extensions/PeeringDB.md
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     - Extensions/Plugin-System.md
     - Extensions/Poller-Service.md
     - Extensions/Port-Description-Parser.md
@@ -80,7 +92,11 @@ pages:
     - Developing/Code-Structure.md
 
     - Developing/Creating-Documentation.md
+<<<<<<< HEAD
     - Developing/Support-New-OS.md
+=======
+    - Adding support for a new OS: Developing/Support-New-OS.md
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     - Developing/Dynamic-Config.md
     - Developing/Sensor-State-Support.md
 
@@ -88,8 +104,15 @@ pages:
     - Developing/Creating-Release.md
 - API: API/API-Docs.md
 - Support:
+<<<<<<< HEAD
     - Support/Configuration.md
     - Support/Discovery Support.md
+=======
+    - Support/1-Minute-Polling.md
+    - Support/Configuration.md
+    - Support/Discovery Support.md
+    - Support/Example-Hardware-Setup.md
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     - Support/FAQ.md
     - Support/Features.md
     - Support/Install Validation.md
@@ -105,4 +128,15 @@ pages:
     - Installation/Installation-(Debian-Ubuntu).md
     - Installation/Installation-(RHEL-CentOS).md
     - Support/Support-New-OS.md
+<<<<<<< HEAD
     - Extensions/RRDCached-Security.md
+=======
+    - Extensions/Agent-Setup.md
+    - Extensions/RRDCached-Security.md
+    - Developing/os/Initial-Detection.md
+    - Developing/os/Mem-CPU-Information.md
+    - Developing/os/Test-Units.md
+    - Developing/os/Health-Information.md
+    - Developing/os/Wireless-Sensors.md
+    - Developing/os/Custom-Graphs.md
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

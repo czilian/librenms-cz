@@ -14,10 +14,20 @@ Table of Content:
         - [NIOS 7.x](#nios-7x)
     - [Juniper](#juniper)
         - [Junos OS](#junos-os)
+<<<<<<< HEAD
     - [Palo Alto](#palo-alto)
         - [PANOS 6.x/7.x](#panos-6x7x)
 - [Operating systems](#operating-systems)
     - [Linux (snmpd)](#linux-snmpd)
+=======
+    - [Mikrotik](#mikrotik)
+        - [RouterOS 6.x](#routeros-6x)
+    - [Palo Alto](#palo-alto)
+        - [PANOS 6.x/7.x](#panos-6x7x)
+- [Operating systems](#operating-systems)
+    - [Linux (snmpd v2)](#linux-snmpd)
+    - [Linux (snmpd v3)](#linux-snmpd-v3)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     - [Windows Server 2008 R2](#windows-server-2008-r2)
     - [Windows Server 2012 R2](#windows-server-2012-r2)
 
@@ -79,6 +89,20 @@ set snmp contact contact
 set snmp community YOUR-COMMUNITY authorization read-only
 ```
 
+<<<<<<< HEAD
+=======
+### Mikrotik
+#### RouterOS 6.x
+```
+#Terminal SNMP v2 Configuration
+/snmp community
+set [ find default=yes ] read-access=no
+add addresses=<SRC IP/NETWORK> name=<COMMUNITY>
+/snmp
+set contact="<NAME>" enabled=yes engine-id=<ENGINE ID> location="<LOCALTION>"
+```
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ### Palo Alto
 #### PANOS 6.x/7.x
 1. Access the web admin page and log in
@@ -92,7 +116,11 @@ Note that you need to allow SNMP on the needed interfaces. To do that you need t
 
 
 ## Operating systems
+<<<<<<< HEAD
 ### Linux (snmpd)
+=======
+### Linux (snmpd v2)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 Replace your snmpd.conf file by the example below and edit it with appropriate community in "RANDOMSTRINGGOESHERE".
 
@@ -114,6 +142,16 @@ syscontact Your Name <your@email.address>
 #Distro Detection
 extend .1.3.6.1.4.1.2021.7890.1 distro /usr/bin/distro
 ```
+<<<<<<< HEAD
+=======
+
+```
+#If you have 'dmidecode' installed on your host, you can add the following lines for additional hardware detection
+extend .1.3.6.1.4.1.2021.7890.2 hardware '/usr/sbin/dmidecode -s system-product-name'
+extend .1.3.6.1.4.1.2021.7890.3 manufacturer '/usr/sbin/dmidecode -s system-manufacturer'
+extend .1.3.6.1.4.1.2021.7890.4 serial '/usr/sbin/dmidecode -s system-serial-number'
+```
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 The LibreNMS server include a copy of this example here:
 
 ```
@@ -127,6 +165,42 @@ curl -o /usr/bin/distro https://raw.githubusercontent.com/librenms/librenms-agen
 chmod +x /usr/bin/distro
 ```
 
+<<<<<<< HEAD
+=======
+### Linux (snmpd v3)
+
+Go to /etc/snmp/snmpd.conf
+
+Open the file in vi or nano /etc/snmp/snmpd.conf and add the following line to create SNMPV3 User (replace username and passwords with your own):
+
+```
+createUser authPrivUser MD5 "authPassword" DES "privPassword"
+```
+
+Make sure the agent listens to all interfaces by adding the following line inside snmpd.conf:
+
+```
+agentAddress udp:161,udp6:[::1]:161
+```
+
+This line simply means listen to connections across all interfaces IPv4 and IPv6 respectively
+
+Uncomment and change the following line to give read access to the username created above (rouser is what LibreNMS uses) :
+
+```
+#rouser authPrivUser priv
+```
+
+Change the following details inside snmpd.conf
+
+```
+syslocation Rack, Room, Building, City, Country [GPSX,Y]
+syscontact Your Name <your@email.address>
+```
+
+Save and exit the file
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 #### Restart the snmpd service:
 
 ##### CentOS 6 / Red hat 6

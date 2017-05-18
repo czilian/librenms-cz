@@ -34,13 +34,18 @@ class ThrowPromise implements PromiseInterface
     /**
      * Initializes promise.
      *
+<<<<<<< HEAD
      * @param string|\Exception $exception Exception class name or instance
+=======
+     * @param string|\Exception|\Throwable $exception Exception class name or instance
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
      *
      * @throws \Prophecy\Exception\InvalidArgumentException
      */
     public function __construct($exception)
     {
         if (is_string($exception)) {
+<<<<<<< HEAD
             if (!class_exists($exception)
              && 'Exception' !== $exception
              && !is_subclass_of($exception, 'Exception')) {
@@ -52,6 +57,17 @@ class ThrowPromise implements PromiseInterface
         } elseif (!$exception instanceof \Exception) {
             throw new InvalidArgumentException(sprintf(
                 'Exception class or instance expected as argument to ThrowPromise, but got %s.',
+=======
+            if (!class_exists($exception) || !$this->isAValidThrowable($exception)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Exception / Throwable class or instance expected as argument to ThrowPromise, but got %s.',
+                    $exception
+                ));
+            }
+        } elseif (!$exception instanceof \Exception && !$exception instanceof \Throwable) {
+            throw new InvalidArgumentException(sprintf(
+                'Exception / Throwable class or instance expected as argument to ThrowPromise, but got %s.',
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 is_object($exception) ? get_class($exception) : gettype($exception)
             ));
         }
@@ -88,4 +104,17 @@ class ThrowPromise implements PromiseInterface
 
         throw $this->exception;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * @param string $exception
+     *
+     * @return bool
+     */
+    private function isAValidThrowable($exception)
+    {
+        return is_a($exception, 'Exception', true) || is_subclass_of($exception, 'Throwable', true);
+    }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

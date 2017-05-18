@@ -1,3 +1,9 @@
 os: netopia
 text: 'Motorola Netopia'
 type: network
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr_regex:
+        - '/^Netopia/'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

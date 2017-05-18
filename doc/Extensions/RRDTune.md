@@ -13,6 +13,7 @@ To enable this you can do so in three ways!
 Now when a port interface speed changes (this can happen because of a physical change or just because the device has misreported) the max value is set. If you don't want to wait until
 a port speed changes then you can run the included script:
 
+<<<<<<< HEAD
 scripts/tune_port.php -h <hostname> -p <ifName>
 
 Wildcards are supported using *, i.e:
@@ -20,3 +21,14 @@ Wildcards are supported using *, i.e:
 scripts/tune_port.php -h local* -p eth*
 
 This script will then perform the rrdtool tune on each port found using the provided ifSpeed for that port.
+=======
+`./scripts/tune_port.php -h <hostname> -p <ifName>`
+
+Wildcards are supported using *, i.e:
+
+`./scripts/tune_port.php -h local* -p eth*`
+
+This script will then perform the rrdtool tune on each port found using the provided ifSpeed for that port.
+
+Run `./scripts/tune_port.php` to see help page.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

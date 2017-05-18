@@ -61,18 +61,66 @@ class Parser
      */
     public function parse($value, $exceptionOnInvalidType = false, $objectSupport = false, $objectForMap = false)
     {
+<<<<<<< HEAD
         if (!preg_match('//u', $value)) {
             throw new ParseException('The YAML value does not appear to be valid UTF-8.');
         }
+=======
+        if (false === preg_match('//u', $value)) {
+            throw new ParseException('The YAML value does not appear to be valid UTF-8.');
+        }
+
+        $this->refs = array();
+
+        $mbEncoding = null;
+        $e = null;
+        $data = null;
+
+        if (2 /* MB_OVERLOAD_STRING */ & (int) ini_get('mbstring.func_overload')) {
+            $mbEncoding = mb_internal_encoding();
+            mb_internal_encoding('UTF-8');
+        }
+
+        try {
+            $data = $this->doParse($value, $exceptionOnInvalidType, $objectSupport, $objectForMap);
+        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+        }
+
+        if (null !== $mbEncoding) {
+            mb_internal_encoding($mbEncoding);
+        }
+
+        $this->lines = array();
+        $this->currentLine = '';
+        $this->refs = array();
+        $this->skippedLineNumbers = array();
+        $this->locallySkippedLineNumbers = array();
+
+        if (null !== $e) {
+            throw $e;
+        }
+
+        return $data;
+    }
+
+    private function doParse($value, $exceptionOnInvalidType = false, $objectSupport = false, $objectForMap = false)
+    {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $this->currentLineNb = -1;
         $this->currentLine = '';
         $value = $this->cleanup($value);
         $this->lines = explode("\n", $value);
+<<<<<<< HEAD
+=======
+        $this->locallySkippedLineNumbers = array();
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         if (null === $this->totalNumberOfLines) {
             $this->totalNumberOfLines = count($this->lines);
         }
 
+<<<<<<< HEAD
         if (2 /* MB_OVERLOAD_STRING */ & (int) ini_get('mbstring.func_overload')) {
             $mbEncoding = mb_internal_encoding();
             mb_internal_encoding('UTF-8');
@@ -81,6 +129,12 @@ class Parser
         $data = array();
         $context = null;
         $allowOverwrite = false;
+=======
+        $data = array();
+        $context = null;
+        $allowOverwrite = false;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         while ($this->moveToNextLine()) {
             if ($this->isCurrentLineEmpty()) {
                 continue;
@@ -92,13 +146,21 @@ class Parser
             }
 
             $isRef = $mergeNode = false;
+<<<<<<< HEAD
             if (preg_match('#^\-((?P<leadspaces>\s+)(?P<value>.+?))?\s*$#u', $this->currentLine, $values)) {
+=======
+            if (self::preg_match('#^\-((?P<leadspaces>\s+)(?P<value>.+))?$#u', rtrim($this->currentLine), $values)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 if ($context && 'mapping' == $context) {
                     throw new ParseException('You cannot define a sequence item when in a mapping', $this->getRealCurrentLineNb() + 1, $this->currentLine);
                 }
                 $context = 'sequence';
 
+<<<<<<< HEAD
                 if (isset($values['value']) && preg_match('#^&(?P<ref>[^ ]+) *(?P<value>.*)#u', $values['value'], $matches)) {
+=======
+                if (isset($values['value']) && self::preg_match('#^&(?P<ref>[^ ]+) *(?P<value>.*)#u', $values['value'], $matches)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     $isRef = $matches['ref'];
                     $values['value'] = $matches['value'];
                 }
@@ -108,7 +170,11 @@ class Parser
                     $data[] = $this->parseBlock($this->getRealCurrentLineNb() + 1, $this->getNextEmbedBlock(null, true), $exceptionOnInvalidType, $objectSupport, $objectForMap);
                 } else {
                     if (isset($values['leadspaces'])
+<<<<<<< HEAD
                         && preg_match('#^(?P<key>'.Inline::REGEX_QUOTED_STRING.'|[^ \'"\{\[].*?) *\:(\s+(?P<value>.+?))?\s*$#u', $values['value'], $matches)
+=======
+                        && self::preg_match('#^(?P<key>'.Inline::REGEX_QUOTED_STRING.'|[^ \'"\{\[].*?) *\:(\s+(?P<value>.+))?$#u', rtrim($values['value']), $matches)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     ) {
                         // this is a compact notation element, add to next block and parse
                         $block = $values['value'];
@@ -124,7 +190,14 @@ class Parser
                 if ($isRef) {
                     $this->refs[$isRef] = end($data);
                 }
+<<<<<<< HEAD
             } elseif (preg_match('#^(?P<key>'.Inline::REGEX_QUOTED_STRING.'|[^ \'"\[\{].*?) *\:(\s+(?P<value>.+?))?\s*$#u', $this->currentLine, $values) && (false === strpos($values['key'], ' #') || in_array($values['key'][0], array('"', "'")))) {
+=======
+            } elseif (
+                self::preg_match('#^(?P<key>'.Inline::REGEX_QUOTED_STRING.'|[^ \'"\[\{].*?) *\:(\s+(?P<value>.+))?$#u', rtrim($this->currentLine), $values)
+                && (false === strpos($values['key'], ' #') || in_array($values['key'][0], array('"', "'")))
+            ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 if ($context && 'sequence' == $context) {
                     throw new ParseException('You cannot define a mapping item when in a sequence', $this->currentLineNb + 1, $this->currentLine);
                 }
@@ -161,11 +234,15 @@ class Parser
                             throw new ParseException('YAML merge keys used with a scalar value instead of an array.', $this->getRealCurrentLineNb() + 1, $this->currentLine);
                         }
 
+<<<<<<< HEAD
                         foreach ($refValue as $key => $value) {
                             if (!isset($data[$key])) {
                                 $data[$key] = $value;
                             }
                         }
+=======
+                        $data += $refValue; // array union
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     } else {
                         if (isset($values['value']) && $values['value'] !== '') {
                             $value = $values['value'];
@@ -187,15 +264,20 @@ class Parser
                                     throw new ParseException('Merge items must be arrays.', $this->getRealCurrentLineNb() + 1, $parsedItem);
                                 }
 
+<<<<<<< HEAD
                                 foreach ($parsedItem as $key => $value) {
                                     if (!isset($data[$key])) {
                                         $data[$key] = $value;
                                     }
                                 }
+=======
+                                $data += $parsedItem; // array union
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                             }
                         } else {
                             // If the value associated with the key is a single mapping node, each of its key/value pairs is inserted into the
                             // current mapping, unless the key already exists in it.
+<<<<<<< HEAD
                             foreach ($parsed as $key => $value) {
                                 if (!isset($data[$key])) {
                                     $data[$key] = $value;
@@ -204,6 +286,12 @@ class Parser
                         }
                     }
                 } elseif (isset($values['value']) && preg_match('#^&(?P<ref>[^ ]+) *(?P<value>.*)#u', $values['value'], $matches)) {
+=======
+                            $data += $parsed; // array union
+                        }
+                    }
+                } elseif (isset($values['value']) && self::preg_match('#^&(?P<ref>[^ ]+) *(?P<value>.*)#u', $values['value'], $matches)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     $isRef = $matches['ref'];
                     $values['value'] = $matches['value'];
                 }
@@ -255,6 +343,7 @@ class Parser
                         throw $e;
                     }
 
+<<<<<<< HEAD
                     if (isset($mbEncoding)) {
                         mb_internal_encoding($mbEncoding);
                     }
@@ -290,6 +379,15 @@ class Parser
             mb_internal_encoding($mbEncoding);
         }
 
+=======
+                    return $value;
+                }
+
+                throw new ParseException('Unable to parse.', $this->getRealCurrentLineNb() + 1, $this->currentLine);
+            }
+        }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($objectForMap && !is_object($data) && 'mapping' === $context) {
             $object = new \stdClass();
 
@@ -318,7 +416,11 @@ class Parser
         $parser = new self($offset, $this->totalNumberOfLines, $skippedLineNumbers);
         $parser->refs = &$this->refs;
 
+<<<<<<< HEAD
         return $parser->parse($yaml, $exceptionOnInvalidType, $objectSupport, $objectForMap);
+=======
+        return $parser->doParse($yaml, $exceptionOnInvalidType, $objectSupport, $objectForMap);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     /**
@@ -429,7 +531,11 @@ class Parser
 
             $previousLineIndentation = $indent;
 
+<<<<<<< HEAD
             if ($isItUnindentedCollection && !$this->isStringUnIndentedCollectionItem() && $newIndent === $indent) {
+=======
+            if ($isItUnindentedCollection && !$this->isCurrentLineEmpty() && !$this->isStringUnIndentedCollectionItem() && $newIndent === $indent) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $this->moveToPreviousLine();
                 break;
             }
@@ -527,7 +633,11 @@ class Parser
             return $this->refs[$value];
         }
 
+<<<<<<< HEAD
         if (preg_match('/^'.self::BLOCK_SCALAR_HEADER_PATTERN.'$/', $value, $matches)) {
+=======
+        if (self::preg_match('/^'.self::BLOCK_SCALAR_HEADER_PATTERN.'$/', $value, $matches)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $modifiers = isset($matches['modifiers']) ? $matches['modifiers'] : '';
 
             return $this->parseBlockScalar($matches['separator'], preg_replace('#\d+#', '', $modifiers), (int) abs($modifiers));
@@ -582,7 +692,11 @@ class Parser
 
         // determine indentation if not specified
         if (0 === $indentation) {
+<<<<<<< HEAD
             if (preg_match('/^ +/', $this->currentLine, $matches)) {
+=======
+            if (self::preg_match('/^ +/', $this->currentLine, $matches)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $indentation = strlen($matches[0]);
             }
         }
@@ -593,7 +707,11 @@ class Parser
             while (
                 $notEOF && (
                     $isCurrentLineBlank ||
+<<<<<<< HEAD
                     preg_match($pattern, $this->currentLine, $matches)
+=======
+                    self::preg_match($pattern, $this->currentLine, $matches)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 )
             ) {
                 if ($isCurrentLineBlank && strlen($this->currentLine) > $indentation) {
@@ -626,7 +744,11 @@ class Parser
             $previousLineIndented = false;
             $previousLineBlank = false;
 
+<<<<<<< HEAD
             for ($i = 0; $i < count($blockLines); ++$i) {
+=======
+            for ($i = 0, $blockLinesCount = count($blockLines); $i < $blockLinesCount; ++$i) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 if ('' === $blockLines[$i]) {
                     $text .= "\n";
                     $previousLineIndented = false;
@@ -681,10 +803,14 @@ class Parser
             return false;
         }
 
+<<<<<<< HEAD
         $ret = false;
         if ($this->getCurrentLineIndentation() > $currentIndentation) {
             $ret = true;
         }
+=======
+        $ret = $this->getCurrentLineIndentation() > $currentIndentation;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         $this->moveToPreviousLine();
 
@@ -785,6 +911,7 @@ class Parser
             return false;
         }
 
+<<<<<<< HEAD
         $ret = false;
         if (
             $this->getCurrentLineIndentation() == $currentIndentation
@@ -793,6 +920,9 @@ class Parser
         ) {
             $ret = true;
         }
+=======
+        $ret = $this->getCurrentLineIndentation() === $currentIndentation && $this->isStringUnIndentedCollectionItem();
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         $this->moveToPreviousLine();
 
@@ -816,6 +946,52 @@ class Parser
      */
     private function isBlockScalarHeader()
     {
+<<<<<<< HEAD
         return (bool) preg_match('~'.self::BLOCK_SCALAR_HEADER_PATTERN.'$~', $this->currentLine);
+=======
+        return (bool) self::preg_match('~'.self::BLOCK_SCALAR_HEADER_PATTERN.'$~', $this->currentLine);
+    }
+
+    /**
+     * A local wrapper for `preg_match` which will throw a ParseException if there
+     * is an internal error in the PCRE engine.
+     *
+     * This avoids us needing to check for "false" every time PCRE is used
+     * in the YAML engine
+     *
+     * @throws ParseException on a PCRE internal error
+     *
+     * @see preg_last_error()
+     *
+     * @internal
+     */
+    public static function preg_match($pattern, $subject, &$matches = null, $flags = 0, $offset = 0)
+    {
+        if (false === $ret = preg_match($pattern, $subject, $matches, $flags, $offset)) {
+            switch (preg_last_error()) {
+                case PREG_INTERNAL_ERROR:
+                    $error = 'Internal PCRE error.';
+                    break;
+                case PREG_BACKTRACK_LIMIT_ERROR:
+                    $error = 'pcre.backtrack_limit reached.';
+                    break;
+                case PREG_RECURSION_LIMIT_ERROR:
+                    $error = 'pcre.recursion_limit reached.';
+                    break;
+                case PREG_BAD_UTF8_ERROR:
+                    $error = 'Malformed UTF-8 data.';
+                    break;
+                case PREG_BAD_UTF8_OFFSET_ERROR:
+                    $error = 'Offset doesn\'t correspond to the begin of a valid UTF-8 code point.';
+                    break;
+                default:
+                    $error = 'Error.';
+            }
+
+            throw new ParseException($error);
+        }
+
+        return $ret;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 }

@@ -3,7 +3,11 @@ group: cisco
 text: 'Cisco Small Business'
 ifname: 1
 type: network
+<<<<<<< HEAD
 icon: linksys
+=======
+icon: cisco
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 over:
     - { graph: device_bits, text: 'Device Traffic' }
     - { graph: device_processor, text: 'CPU Usage' }
@@ -18,6 +22,7 @@ bad_ifXEntry:
     - SG300-28
     - SG300-28MP
 poller_modules:
+<<<<<<< HEAD
     cisco-cbqos: 1
     cisco-cef: 1
     cisco-mac-accounting: 1
@@ -35,3 +40,28 @@ discovery_modules:
     cisco-pw: 1
     cisco-vrf: 1
     cisco-vrf-lite: 1
+=======
+    bgp-peers: 0
+    hr-mib: 0
+    ntp: 0
+    ospf: 0
+    ucd-diskio: 0
+    ucd-mib: 0
+discovery_modules:
+    bgp-peers: 0
+    cisco-vrf-lite: 0
+    ntp: 0
+    ucd-diskio: 0
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.9.6.1.23.3.13
+        - .1.3.6.1.4.1.9.6.1.80
+        - .1.3.6.1.4.1.9.6.1.81
+        - .1.3.6.1.4.1.9.6.1.82
+        - .1.3.6.1.4.1.9.6.1.83
+        - .1.3.6.1.4.1.9.6.1.85
+        - .1.3.6.1.4.1.9.6.1.88
+        - .1.3.6.1.4.1.9.6.1.89
+        - .1.3.6.1.4.1.9.6.1.95
+        - .1.3.6.1.4.1.3955.6.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

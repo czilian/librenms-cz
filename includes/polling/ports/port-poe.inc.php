@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $cpe_oids = array(
     'cpeExtPsePortEnable',
     'cpeExtPsePortDiscoverMode',
@@ -37,12 +42,20 @@ $peth_oids = array(
 
 if ($this_port['dot3StatsIndex'] && $port['ifType'] == 'ethernetCsmacd') {
     $rrd_name = getPortRrdName($port_id, 'poe');
+<<<<<<< HEAD
     $rrd_def = array(
         'DS:PortPwrAllocated:GAUGE:600:0:U',
         'DS:PortPwrAvailable:GAUGE:600:0:U',
         'DS:PortConsumption:DERIVE:600:0:U',
         'DS:PortMaxPwrDrawn:GAUGE:600:0:U'
     );
+=======
+    $rrd_def = RrdDefinition::make()
+        ->addDataset('PortPwrAllocated', 'GAUGE', 0)
+        ->addDataset('PortPwrAvailable', 'GAUGE', 0)
+        ->addDataset('PortConsumption', 'DERIVE', 0)
+        ->addDataset('PortMaxPwrDrawn', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $upd = "$polled:".$port['cpeExtPsePortPwrAllocated'].':'.$port['cpeExtPsePortPwrAvailable'].':'.$port['cpeExtPsePortPwrConsumption'].':'.$port['cpeExtPsePortMaxPwrDrawn'];
 

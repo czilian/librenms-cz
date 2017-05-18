@@ -386,7 +386,11 @@ function rrd_strip_quotes($str)
  * @param string $file Name of RRD file to analyse
  * @return array Array describing the RRD file
  */
+<<<<<<< HEAD
 function rrd_info($file)
+=======
+function _rrd_info($file)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     $info = array('filename' => $file);
 
@@ -443,7 +447,11 @@ function rrd_info($file)
     }//end if
 
     return $info;
+<<<<<<< HEAD
 }//end rrd_info()
+=======
+}//end _rrd_info()
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 
 function rrd_get_color($code, $line = true)
@@ -499,7 +507,11 @@ function collectd_draw_rrd($host, $plugin, $type, $pinst = null, $tinst = null, 
     $rrdfile = sprintf('%s/%s%s%s/%s%s%s', $host, $plugin, is_null($pinst) ? '' : '-', $pinst, $type, is_null($tinst) ? '' : '-', $tinst);
     foreach ($config['datadirs'] as $datadir) {
         if (is_file($datadir.'/'.$rrdfile.'.rrd')) {
+<<<<<<< HEAD
             $rrdinfo = rrd_info($datadir.'/'.$rrdfile.'.rrd');
+=======
+            $rrdinfo = _rrd_info($datadir.'/'.$rrdfile.'.rrd');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             if (isset($rrdinfo['RRA']) && is_array($rrdinfo['RRA'])) {
                 break;
             } else {

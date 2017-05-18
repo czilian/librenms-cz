@@ -24,6 +24,11 @@ source: Support/FAQ.md
  - [How do I move my LibreNMS install to another server?](#faq24)
  - [Why is my EdgeRouter device not detected?](#faq25)
  - [Why are some of my disks not showing?](#faq26)
+<<<<<<< HEAD
+=======
+ - [Why are my disks reporting an incorrect size?](#faq27)
+ - [What is the Difference between Disable Device and Ignore a Device?](#faq28)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 ### Developing
  - [How do I add support for a new OS?](#faq8)
@@ -112,9 +117,18 @@ shouldn't be seeing this. If you are, please report this in [issue 443](https://
 #### <a name="faq15"> Why do I see traffic spikes in my graphs?</a>
 
 This occurs either when a counter resets or the device sends back bogus data making it look like a counter reset. We have enabled support for setting a maximum value for rrd files for ports.
+<<<<<<< HEAD
 Before this all rrd files were set to 100G max values, now you can enable support to limit this to the actual port speed.
 
 rrdtool tune will change the max value when the interface speed is detected as being changed (min value will be set for anything 10M or over) or when you run the included script (scripts/tune_port.php).
+=======
+
+
+Before this all rrd files were set to 100G max values, now you can enable support to limit this to the actual port speed.
+
+
+rrdtool tune will change the max value when the interface speed is detected as being changed (min value will be set for anything 10M or over) or when you run the included script (./scripts/tune_port.php) - see [RRDTune doc](../Extensions/RRDTune.md)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 #### <a name="faq17"> Why do I see gaps in my graphs?</a>
 
@@ -241,6 +255,19 @@ Or
 
 Restart snmpd and LibreNMS should populate the additional disk after a fresh discovery.
 
+<<<<<<< HEAD
+=======
+#### <a name="faq27"> Why are my disks reporting an incorrect size?</a>
+There is a known issue for net-snmp, which causes it to report incorrect disk size and disk usage when the size of the disk (or raid) are larger then 16TB, a workaround has been implemented but is not active on Centos 6.8 by default due to the fact that this workaround breaks official SNMP specs, and as such could cause unexpected behaviour in other SNMP tools. You can activate the workaround by adding to /etc/snmp/snmpd.conf :
+
+`realStorageUnits 0`
+
+#### <a name="faq28"> What is the Difference between Disable Device and Ignore a Device?</a>
+
+  - Disable stops polling.
+  - Ignore disables alerting.
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 #### <a name="faq8"> How do I add support for a new OS?</a>
 
 Please see [Supporting a new OS](../Developing/Support-New-OS.md)
@@ -248,17 +275,34 @@ Please see [Supporting a new OS](../Developing/Support-New-OS.md)
 #### <a name="faq20"> What information do you need to add a new OS?</a>
 
 Under the device, click the gear and select Capture. 
+<<<<<<< HEAD
 Please provide the output of Discovery, Poller, and Snmpwalk as separate non-expiring pastebin.com links.
+=======
+Please provide the output of Discovery, Poller, and Snmpwalk as separate non-expiring https://p.libren.ms/ links.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 You can also use the command line to obtain the information.  Especially, if snmpwalk results in a large amount of data.
 Replace the relevant information in these commands such as HOSTNAME and COMMUNITY. Use `snmpwalk` instead of `snmpbulkwalk` for v1 devices.
 
+<<<<<<< HEAD
 ```bash
 ./discovery.php -h HOSTNAME -d -m os
 ./poller.php -h HOSTNAME -r -f -d -m os
 snmpbulkwalk -OUneb -v2c -c COMMUNITY HOSTNAME .
 ```
 
+=======
+> These commands will automatically upload the data to LibreNMS servers.
+
+```bash
+./discovery.php -h HOSTNAME -d | ./pbin.sh
+./poller.php -h HOSTNAME -r -f -d | ./pbin.sh
+snmpbulkwalk -OUneb -v2c -c COMMUNITY HOSTNAME .  | ./pbin.sh
+```
+
+You can use the links provided by these commands within the issue.
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 If possible please also provide what the OS name should be if it doesn't exist already.
 
 #### <a name="faq9"> What can I do to help?</a>

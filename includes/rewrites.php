@@ -14,7 +14,20 @@ function rewrite_location($location)
             }
         }
     }
+<<<<<<< HEAD
     
+=======
+
+    if (is_array($config['location_map_regex_sub'])) {
+        foreach ($config['location_map_regex_sub'] as $reg => $val) {
+            if (preg_match($reg, $location)) {
+                $location = preg_replace($reg, $val, $location);
+                break;
+            }
+        }
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if (isset($config['location_map'][$location])) {
         $location = $config['location_map'][$location];
     }
@@ -30,6 +43,7 @@ function formatMac($mac)
     return $mac;
 }
 
+<<<<<<< HEAD
 
 function rewrite_entity_descr($descr)
 {
@@ -63,20 +77,69 @@ function ifNameDescr($interface, $device = null)
 
 
 function ifLabel($interface, $device = null)
+=======
+
+function rewrite_entity_descr($descr)
+{
+    $descr = str_replace('Distributed Forwarding Card', 'DFC', $descr);
+    $descr = preg_replace('/7600 Series SPA Interface Processor-/', '7600 SIP-', $descr);
+    $descr = preg_replace('/Rev\.\ [0-9\.]+\ /', '', $descr);
+    $descr = preg_replace('/12000 Series Performance Route Processor/', '12000 PRP', $descr);
+    $descr = preg_replace('/^12000/', '', $descr);
+    $descr = preg_replace('/Gigabit Ethernet/', 'GigE', $descr);
+    $descr = preg_replace('/^ASR1000\ /', '', $descr);
+    $descr = str_replace('Routing Processor', 'RP', $descr);
+    $descr = str_replace('Route Processor', 'RP', $descr);
+    $descr = str_replace('Switching Processor', 'SP', $descr);
+    $descr = str_replace('Sub-Module', 'Module ', $descr);
+    $descr = str_replace('DFC Card', 'DFC', $descr);
+    $descr = str_replace('Centralized Forwarding Card', 'CFC', $descr);
+    $descr = str_replace('Power Supply Module', 'PSU ', $descr);
+    $descr = str_replace('/Voltage Sensor/', 'Voltage', $descr);
+    $descr = str_replace('Sensor', '', $descr);
+    $descr = preg_replace('/^temperatures /', '', $descr);
+    $descr = preg_replace('/^voltages /', '', $descr);
+
+    return $descr;
+}
+
+
+/**
+ * Clean port values for html display
+ * Add label to the port array (usually one of ifAlias, ifName, ifDescr)
+ *
+ * @param array $interface
+ * @param null|array $device
+ * @return mixed
+ */
+function cleanPort($interface, $device = null)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     global $config;
 
     $interface['ifAlias'] = display($interface['ifAlias']);
+<<<<<<< HEAD
+=======
+    $interface['ifName']  = display($interface['ifName']);
+    $interface['ifDescr'] = display($interface['ifDescr']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     if (!$device) {
         $device = device_by_id_cache($interface['device_id']);
     }
 
     $os = strtolower($device['os']);
+<<<<<<< HEAD
 
     if (isset($config['os'][$os]['ifname'])) {
         $interface['label'] = $interface['ifName'];
 
+=======
+
+    if (isset($config['os'][$os]['ifname'])) {
+        $interface['label'] = $interface['ifName'];
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($interface['ifName'] == '') {
             $interface['label'] = $interface['ifDescr'];
         }
@@ -367,7 +430,10 @@ $rewrite_extreme_hardware = array(
     '.1.3.6.1.4.1.1916.2.23'  => 'EnetSwitch 24Port',
     '.1.3.6.1.4.1.1916.2.83'  => 'Sentriant CE150',
     '.1.3.6.1.4.1.1916.2.58'  => 'Summit 400-48t',
+<<<<<<< HEAD
     '.1.3.6.1.4.1.1916.2.59'  => 'Summit 400-48t',
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     '.1.3.6.1.4.1.1916.2.71'  => 'Summit X450a-24t',
     '.1.3.6.1.4.1.1916.2.81'  => 'Summit X450a-24t',
     '.1.3.6.1.4.1.1916.2.1'   => 'Summit 1',
@@ -385,7 +451,10 @@ $rewrite_extreme_hardware = array(
     '.1.3.6.1.4.1.1916.2.61'  => 'Summit 300-24',
     '.1.3.6.1.4.1.1916.2.55'  => 'Summit 300-48',
     '.1.3.6.1.4.1.1916.2.4'   => 'Summit 4',
+<<<<<<< HEAD
     '.1.3.6.1.4.1.1916.2.58'  => 'Summit 400-24',
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     '.1.3.6.1.4.1.1916.2.64'  => 'Summit 400-24p',
     '.1.3.6.1.4.1.1916.2.63'  => 'Summit 400-24t',
     '.1.3.6.1.4.1.1916.2.59'  => 'Summit 400-24x',
@@ -410,8 +479,11 @@ $rewrite_extreme_hardware = array(
     '.1.3.6.1.4.1.1916.2.90'  => 'Summit X250-24x',
     '.1.3.6.1.4.1.1916.2.92'  => 'Summit X250-48p',
     '.1.3.6.1.4.1.1916.2.91'  => 'Summit X250-48t',
+<<<<<<< HEAD
     '.1.3.6.1.4.1.1916.2.93'  => 'Summit X250/X450-24 (3-Stack)',
     '.1.3.6.1.4.1.1916.2.88'  => 'Summit X250e-24t (Single)',
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     '.1.3.6.1.4.1.1916.2.66'  => 'Summit X450-24t',
     '.1.3.6.1.4.1.1916.2.65'  => 'Summit X450-24x',
     '.1.3.6.1.4.1.1916.2.80'  => 'Summit X450a-24tDC',
@@ -421,8 +493,11 @@ $rewrite_extreme_hardware = array(
     '.1.3.6.1.4.1.1916.2.87'  => 'Summit X450a-48tDC',
     '.1.3.6.1.4.1.1916.2.72'  => 'Summit X450e-24p',
     '.1.3.6.1.4.1.1916.2.79'  => 'Summit X450e-48p',
+<<<<<<< HEAD
     '.1.3.6.1.4.1.1916.2.62'  => 'Black Diamond 8810',
     '.1.3.6.1.4.1.1916.2.67'  => 'SummitStack',
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     '.1.3.6.1.4.1.1916.2.100' => 'Summit x150-24t',
     '.1.3.6.1.4.1.1916.2.114' => 'Summit x650-24x',
     '.1.3.6.1.4.1.1916.2.129' => 'NWI-e450a',
@@ -574,6 +649,7 @@ $rewrite_ironware_hardware = array(
     'snFESX448FiberPlus2XGPremSwitch'        => 'FESX448Fiber+2XG-PREM',
     'snFESX448FiberPlus2XGPremRouter'        => 'FESX448Fiber+2XG-PREM',
     'snFESX424P'                             => 'FES 24G POE',
+<<<<<<< HEAD
     'snFESX424P'                             => 'FESX424POE',
     'snFESX424P'                             => 'FESX424POE',
     'snFESX424P'                             => 'FES 24GPOE-PREM',
@@ -591,6 +667,8 @@ $rewrite_ironware_hardware = array(
     'snFESX424P'                             => 'FES 24GPOE + 2 10G-PREM',
     'snFESX424P'                             => 'FESX424POE+2XG-PREM',
     'snFESX424P'                             => 'FESX424POE+2XG-PREM',
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     'snFESX624'                              => 'FastIron Edge V6 Switch(FES) 24G',
     'snFESX624Switch'                        => 'FESX624',
     'snFESX624Router'                        => 'FESX624',
@@ -664,6 +742,7 @@ $rewrite_ironware_hardware = array(
     'snFESX648FiberPlus2XGPremSwitch'        => 'FESX648Fiber+2XG-PREM',
     'snFESX648FiberPlus2XGPremRouter'        => 'FESX648Fiber+2XG-PREM',
     'snFESX624P'                             => 'FastIron Edge V6 Switch(FES) 24G POE',
+<<<<<<< HEAD
     'snFESX624P'                             => 'FESX624POE',
     'snFESX624P'                             => 'FESX624POE',
     'snFESX624P'                             => 'FastIron Edge V6 Switch(FES) 24GPOE-PREM',
@@ -681,6 +760,8 @@ $rewrite_ironware_hardware = array(
     'snFESX624P'                             => 'FastIron Edge V6 Switch(FES) 24GPOE + 2 10G-PREM',
     'snFESX624P'                             => 'FESX624POE+2XG-PREM',
     'snFESX624P'                             => 'FESX624POE+2XG-PREM',
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     'snFWSX424'                              => 'FWSX24G',
     'snFWSX424Switch'                        => 'FWSX424',
     'FWSX24GSwitch'                          => 'FWSX424',
@@ -947,7 +1028,10 @@ $rewrite_ifname = array(
     '-802.1q'                                        => '',
     'bvi'                                            => 'BVI',
     'vlan'                                           => 'Vlan',
+<<<<<<< HEAD
     'ether'                                          => 'Ether',
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     'tunnel'                                         => 'Tunnel',
     'serial'                                         => 'Serial',
     '-aal5 layer'                                    => ' aal5',
@@ -968,6 +1052,15 @@ $rewrite_hrDevice = array(
     '(R)'           => '',
     '  '            => ' ',
 );
+<<<<<<< HEAD
+=======
+
+$rewrite_GenericHW = array(
+    ' Computer Corporation' => '',
+    ' Corporation'          => '',
+    ' Inc.'                 => '',
+);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 // Specific rewrite functions
 
@@ -1053,6 +1146,7 @@ function rewrite_junos_hardware($hardware)
     return ($hardware);
 }
 
+<<<<<<< HEAD
 
 function fixiftype($type)
 {
@@ -1060,6 +1154,20 @@ function fixiftype($type)
 
     $type = array_preg_replace($rewrite_iftype, $type);
 
+=======
+function rewrite_generic_hardware($hardware)
+{
+    global $rewrite_GenericHW;
+    return array_str_replace($rewrite_GenericHW, $hardware);
+}
+
+function fixiftype($type)
+{
+    global $rewrite_iftype;
+
+    $type = array_preg_replace($rewrite_iftype, $type);
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     return ($type);
 }
 
@@ -1419,3 +1527,51 @@ function rewrite_ceraos_hardware($ceragon_type, $device)
     }
     return $hardware;
 };
+<<<<<<< HEAD
+=======
+
+/**
+ * @param $descr
+ * @return int
+ */
+function get_nagios_state($descr)
+{
+    switch ($descr) {
+        case 'On':
+        case 'Okay':
+        case 'Ok':
+            return 0;
+            break;
+        case 'Standby':
+        case 'Idle':
+        case 'Maintenance':
+            return 1;
+            break;
+        case 'Under':
+        case 'Over':
+            return 2;
+            break;
+        default:
+            return 3;
+            break;
+    }
+}
+
+/**
+ * @param $state
+ * @return int
+ */
+function apc_relay_state($state)
+{
+    switch ($state) {
+        case 'immediateCloseEMS':
+        case 'immediateOnEMS':
+            return 1;
+            break;
+        case 'immediateOpenEMS':
+        case 'immediateOffEMS':
+            return 2;
+            break;
+    }
+}
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

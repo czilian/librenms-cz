@@ -59,11 +59,17 @@ Enter the MySQL/MariaDB root password to enter the command-line interface.
 Create database.
 
 ```sql
+<<<<<<< HEAD
 CREATE DATABASE librenms;
 GRANT ALL PRIVILEGES ON librenms.*
   TO 'librenms'@'<ip>'
   IDENTIFIED BY '<password>'
 ;
+=======
+CREATE DATABASE librenms CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER 'librenms'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON librenms.* TO 'librenms'@'localhost';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 FLUSH PRIVILEGES;
 exit
 ```
@@ -185,7 +191,11 @@ If you are running Apache 2.2.18 or higher (current version in Centos 7 official
   </Directory>
 </VirtualHost>
 ```
+<<<<<<< HEAD
 If the file `/etc/httpd/conf.d/welcome.conf` exists, you will want to remove that as well unless you're familiar with [Name-based Virtual Hosts](https://httpd.apache.org/docs/2.2/vhosts/name-based.html). 
+=======
+If the file `/etc/httpd/conf.d/welcome.conf` exists, you will want to remove that as well unless you're familiar with [Name-based Virtual Hosts](https://httpd.apache.org/docs/2.2/vhosts/name-based.html).
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```bash
 rn /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.bak
 ```
@@ -377,6 +387,15 @@ Create the cronjob
 
     cp librenms.nonroot.cron /etc/cron.d/librenms
 
+<<<<<<< HEAD
+=======
+### Copy logrotate config ###
+
+LibreNMS keeps logs in `/opt/librenms/logs`. Over time these can become large and be rotated out.  To rotate out the old logs you can use the provided logrotate config file:
+
+    cp misc/librenms.logrotate /etc/logrotate.d/librenms
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ### Daily Updates ###
 
 LibreNMS performs daily updates by default.  At 00:15 system time every day, a `git pull --no-edit --quiet` is performed.  You can override this default by editing

@@ -6,7 +6,11 @@
 
 // Polling of Airmax MIB AP for Ubiquiti Airmax Radios
 //
+<<<<<<< HEAD
 // UBNT-AirMAX-MIB
+=======
+// UBNT-AirMAX-MIB::ubntRadioDistance
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 echo ' UBNT-AirMAX-MIB ';
 
 // Check If It Is A Device that supports latest Airmax MIB By Trying To Read Frequency

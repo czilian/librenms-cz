@@ -64,9 +64,14 @@ if ($rowCount != -1) {
 $sql = "SELECT *,`P`.`ifDescr` AS `interface` $sql";
 
 foreach (dbFetchRows($sql, $param) as $entry) {
+    $entry = cleanPort($entry);
     if (!$ignore) {
         if ($entry['ifInErrors'] > 0 || $entry['ifOutErrors'] > 0) {
+<<<<<<< HEAD
             $error_img = generate_port_link($entry, "<img src='images/16/chart_curve_error.png' alt='Interface Errors' border=0>", port_errors);
+=======
+            $error_img = generate_port_link($entry, "<i class='fa fa-flag fa-lg' style='color:red' aria-hidden='true'></i>", port_errors);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         } else {
             $error_img = '';
         }
@@ -96,7 +101,11 @@ foreach (dbFetchRows($sql, $param) as $entry) {
             'mac_address'      => formatMac($entry['mac_address']),
             'ipv4_address'     => $entry['ipv4_address'],
             'hostname'         => generate_device_link($entry),
+<<<<<<< HEAD
             'interface'        => generate_port_link($entry, makeshortif(fixifname(ifLabel($entry['label'])))).' '.$error_img,
+=======
+            'interface'        => generate_port_link($entry, makeshortif(fixifname(cleanPort($entry['label'])))).' '.$error_img,
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             'remote_device'    => $arp_name,
             'remote_interface' => $arp_if,
         );

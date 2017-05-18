@@ -38,7 +38,11 @@ if ($rowCount != -1) {
     $sql .= " LIMIT $limit_low,$limit_high";
 }
 
+<<<<<<< HEAD
 $sql = "SELECT * $sql";
+=======
+$sql = "SELECT `port_descr_descr` $sql";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 foreach (dbFetchRows($sql, $param) as $customer) {
     $i++;
@@ -50,6 +54,10 @@ foreach (dbFetchRows($sql, $param) as $customer) {
 
         $ifname  = fixifname($device['ifDescr']);
         $ifclass = ifclass($port['ifOperStatus'], $port['ifAdminStatus']);
+<<<<<<< HEAD
+=======
+        $port    = cleanPort($port);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         if ($device['os'] == 'ios') {
             if ($port['ifTrunk']) {

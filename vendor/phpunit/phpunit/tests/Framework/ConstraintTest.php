@@ -817,8 +817,13 @@ Failed asserting that two DateTime objects are equal.
 --- Expected
 +++ Actual
 @@ @@
+<<<<<<< HEAD
 -2013-03-29T04:13:35-0400
 +2013-03-29T04:13:35-0500
+=======
+-2013-03-29T04:13:35.000000-0400
++2013-03-29T04:13:35.000000-0500
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 EOF
             ),

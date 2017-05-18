@@ -20,6 +20,11 @@
 *
 */
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 // (2016-11-25, R.Morris) ups-nut, try "extend" -> if not, fall back to "exec" support.
 // -> Similar to approach used by Distro, but skip "legacy UCD-MIB shell support"
 //
@@ -28,6 +33,10 @@ $name = 'ups-nut';
 $app_id = $app['app_id'];
 $oid = '.1.3.6.1.4.1.8072.1.3.2.3.1.2.7.117.112.115.45.110.117.116';
 $ups_nut = snmp_get($device, $oid, '-Oqv');
+<<<<<<< HEAD
+=======
+update_application($app, $ups_nut);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 // If "extend" (used above) fails, try "exec" support.
 // Note, exec always splits outputs on newline, so need to use snmp_walk (not a single SNMP entry!)
@@ -44,6 +53,7 @@ echo ' '.$name;
 list ($charge, $battery_low, $remaining, $bat_volt, $bat_nom, $line_nom, $input_volt, $load) = explode("\n", $ups_nut);
 
 $rrd_name = array('app', $name, $app_id);
+<<<<<<< HEAD
 $rrd_def = array(
     'DS:charge:GAUGE:600:0:100',
     'DS:battery_low:GAUGE:600:0:100',
@@ -55,6 +65,17 @@ $rrd_def = array(
     'DS:load:GAUGE:600:0:100'
 );
 //print_r(array_values($rrd_def));
+=======
+$rrd_def = RrdDefinition::make()
+    ->addDataset('charge', 'GAUGE', 0, 100)
+    ->addDataset('battery_low', 'GAUGE', 0, 100)
+    ->addDataset('time_remaining', 'GAUGE', 0)
+    ->addDataset('battery_voltage', 'GAUGE', 0)
+    ->addDataset('battery_nominal', 'GAUGE', 0)
+    ->addDataset('line_nominal', 'GAUGE', 0)
+    ->addDataset('input_voltage', 'GAUGE', 0)
+    ->addDataset('load', 'GAUGE', 0, 100);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $fields = array(
     'charge' => $charge,
@@ -66,7 +87,10 @@ $fields = array(
     'input_voltage' => $input_volt,
     'load' => $load
 );
+<<<<<<< HEAD
 //print_r(array_values($fields));
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $tags = compact('name', 'app_id', 'rrd_name', 'rrd_def');
 data_update($device, 'app', $tags, $fields);

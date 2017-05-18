@@ -9,7 +9,11 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 $cambium_type = snmp_get($device, 'sysDescr.0', '-Oqv', '');
+=======
+$cambium_type = $poll_device['sysDescr'];
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $PMP = snmp_get($device, 'boxDeviceType.0', '-Oqv', 'WHISP-BOX-MIBV2-MIB');
 $version = $cambium_type;
 $filtered_words = array(

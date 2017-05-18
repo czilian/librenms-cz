@@ -37,6 +37,7 @@ class DoubleComparator extends NumericComparator
     /**
      * Asserts that two values are equal.
      *
+<<<<<<< HEAD
      * @param  mixed             $expected     The first value to compare
      * @param  mixed             $actual       The second value to compare
      * @param  float             $delta        The allowed numerical distance between two values to
@@ -48,6 +49,15 @@ class DoubleComparator extends NumericComparator
      * @throws ComparisonFailure Thrown when the comparison
      *                                        fails. Contains information about the
      *                                        specific errors that lead to the failure.
+=======
+     * @param mixed $expected     First value to compare
+     * @param mixed $actual       Second value to compare
+     * @param float $delta        Allowed numerical distance between two values to consider them equal
+     * @param bool  $canonicalize Arrays are sorted before comparison when set to true
+     * @param bool  $ignoreCase   Case is ignored when set to true
+     *
+     * @throws ComparisonFailure
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
      */
     public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {

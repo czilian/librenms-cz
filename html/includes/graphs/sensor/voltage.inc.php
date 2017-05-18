@@ -11,6 +11,7 @@ $rrd_options .= " DEF:sensor=$rrd_filename:sensor:AVERAGE";
 $rrd_options .= " DEF:sensor_max=$rrd_filename:sensor:MAX";
 $rrd_options .= " DEF:sensor_min=$rrd_filename:sensor:MIN";
 
+<<<<<<< HEAD
 $rrd_options .= ' AREA:sensor_max#c5c5c5';
 $rrd_options .= ' AREA:sensor_min#ffffffff';
 
@@ -23,6 +24,16 @@ if (is_numeric($sensor['sensor_limit'])) {
     $rrd_options .= ' HRULE:'.$sensor['sensor_limit'].'#999999::dashes';
 }
 
+=======
+$rrd_options .= " LINE1.5:sensor#cc0000:'".rrdtool_escape($sensor['sensor_descr'], 22)."'";
+$rrd_options .= ' GPRINT:sensor:LAST:%6.2lfV';
+$rrd_options .= ' GPRINT:sensor:MAX:%6.2lfV\l';
+
+if (is_numeric($sensor['sensor_limit'])) {
+    $rrd_options .= ' HRULE:'.$sensor['sensor_limit'].'#999999::dashes';
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (is_numeric($sensor['sensor_limit_low'])) {
     $rrd_options .= ' HRULE:'.$sensor['sensor_limit_low'].'#999999::dashes';
 }

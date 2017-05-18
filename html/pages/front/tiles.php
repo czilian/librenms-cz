@@ -17,6 +17,7 @@
  */
 
 $no_refresh   = true;
+<<<<<<< HEAD
 $default_dash = 0;
 $tmp = dbFetchCell(
     'SELECT dashboard FROM users WHERE user_id=?',
@@ -64,6 +65,72 @@ if (empty($data)) {
 $data        = serialize(json_encode($data));
 $dash_config = unserialize(stripslashes($data));
 $dashboards  = dbFetchRows("SELECT * FROM `dashboards` WHERE `user_id` = ? && `dashboard_id` != ? ORDER BY `dashboard_name`", array($_SESSION['user_id'],$vars['dashboard']['dashboard_id']));
+=======
+$default_dash = get_user_pref('dashboard', 0);
+
+// get all dashboards this user can access and put them into two lists user_dashboards and shared_dashboards
+$dashboards = get_dashboards();
+list($user_dashboards, $shared_dashboards) = array_reduce($dashboards, function ($ret, $dash) {
+    if ($dash['user_id'] == $_SESSION['user_id']) {
+        $ret[0][] = $dash;
+    } else {
+        $ret[1][] = $dash;
+    }
+    return $ret;
+}, array());
+
+// if the default dashboard doesn't exist, set it to the global default or to 0
+if (!isset($dashboards[$default_dash])) {
+    $global_default = (int)$config['webui']['default_dashboard_id'];
+    $default_dash = isset($dashboards[$global_default]) ? $global_default : 0;
+}
+
+// if there are no possible dashboards, add one
+if ($default_dash == 0 && empty($user_dashboards)) {
+    $new_dash = array(
+        'dashboard_name'=>'Default',
+        'user_id'=>$_SESSION['user_id'],
+    );
+
+    $dashboard_id = dbInsert($new_dash, 'dashboards');
+    $new_dash['dashboard_id'] = $dashboard_id;
+    $new_dash['username'] = $_SESSION['username'];
+    $vars['dashboard'] = $new_dash;
+
+    if (dbFetchCell('select 1 from users_widgets where user_id = ? && dashboard_id = ?', array($_SESSION['user_id'],0)) == 1) {
+        dbUpdate(array('dashboard_id'=>$dashboard_id), 'users_widgets', 'user_id = ? && dashboard_id = ?', array($_SESSION['user_id'], 0));
+    }
+} else {
+    // load a dashboard
+    $orig = $vars['dashboard'];
+    if (!empty($orig) && isset($dashboards[$orig])) {
+        // specific dashboard
+        $vars['dashboard'] = $dashboards[$orig];
+    } else {
+        // load a default dashboard
+        $vars['dashboard'] = $default_dash == 0 ? current($user_dashboards) : $dashboards[$default_dash];
+
+        // $dashboard was requested, but doesn't exist
+        if (!empty($orig)) {
+            $msg_box[] = array('type' => 'error', 'message' => 'Dashboard <code>#'.$orig.
+                '</code> does not exist! Loaded <code>'.$vars['dashboard']['dashboard_name'].
+                '</code> instead.','title' => 'Requested Dashboard Not Found!');
+        }
+    }
+}
+
+$data = dbFetchRows(
+    'SELECT user_widget_id,users_widgets.widget_id,title,widget,col,row,size_x,size_y,refresh FROM `users_widgets`
+    LEFT JOIN `widgets` ON `widgets`.`widget_id`=`users_widgets`.`widget_id` WHERE `dashboard_id`=?',
+    array($vars['dashboard']['dashboard_id'])
+);
+if (empty($data)) {
+    $data[] = array('user_widget_id'=>'0','widget_id'=>1,'title'=>'Add a widget','widget'=>'placeholder','col'=>1,'row'=>1,'size_x'=>6,'size_y'=>2,'refresh'=>60);
+}
+
+$data        = serialize(json_encode($data));
+$dash_config = unserialize(stripslashes($data));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 if (empty($vars['bare']) || $vars['bare'] == "no") {
 ?>
@@ -80,6 +147,7 @@ if (empty($vars['bare']) || $vars['bare'] == "no") {
         </button>
         <ul class="dropdown-menu">
 <?php
+<<<<<<< HEAD
 $nodash = 0;
 if (sizeof($dashboards) > 0 || $vars['dashboard']['user_id'] != $_SESSION['user_id']) {
     foreach ($dashboards as $dash) {
@@ -93,6 +161,21 @@ if ($nodash == 0) {
     echo  '          <li><a>No other Dashboards</a></li>';
 }
 $shared_dashboards = dbFetchRows("SELECT dashboards.*,users.username FROM `dashboards` INNER JOIN `users` ON users.user_id = dashboards.user_id WHERE dashboards.access > 0 && dashboards.user_id != ? && dashboards.dashboard_id != ?", array($_SESSION['user_id'],$vars['dashboard']['dashboard_id']));
+=======
+
+
+$nodash = true;
+foreach ($user_dashboards as $dash) {
+    if ($dash['dashboard_id'] != $vars['dashboard']['dashboard_id']) {
+        echo '          <li><a href="'.rtrim($config['base_url'], '/').'/overview/dashboard='.$dash['dashboard_id'].'">'.$dash['dashboard_name'].'</a></li>';
+        $nodash = false;
+    }
+}
+if ($nodash) {
+    echo  '          <li><a>No other Dashboards</a></li>';
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (!empty($shared_dashboards)) {
     echo '          <li role="separator" class="divider"></li>';
     echo '          <li class="dropdown-header">Shared Dashboards</li>';
@@ -514,7 +597,16 @@ foreach (dbFetchRows("SELECT * FROM `widgets` ORDER BY `widget_title`") as $widg
               '<header class="widget_header"><span id="widget_title_'+data.user_widget_id+'">'+data.title+
               '</span>'+
               '<span class="fade-edit pull-right">'+
+<<<<<<< HEAD
               '<i class="fa fa-pencil-square-o edit-widget" data-widget-id="'+data.user_widget_id+'" aria-label="Settings" data-toggle="tooltip" data-placement="top" title="Settings">&nbsp;</i>&nbsp;'+
+=======
+                <?php
+                if (($vars['dashboard']['access'] == 1 && $_SESSION['user_id'] === $vars['dashboard']['user_id']) ||
+                        ($vars['dashboard']['access'] == 0 || $vars['dashboard']['access'] == 2)) {
+                        echo "'<i class=\"fa fa-pencil-square-o edit-widget\" data-widget-id=\"'+data.user_widget_id+'\" aria-label=\"Settings\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Settings\">&nbsp;</i>&nbsp;'+";
+                }
+                ?>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
               '<i class="text-danger fa fa-times close-widget" data-widget-id="'+data.user_widget_id+'" aria-label="Close" data-toggle="tooltip" data-placement="top" title="Remove">&nbsp;</i>&nbsp;'+
               '</span>'+
               '</header>'+
@@ -604,7 +696,11 @@ foreach (dbFetchRows("SELECT * FROM `widgets` ORDER BY `widget_title`") as $widg
     $('#new-widget').popover();
 
     <?php
+<<<<<<< HEAD
     if (empty($vars['dashboard']['dashboard_id'])) {
+=======
+    if (empty($vars['dashboard']['dashboard_id']) && $default_dash == 0) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo "\$('#dashboard_name').val('Default');\n";
         echo "dashboard_add(\$('#add_form'));\n";
     }

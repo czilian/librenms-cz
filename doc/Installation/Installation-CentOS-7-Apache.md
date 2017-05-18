@@ -8,6 +8,7 @@ source: Installation/Installation-CentOS-7-Apache.md
 #### Install / Configure MySQL
 ```bash
 yum install mariadb-server mariadb
+<<<<<<< HEAD
 service mariadb restart
 mysql -uroot -p
 ```
@@ -18,6 +19,16 @@ GRANT ALL PRIVILEGES ON librenms.*
   TO 'librenms'@'localhost'
   IDENTIFIED BY '<password>'
 ;
+=======
+systemctl restart mariadb
+mysql -uroot
+```
+
+```sql
+CREATE DATABASE librenms CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER 'librenms'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON librenms.* TO 'librenms'@'localhost';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 FLUSH PRIVILEGES;
 exit
 ```
@@ -31,7 +42,14 @@ innodb_file_per_table=1
 sql-mode=""
 ```
 
+<<<<<<< HEAD
 ```service mariadb restart```
+=======
+```
+systemctl enable mariadb  
+systemctl restart mariadb
+```
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 ### Web Server ###
 
@@ -102,12 +120,27 @@ Add the following config:
     semanage fcontext -a -t httpd_sys_rw_content_t '/opt/librenms/logs(/.*)?'
     restorecon -RFvv /opt/librenms/logs/
     setsebool -P httpd_can_sendmail=1
+<<<<<<< HEAD
+=======
+    setsebool -P httpd_can_network_connect=1
+```
+
+#### Allow access through firewall
+
+```bash
+firewall-cmd --zone public --add-service http
+firewall-cmd --permanent --zone public --add-service http
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Restart Web server
 
 ```bash
+<<<<<<< HEAD
 service httpd restart
+=======
+systemctl restart httpd
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Web installer
@@ -130,19 +163,36 @@ Edit the text which says `RANDOMSTRINGGOESHERE` and set your own community strin
 ```bash
 curl -o /usr/bin/distro https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro
 chmod +x /usr/bin/distro
+<<<<<<< HEAD
 service snmpd restart
+=======
+systemctl restart snmpd
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 #### Cron job
 
 `cp librenms.nonroot.cron /etc/cron.d/librenms`
 
+<<<<<<< HEAD
+=======
+#### Copy logrotate config
+
+LibreNMS keeps logs in `/opt/librenms/logs`. Over time these can become large and be rotated out.  To rotate out the old logs you can use the provided logrotate config file:
+
+    cp misc/librenms.logrotate /etc/logrotate.d/librenms
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 #### Final steps
 
 ```bash
 chown -R librenms:librenms /opt/librenms
+<<<<<<< HEAD
 systemctl enable httpd
 systemctl enable mariadb
+=======
+systemctl enable httpd mariadb
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 Run validate.php as root in the librenms directory:

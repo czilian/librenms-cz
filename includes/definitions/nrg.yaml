@@ -5,3 +5,14 @@ type: printer
 icon: nrg
 over:
     - { graph: device_toner, text: Toner }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - NRG Network Printer
+discovery_modules:
+    toner: 1
+poller_modules:
+    toner: 1
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

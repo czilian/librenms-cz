@@ -9,6 +9,11 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
+=======
+$scale_min = 0;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 require 'includes/graphs/common.inc.php';
 $rrdfilename = rrd_name($device['hostname'], 'canopy-generic-regCount');
 if (file_exists($rrdfilename)) {

@@ -2,3 +2,8 @@ os: axisdocserver
 text: 'AXIS Network Document Server'
 type: network
 icon: axis
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr_regex: '/^AXIS .* Network Document Server/'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

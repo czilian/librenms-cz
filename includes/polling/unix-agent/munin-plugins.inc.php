@@ -1,6 +1,11 @@
 <?php
 
 // Plugins
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (!empty($agent_data['munin'])) {
     echo 'Munin Plugins:';
     d_echo($agent_data['munin']);
@@ -11,10 +16,17 @@ if (!empty($agent_data['munin'])) {
         $plugins_db[$plugin_db['mplug_type']]['id'] = $plugin_db['mplug_id'];
     }
 
+<<<<<<< HEAD
     $old_plugins_rrd_dir = $host_rrd.'/plugins';
     $plugins_rrd_dir     = $host_rrd.'/munin';
     if (is_dir($old_plugins_rrd_dir) && !is_dir($plugins_rrd_dir)) {
         rename($old_plugins_dir, $plugins_dir);
+=======
+    $old_plugins_rrd_dir = $host_rrd.'plugins';
+    $plugins_rrd_dir     = $host_rrd.'munin';
+    if (is_dir($old_plugins_rrd_dir) && !is_dir($plugins_rrd_dir)) {
+        rename($old_plugins_rrd_dir, $plugins_rrd_dir);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     if (!is_dir($plugins_rrd_dir)) {
@@ -92,7 +104,11 @@ if (!empty($agent_data['munin'])) {
 
                 $tags = array(
                     'plugin'   => $plugin_type,
+<<<<<<< HEAD
                     'rrd_def'  => 'DS:val:' . $data['type'] . ':600:U:U',
+=======
+                    'rrd_def'  => RrdDefinition::make()->addDataset('val', $data['type']),
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     'rrd_name' => $base_rrd_name . '_' . $name
                 );
                 data_update($device, 'munin-plugins', $tags, $fields);

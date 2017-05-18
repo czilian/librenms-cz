@@ -97,13 +97,21 @@ if ($stpprotocol == 'ieee8021d' || $stpprotocol == 'unknown') {
 
     if (!$stp_db['bridgeAddress'] && $stp['bridgeAddress']) {
         dbInsert($stp, 'stp');
+<<<<<<< HEAD
         log_event('STP added, bridge address: '.$stp['bridgeAddress'], $device, 'stp');
+=======
+        log_event('STP added, bridge address: ' . $stp['bridgeAddress'], $device, 'stp', 3);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo '+';
     }
     
     if ($stp_db['bridgeAddress'] && !$stp['bridgeAddress']) {
         dbDelete('stp', 'device_id = ?', array($device['device_id']));
+<<<<<<< HEAD
         log_event('STP removed', $device, 'stp');
+=======
+        log_event('STP removed', $device, 'stp', 4);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         echo '-';
     }
 

@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 #!/bin/bash
+=======
+#!/usr/bin/env bash
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 GH_REPO="@github.com/librenms-docs/librenms-docs.github.io.git"
 FULL_REPO="https://${GH_TOKEN}$GH_REPO"
 THEME_REPO="https://github.com/librenms-docs/librenms_theme.git"
 
+<<<<<<< HEAD
+=======
+pip install --user 'jinja2<2.9'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 pip install --user mkdocs
 pip install --user pymdown-extensions
 pip install --user git+git://github.com/aleray/mdx_del_ins.git

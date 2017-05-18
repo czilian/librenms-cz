@@ -1,4 +1,10 @@
 <?php
+<<<<<<< HEAD
+=======
+
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $name = 'nfsstat';
 $app_id = $app['app_id'];
 $oid = '.1.3.6.1.4.1.8072.1.3.2.4';
@@ -6,6 +12,7 @@ $oid = '.1.3.6.1.4.1.8072.1.3.2.4';
 echo ' ' . $name;
 
 $nfsstats = snmp_walk($device, $oid, '-Oqv', 'NET-SNMP-EXTEND-MIB');
+<<<<<<< HEAD
 
 $rrd_name = array('app', $name, $app_id);
 $rrd_def = array(
@@ -25,6 +32,27 @@ $rrd_def = array(
     'DS:readdirplus:GAUGE:600:0:U',
     'DS:fsstat:GAUGE:600:0:U',
 );
+=======
+update_application($app, $nfsstats);
+
+$rrd_name = array('app', $name, $app_id);
+$rrd_def = RrdDefinition::make()
+    ->addDataset('total', 'GAUGE', 0)
+    ->addDataset('null', 'GAUGE', 0)
+    ->addDataset('getattr', 'GAUGE', 0)
+    ->addDataset('setattr', 'GAUGE', 0)
+    ->addDataset('lookup', 'GAUGE', 0)
+    ->addDataset('access', 'GAUGE', 0)
+    ->addDataset('read', 'GAUGE', 0)
+    ->addDataset('write', 'GAUGE', 0)
+    ->addDataset('create', 'GAUGE', 0)
+    ->addDataset('mkdir', 'GAUGE', 0)
+    ->addDataset('remove', 'GAUGE', 0)
+    ->addDataset('rmdir', 'GAUGE', 0)
+    ->addDataset('rename', 'GAUGE', 0)
+    ->addDataset('readdirplus', 'GAUGE', 0)
+    ->addDataset('fsstat', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $data = explode("\n", $nfsstats);
 $fields = array(

@@ -14,13 +14,21 @@ foreach ($ports as $port) {
     $port['out_rate'] = formatRates(($port['ifOutOctets_rate'] * 8));
 
     if ($port['in_errors'] > 0 || $port['out_errors'] > 0) {
+<<<<<<< HEAD
         $error_img = generate_port_link($port, "<img src='images/16/chart_curve_error.png' alt='Interface Errors' border=0>", errors);
+=======
+        $error_img = generate_port_link($port, "<i class='fa fa-flag fa-lg' style='color:red' aria-hidden='true'></i>", errors);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     } else {
         $error_img = '';
     }
 
     if (port_permitted($port['port_id'], $port['device_id'])) {
+<<<<<<< HEAD
         $port = ifLabel($port, $device);
+=======
+        $port = cleanPort($port, $device);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         $graph_type = 'port_'.$subformat;
 

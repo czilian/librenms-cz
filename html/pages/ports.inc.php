@@ -87,20 +87,34 @@ if ((isset($vars['searchbar']) && $vars['searchbar'] != "hide") || !isset($vars[
 <?php
 
 if ($_SESSION['userlevel'] >= 5) {
+<<<<<<< HEAD
     $results = dbFetchRows("SELECT `device_id`,`hostname` FROM `devices` GROUP BY `hostname` ORDER BY `hostname`");
 } else {
     $results = dbFetchRows("SELECT `D`.`device_id`,`D`.`hostname` FROM `devices` AS `D`, `devices_perms` AS `P` WHERE `P`.`user_id` = ? AND `P`.`device_id` = `D`.`device_id` GROUP BY `hostname` ORDER BY `hostname`", array($_SESSION['user_id']));
+=======
+    $results = dbFetchRows("SELECT `device_id`,`hostname`, `sysName` FROM `devices` ORDER BY `hostname`");
+} else {
+    $results = dbFetchRows("SELECT `D`.`device_id`,`D`.`hostname`, `D`.`sysname` FROM `devices` AS `D`, `devices_perms` AS `P` WHERE `P`.`user_id` = ? AND `P`.`device_id` = `D`.`device_id` ORDER BY `hostname`", array($_SESSION['user_id']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 foreach ($results as $data) {
     echo('        <option value="'.$data['device_id'].'"');
     if ($data['device_id'] == $vars['device_id']) {
         echo("selected");
     }
+<<<<<<< HEAD
     echo(">".$data['hostname']."</option>");
 }
 
 if ($_SESSION['userlevel'] < 5) {
     $results = dbFetchRows("SELECT `D`.`device_id`,`D`.`hostname` FROM `ports` AS `I` JOIN `devices` AS `D` ON `D`.`device_id`=`I`.`device_id` JOIN `ports_perms` AS `PP` ON `PP`.`port_id`=`I`.`port_id` WHERE `PP`.`user_id` = ? AND `PP`.`port_id` = `I`.`port_id` GROUP BY `hostname` ORDER BY `hostname`", array($_SESSION['user_id']));
+=======
+    echo(">".format_hostname($data)."</option>");
+}
+
+if ($_SESSION['userlevel'] < 5) {
+    $results = dbFetchRows("SELECT `D`.`device_id`,`D`.`hostname`, `D`.`sysName` FROM `ports` AS `I` JOIN `devices` AS `D` ON `D`.`device_id`=`I`.`device_id` JOIN `ports_perms` AS `PP` ON `PP`.`port_id`=`I`.`port_id` WHERE `PP`.`user_id` = ? AND `PP`.`port_id` = `I`.`port_id` ORDER BY `hostname`", array($_SESSION['user_id']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 } else {
     $results = array();
 }
@@ -109,7 +123,11 @@ foreach ($results as $data) {
     if ($data['device_id'] == $vars['device_id']) {
         echo("selected");
     }
+<<<<<<< HEAD
     echo(">".$data['hostname']."</option>");
+=======
+    echo(">".format_hostname($data)."</option>");
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 ?>
@@ -186,14 +204,23 @@ if (is_admin() === true || is_read() === true) {
     $sql = "SELECT `port_descr_type` FROM `ports` AS `I`, `devices` AS `D`, `devices_perms` AS `P`, `ports_perms` AS `PP` WHERE ((`P`.`user_id` = ? AND `P`.`device_id` = `D`.`device_id`) OR (`PP`.`user_id` = ? AND `PP`.`port_id` = `I`.`port_id` AND `I`.`device_id` = `D`.`device_id`)) AND `D`.`device_id` = `I`.`device_id` GROUP BY `port_descr_type` ORDER BY `port_descr_type`";
     $param[] = array($_SESSION['user_id'],$_SESSION['user_id']);
 }
+<<<<<<< HEAD
     $ports = dbFetchRows($sql, $param);
+=======
+
+$ports = dbFetchRows($sql, $param);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 foreach ($ports as $data) {
     if ($data['port_descr_type']) {
         echo('        <option value="'.$data['port_descr_type'].'"');
         if ($data['port_descr_type'] == $vars['port_descr_type']) {
             echo("selected");
         }
+<<<<<<< HEAD
         echo(">".ucfirst($data['port_descr_type'])."</option>");
+=======
+        echo(">".ucfirst(display($data['port_descr_type']))."</option>");
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 }
 ?>

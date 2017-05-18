@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 $graph_type = mres($_POST['graph_type']);
 $unit       = mres($_POST['unit']);
 $class      = mres($_POST['class']);
@@ -139,3 +140,9 @@ $output = array(
     'total'    => $count,
 );
 echo _json_encode($output);
+=======
+$table = 'sensors';
+$tab = 'health';
+
+include 'sensors-common.php';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

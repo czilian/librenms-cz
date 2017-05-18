@@ -1,8 +1,14 @@
 <?php
 /**
+<<<<<<< HEAD
  * DiscoveryTest.php
  *
  * -Description-
+=======
+ * OSDiscoveryTest.php
+ *
+ * Test all discovery for all OS
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +31,78 @@
 
 namespace LibreNMS\Tests;
 
+<<<<<<< HEAD
 class DiscoveryTest extends \PHPUnit_Framework_TestCase
 {
+=======
+use PHPUnit_Framework_ExpectationFailedException as PHPUnitException;
+
+class OSDiscoveryTest extends \PHPUnit_Framework_TestCase
+{
+    private static $unchecked_files;
+
+    /**
+     * Populate a list of files to check and make sure it isn't empty
+     */
+    public function testHaveFilesToTest()
+    {
+        global $config;
+
+        $glob = $config['install_dir'] . "/tests/snmpsim/*.snmprec";
+
+        self::$unchecked_files = array_flip(array_map(function ($file) {
+            return basename($file, '.snmprec');
+        }, glob($glob)));
+
+        $this->assertNotEmpty(self::$unchecked_files);
+    }
+
+    /**
+     * Test each OS provided by osProvider
+     *
+     * @depends      testHaveFilesToTest
+     * @dataProvider osProvider
+     * @param $os_name
+     */
+    public function testOS($os_name)
+    {
+        global $config;
+
+        $this->assertNotEmpty(
+            self::$unchecked_files,
+            'Something wrong with the tests, $unchecked_files should be populated'
+        );
+
+        $glob = $config['install_dir'] . "/tests/snmpsim/$os_name*.snmprec";
+        $files = array_map(function ($file) {
+            return basename($file, '.snmprec');
+        }, glob($glob));
+        $files = array_filter($files, function ($file) use ($os_name) {
+            return $file == $os_name || starts_with($file, $os_name . '_');
+        });
+
+        if (empty($files)) {
+            throw new PHPUnitException("No snmprec files found for $os_name!");
+        }
+
+        foreach ($files as $file) {
+            $this->checkOS($os_name, $file);
+            unset(self::$unchecked_files[$file]);  // This file has been tested
+        }
+    }
+
+    /**
+     * Test that all files have been tested (removed from self::$unchecked_files
+     * Except skel.snmprec, the example file.
+     *
+     * @depends testOS
+     */
+    public function testAllFilesTested()
+    {
+        $this->assertEquals(array('skel'), array_keys(self::$unchecked_files));
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     /**
      * Set up and test an os
      * If $filename is not set, it will use the snmprec file matching $expected_os
@@ -37,7 +113,12 @@ class DiscoveryTest extends \PHPUnit_Framework_TestCase
     private function checkOS($expected_os, $filename = null)
     {
         $community = $filename ?: $expected_os;
+<<<<<<< HEAD
 
+=======
+        global $debug;
+        $debug = true;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         ob_start();
         $os = getHostOS($this->genDevice($community));
         $output = ob_get_contents();
@@ -68,6 +149,7 @@ class DiscoveryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+<<<<<<< HEAD
     public function test3com()
     {
         $this->checkOS('3com');
@@ -1509,5 +1591,32 @@ class DiscoveryTest extends \PHPUnit_Framework_TestCase
     public function testZyxelnwa()
     {
         $this->checkOS('zyxelnwa');
+=======
+    /**
+     * Provides a list of OS to generate tests.
+     *
+     * @return array
+     */
+    public function osProvider()
+    {
+        global $config;
+
+        // make sure all OS are loaded
+        if (count($config['os']) < count(glob($config['install_dir'].'/includes/definitions/*.yaml'))) {
+            load_all_os();
+        }
+
+        $excluded_os = array(
+            'default',
+            'generic',
+        );
+        $all_os = array_diff(array_keys($config['os']), $excluded_os);
+
+        array_walk($all_os, function (&$os) {
+            $os = array($os);
+        });
+
+        return $all_os;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 }

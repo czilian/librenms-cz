@@ -344,7 +344,11 @@ class PHPUnit_Util_Test
      */
     private static function parseAnnotationContent($message)
     {
+<<<<<<< HEAD
         if (strpos($message, '::') !== false && count(explode('::', $message) == 2)) {
+=======
+        if (strpos($message, '::') !== false && count(explode('::', $message)) == 2) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             if (defined($message)) {
                 $message = constant($message);
             }
@@ -370,6 +374,7 @@ class PHPUnit_Util_Test
     {
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment = $reflector->getDocComment();
+<<<<<<< HEAD
         $data       = null;
 
         if ($dataProviderData = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName)) {
@@ -378,6 +383,17 @@ class PHPUnit_Util_Test
 
         if ($testWithData = self::getDataFromTestWithAnnotation($docComment)) {
             $data = $testWithData;
+=======
+
+        $data = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName);
+
+        if ($data === null) {
+            $data = self::getDataFromTestWithAnnotation($docComment);
+        }
+
+        if (is_array($data) && empty($data)) {
+            throw new PHPUnit_Framework_SkippedTestError;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
 
         if ($data !== null) {
@@ -463,6 +479,10 @@ class PHPUnit_Util_Test
     public static function getDataFromTestWithAnnotation($docComment)
     {
         $docComment = self::cleanUpMultiLineAnnotation($docComment);
+<<<<<<< HEAD
+=======
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
             $offset            = strlen($matches[0][0]) + $matches[0][1];
             $annotationContent = substr($docComment, $offset);

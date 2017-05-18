@@ -24,6 +24,7 @@ You can install the component in the following ways:
 Usage
 -----
 
+<<<<<<< HEAD
 In order to parse the DocBlock one needs a DocBlockFactory that can be
 instantiated using its `createInstance` factory method like this:
 
@@ -66,4 +67,36 @@ $description = $docblock->getDescription();
 
 > For more examples it would be best to review the scripts in the `/examples` 
 > folder.
+=======
+The ReflectionDocBlock component is designed to work in an identical fashion to
+PHP's own Reflection extension (http://php.net/manual/en/book.reflection.php).
+
+Parsing can be initiated by instantiating the
+`\phpDocumentor\Reflection\DocBlock()` class and passing it a string containing
+a DocBlock (including asterisks) or by passing an object supporting the
+`getDocComment()` method.
+
+> *Examples of objects having the `getDocComment()` method are the
+> `ReflectionClass` and the `ReflectionMethod` classes of the PHP
+> Reflection extension*
+
+Example:
+
+    $class = new ReflectionClass('MyClass');
+    $phpdoc = new \phpDocumentor\Reflection\DocBlock($class);
+
+or
+
+    $docblock = <<<DOCBLOCK
+    /**
+     * This is a short description.
+     *
+     * This is a *long* description.
+     *
+     * @return void
+     */
+    DOCBLOCK;
+
+    $phpdoc = new \phpDocumentor\Reflection\DocBlock($docblock);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 

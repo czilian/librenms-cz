@@ -56,6 +56,7 @@ if (is_array($entity_state['group']['c6kxbar'])) {
 
 require 'overview/toner.inc.php';
 require 'overview/sensors/charge.inc.php';
+<<<<<<< HEAD
 require 'overview/sensors/temperatures.inc.php';
 require 'overview/sensors/humidity.inc.php';
 require 'overview/sensors/fanspeeds.inc.php';
@@ -68,6 +69,21 @@ require 'overview/sensors/frequencies.inc.php';
 require 'overview/sensors/load.inc.php';
 require 'overview/sensors/state.inc.php';
 require 'overview/sensors/signal.inc.php';
+=======
+require 'overview/sensors/temperature.inc.php';
+require 'overview/sensors/humidity.inc.php';
+require 'overview/sensors/fanspeed.inc.php';
+require 'overview/sensors/dbm.inc.php';
+require 'overview/sensors/voltage.inc.php';
+require 'overview/sensors/current.inc.php';
+require 'overview/sensors/runtime.inc.php';
+require 'overview/sensors/power.inc.php';
+require 'overview/sensors/frequency.inc.php';
+require 'overview/sensors/load.inc.php';
+require 'overview/sensors/state.inc.php';
+require 'overview/sensors/signal.inc.php';
+require 'overview/sensors/airflow.inc.php';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 require 'overview/eventlog.inc.php';
 require 'overview/services.inc.php';
 require 'overview/syslog.inc.php';

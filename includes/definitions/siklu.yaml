@@ -4,3 +4,11 @@ type: wireless
 icon: siklu
 over:
     - { graph: device_bits, text: Traffic }
+<<<<<<< HEAD
+=======
+poller_modules:
+    wifi: 1
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.31926
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

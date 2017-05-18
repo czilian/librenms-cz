@@ -3,6 +3,10 @@
 namespace spec\Prophecy\Argument\Token;
 
 use PhpSpec\ObjectBehavior;
+<<<<<<< HEAD
+=======
+use Prophecy\Argument\Token\TokenInterface;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 class TypeTokenSpec extends ObjectBehavior
 {
@@ -35,10 +39,14 @@ class TypeTokenSpec extends ObjectBehavior
         $this->scoreArgument(42.0)->shouldReturn(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \ReflectionObject $object
      */
     function it_scores_5_if_argument_is_an_instance_of_specified_class($object)
+=======
+    function it_scores_5_if_argument_is_an_instance_of_specified_class(\ReflectionObject $object)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith('ReflectionClass');
 
@@ -50,10 +58,14 @@ class TypeTokenSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('type(integer)');
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Argument\Token\TokenInterface $interface
      */
     function it_scores_5_if_argument_is_an_instance_of_specified_interface($interface)
+=======
+    function it_scores_5_if_argument_is_an_instance_of_specified_interface(TokenInterface $interface)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith('Prophecy\Argument\Token\TokenInterface');
 

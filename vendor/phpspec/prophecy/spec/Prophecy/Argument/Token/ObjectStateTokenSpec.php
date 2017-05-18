@@ -21,20 +21,28 @@ class ObjectStateTokenSpec extends ObjectBehavior
         $this->shouldNotBeLast();
     }
 
+<<<<<<< HEAD
     /**
      * @param \ReflectionClass $reflection
      */
     function it_scores_8_if_argument_object_has_specific_method_state($reflection)
+=======
+    function it_scores_8_if_argument_object_has_specific_method_state(\ReflectionClass $reflection)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $reflection->getName()->willReturn('stdClass');
 
         $this->scoreArgument($reflection)->shouldReturn(8);
     }
 
+<<<<<<< HEAD
     /**
      * @param \stdClass $class
      */
     function it_scores_8_if_argument_object_has_specific_property_state($class)
+=======
+    function it_scores_8_if_argument_object_has_specific_property_state(\stdClass $class)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $class->getName = 'stdClass';
 
@@ -50,20 +58,28 @@ class ObjectStateTokenSpec extends ObjectBehavior
         $this->scoreArgument($value2)->shouldReturn(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \stdClass $class
      */
     function it_does_not_score_if_argument_property_state_does_not_match($class)
+=======
+    function it_does_not_score_if_argument_property_state_does_not_match(\stdClass $class)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $class->getName = 'SplFileInfo';
 
         $this->scoreArgument($class)->shouldReturn(false);
     }
 
+<<<<<<< HEAD
     /**
      * @param \spec\Prophecy\Argument\Token\ObjectStateTokenFixtureA $class
      */
     function it_does_not_score_if_argument_object_does_not_have_method_or_property($class)
+=======
+    function it_does_not_score_if_argument_object_does_not_have_method_or_property(ObjectStateTokenFixtureA $class)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->scoreArgument($class)->shouldReturn(false);
     }

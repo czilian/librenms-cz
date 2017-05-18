@@ -1,7 +1,10 @@
 language: php
 
+<<<<<<< HEAD
 php: [5.3, 5.4, 5.5, 5.6, 7.0, hhvm]
 
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 sudo: false
 
 cache:
@@ -15,6 +18,7 @@ branches:
     - /^optimization\/.*$/
 
 matrix:
+<<<<<<< HEAD
   fast_finish: true
   include:
     - php: '7.0'
@@ -27,3 +31,29 @@ before_script:
   - travis_retry composer update --no-interaction
 
 script: vendor/bin/phpspec run -fpretty -v
+=======
+  include:
+    - php: 5.3
+    - php: 5.4
+    - php: 5.5
+    - php: 5.6
+      env: DEPENDENCIES='low'
+    - php: 5.6
+    - php: 7.0
+    - php: 7.1
+    # Use the newer stack for HHVM as HHVM does not support Precise anymore since a long time and so Precise has an outdated version
+    - php: hhvm
+      sudo: required
+      dist: trusty
+      group: edge
+  fast_finish: true
+
+install:
+  - export COMPOSER_ROOT_VERSION=dev-master
+  - if [ "$DEPENDENCIES" != "low" ]; then composer update; fi;
+  - if [ "$DEPENDENCIES" == "low" ]; then composer update --prefer-lowest; fi;
+
+script:
+  - vendor/bin/phpspec run -fpretty -v
+  - vendor/bin/phpunit
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

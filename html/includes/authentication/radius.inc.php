@@ -1,12 +1,20 @@
 <?php
 
 use Dapphp\Radius\Radius;
+<<<<<<< HEAD
 use Phpass\PasswordHash;
 
+=======
+use LibreNMS\Exceptions\AuthenticationException;
+use Phpass\PasswordHash;
+
+/** @var Radius $radius */
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $radius = new Radius($config['radius']['hostname'], $config['radius']['secret'], $config['radius']['suffix'], $config['radius']['timeout'], $config['radius']['port']);
 
 function authenticate($username, $password)
 {
+<<<<<<< HEAD
     global $config, $radius, $debug;
 
     if (empty($username)) {
@@ -28,6 +36,29 @@ function authenticate($username, $password)
 function reauthenticate()
 {
     return 0;
+=======
+    global $radius, $debug;
+
+    if (empty($username)) {
+        throw new AuthenticationException('Username is required');
+    }
+
+    if ($debug) {
+        $radius->setDebug(true);
+    }
+
+    if ($radius->accessRequest($username, $password) === true) {
+        adduser($username, $password);
+        return true;
+    }
+
+    throw new AuthenticationException();
+}
+
+function reauthenticate($sess_id, $token)
+{
+    return false;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 
@@ -52,7 +83,11 @@ function auth_usermanagement()
 }
 
 
+<<<<<<< HEAD
 function adduser($username, $password, $level = 1, $email = '', $realname = '', $can_modify_passwd = 0, $description = '', $twofactor = 0)
+=======
+function adduser($username, $password, $level = 1, $email = '', $realname = '', $can_modify_passwd = 0, $description = '')
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     // Check to see if user is already added in the database
     global $config;
@@ -62,7 +97,11 @@ function adduser($username, $password, $level = 1, $email = '', $realname = '', 
         if ($config['radius']['default_level'] > 0) {
             $level = $config['radius']['default_level'];
         }
+<<<<<<< HEAD
         $userid = dbInsert(array('username' => $username, 'password' => $encrypted, 'realname' => $realname, 'email' => $email, 'descr' => $description, 'level' => $level, 'can_modify_passwd' => $can_modify_passwd, 'twofactor' => $twofactor), 'users');
+=======
+        $userid = dbInsert(array('username' => $username, 'password' => $encrypted, 'realname' => $realname, 'email' => $email, 'descr' => $description, 'level' => $level, 'can_modify_passwd' => $can_modify_passwd), 'users');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($userid == false) {
             return false;
         } else {
@@ -94,6 +133,7 @@ function get_userid($username)
 }
 
 
+<<<<<<< HEAD
 function deluser($username)
 {
     dbDelete('bill_perms', '`user_name` =  ?', array($username));
@@ -102,6 +142,16 @@ function deluser($username)
     dbDelete('users_prefs', '`user_name` =  ?', array($username));
     dbDelete('users', '`user_name` =  ?', array($username));
     return dbDelete('users', '`username` =  ?', array($username));
+=======
+function deluser($userid)
+{
+    dbDelete('bill_perms', '`user_id` =  ?', array($userid));
+    dbDelete('devices_perms', '`user_id` =  ?', array($userid));
+    dbDelete('ports_perms', '`user_id` =  ?', array($userid));
+    dbDelete('users_prefs', '`user_id` =  ?', array($userid));
+    dbDelete('users', '`user_id` =  ?', array($userid));
+    return dbDelete('users', '`user_id` =  ?', array($userid));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 

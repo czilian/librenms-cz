@@ -49,6 +49,19 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      */
     protected function matches($other)
     {
+<<<<<<< HEAD
+=======
+        //type cast $other & $this->subset as an array to allow 
+        //support in standard array functions.
+        if($other instanceof ArrayAccess) {
+            $other = (array) $other;
+        }
+
+        if($this->subset instanceof ArrayAccess) {
+            $this->subset = (array) $this->subset;
+        }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $patched = array_replace_recursive($other, $this->subset);
 
         if ($this->strict) {

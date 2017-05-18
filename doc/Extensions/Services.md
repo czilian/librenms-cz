@@ -8,6 +8,12 @@ to LibreNMS - localhost is a good one.
 
 ## Setup
 
+<<<<<<< HEAD
+=======
+> Service checks is now distributed aware. If you run a distributed setup then you can now run 
+`services-wrapper.py` in cron instead of `check-services.php` across all polling nodes.
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 Firstly, install Nagios plugins however you would like, this could be via yum, apt-get or direct from source.
 
 Next, you need to enable the services within config.php with the following:

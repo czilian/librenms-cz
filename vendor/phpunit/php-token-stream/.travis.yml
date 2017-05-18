@@ -1,35 +1,55 @@
 language: php
 
 php:
+<<<<<<< HEAD
   - 5.3.3
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
   - 5.3
   - 5.4
   - 5.5
   - 5.6
   - 7.0
+<<<<<<< HEAD
   - hhvm
 
 matrix:
   allow_failures:
     - php: hhvm
+=======
+  - 7.0snapshot
+  - 7.1
+  - 7.1snapshot
+  - master
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 sudo: false
 
 before_install:
   - composer self-update
+<<<<<<< HEAD
 
 install:
   - travis_retry composer install --no-interaction --prefer-source
+=======
+  - composer clear-cache
+
+install:
+  - travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 script:
   - ./vendor/bin/phpunit --configuration ./build/phpunit.xml
 
 notifications:
   email: false
+<<<<<<< HEAD
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/6668f52f3dd4e3f81960
     on_success: always
     on_failure: always
     on_start: false
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 

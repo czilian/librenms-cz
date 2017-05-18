@@ -35,6 +35,7 @@ if ($_SESSION['userlevel'] < '5') {
     if ($vars['type'] == 'internal') {
         echo '</span>';
     }
+<<<<<<< HEAD
 
     echo ' | ';
 
@@ -110,10 +111,88 @@ if ($_SESSION['userlevel'] < '5') {
         $extra_sql = " AND `bgpLocalAddr` NOT LIKE '%:%'";
     }
 
+=======
+
+    echo ' | ';
+
+    if ($vars['type'] == 'external') {
+        echo "<span class='pagemenu-selected'>";
+    }
+
+    echo generate_link('eBGP', $vars, array('type' => 'external'));
+    if ($vars['type'] == 'external') {
+        echo '</span>';
+    }
+
+    echo ' | ';
+
+    if ($vars['adminstatus'] == 'stop') {
+        echo "<span class='pagemenu-selected'>";
+        echo generate_link('Shutdown', $vars, array('adminstatus' => null));
+        echo '</span>';
+    } else {
+        echo generate_link('Shutdown', $vars, array('adminstatus' => 'stop'));
+    }
+
+    echo ' | ';
+
+    if ($vars['adminstatus'] == 'start') {
+        echo "<span class='pagemenu-selected'>";
+        echo generate_link('Enabled', $vars, array('adminstatus' => null));
+        echo '</span>';
+    } else {
+        echo generate_link('Enabled', $vars, array('adminstatus' => 'start'));
+    }
+
+    echo ' | ';
+
+    if ($vars['state'] == 'down') {
+        echo "<span class='pagemenu-selected'>";
+        echo generate_link('Down', $vars, array('state' => null));
+        echo '</span>';
+    } else {
+        echo generate_link('Down', $vars, array('state' => 'down'));
+    }
+
+    // End BGP Menu
+    if (!isset($vars['view'])) {
+        $vars['view'] = 'details';
+    }
+
+    echo '<div style="float: right;">';
+
+    if ($vars['view'] == 'details') {
+        echo "<span class='pagemenu-selected'>";
+    }
+
+    echo generate_link('No Graphs', $vars, array('view' => 'details', 'graph' => 'NULL'));
+    if ($vars['view'] == 'details') {
+        echo '</span>';
+    }
+
+    echo ' | ';
+
+    if ($vars['graph'] == 'updates') {
+        echo "<span class='pagemenu-selected'>";
+    }
+
+    echo generate_link('Updates', $vars, array('view' => 'graphs', 'graph' => 'updates'));
+    if ($vars['graph'] == 'updates') {
+        echo '</span>';
+    }
+
+    echo ' | Prefixes: Unicast (';
+    if ($vars['graph'] == 'prefixes_ipv4unicast') {
+        echo "<span class='pagemenu-selected'>";
+        $extra_sql = " AND `bgpPeerIdentifier` NOT LIKE '%:%'";
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     echo generate_link('IPv4', $vars, array('view' => 'graphs', 'graph' => 'prefixes_ipv4unicast'));
     if ($vars['graph'] == 'prefixes_ipv4unicast') {
         echo '</span>';
     }
+<<<<<<< HEAD
 
     echo '|';
 
@@ -199,6 +278,93 @@ if ($_SESSION['userlevel'] < '5') {
         $where = 'AND D.bgpLocalAs = B.bgpPeerRemoteAs';
     }
 
+=======
+
+    echo '|';
+
+    if ($vars['graph'] == 'prefixes_ipv6unicast') {
+        echo "<span class='pagemenu-selected'>";
+        $extra_sql = " AND `bgpPeerIdentifier` LIKE '%:%'";
+    }
+
+    echo generate_link('IPv6', $vars, array('view' => 'graphs', 'graph' => 'prefixes_ipv6unicast'));
+    if ($vars['graph'] == 'prefixes_ipv6unicast') {
+        echo '</span>';
+    }
+
+    echo '|';
+
+    if ($vars['graph'] == 'prefixes_ipv4vpn') {
+        echo "<span class='pagemenu-selected'>";
+    }
+
+    echo generate_link('VPNv4', $vars, array('view' => 'graphs', 'graph' => 'prefixes_ipv4vpn'));
+    if ($vars['graph'] == 'prefixes_ipv4vpn') {
+        echo '</span>';
+    }
+
+    echo ')';
+
+    echo ' | Multicast (';
+    if ($vars['graph'] == 'prefixes_ipv4multicast') {
+        echo "<span class='pagemenu-selected'>";
+    }
+
+    echo generate_link('IPv4', $vars, array('view' => 'graphs', 'graph' => 'prefixes_ipv4multicast'));
+    if ($vars['graph'] == 'prefixes_ipv4multicast') {
+        echo '</span>';
+    }
+
+    echo '|';
+
+    if ($vars['graph'] == 'prefixes_ipv6multicast') {
+        echo "<span class='pagemenu-selected'>";
+    }
+
+    echo generate_link('IPv6', $vars, array('view' => 'graphs', 'graph' => 'prefixes_ipv6multicast'));
+    if ($vars['graph'] == 'prefixes_ipv6multicast') {
+        echo '</span>';
+    }
+
+    echo ')';
+
+    echo ' | MAC (';
+    if ($vars['graph'] == 'macaccounting_bits') {
+        echo "<span class='pagemenu-selected'>";
+    }
+
+    echo generate_link('Bits', $vars, array('view' => 'graphs', 'graph' => 'macaccounting_bits'));
+    if ($vars['graph'] == 'macaccounting_bits') {
+        echo '</span>';
+    }
+
+    echo '|';
+
+    if ($vars['graph'] == 'macaccounting_pkts') {
+        echo "<span class='pagemenu-selected'>";
+    }
+
+    echo generate_link('Packets', $vars, array('view' => 'graphs', 'graph' => 'macaccounting_pkts'));
+    if ($vars['graph'] == 'macaccounting_pkts') {
+        echo '</span>';
+    }
+
+    echo ')';
+
+    echo '</div>';
+
+    print_optionbar_end();
+
+    echo "<table border=0 cellspacing=0 cellpadding=5 width=100% class='table sortable'>";
+    echo '<tr style="height: 30px"><td width=1></td><th>Local address</th><th></th><th>Peer address</th><th>Type</th><th>Family</th><th>Remote AS</th><th>State</th><th width=200>Uptime / Updates</th></tr>';
+
+    if ($vars['type'] == 'external') {
+        $where = 'AND D.bgpLocalAs != B.bgpPeerRemoteAs';
+    } elseif ($vars['type'] == 'internal') {
+        $where = 'AND D.bgpLocalAs = B.bgpPeerRemoteAs';
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if ($vars['adminstatus'] == 'stop') {
         $where .= " AND (B.bgpPeerAdminStatus = 'stop')";
     } elseif ($vars['adminstatus'] == 'start') {
@@ -240,6 +406,7 @@ if ($_SESSION['userlevel'] < '5') {
             }
         }
 
+<<<<<<< HEAD
         $peerhost = dbFetchRow('SELECT * FROM ipaddr AS A, ports AS I, devices AS D WHERE A.addr = ? AND I.port_id = A.port_id AND D.device_id = I.device_id', array($peer['bgpPeerIdentifier']));
 
         if ($peerhost) {
@@ -248,6 +415,8 @@ if ($_SESSION['userlevel'] < '5') {
             unset($peername);
         }
 
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if (filter_var($peer['bgpLocalAddr'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
             $peer_ip = Net_IPv6::compress($peer['bgpLocalAddr']);
         } else {
@@ -307,8 +476,13 @@ if ($_SESSION['userlevel'] < '5') {
             <td><strong>AS'.$peer['bgpPeerRemoteAs'].'</strong><br />'.$peer['astext']."</td>
             <td><strong><span style='color: $admin_col;'>".$peer['bgpPeerAdminStatus']."</span><br /><span style='color: $col;'>".$peer['bgpPeerState'].'</span></strong></td>
             <td>'.formatUptime($peer['bgpPeerFsmEstablishedTime'])."<br />
+<<<<<<< HEAD
             Updates <img src='images/16/arrow_down.png' align=absmiddle /> ".format_si($peer['bgpPeerInUpdates'])."
             <img src='images/16/arrow_up.png' align=absmiddle /> ".format_si($peer['bgpPeerOutUpdates']).'</td></tr>';
+=======
+            Updates <i class='fa fa-arrow-down icon-theme' aria-hidden='true'></i> ".format_si($peer['bgpPeerInUpdates'])."
+            <i class='fa fa-arrow-up icon-theme' aria-hidden='true'></i> ".format_si($peer['bgpPeerOutUpdates']).'</td></tr>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         unset($invalid);
         switch ($vars['graph']) {

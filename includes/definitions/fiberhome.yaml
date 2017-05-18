@@ -2,3 +2,8 @@ os: fiberhome
 text: Fiberhome
 type: network
 icon: fiberhome
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr_regex: '/^AN5516-0(1|6|4B)$/'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

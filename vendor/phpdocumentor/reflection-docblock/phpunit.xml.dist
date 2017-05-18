@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<<<<<<< HEAD
 <phpunit
         colors="true"
         checkForUnintentionallyCoveredCode="true"
@@ -15,11 +16,19 @@
       <testsuite name="integration">
           <directory>./tests/integration</directory>
       </testsuite>
+=======
+<phpunit colors="true" strict="true" bootstrap="vendor/autoload.php">
+  <testsuites>
+    <testsuite name="phpDocumentor\Reflection\DocBlock">
+      <directory>./tests/</directory>
+    </testsuite>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
   </testsuites>
   <filter>
     <whitelist>
         <directory suffix=".php">./src/</directory>
     </whitelist>
+<<<<<<< HEAD
     <blacklist>
       <directory>./vendor/</directory>
     </blacklist>
@@ -30,4 +39,7 @@
             file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"
             />
   </listeners>
+=======
+  </filter>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 </phpunit>

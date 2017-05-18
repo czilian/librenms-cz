@@ -10,8 +10,11 @@
 
 /**
  * Utility class for timing.
+<<<<<<< HEAD
  *
  * @since      Class available since Release 1.0.0
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  */
 class PHP_Timer
 {

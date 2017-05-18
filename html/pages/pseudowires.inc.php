@@ -37,6 +37,10 @@ print_optionbar_end();
 echo '<table cellpadding=5 cellspacing=0 class=devicetable width=100%>';
 
 foreach (dbFetchRows('SELECT * FROM pseudowires AS P, ports AS I, devices AS D WHERE P.port_id = I.port_id AND I.device_id = D.device_id ORDER BY D.hostname,I.ifDescr') as $pw_a) {
+<<<<<<< HEAD
+=======
+    $pw_a = cleanPort($pw_a);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $i = 0;
     while ($i < count($linkdone)) {
         $thislink = $pw_a['device_id'].$pw_a['port_id'];
@@ -56,6 +60,7 @@ foreach (dbFetchRows('SELECT * FROM pseudowires AS P, ports AS I, devices AS D W
         )
     );
 
+<<<<<<< HEAD
     if (!port_permitted($pw_a['port_id'])) {
         $skip = 'yes';
     }
@@ -64,6 +69,18 @@ foreach (dbFetchRows('SELECT * FROM pseudowires AS P, ports AS I, devices AS D W
         $skip = 'yes';
     }
 
+=======
+    $pw_b = cleanPort($pw_b);
+
+    if (!port_permitted($pw_a['port_id'])) {
+        $skip = 'yes';
+    }
+
+    if (!port_permitted($pw_b['port_id'])) {
+        $skip = 'yes';
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if ($skip) {
         unset($skip);
     } else {
@@ -74,9 +91,15 @@ foreach (dbFetchRows('SELECT * FROM pseudowires AS P, ports AS I, devices AS D W
         }
 
         echo "<tr style=\"background-color: #$bg;\"><td rowspan=2 style='font-size:18px; padding:4px;'>".$pw_a['cpwVcID'].'</td><td>'.generate_device_link($pw_a).'</td><td>'.generate_port_link($pw_a)."</td>
+<<<<<<< HEAD
                                                                                           <td rowspan=2> <img src='images/16/arrow_right.png'> </td>
                                                                                           <td>".generate_device_link($pw_b).'</td><td>'.generate_port_link($pw_b).'</td></tr>';
         echo "<tr style=\"background-color: #$bg;\"><td colspan=2>".display($pw_a['ifAlias']).'</td><td colspan=2>'.display($pw_b['ifAlias']).'</td></tr>';
+=======
+                                                                                          <td rowspan=2> <i class='fa fa-arrows-alt fa-lg icon-theme' aria-hidden='true'></i> </td>
+                                                                                          <td>".generate_device_link($pw_b).'</td><td>'.generate_port_link($pw_b).'</td></tr>';
+        echo "<tr style=\"background-color: #$bg;\"><td colspan=2>".$pw_a['ifAlias'].'</td><td colspan=2>'.$pw_b['ifAlias'].'</td></tr>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         if ($vars['view'] == 'minigraphs') {
             echo "<tr style=\"background-color: #$bg;\"><td></td><td colspan=2>";

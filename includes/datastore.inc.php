@@ -41,7 +41,11 @@ function rrd_array_filter($arr)
  * Datastore-independent function which should be used for all polled metrics.
  *
  * RRD Tags:
+<<<<<<< HEAD
  *   rrd_def     array|string: (required) an array of rrd field definitions example: "DS:dataName:COUNTER:600:U:100000000000"
+=======
+ *   rrd_def     RrdDefinition
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  *   rrd_name    array|string: the rrd filename, will be processed with rrd_name()
  *   rrd_oldname array|string: old rrd filename to rename, will be processed with rrd_name()
  *   rrd_step             int: rrd step, defaults to 300
@@ -67,4 +71,8 @@ function data_update($device, $measurement, $tags, $fields)
 
     rrdtool_data_update($device, $measurement, $tags, $fields);
     influx_update($device, $measurement, rrd_array_filter($tags), $fields);
+<<<<<<< HEAD
+=======
+    graphite_update($device, $measurement, $tags, $fields);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 } // data_update

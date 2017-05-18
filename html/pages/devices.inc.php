@@ -64,7 +64,11 @@ foreach (get_graph_subtypes($type) as $avail_type) {
     } else {
         $is_selected = '';
     }
+<<<<<<< HEAD
     $graphs_types .= '<option value="' . generate_url($vars, array('format' => 'graph_' . $avail_type)) . '" ' . $is_selected . '>' . $display_type . '</option>';
+=======
+    $graphs_types .= '<option value="' . generate_url($vars, array('format' => 'graph_' . $avail_type, 'from' => $vars['from'] ?: $config['time']['day'], 'to' => $vars['to'] ?: $config['time']['now'])) . '" ' . $is_selected . '>' . $display_type . '</option>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 $graphs_types .= '</select>';
 
@@ -379,17 +383,29 @@ if ($format == "graph") {
         <table id="devices" class="table table-condensed table-hover">    
             <thead>
                 <tr>
+<<<<<<< HEAD
                     <th data-column-id="status" data-searchable="false" data-formatter="status" data-header-css-class="device-table-header-status">Status</th>
     ';
 
     if ($subformat == "detail") {
         echo '<th data-column-id="icon" data-sortable="false" data-searchable="false" data-formatter="icon" data-header-css-class="device-table-header-vendor">Vendor</th>';
+=======
+                    <th data-column-id="status" data-width="100px" data-searchable="false" data-formatter="status">Status</th>
+    ';
+
+    if ($subformat == "detail") {
+        echo '<th data-column-id="icon" data-width="80px" data-sortable="false" data-searchable="false" data-formatter="icon">Vendor</th>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     echo '<th data-column-id="hostname" data-order="asc">Device</th>';
 
     if ($subformat == "detail") {
+<<<<<<< HEAD
         echo '<th data-column-id="ports" data-sortable="false" data-searchable="false">Metrics</th>';
+=======
+        echo '<th data-column-id="ports" data-width="100px" data-sortable="false" data-searchable="false">Metrics</th>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     echo '
@@ -403,7 +419,11 @@ if ($format == "graph") {
     }
 
     echo '
+<<<<<<< HEAD
                     <th data-column-id="actions" data-sortable="false" data-searchable="false">Actions</th>
+=======
+                    <th data-column-id="actions" data-width="90px" data-sortable="false" data-searchable="false" data-header-css-class="device-table-header-actions">Actions</th>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 </tr>
             </thead>
         </table>

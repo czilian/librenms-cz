@@ -10,6 +10,11 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $oids = 'entPhysicalContainedIn.1 entPhysicalSoftwareRev.1 entPhysicalSerialNum.1 entPhysicalModelName.1';
 $data = snmp_get_multi($device, $oids, '-OQUs', 'ENTITY-MIB');
 if ($data[1]['entPhysicalContainedIn'] == '0') {
@@ -27,7 +32,11 @@ if ($data[1]['entPhysicalContainedIn'] == '0') {
 $connections = snmp_get($device, 'CISCO-WAN-OPTIMIZATION-MIB::cwoTfoStatsActiveOptConn.0', '-OQv');
 
 if (is_numeric($connections)) {
+<<<<<<< HEAD
     $rrd_def = 'DS:connections:GAUGE:600:0:U';
+=======
+    $rrd_def = RrdDefinition::make()->addDataset('connections', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $fields = array(
         'connections' => $connections

@@ -22,18 +22,32 @@ if (!$_SESSION['authenticated']) {
 
 set_debug($_REQUEST['debug']);
 
+<<<<<<< HEAD
 $current = $_POST['current'];
 settype($current, 'integer');
 $rowCount = $_POST['rowCount'];
 settype($rowCount, 'integer');
 if (isset($_POST['sort']) && is_array($_POST['sort'])) {
     foreach ($_POST['sort'] as $k => $v) {
+=======
+$current = $_REQUEST['current'];
+settype($current, 'integer');
+$rowCount = $_REQUEST['rowCount'];
+settype($rowCount, 'integer');
+if (isset($_REQUEST['sort']) && is_array($_POST['sort'])) {
+    foreach ($_REQUEST['sort'] as $k => $v) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $sort .= " $k $v";
     }
 }
 
+<<<<<<< HEAD
 $searchPhrase = mres($_POST['searchPhrase']);
 $id           = mres($_POST['id']);
+=======
+$searchPhrase = mres($_REQUEST['searchPhrase']);
+$id           = mres($_REQUEST['id']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $response     = array();
 
 if (isset($id)) {

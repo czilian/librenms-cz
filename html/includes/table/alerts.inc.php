@@ -2,7 +2,29 @@
 
 require_once $config['install_dir'].'/includes/device-groups.inc.php';
 
+<<<<<<< HEAD
 $where = 1;
+=======
+$where = ' `devices`.`disabled` = 0';
+
+$alert_states = array(
+    // divined from librenms/alerts.php
+    'recovered' => 0,
+    'alerted' => 1,
+    'acknowledged' => 2,
+    'worse' => 3,
+    'better' => 4
+);
+
+$alert_severities = array(
+    // alert_rules.status is enum('ok','warning','critical')
+    'ok' => 1,
+    'warning' => 2,
+    'critical' => 3
+);
+
+$show_recovered = false;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $alert_states = array(
     // divined from librenms/alerts.php

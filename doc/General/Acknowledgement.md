@@ -30,6 +30,10 @@ LibreNMS 3rd party acknowledgements
   - HTML Purifier (http://htmlpurifier.org/): LGPL v2.1
   - Symfony Yaml (https://github.com/symfony/yaml): MIT
   - PHPMailer (https://github.com/PHPMailer/PHPMailer): LGPL v2.1
+<<<<<<< HEAD
+=======
+  - pbin (https://github.com/glensc/pbin): GPLv2 (or later - see script header)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 #### 3rd Party GPLv3 Non-compliant
 

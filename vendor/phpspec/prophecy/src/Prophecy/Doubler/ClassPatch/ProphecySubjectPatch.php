@@ -50,9 +50,21 @@ class ProphecySubjectPatch implements ClassPatchInterface
                 continue;
             }
 
+<<<<<<< HEAD
             $method->setCode(
                 'return $this->getProphecy()->makeProphecyMethodCall(__FUNCTION__, func_get_args());'
             );
+=======
+            if ($method->getReturnType() === 'void') {
+                $method->setCode(
+                    '$this->getProphecy()->makeProphecyMethodCall(__FUNCTION__, func_get_args());'
+                );
+            } else {
+                $method->setCode(
+                    'return $this->getProphecy()->makeProphecyMethodCall(__FUNCTION__, func_get_args());'
+                );
+            }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
 
         $prophecySetter = new MethodNode('setProphecy');

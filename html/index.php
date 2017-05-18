@@ -57,7 +57,11 @@ $msg_box = array();
 // Check for install.inc.php
 if (!file_exists('../config.php') && $_SERVER['PATH_INFO'] != '/install.php') {
     // no config.php does so let's redirect to the install
+<<<<<<< HEAD
     header('Location: install.php');
+=======
+    header("Location: {$config['base_url']}/install.php");
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     exit;
 }
 
@@ -111,6 +115,7 @@ if (isset($config['page_title'])) {
 <?php
 if (empty($config['favicon'])) {
 ?>
+<<<<<<< HEAD
   <link rel="apple-touch-icon-precomposed" sizes="152x152" href="images/favicon-152.png">
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/favicon-144.png">
   <link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/favicon-120.png">
@@ -120,6 +125,16 @@ if (empty($config['favicon'])) {
   <link rel="icon" href="images/favicon-32.png" sizes="32x32">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="msapplication-TileImage" content="images/favicon-144.png">
+=======
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="images/manifest.json">
+  <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <meta name="msapplication-config" content="images/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 <?php
 } else {
     echo('  <link rel="shortcut icon" href="'.$config['favicon'].'" />' . "\n");
@@ -140,8 +155,13 @@ if (empty($config['favicon'])) {
   <link href="css/MarkerCluster.css" rel="stylesheet" type="text/css" />
   <link href="css/MarkerCluster.Default.css" rel="stylesheet" type="text/css" />
   <link href="css/leaflet.awesome-markers.css" rel="stylesheet" type="text/css" />
+<<<<<<< HEAD
   <link href="<?php echo($config['stylesheet']);  ?>" rel="stylesheet" type="text/css" />
   <link href="css/<?php echo $config['site_style']; ?>.css" rel="stylesheet" type="text/css" />
+=======
+  <link href="<?php echo($config['stylesheet']);  ?>?ver=291727421" rel="stylesheet" type="text/css" />
+  <link href="css/<?php echo $config['site_style']; ?>.css?ver=632417639" rel="stylesheet" type="text/css" />
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 <?php
 
 foreach ((array)$config['webui']['custom_css'] as $custom_css) {
@@ -164,6 +184,10 @@ foreach ((array)$config['webui']['custom_css'] as $custom_css) {
   <script src="js/jquery.bootgrid.min.js"></script>
   <script src="js/handlebars.min.js"></script>
   <script src="js/pace.min.js"></script>
+<<<<<<< HEAD
+=======
+  <script src="js/qrcode.min.js"></script>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     <?php
     if ($config['enable_lazy_load'] === true) {
     ?>
@@ -308,7 +332,11 @@ echo('<h5>Powered by <a href="' . $config['project_home'] . '" target="_blank" r
 <?php
 }
 
+<<<<<<< HEAD
 if (dbFetchCell("SELECT COUNT(`device_id`) FROM `devices` WHERE `last_polled` <= DATE_ADD(NOW(), INTERVAL - 15 minute) AND `ignore` = 0 AND `disabled` = 0 AND status = 1", array()) > 0) {
+=======
+if (dbFetchCell("SELECT COUNT(*) FROM `devices` WHERE `last_polled` <= DATE_ADD(NOW(), INTERVAL - 15 minute) AND `ignore` = 0 AND `disabled` = 0 AND status = 1", array()) > 0) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $msg_box[] = array('type' => 'warning', 'message' => "<a href=\"poll-log/filter=unpolled/\">It appears as though you have some devices that haven't completed polling within the last 15 minutes, you may want to check that out :)</a>",'title' => 'Devices unpolled');
 }
 
@@ -335,28 +363,28 @@ if ($no_refresh !== true && $config['page_refresh'] != 0) {
     echo('<script type="text/javascript">
         $(document).ready(function() {
 
-           $("#countdown_timer_status").html("<i class=\"fa fa-pause fa-fw\"></i> Pause");
+           $("#countdown_timer_status").html("<i class=\"fa fa-pause fa-fw fa-lg\"></i> Pause");
            var Countdown = {
                sec: '. $config['page_refresh'] .',
 
                Start: function() {
                    var cur = this;
                    this.interval = setInterval(function() {
-                       $("#countdown_timer_status").html("<i class=\"fa fa-pause fa-fw\"></i> Pause");
+                       $("#countdown_timer_status").html("<i class=\"fa fa-pause fa-fw fa-lg\"></i> Pause");
                        cur.sec -= 1;
                        display_time = cur.sec;
                        if (display_time == 0) {
                            location.reload();
                        }
                        if (display_time % 1 === 0 && display_time <= 300) {
-                           $("#countdown_timer").html("<i class=\"fa fa-clock-o fa-fw\"></i> Refresh in " + display_time);
+                           $("#countdown_timer").html("<i class=\"fa fa-clock-o fa-fw fa-lg\"></i> Refresh in " + display_time);
                        }
                    }, 1000);
                },
 
                Pause: function() {
                    clearInterval(this.interval);
-                   $("#countdown_timer_status").html("<i class=\"fa fa-play fa-fw\"></i> Resume");
+                   $("#countdown_timer_status").html("<i class=\"fa fa-play fa-fw fa-lg\"></i> Resume");
                    delete this.interval;
                },
 
@@ -387,7 +415,11 @@ if ($no_refresh !== true && $config['page_refresh'] != 0) {
     var no_refresh = ' . var_export((bool)$no_refresh, true) . ';
     $(document).ready(function() {
         $("#countdown_timer").html("Refresh disabled");
+<<<<<<< HEAD
         $("#countdown_timer_status").html("<i class=\"fa fa-pause fa-fw\"></i>");
+=======
+        $("#countdown_timer_status").html("<i class=\"fa fa-pause fa-fw fa-lg\"></i>");
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $("#countdown_timer_status").click("", function(event) {
             event.preventDefault();
         });

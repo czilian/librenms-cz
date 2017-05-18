@@ -53,7 +53,11 @@ if ($config['enable_pseudowires'] && $device['os_group'] == 'cisco') {
     // Cycle the list of pseudowires we cached earlier and make sure we saw them again.
     foreach ($device['pws_db'] as $pw_id => $pseudowire_id) {
         if (empty($device['pws'][$pw_id])) {
+<<<<<<< HEAD
             dbDelete('vlans', '`pseudowire_id` = ?', array($pseudowire_id));
+=======
+            dbDelete('pseudowires', '`pseudowire_id` = ?', array($pseudowire_id));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
     }
 

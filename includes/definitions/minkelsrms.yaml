@@ -3,3 +3,9 @@ text: 'Minkels RMS'
 type: environment
 over:
     - { graph: device_temperature, text: temperature }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - 8VD-X20
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

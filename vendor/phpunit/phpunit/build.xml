@@ -28,7 +28,10 @@
 
     <target name="validate-composer-json" unless="validate-composer-json.done" description="Validate composer.json">
         <exec executable="${basedir}/build/tools/composer" failonerror="true" taskname="composer">
+<<<<<<< HEAD
             <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             <arg value="validate"/>
             <arg value="--no-check-lock"/>
             <arg value="--strict"/>
@@ -44,8 +47,18 @@
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
         <exec executable="${basedir}/build/tools/composer" taskname="composer">
+<<<<<<< HEAD
             <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
             <arg value="install"/>
+=======
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+            <arg value="--no-suggest"/>
+            <arg value="--optimize-autoloader"/>
+            <arg value="--prefer-stable"/>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         </exec>
     </target>
 
@@ -82,12 +95,22 @@
 
     <target name="signed-phar" depends="phar" description="Create signed PHAR archive of PHPUnit and all its dependencies">
         <exec executable="gpg" failonerror="true">
+<<<<<<< HEAD
+=======
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/phpunit-library-${version}.phar"/>
         </exec>
 
         <exec executable="gpg" failonerror="true">
+<<<<<<< HEAD
+=======
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/phpunit-${version}.phar"/>
@@ -322,10 +345,14 @@
     </target>
 
     <target name="-phar-determine-version">
+<<<<<<< HEAD
         <exec executable="bash" outputproperty="version">
             <arg value="-c"/>
             <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
         </exec>
+=======
+        <exec executable="${basedir}/build/version.php" outputproperty="version" />
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     </target>
 
     <target name="generate-project-documentation" depends="-phploc,-phpcs,-phpmd,-phpunit">
@@ -364,8 +391,15 @@
 
     <target name="-phpunit" depends="setup">
         <exec executable="${basedir}/phpunit" taskname="phpunit">
+<<<<<<< HEAD
             <arg value="--configuration"/>
             <arg path="${basedir}/build/phpunit.xml"/>
+=======
+            <arg value="--coverage-xml"/>
+            <arg path="${basedir}/build/logfiles/coverage"/>
+            <arg value="--log-junit"/>
+            <arg path="${basedir}/build/logfiles/junit.xml"/>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         </exec>
     </target>
 </project>

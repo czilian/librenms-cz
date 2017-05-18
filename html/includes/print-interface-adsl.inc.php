@@ -6,7 +6,7 @@ $port['hostname']  = $device['hostname'];
 
 $if_id = $port['port_id'];
 
-$port = ifLabel($port);
+$port = cleanPort($port);
 
 if (!is_integer($i / 2)) {
     $row_colour = $list_colour_a;
@@ -15,7 +15,11 @@ if (!is_integer($i / 2)) {
 }
 
 if ($port['ifInErrors_delta'] > 0 || $port['ifOutErrors_delta'] > 0) {
+<<<<<<< HEAD
     $error_img = generate_port_link($port, "<img src='images/16/chart_curve_error.png' alt='Interface Errors' border=0>", 'port_errors');
+=======
+    $error_img = generate_port_link($port, "<i class='fa fa-flag fa-lg' style='color:red' aria-hidden='true'></i>", 'port_errors');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 } else {
     $error_img = '';
 }
@@ -52,7 +56,11 @@ $height = '40';
 $from   = $config['time']['day'];
 
 echo '</td><td width=135>';
+<<<<<<< HEAD
 echo (formatRates(($port['ifInOctets_rate'] * 8))." <img class='optionicon' src='images/icons/arrow_updown.png' /> ".formatRates(($port['ifOutOctets_rate'] * 8)));
+=======
+echo (formatRates(($port['ifInOctets_rate'] * 8))." <i class='fa fa-arrows-v fa-lg icon-theme' aria-hidden='true'></i> ".formatRates(($port['ifOutOctets_rate'] * 8)));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 echo '<br />';
 $port['graph_type'] = 'port_bits';
 echo generate_port_link(

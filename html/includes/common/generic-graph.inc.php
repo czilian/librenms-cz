@@ -254,7 +254,11 @@ function '.$unique_id.'() {
     async: false,
     templates: {
       header: "<h5><strong>&nbsp;Ports</strong></h5>",
+<<<<<<< HEAD
       suggestion: Handlebars.compile(\'<p><small><img src="images/icons/port.png" /> <strong>{{name}}</strong> – {{hostname}} - <i>{{description}}</i></small></p>\')
+=======
+      suggestion: Handlebars.compile(\'<p><small><i class="fa fa-link fa-sm icon-theme" aria-hidden="true"></i> <strong>{{name}}</strong> – {{hostname}} - <i>{{description}}</i></small></p>\')
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
   });
 
@@ -290,7 +294,11 @@ function '.$unique_id.'() {
     async: false,
     templates: {
       header: "<h5><strong>&nbsp;Applications</strong></h5>",
+<<<<<<< HEAD
       suggestion: Handlebars.compile(\'<p><small><img src="images/icons/port.png" /> <strong>{{name}}</strong> – {{hostname}}</small></p>\')
+=======
+      suggestion: Handlebars.compile(\'<p><small><i class="fa fa-link fa-sm icon-theme" aria-hidden="true"></i> <strong>{{name}}</strong> – {{hostname}}</small></p>\')
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
   });
 
@@ -328,7 +336,11 @@ function '.$unique_id.'() {
     async: false,
     templates: {
       header: "<h5><strong>&nbsp;Munin</strong></h5>",
+<<<<<<< HEAD
       suggestion: Handlebars.compile(\'<p><small><img src="images/icons/port.png" /> <strong>{{plugin}}</strong> – {{hostname}}</small></p>\')
+=======
+      suggestion: Handlebars.compile(\'<p><small><i class="fa fa-link fa-sm icon-theme" aria-hidden="true"></i> <strong>{{plugin}}</strong> – {{hostname}}</small></p>\')
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
   });
 

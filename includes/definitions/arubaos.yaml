@@ -1,9 +1,22 @@
 os: arubaos
 text: ArubaOS
 type: wireless
+<<<<<<< HEAD
 icon: arubaos
+=======
+icon: aruba
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 over:
     - { graph: device_arubacontroller_numaps, text: 'Number of APs' }
     - { graph: device_arubacontroller_numclients, text: 'Number of Clients' }
 poller_modules:
     aruba-controller: 1
+<<<<<<< HEAD
+=======
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.14823. #ArubaOS
+        - .1.3.6.1.4.1.6486.800.1.1.2.2.2. #AOS-W
+    - sysDescr:
+        - ArubaOS
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

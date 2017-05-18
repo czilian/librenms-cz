@@ -102,10 +102,13 @@ $('#alert-template').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var template_id = button.data('template_id');
     var action = button.data('template_action');
+<<<<<<< HEAD
     $('#template').val('');
     $('#line').val('');
     $('#value').val('');
     $('#name').val('');
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if(action == 'edit') {
         $('#template_id').val(template_id);
         $.ajax({
@@ -124,6 +127,13 @@ $('#alert-template').on('show.bs.modal', function (event) {
 });
 $('#alert-template').on('hide.bs.modal', function(event) {
     $('#template_id').val('');
+<<<<<<< HEAD
+=======
+    $('#template').val('');
+    $('#line').val('');
+    $('#value').val('');
+    $('#name').val('');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 });
 
 $('#create-template').click('', function(e) {

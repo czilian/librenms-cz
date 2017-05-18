@@ -11,7 +11,11 @@
  * option) any later version.  Please see LICENSE.txt at the top level of
  * the source code distribution for details.
  */
+<<<<<<< HEAD:html/includes/forms/open-proc.inc.php
 # header('Content-type: text/plain');
+=======
+header('Content-type: text/plain');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7:html/includes/forms/open-proc.inc.php
 
 $alert_id = $_POST['alert_id'];
 if (!is_numeric($alert_id)) {

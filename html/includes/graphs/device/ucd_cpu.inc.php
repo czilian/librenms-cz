@@ -25,7 +25,11 @@ $rrd_options .= ' AREA:system_perc#ea8f00:system:STACK';
 $rrd_options .= " GPRINT:system_perc:LAST:'   %5.2lf%%'";
 $rrd_options .= " GPRINT:system_perc:AVERAGE:'   %5.2lf%%'";
 $rrd_options .= " GPRINT:system_perc:MAX:'   %5.2lf%%\\n'";
+<<<<<<< HEAD
 $rrd_options .= ' AREA:idle_perc#f8f8f3:idle:STACK';
+=======
+$rrd_options .= ' AREA:idle_perc#00007776:idle:STACK';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $rrd_options .= " GPRINT:idle_perc:LAST:'     %5.2lf%%'";
 $rrd_options .= " GPRINT:idle_perc:AVERAGE:'   %5.2lf%%'";
 $rrd_options .= " GPRINT:idle_perc:MAX:'   %5.2lf%%\\n'";

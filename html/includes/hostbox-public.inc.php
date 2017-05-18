@@ -50,12 +50,20 @@ echo '  <tr>
 
 echo '<td>';
 if ($port_count) {
+<<<<<<< HEAD
     echo ' <img src="images/icons/port.png" align=absmiddle /> '.$port_count;
+=======
+    echo ' <i class="fa fa-link fa-lg icon-theme" aria-hidden="true"></i> '.$port_count;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 echo '<br />';
 if ($sensor_count) {
+<<<<<<< HEAD
     echo ' <img src="images/icons/sensors.png" align=absmiddle /> '.$sensor_count;
+=======
+    echo ' <i class="fa fa-tachometer fa-lg icon-theme" aria-hidden="true"></i> '.$sensor_count;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 echo '</td>';

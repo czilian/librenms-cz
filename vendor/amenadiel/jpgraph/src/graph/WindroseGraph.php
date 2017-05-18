@@ -9,7 +9,11 @@ use Amenadiel\JpGraph\Util;
 class WindroseGraph extends Graph
 {
     private $posx, $posy;
+<<<<<<< HEAD
     public $plots = [];
+=======
+    public $plots = array();
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     public function __construct($width = 300, $height = 200, $cachedName = "", $timeout = 0, $inline = 1)
     {

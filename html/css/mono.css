@@ -18,6 +18,24 @@
     color: #e30613;
 }
 
+<<<<<<< HEAD
+=======
+.icon-theme {
+    color: black;
+}
+
+.panel-default>.panel-heading {
+  background: #222;
+  color: white;
+}
+
+.panel-default>.panel-heading .icon-theme,
+.panel-default>.panel-heading a:visited,
+.panel-default>.panel-heading a:link {
+  color: white;
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 .twitter-typeahead .tt-hint {
     border-color: #000 !important;
 }

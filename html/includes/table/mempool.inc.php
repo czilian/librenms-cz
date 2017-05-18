@@ -50,7 +50,11 @@ foreach (dbFetchRows($sql, $param) as $mempool) {
     $graph_array_zoom['width']  = '400';
     $link       = 'graphs/id='.$graph_array['id'].'/type='.$graph_array['type'].'/from='.$graph_array['from'].'/to='.$graph_array['to'].'/';
     $mini_graph = overlib_link($link, generate_lazy_graph_tag($graph_array), generate_graph_tag($graph_array_zoom), null);
+<<<<<<< HEAD
     $background = get_percentage_colours($perc);
+=======
+    $background = get_percentage_colours($perc, $mempool['mempool_perc_warn']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $bar_link   = overlib_link($link, print_percentage_bar(400, 20, $perc, "$used / $total", 'ffffff', $background['left'], $free, 'ffffff', $background['right']), generate_graph_tag($graph_array_zoom), null);
 
     $response[] = array(

@@ -4,3 +4,10 @@ type: power
 over:
     - { graph: device_current, text: Current }
 icon: tripplite
+<<<<<<< HEAD
+=======
+rfc1628_compat: 1
+discovery:
+    - sysDescr_regex:
+        - '/POWERALERT/i'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

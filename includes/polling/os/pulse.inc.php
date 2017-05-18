@@ -10,6 +10,11 @@
  * the source code distribution for details.
 */
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $version = preg_replace('/[\r\n\"]+/', ' ', snmp_get($device, "productVersion.0", "-OQv", "PULSESECURE-PSG-MIB"));
 $hardware = "Juniper " . preg_replace('/[\r\n\"]+/', ' ', snmp_get($device, "productName.0", "-OQv", "PULSESECURE-PSG-MIB"));
 $hostname = trim($poll_device['sysName'], '"');
@@ -17,7 +22,11 @@ $hostname = trim($poll_device['sysName'], '"');
 $users = snmp_get($device, 'iveConcurrentUsers.0', '-OQv', 'PULSESECURE-PSG-MIB');
 
 if (is_numeric($users)) {
+<<<<<<< HEAD
     $rrd_def = 'DS:users:GAUGE:600:0:U';
+=======
+    $rrd_def = RrdDefinition::make()->addDataset('users', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $fields = array(
         'users' => $users,
@@ -31,7 +40,11 @@ if (is_numeric($users)) {
 $sessions = snmp_get($device, 'iveConcurrentUsers.0', '-OQv', 'PULSESECURE-PSG-MIB');
 
 if (is_numeric($sessions)) {
+<<<<<<< HEAD
     $rrd_def = 'DS:sessions:GAUGE:600:0:U';
+=======
+    $rrd_def = RrdDefinition::make()->addDataset('sessions', 'GAUGE', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $fields = array(
         'sessions' => $sessions,

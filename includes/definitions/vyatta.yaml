@@ -6,3 +6,12 @@ over:
     - { graph: device_bits, text: 'Device Traffic' }
     - { graph: device_processor, text: 'Processor Usage' }
     - { graph: device_ucd_memory, text: 'Memory Usage' }
+<<<<<<< HEAD
+=======
+discovery:
+    -
+      sysDescr_regex:
+        - '/^Vyatta/'
+      sysDescr_except:
+        - 'VyOS'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

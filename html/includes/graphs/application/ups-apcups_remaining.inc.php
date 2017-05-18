@@ -21,8 +21,13 @@
 require 'includes/graphs/common.inc.php';
 $scale_min = 0;
 $ds        = 'time_remaining';
+<<<<<<< HEAD
 $colour_area     = 'EEEEEE';
 $colour_line     = '36393D';
+=======
+$colour_area     = 'FF000011';
+$colour_line     = 'FF0000';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $colour_area_max = 'FFEE99';
 $graph_max       = 0;
 $unit_text       = 'Minutes';

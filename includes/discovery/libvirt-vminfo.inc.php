@@ -95,7 +95,10 @@ if ($config['enable_libvirt'] == '1' && $device['os'] == 'linux') {
                             break;
                         case 'M':
                         case 'MiB':
+<<<<<<< HEAD
                             $vmwVmMemSize = $vmwVmMemSize;
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                             break;
                         case 'MB':
                             $vmwVmMemSize = $vmwVmMemSize * 1000000 / 1048576;
@@ -118,7 +121,11 @@ if ($config['enable_libvirt'] == '1' && $device['os'] == 'linux') {
                     if (count($result['device_id']) == 0) {
                         $inserted_id = dbInsert(array('device_id' => $device['device_id'], 'vm_type' => 'libvirt', 'vmwVmVMID' => $dom_id, 'vmwVmDisplayName' => mres($vmwVmDisplayName), 'vmwVmGuestOS' => mres($vmwVmGuestOS), 'vmwVmMemSize' => mres($vmwVmMemSize), 'vmwVmCpus' => mres($vmwVmCpus), 'vmwVmState' => mres($vmwVmState)), 'vminfo');
                         echo '+';
+<<<<<<< HEAD
                         log_event("Virtual Machine added: $vmwVmDisplayName ($vmwVmMemSize MB)", $device, 'vm', $inserted_id);
+=======
+                        log_event("Virtual Machine added: $vmwVmDisplayName ($vmwVmMemSize MB)", $device, 'vm', 3, $inserted_id);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     } else {
                         if ($result['vmwVmState'] != $vmwVmState
                             || $result['vmwVmDisplayName'] != $vmwVmDisplayName
@@ -154,7 +161,11 @@ if ($config['enable_libvirt'] == '1' && $device['os'] == 'linux') {
         if (!in_array($db_vm['vmwVmVMID'], $libvirt_vmlist)) {
             dbDelete('vminfo', '`id` = ?', array($db_vm['id']));
             echo '-';
+<<<<<<< HEAD
             log_event('Virtual Machine removed: '.$db_vm['vmwVmDisplayName'], $device, 'vm', $db_vm['id']);
+=======
+            log_event('Virtual Machine removed: ' . $db_vm['vmwVmDisplayName'], $device, 'vm', 4, $db_vm['id']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
     }
 

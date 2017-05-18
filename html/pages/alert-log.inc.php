@@ -37,6 +37,7 @@ $pagetitle[] = 'Alert Log';
 var grid = $("#alertlog").bootgrid({
     ajax: true,
     templates: {
+<<<<<<< HEAD
         header: "<div id=\"{{ctx.id}}\" class=\"{{css.header}}\"><div class=\"row\">"+
                 "<div class=\"col-sm-8 actionBar\"><span class=\"pull-left\">"+
                 "<form method=\"post\" action=\"\" class=\"form-inline\" role=\"form\" id=\"result_form\">"+
@@ -74,6 +75,32 @@ foreach (get_all_devices() as $hostname) {
                "<button type=\"submit\" class=\"btn btn-default input-sm\">Filter</button>"+
                "</form></span></div>"+
                "<div class=\"col-sm-4 actionBar\"><p class=\"{{css.search}}\"></p><p class=\"{{css.actions}}\"></p></div></div></div>"
+=======
+        header: '<div id="{{ctx.id}}" class="{{css.header}}"><div class="row"> \
+                <div class="col-sm-8 actionBar"><span class="pull-left"> \
+                <form method="post" action="" class="form-inline" role="form" id="result_form"> \
+                <div class="form-group"> \
+                <label> \
+                <strong>Device&nbsp;</strong> \
+                </label> \
+                <select name="device_id" id="device_id" class="form-control input-sm" style="min-width: 175px;"> \
+                <option value="">All Devices</option> \
+               </select> \
+               </div> \
+               <div class="form-group"> \
+               <label> \
+               <strong>&nbsp;State&nbsp;</strong> \
+               </label> \
+               <select name="state" id="state" class="form-control input-sm"> \
+               <option value="-1"></option> \
+               <option value="0">Ok</option> \
+               <option value="1">Alert</option> \
+               </select> \
+               </div> \
+               <button type="submit" class="btn btn-default input-sm">Filter</button> \
+               </form></span></div> \
+               <div class="col-sm-4 actionBar"><p class="{{css.search}}"></p><p class="{{css.actions}}"></p></div></div></div>'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     },
     post: function ()
     {
@@ -92,7 +119,11 @@ foreach (get_all_devices() as $hostname) {
     max = high - low;
     search = $('.search-field').val();
 
+<<<<<<< HEAD
     $(".pdf-export").html("<a href='pdf.php?report=alert-log&device_id=<?php echo $_POST['device_id']; ?>&string="+search+"&results="+max+"&start="+low+"'><img src='images/16/pdf.png' width='16' height='16' alt='Export to pdf'> Export to pdf</a>");
+=======
+    $(".pdf-export").html("<a href='pdf.php?report=alert-log&device_id=<?php echo $_POST['device_id']; ?>&string="+search+"&results="+max+"&start="+low+"'><i class='fa fa-heartbeat fa-lg icon-theme' aria-hidden='true'></i> Export to pdf</a>");
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     grid.find(".incident-toggle").each( function() {
       $(this).parent().addClass('incident-toggle-td');
@@ -116,4 +147,6 @@ foreach (get_all_devices() as $hostname) {
       });
     });
 });
+
+<?php echo generate_fill_select_js('hostnames', '#device_id', $_POST['device_id']); ?>
 </script>

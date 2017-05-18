@@ -23,6 +23,7 @@
  * @author     Tony Murray <murraytony@gmail.com>
  */
 
+<<<<<<< HEAD
 if ($device['os'] == 'netagent2') {
     $charge_oid = '.1.3.6.1.4.1.935.1.1.1.2.2.1.0';
     $charge = snmp_get($device, $charge_oid, '-Osqnv');
@@ -53,4 +54,34 @@ if ($device['os'] == 'netagent2') {
             $charge
         );
     }
+=======
+$charge_oid = '.1.3.6.1.4.1.935.1.1.1.2.2.1.0';
+$charge = snmp_get($device, $charge_oid, '-Osqnv');
+
+if (!empty($charge)) {
+    $type           = 'netagent2';
+    $index          = 0;
+    $limit          = 100;
+    $lowlimit       = 0;
+    $lowwarnlimit   = 10;
+    $divisor        = 1;
+    $descr          = 'Battery Charge';
+
+    discover_sensor(
+        $valid['sensor'],
+        'charge',
+        $device,
+        $charge_oid,
+        $index,
+        $type,
+        $descr,
+        $divisor,
+        1,
+        $lowlimit,
+        $lowwarnlimit,
+        null,
+        $limit,
+        $charge
+    );
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

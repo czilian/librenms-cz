@@ -32,12 +32,21 @@ if (rrdtool_check_rrd_exists($mysql_rrd)) {
 
 
     $rrd_list = array();
+<<<<<<< HEAD
     foreach ($array as $ds => $vars) {
         $rrd_list[] = array(
             'filename' => $rrd_filename,
             'descr' => $vars['descr'],
             'ds' => $ds,
 //                'colour' => $vars['colour']
+=======
+    foreach ($array as $ds => $var) {
+        $rrd_list[] = array(
+            'filename' => $rrd_filename,
+            'descr' => $var['descr'],
+            'ds' => $ds,
+//                'colour' => $var['colour']
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         );
     }
 } else {

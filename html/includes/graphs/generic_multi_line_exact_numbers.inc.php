@@ -35,7 +35,11 @@ foreach ($rrd_list as $rrd) {
         $colour = $config['graph_colours'][$colours][$colour_iter];
         $colour_iter++;
     }
+<<<<<<< HEAD
   
+=======
+    $i++;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $ds       = $rrd['ds'];
     $filename = $rrd['filename'];
 

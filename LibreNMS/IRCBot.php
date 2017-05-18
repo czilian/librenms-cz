@@ -20,6 +20,11 @@
 
 namespace LibreNMS;
 
+<<<<<<< HEAD
+=======
+use LibreNMS\Exceptions\DatabaseConnectException;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 class IRCBot
 {
 
@@ -365,7 +370,11 @@ class IRCBot
     }//end getUser()
 
 
+<<<<<<< HEAD
     private function connect($try)
+=======
+    private function connect($try = 0)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         if ($try > $this->max_retry) {
             $this->log('Failed too many connection attempts, aborting');
@@ -437,6 +446,7 @@ class IRCBot
     private function chkdb()
     {
         if (!is_resource($this->sql)) {
+<<<<<<< HEAD
             if (($this->sql = mysqli_connect($this->config['db_host'], $this->config['db_user'], $this->config['db_pass'])) != false && mysqli_select_db($this->sql, $this->config['db_name'])) {
                 return true;
             } else {
@@ -446,6 +456,23 @@ class IRCBot
         } else {
             return true;
         }
+=======
+            try {
+                $this->sql = dbConnect(
+                    $this->config['db_host'],
+                    $this->config['db_user'],
+                    $this->config['db_pass'],
+                    $this->config['db_name'],
+                    $this->config['db_port'],
+                    $this->config['db_socket']
+                );
+            } catch (DatabaseConnectException $e) {
+                $this->log('Cannot connect to MySQL: ' . $e->getMessage());
+                return die();
+            }
+        }
+        return true;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }//end chkdb()
 
 

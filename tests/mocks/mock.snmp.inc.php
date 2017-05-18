@@ -43,10 +43,19 @@ function cache_snmprec($file)
     $line = strtok($data, "\r\n");
     while ($line !== false) {
         list($oid, $type, $data) = explode('|', $line, 3);
+<<<<<<< HEAD
         if ($type == 4) {
             $data = trim($data);
         } elseif ($type == 6) {
             $data = trim($data, '.');
+=======
+        if ($type == '4') {
+            $data = trim($data);
+        } elseif ($type == '6') {
+            $data = trim($data, '.');
+        } elseif ($type == '4x') {
+            $data = hex2str($data);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
 
         $snmpMockCache[$file][$oid] = array($type, $data);

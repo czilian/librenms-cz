@@ -1,6 +1,7 @@
 <?php
 
 require 'includes/graphs/common.inc.php';
+<<<<<<< HEAD
 
 if ($width > '500') {
     $descr_len = 24;
@@ -28,6 +29,18 @@ if ($width > '500') {
     $rrd_options .= " COMMENT:'".substr(str_pad($unit_text, ($descr_len + 5)), 0, ($descr_len + 5))."Now      Min      Max     Avg\l'";
 }
 
+=======
+
+$descr_len  = 12;
+
+if ($nototal) {
+    $descr_len += '2';
+    $unitlen  += '2';
+}
+
+$rrd_options .= " COMMENT:'".rrdtool_escape($unit_text, $descr_len)."        Now       Min       Max     Avg\l'";
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $unitlen = '10';
 if ($nototal) {
     $descr_len += '2';
@@ -50,6 +63,7 @@ foreach ($rrd_list as $i => $rrd) {
     }
 
     $descr = rrdtool_escape($rrd['descr'], $descr_len);
+<<<<<<< HEAD
 
     $rrd_options .= ' DEF:'.$rrd['ds'].$i.'='.$rrd['filename'].':'.$rrd['ds'].':AVERAGE ';
 
@@ -80,6 +94,38 @@ foreach ($rrd_list as $i => $rrd) {
         $stack = ':STACK';
     }
 
+=======
+
+    $rrd_options .= ' DEF:'.$rrd['ds'].$i.'='.$rrd['filename'].':'.$rrd['ds'].':AVERAGE ';
+
+    if ($simple_rrd) {
+        $rrd_options .= ' CDEF:'.$rrd['ds'].$i.'min='.$rrd['ds'].$i.' ';
+        $rrd_options .= ' CDEF:'.$rrd['ds'].$i.'max='.$rrd['ds'].$i.' ';
+    } else {
+        $rrd_options .= ' DEF:'.$rrd['ds'].$i.'min='.$rrd['filename'].':'.$rrd['ds'].':MIN ';
+        $rrd_options .= ' DEF:'.$rrd['ds'].$i.'max='.$rrd['filename'].':'.$rrd['ds'].':MAX ';
+    }
+
+    if ($_GET['previous']) {
+        $rrd_options .= ' DEF:'.$i.'X='.$rrd['filename'].':'.$rrd['ds'].':AVERAGE:start='.$prev_from.':end='.$from;
+        $rrd_options .= ' SHIFT:'.$i."X:$period";
+        $thingX      .= $seperatorX.$i.'X,UN,0,'.$i.'X,IF';
+        $plusesX     .= $plusX;
+        $seperatorX   = ',';
+        $plusX        = ',+';
+    }
+
+    // Suppress totalling?
+    if (!$nototal) {
+        $rrd_options .= ' VDEF:tot'.$rrd['ds'].$i.'='.$rrd['ds'].$i.',TOTAL';
+    }
+
+    // This this not the first entry?
+    if ($i) {
+        $stack = ':STACK';
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     // if we've been passed a multiplier we must make a CDEF based on it!
     $g_defname = $rrd['ds'];
     if (is_numeric($multiplier)) {

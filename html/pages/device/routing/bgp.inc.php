@@ -41,7 +41,11 @@ echo ' | Prefixes: ';
 
 if ($vars['view'] == 'prefixes_ipv4unicast') {
     echo "<span class='pagemenu-selected'>";
+<<<<<<< HEAD
     $extra_sql = " AND `bgpLocalAddr` NOT LIKE '%:%'";
+=======
+    $extra_sql = " AND `bgpPeerIdentifier` NOT LIKE '%:%'";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 echo generate_link('IPv4', $link_array, array('view' => 'prefixes_ipv4unicast'));
@@ -64,7 +68,11 @@ echo ' | ';
 
 if ($vars['view'] == 'prefixes_ipv6unicast') {
     echo "<span class='pagemenu-selected'>";
+<<<<<<< HEAD
     $extra_sql = " AND `bgpLocalAddr` LIKE '%:%'";
+=======
+    $extra_sql = " AND `bgpPeerIdentifier` LIKE '%:%'";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 echo generate_link('IPv6', $link_array, array('view' => 'prefixes_ipv6unicast'));
@@ -96,7 +104,11 @@ if ($vars['view'] == 'macaccounting_pkts') {
 print_optionbar_end();
 
 echo '<table border="0" cellspacing="0" cellpadding="5" width="100%">';
+<<<<<<< HEAD
 echo '<tr style="height: 30px"><td width=1></td><th></th><th>Peer address</th><th>Type</th><th>Remote AS</th><th>State</th><th>Uptime</th></tr>';
+=======
+echo '<tr style="height: 30px"><th>Peer address</th><th>Type</th><th>Remote AS</th><th>State</th><th>Uptime</th></tr>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $i = '1';
 
@@ -160,6 +172,10 @@ foreach (dbFetchRows("SELECT * FROM `bgpPeers` WHERE `device_id` = ? $extra_sql 
         unset($peerhost);
     }
 
+<<<<<<< HEAD
+=======
+    $peerhost = cleanPort($peerhost);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if (is_array($peerhost)) {
         // $peername = generate_device_link($peerhost);
         $peername = generate_device_link($peerhost).' '.generate_port_link($peerhost);
@@ -208,20 +224,38 @@ foreach (dbFetchRows("SELECT * FROM `bgpPeers` WHERE `device_id` = ? $extra_sql 
     $graph_array_zoom['height'] = '150';
     $graph_array_zoom['width']  = '500';
     $overlib_link = "device/device=".$peer['device_id']."/tab=routing/proto=bgp/";
+<<<<<<< HEAD
     $peeraddresslink = "<span class=list-large>".overlib_link(null, $peer['bgpPeerIdentifier'], generate_graph_tag($graph_array_zoom), null)."</span>";
+=======
+
+    $link_array         = $graph_array;
+    $link_array['page'] = 'graphs';
+    unset($link_array['height'], $link_array['width'], $link_array['legend']);
+    $link = generate_url($link_array);
+    $peeraddresslink = "<span class=list-large>".overlib_link($link, $peer['bgpPeerIdentifier'], generate_graph_tag($graph_array_zoom), null)."</span>";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     echo '<tr bgcolor="'.$bg_colour.'"'.($peer['alert'] ? ' bordercolor="#cc0000"' : '').($peer['disabled'] ? ' bordercolor="#cccccc"' : '').'>
         ';
 
+<<<<<<< HEAD
     echo '   <td width=20><span class=list-large>'.$i.'</span></td>
+=======
+    echo '
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         <td>'.$peeraddresslink.'<br />'.$peername."</td>
         <td>$peer_type</td>
         <td style='font-size: 10px; font-weight: bold; line-height: 10px;'>".(isset($peer['afi']) ? $peer['afi'] : '').'</td>
         <td><strong>AS'.$peer['bgpPeerRemoteAs'].'</strong><br />'.$peer['astext']."</td>
         <td><strong><span style='color: $admin_col;'>".$peer['bgpPeerAdminStatus']."<span><br /><span style='color: $col;'>".$peer['bgpPeerState'].'</span></strong></td>
         <td>'.formatUptime($peer['bgpPeerFsmEstablishedTime'])."<br />
+<<<<<<< HEAD
         Updates <img src='images/16/arrow_down.png' align=absmiddle> ".$peer['bgpPeerInUpdates']."
         <img src='images/16/arrow_up.png' align=absmiddle> ".$peer['bgpPeerOutUpdates'].'</td>
+=======
+        Updates <i class='fa fa-arrow-down icon-theme' aria-hidden='true'></i> ".$peer['bgpPeerInUpdates']."
+        <i class='fa fa-arrow-up icon-theme' aria-hidden='true'></i> ".$peer['bgpPeerOutUpdates'].'</td>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         </tr>
         <tr height=5></tr>';
 

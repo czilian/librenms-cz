@@ -6,10 +6,14 @@ use PhpSpec\ObjectBehavior;
 
 class CallSpec extends ObjectBehavior
 {
+<<<<<<< HEAD
     /**
      * @param \Exception $exception
      */
     function let($exception)
+=======
+    function let(\Exception $exception)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith('setValues', array(5, 2), 42, $exception, 'some_file.php', 23);
     }

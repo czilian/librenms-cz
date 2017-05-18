@@ -11,11 +11,21 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 if ($device['os_group'] == "cisco") {
     $module = 'Cisco-CBQOS';
 
     $component = new LibreNMS\Component();
     $options['filter']['type'] = array('=',$module);
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+if ($device['os_group'] == "cisco") {
+    $tmp_module = 'Cisco-CBQOS';
+
+    $component = new LibreNMS\Component();
+    $options['filter']['type'] = array('=',$tmp_module);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $options['filter']['disabled'] = array('=',0);
     $options['filter']['ignore'] = array('=',0);
     $components = $component->getComponents($device['device_id'], $options);
@@ -39,11 +49,18 @@ if ($device['os_group'] == "cisco") {
                 $spid = $array['sp-id'];
                 $spobj = $array['sp-obj'];
                 $rrd_name = array('port', $ifIndex, 'cbqos', $spid, $spobj);
+<<<<<<< HEAD
                 $rrd_def = array(
                     'DS:postbits:COUNTER:600:0:U',
                     'DS:bufferdrops:COUNTER:600:0:U',
                     'DS:qosdrops:COUNTER:600:0:U'
                 );
+=======
+                $rrd_def = RrdDefinition::make()
+                    ->addDataset('postbits', 'COUNTER', 0)
+                    ->addDataset('bufferdrops', 'COUNTER', 0)
+                    ->addDataset('qosdrops', 'COUNTER', 0);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
                 // Let's print some debugging info.
                 d_echo("\n\nComponent: ".$key."\n");
@@ -66,5 +83,9 @@ if ($device['os_group'] == "cisco") {
     } // end if count components
 
     // Clean-up after yourself!
+<<<<<<< HEAD
     unset($type, $components, $component, $options, $module);
+=======
+    unset($type, $components, $component, $options, $tmp_module, $tblcbQosClassMapStats);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

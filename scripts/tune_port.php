@@ -12,9 +12,23 @@ $hosts = str_replace('*', '%', mres($options['h']));
 $ports = str_replace('*', '%', mres($options['p']));
 
 if (empty($hosts) && empty($ports)) {
+<<<<<<< HEAD
     echo "-h <device hostname wildcard>    Device(s) to match\n";
     echo "-p <ifName widcard>              Port(s) to match using ifName\n";
     echo "\n";
+=======
+    echo "-h <device hostname wildcard>    Device(s) to match (all is a valid arg)\n";
+    echo "-p <ifName widcard>              Port(s) to match using ifName (all is a valid arg)\n";
+    echo "\n";
+    exit;
+}
+
+if ($hosts == 'all') {
+    $hosts = '';
+}
+if ($ports == 'all') {
+    $ports = '';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 foreach (dbFetchRows("SELECT `device_id`,`hostname` FROM `devices` WHERE `hostname` LIKE ?", array('%'.$hosts.'%')) as $device) {

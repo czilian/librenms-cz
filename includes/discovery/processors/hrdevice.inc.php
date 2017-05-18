@@ -33,7 +33,11 @@ if (is_array($hrDevice_array)) {
             }
 
             // Workaround to set fake description for Mikrotik who don't populate hrDeviceDescr
+<<<<<<< HEAD
             if ($device['os'] == 'routeros' && !isset($entry['hrDeviceDescr'])) {
+=======
+            if ($device['os'] == 'routeros' && (!isset($entry['hrDeviceDescr']) || empty($entry['hrDeviceDescr']))) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $descr = 'Processor';
             }
 

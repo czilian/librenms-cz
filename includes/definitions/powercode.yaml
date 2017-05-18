@@ -8,3 +8,9 @@ over:
     - { graph: device_mempool, text: 'Memory Usage' }
 type: server
 processor_stacked: 1
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - Powercode BMU
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

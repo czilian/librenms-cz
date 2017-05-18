@@ -3,6 +3,7 @@
 namespace spec\Prophecy\Doubler;
 
 use PhpSpec\ObjectBehavior;
+<<<<<<< HEAD
 use Prophecy\Argument;
 
 class DoublerSpec extends ObjectBehavior
@@ -13,6 +14,17 @@ class DoublerSpec extends ObjectBehavior
      * @param \Prophecy\Doubler\NameGenerator          $namer
      */
     function let($mirror, $creator, $namer)
+=======
+use Prophecy\Doubler\ClassPatch\ClassPatchInterface;
+use Prophecy\Doubler\Generator\ClassCreator;
+use Prophecy\Doubler\Generator\ClassMirror;
+use Prophecy\Doubler\Generator\Node\ClassNode;
+use Prophecy\Doubler\NameGenerator;
+
+class DoublerSpec extends ObjectBehavior
+{
+    function let(ClassMirror $mirror, ClassCreator $creator, NameGenerator $namer)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith($mirror, $creator, $namer);
     }
@@ -22,15 +34,20 @@ class DoublerSpec extends ObjectBehavior
         $this->getClassPatches()->shouldHaveCount(0);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\ClassPatch\ClassPatchInterface $patch
      */
     function its_registerClassPatch_adds_a_patch_to_the_doubler($patch)
+=======
+    function its_registerClassPatch_adds_a_patch_to_the_doubler(ClassPatchInterface $patch)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->registerClassPatch($patch);
         $this->getClassPatches()->shouldReturn(array($patch));
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\ClassPatch\ClassPatchInterface $alt1
      * @param \Prophecy\Doubler\ClassPatch\ClassPatchInterface $alt2
@@ -39,6 +56,14 @@ class DoublerSpec extends ObjectBehavior
      */
     function its_getClassPatches_sorts_patches_by_priority($alt1, $alt2, $alt3, $alt4)
     {
+=======
+    function its_getClassPatches_sorts_patches_by_priority(
+        ClassPatchInterface $alt1,
+        ClassPatchInterface $alt2,
+        ClassPatchInterface $alt3,
+        ClassPatchInterface $alt4
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $alt1->getPriority()->willReturn(2);
         $alt2->getPriority()->willReturn(50);
         $alt3->getPriority()->willReturn(10);
@@ -52,6 +77,7 @@ class DoublerSpec extends ObjectBehavior
         $this->getClassPatches()->shouldReturn(array($alt2, $alt3, $alt1, $alt4));
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\ClassPatch\ClassPatchInterface $alt1
      * @param \Prophecy\Doubler\ClassPatch\ClassPatchInterface $alt2
@@ -64,6 +90,19 @@ class DoublerSpec extends ObjectBehavior
         $mirror, $creator, $namer, $alt1, $alt2, $class, $interface1, $interface2, $node
     )
     {
+=======
+    function its_double_mirrors_alterates_and_instantiates_provided_class(
+        $mirror,
+        $creator,
+        $namer,
+        ClassPatchInterface $alt1,
+        ClassPatchInterface $alt2,
+        \ReflectionClass $class,
+        \ReflectionClass $interface1,
+        \ReflectionClass $interface2,
+        ClassNode $node
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $mirror->reflect($class, array($interface1, $interface2))->willReturn($node);
         $alt1->supports($node)->willReturn(true);
         $alt2->supports($node)->willReturn(false);
@@ -85,12 +124,21 @@ class DoublerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('SplStack');
     }
 
+<<<<<<< HEAD
     /**
      * @param \ReflectionClass                           $class
      * @param \Prophecy\Doubler\Generator\Node\ClassNode $node
      */
     function it_double_instantiates_a_class_with_constructor_argument($mirror, $class, $node, $namer)
     {
+=======
+    function it_double_instantiates_a_class_with_constructor_argument(
+        $mirror,
+        \ReflectionClass $class,
+        ClassNode $node,
+        $namer
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $class->getName()->willReturn('ReflectionClass');
         $mirror->reflect($class, array())->willReturn($node);
         $namer->name($class, array())->willReturn('ReflectionClass');
@@ -100,12 +148,21 @@ class DoublerSpec extends ObjectBehavior
         $double->getName()->shouldReturn('stdClass');
     }
 
+<<<<<<< HEAD
     /**
      * @param \ReflectionClass                           $class
      * @param \Prophecy\Doubler\Generator\Node\ClassNode $node
      */
     function it_can_instantiate_class_with_final_constructor($mirror, $class, $node, $namer)
     {
+=======
+    function it_can_instantiate_class_with_final_constructor(
+        $mirror,
+        \ReflectionClass $class,
+        ClassNode $node,
+        $namer
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $class->getName()->willReturn('spec\Prophecy\Doubler\WithFinalConstructor');
         $mirror->reflect($class, array())->willReturn($node);
         $namer->name($class, array())->willReturn('spec\Prophecy\Doubler\WithFinalConstructor');

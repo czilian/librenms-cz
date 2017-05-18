@@ -26,7 +26,11 @@ if ($_SESSION['userlevel'] == 11) {
     }
     if ($vars['action'] === 'changedash') {
         if (!empty($vars['dashboard'])) {
+<<<<<<< HEAD
             dbUpdate(array('dashboard'=>$vars['dashboard']), 'users', 'user_id = ?', array($_SESSION['user_id']));
+=======
+            set_user_pref('dashboard', (int)$vars['dashboard']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $updatedashboard_message = "User default dashboard updated";
         }
     }
@@ -80,6 +84,7 @@ if ($_SESSION['userlevel'] == 11) {
                 echo twofactor_form(false);
                 echo '</form></div>';
             } else {
+<<<<<<< HEAD
                 $twofactor = dbFetchRow('SELECT twofactor FROM users WHERE username = ?', array($_SESSION['username']));
                 if (empty($twofactor['twofactor'])) {
                     echo '<div class="alert alert-danger">Error: How did you even get here?!</div><script>window.location = "preferences/";</script>';
@@ -89,6 +94,15 @@ if ($_SESSION['userlevel'] == 11) {
 
                 if (verify_hotp($twofactor['key'], $_POST['twofactor'], $twofactor['counter'])) {
                     if (!dbUpdate(array('twofactor' => ''), 'users', 'username = ?', array($_SESSION['username']))) {
+=======
+                $twofactor = get_user_pref('twofactor');
+                if (empty($twofactor)) {
+                    echo '<div class="alert alert-danger">Error: How did you even get here?!</div><script>window.location = "preferences/";</script>';
+                }
+
+                if (verify_hotp($twofactor['key'], $_POST['twofactor'], $twofactor['counter'])) {
+                    if (!set_user_pref('twofactor', array())) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         echo '<div class="alert alert-danger">Error while disabling TwoFactor.</div>';
                     } else {
                         echo '<div class="alert alert-success">TwoFactor Disabled.</div>';
@@ -99,11 +113,18 @@ if ($_SESSION['userlevel'] == 11) {
                 }
             }//end if
         } else {
+<<<<<<< HEAD
             $twofactor = dbFetchRow('SELECT twofactor FROM users WHERE username = ?', array($_SESSION['username']));
             echo '<script src="js/jquery.qrcode.min.js"></script>';
             echo '<div class="well"><h3>Two-Factor Authentication</h3>';
             if (!empty($twofactor['twofactor'])) {
                 $twofactor         = json_decode($twofactor['twofactor'], true);
+=======
+            $twofactor = get_user_pref('twofactor');
+            echo '<script src="js/jquery.qrcode.min.js"></script>';
+            echo '<div class="well"><h3>Two-Factor Authentication</h3>';
+            if (!empty($twofactor)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $twofactor['text'] = "<div class='form-group'>
   <label for='twofactorkey' class='col-sm-2 control-label'>Secret Key</label>
   <div class='col-sm-4'>
@@ -138,8 +159,13 @@ if ($_SESSION['userlevel'] == 11) {
             } else {
                 if (isset($_POST['gentwofactorkey']) && isset($_POST['twofactortype'])) {
                     include_once $config['install_dir'].'/html/includes/authentication/twofactor.lib.php';
+<<<<<<< HEAD
                     $chk = dbFetchRow('SELECT twofactor FROM users WHERE username = ?', array($_SESSION['username']));
                     if (empty($chk['twofactor'])) {
+=======
+                    $chk = get_user_pref('twofactor');
+                    if (empty($chk)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         $twofactor = array('key' => twofactor_genkey());
                         if ($_POST['twofactortype'] == 'counter') {
                             $twofactor['counter'] = 1;
@@ -147,7 +173,11 @@ if ($_SESSION['userlevel'] == 11) {
                             $twofactor['counter'] = false;
                         }
 
+<<<<<<< HEAD
                         if (!dbUpdate(array('twofactor' => json_encode($twofactor)), 'users', 'username = ?', array($_SESSION['username']))) {
+=======
+                        if (!set_user_pref('twofactor', $twofactor)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                             echo '<div class="alert alert-danger">Error inserting TwoFactor details. Please try again later and contact Administrator if error persists.</div>';
                         } else {
                             echo '<div class="alert alert-success">Added TwoFactor credentials. Please reload page.</div><script>window.location = "preferences/";</script>';
@@ -191,6 +221,7 @@ echo "
         <label for='dashboard' class='col-sm-2 control-label'>Dashboard</label>
         <div class='col-sm-4'>
           <select class='form-control' name='dashboard'>";
+<<<<<<< HEAD
 $defdash = dbFetchCell("SELECT dashboard FROM users WHERE user_id = ?", array($_SESSION['user_id']));
 $dashoptions = dbFetchRows(
     "SELECT dashboards.*,users.username
@@ -203,6 +234,11 @@ $dashoptions = dbFetchRows(
 foreach ($dashoptions as $dash) {
     echo "
             <option value='".$dash['dashboard_id']."'".($defdash == $dash['dashboard_id'] ? ' selected' : '').">".display($dash['username']).':'.display($dash['dashboard_name'])."</option>";
+=======
+foreach (get_dashboards() as $dash) {
+    echo "
+            <option value='".$dash['dashboard_id']."'".($dash['default'] ? ' selected' : '').">".display($dash['username']).':'.display($dash['dashboard_name'])."</option>";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 echo "
           </select>

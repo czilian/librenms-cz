@@ -30,11 +30,19 @@ if ($rowCount != -1) {
 $sql = "SELECT `ps`.*, `p`.* $sql";
 
 foreach (dbFetchRows($sql, array($device_id)) as $stp_ports_db) {
+<<<<<<< HEAD
+=======
+    $stp_ports_db = cleanPort($stp_ports_db);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $bridge_device = dbFetchRow("SELECT `devices`.*, `stp`.`device_id`, `stp`.`bridgeAddress` FROM `devices` JOIN `stp` ON `devices`.`device_id`=`stp`.`device_id` WHERE `stp`.`bridgeAddress` = ?", array($stp_ports_db['designatedBridge']));
     $root_device = dbFetchRow("SELECT `devices`.*, `stp`.`device_id`, `stp`.`bridgeAddress` FROM `devices` JOIN `stp` ON `devices`.`device_id`=`stp`.`device_id` WHERE `stp`.`bridgeAddress` = ?", array($stp_ports_db['designatedRoot']));
 
     $response[] = array (
+<<<<<<< HEAD
         'port_id'            => generate_port_link($stp_ports_db, $stp_ports_db['ifName'])."<br>".display($stp_ports_db['ifAlias']),
+=======
+        'port_id'            => generate_port_link($stp_ports_db, $stp_ports_db['ifName'])."<br>".$stp_ports_db['ifAlias'],
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         'priority'           => $stp_ports_db['priority'],
         'state'              => $stp_ports_db['state'],
         'enable'             => $stp_ports_db['enable'],

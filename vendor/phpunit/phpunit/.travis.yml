@@ -6,13 +6,29 @@ php:
   - 5.5
   - 5.6
 
+<<<<<<< HEAD
+=======
+env:
+  matrix:
+    - DEPENDENCIES="high"
+    - DEPENDENCIES="low"
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 sudo: false
 
 before_install:
   - composer self-update
+<<<<<<< HEAD
 
 install:
   - travis_retry composer install --no-interaction --prefer-source
+=======
+  - composer clear-cache
+
+install:
+  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable; fi
+  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable --prefer-lowest; fi
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 script:
   - ./phpunit

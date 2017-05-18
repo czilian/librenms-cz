@@ -24,12 +24,21 @@
  * @subpackage Polling
  */
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $name = 'gpsd';
 $app_id = $app['app_id'];
 if (!empty($agent_data['app'][$name]) && $app_id > 0) {
     echo ' '.$name;
     $gpsd = $agent_data['app'][$name];
     $gpsd_parsed  = array();
+<<<<<<< HEAD
+=======
+    update_application($app, $gpsd);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     foreach (explode("\n", $gpsd) as $line) {
         list ($field, $data) = explode(':', $line);
@@ -37,6 +46,7 @@ if (!empty($agent_data['app'][$name]) && $app_id > 0) {
     }
 
     $rrd_name = array('app', $name, $app_id);
+<<<<<<< HEAD
     $rrd_def = array(
         'DS:mode:GAUGE:600:0:4',
         'DS:hdop:GAUGE:600:0:100',
@@ -44,6 +54,14 @@ if (!empty($agent_data['app'][$name]) && $app_id > 0) {
         'DS:satellites:GAUGE:600:0:40',
         'DS:satellites_used:GAUGE:600:0:40',
     );
+=======
+    $rrd_def = RrdDefinition::make()
+        ->addDataset('mode', 'GAUGE', 0, 4)
+        ->addDataset('hdop', 'GAUGE', 0, 100)
+        ->addDataset('vdop', 'GAUGE', 0, 100)
+        ->addDataset('satellites', 'GAUGE', 0, 40)
+        ->addDataset('satellites_used', 'GAUGE', 0, 40);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $check_fields = array(
         'mode',

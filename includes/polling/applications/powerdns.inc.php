@@ -5,13 +5,27 @@ $options      = '-O qv';
 $mib          = 'NET-SNMP-EXTEND-MIB';
 $oid          = 'nsExtendOutputFull.8.112.111.119.101.114.100.110.115';
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+$options      = '-O qv';
+$oid          = '.1.3.6.1.4.1.8072.1.3.2.3.1.2.8.112.111.119.101.114.100.110.115';
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $name = 'powerdns';
 $app_id = $app['app_id'];
 if ($agent_data['app'][$name]) {
     $powerdns = $agent_data['app'][$name];
 } else {
+<<<<<<< HEAD
     $powerdns = snmp_get($device, $oid, $options, $mib);
 }
+=======
+    $powerdns = snmp_get($device, $oid, $options);
+}
+update_application($app, $powerdns);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 echo ' powerdns';
 
@@ -22,6 +36,7 @@ list ($corrupt, $def_cacheInserts, $def_cacheLookup, $latency, $pc_hit,
     $udp6_queries) = explode("\n", $powerdns);
 
 $rrd_name = array('app', $name, $app_id);
+<<<<<<< HEAD
 $rrd_def = array(
     'DS:corruptPackets:DERIVE:600:0:125000000000',
     'DS:def_cacheInserts:DERIVE:600:0:125000000000',
@@ -46,6 +61,31 @@ $rrd_def = array(
     'DS:q_udp6Answers:DERIVE:600:0:125000000000',
     'DS:q_udp6Queries:DERIVE:600:0:125000000000'
 );
+=======
+$rrd_def = RrdDefinition::make()
+    ->addDataset('corruptPackets', 'DERIVE', 0, 125000000000)
+    ->addDataset('def_cacheInserts', 'DERIVE', 0, 125000000000)
+    ->addDataset('def_cacheLookup', 'DERIVE', 0, 125000000000)
+    ->addDataset('latency', 'DERIVE', 0, 125000000000)
+    ->addDataset('pc_hit', 'DERIVE', 0, 125000000000)
+    ->addDataset('pc_miss', 'DERIVE', 0, 125000000000)
+    ->addDataset('pc_size', 'DERIVE', 0, 125000000000)
+    ->addDataset('qsize', 'DERIVE', 0, 125000000000)
+    ->addDataset('qc_hit', 'DERIVE', 0, 125000000000)
+    ->addDataset('qc_miss', 'DERIVE', 0, 125000000000)
+    ->addDataset('rec_answers', 'DERIVE', 0, 125000000000)
+    ->addDataset('rec_questions', 'DERIVE', 0, 125000000000)
+    ->addDataset('servfailPackets', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_tcpAnswers', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_tcpQueries', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_timedout', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_udpAnswers', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_udpQueries', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_udp4Answers', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_udp4Queries', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_udp6Answers', 'DERIVE', 0, 125000000000)
+    ->addDataset('q_udp6Queries', 'DERIVE', 0, 125000000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $fields = array(
     'corruptPackets'     => $corrupt,

@@ -3,3 +3,15 @@ text: 'APC Management Module'
 type: power
 over:
     - { graph: device_current, text: Current }
+<<<<<<< HEAD
+=======
+    - { graph: device_voltage, text: Voltage }
+    - { graph: device_runtime, text: Runtime }
+discovery:
+    - sysDescr:
+        - APC Web/SNMP Management Card
+        - APC Switched Rack PDU
+        - APC MasterSwitch PDU
+        - APC Metered Rack PDU
+        - APC Embedded PowerNet
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

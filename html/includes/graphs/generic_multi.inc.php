@@ -21,7 +21,12 @@ if ($width > '500') {
     $descr_len = 24;
 } else {
     $descr_len  = 12;
+<<<<<<< HEAD
     $descr_len += round(($width - 250) / 8);
+=======
+    # FIXME - Presently overflows graph
+    #$descr_len += round(($width - 250) / 8);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 if ($nototal) {

@@ -28,7 +28,12 @@
         "pear/console_table": "^1.3",
         "dapphp/radius": "^2.0",
         "php-amqplib/php-amqplib": "^2.0",
+<<<<<<< HEAD
         "symfony/yaml": "^2.8"
+=======
+        "symfony/yaml": "^2.8",
+        "rmccue/requests": "^1.7"
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "2.6.*",

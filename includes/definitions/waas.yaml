@@ -8,6 +8,7 @@ over:
     - { graph: device_mempool, text: 'Memory Usage' }
 icon: cisco
 poller_modules:
+<<<<<<< HEAD
     cisco-cbqos: 1
     cisco-cef: 1
     cisco-mac-accounting: 1
@@ -25,3 +26,39 @@ discovery_modules:
     cisco-pw: 1
     cisco-vrf: 1
     cisco-vrf-lite: 1
+=======
+    applications: 0
+    bgp-peers: 0
+    cipsec-tunnels: 0
+    cisco-cbqos: 0
+    cisco-cef: 0
+    cisco-ipsec-flow-monitor: 0
+    cisco-mac-accounting: 0
+    cisco-otv: 0
+    cisco-remote-access-monitor: 0
+    cisco-sla: 0
+    cisco-voice: 0
+    ipmi: 0
+    ospf: 0
+    toner: 0
+    ucd-diskio: 0
+    ucd-mib: 0
+discovery_modules:
+    bgp-peers: 0
+    cisco-cef: 0
+    cisco-mac-accounting: 0
+    cisco-otv: 0
+    cisco-pw: 0
+    cisco-sla: 0
+    cisco-vrf-lite: 0
+    cisco-vrf: 0
+    libvirt-vminfo: 0
+    ntp: 0
+    stp: 0
+    toner: 0
+    ucd-diskio: 0
+    vlans: 0
+discovery:
+    - sysDescr_regex:
+        - '/^Cisco Wide Area Application Services/'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

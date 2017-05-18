@@ -56,7 +56,11 @@ if (is_admin() !== false) {
                         <?php if (is_array($port)) {
                             // Need to pre-populate port as we've got a port pre-selected
                             foreach (dbFetch('SELECT * FROM ports WHERE device_id = ?', array($port_device_id)) as $interface) {
+<<<<<<< HEAD
                                 $interface  = ifNameDescr($interface);
+=======
+                                $interface  = cleanPort($interface);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                                 $string = $interface['label'].' - '.display($interface['ifAlias']);
                                 $selected = $interface['port_id'] === $port['port_id'] ? " selected" : "";
                                 echo "<option value='${interface['port_id']}' $selected>$string</option>\n";

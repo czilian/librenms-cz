@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 LibreNMS is a fork of [Observium][1].
 
 LibreNMS core team:
@@ -7,6 +8,21 @@ LibreNMS core team:
 - Søren Friis Rosiak <sorenrosiak@gmail.com> (rosiak)
 - Mike Rostermund <mike@kollegienet.dk> (SaaldjorMike)
 - Tony Murray <tonym@librenms.org> (murrant)
+=======
+LibreNMS core team:
+- Paul Gear <paul@librenms.org> [paulgear](https://github.com/paulgear/)
+- Neil Lathwood <neil@librenms.org> [laf](https://github.com/laf/)
+- Daniel Preussker <f0o@librenms.org> [f0o](https://github.com/f0o/)
+- Søren Friis Rosiak <sorenrosiak@gmail.com> [rosiak](https://github.com/rosiak/)
+- Mike Rostermund <mike@kollegienet.dk> [SaaldjorMike](https://github.com/SaaldjorMike/)
+- Tony Murray <tonym@librenms.org> [murrant](https://github.com/murrant/)
+- David Bell <me@geordish.org> [geordish](https://github.com/geordish/)
+
+Notable contributors:
+- Cercel Valentin <crc@nuamchefazi.ro> (crcro)
+- Clint Armstrong <clint@clintarmstrong.net> (clinta)
+- Aaron Daniels <aaron@daniels.id.au> (adaniels21487)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 LibreNMS contributors:
 - Bohdan Sanders <git@bohdans.com> (bohdan-s)
@@ -33,7 +49,10 @@ LibreNMS contributors:
 - Steve Calvário <calvario.steve@gmail.com> (Calvario)
 - Christian Marg <marg@rz.tu-clausthal.de> (einhirn)
 - Louis Rossouw <lrossouw@gmail.com> (spinza)
+<<<<<<< HEAD
 - Clint Armstrong <clint@clintarmstrong.net> (clinta)
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - Tony Ditchfield  <tony.ditchfield@gmail.com> (arnoldthebat)
 - Travis Hegner <travis.hegner@gmail.com> (travishegner)
 - Will Jones <email@willjones.eu> (willjones)
@@ -41,7 +60,10 @@ LibreNMS contributors:
 - Rasmus Aberg <rasmus@sthix.net> (rasssta)
 - Jan Saner <jan@trick77.com> (trick77)
 - Mikhail Bratchikov <mbratchikov@odin.com> (pepyaka)
+<<<<<<< HEAD
 - Aaron Daniels <aaron@daniels.id.au> (adaniels21487)
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - David M. Syzdek <david@syzdek.net> (syzdek)
 - Gerben Meijer <gerben@daybyday.nl> (infernix)
 - Michael Newton <mnewton@pofp.com> (miken32)
@@ -79,7 +101,10 @@ LibreNMS contributors:
 - D. Britz <github@wrind.de> (flatterlight)
 - Tobias Herrmann <tobias@fiveninedigital.ch> (Mightea)
 - Nicolas Guillaumin <nicolas+github@guillaumin.me> (nguillaumin)
+<<<<<<< HEAD
 - Dave Hope <dave@hope.mx> (davehope)
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - Jurrian van Iersel <jurrian@vaniersel.net> (jviersel)
 - Adam Winberg <adam.winberg@gmail.com> (wiad)
 - Maximilian Wilhelm <max@rfc2324.org> (BarbarossaTM)
@@ -91,7 +116,10 @@ LibreNMS contributors:
 - Georges Dick <georges.dick@gmail.com> (GeorgesDick)
 - Richard Lawley <richard@richardlawley.com> (richardlawley)
 - Marco Di Cerbo <marco@dottoremoe.com> (marcodc)
+<<<<<<< HEAD
 - David Bell <me@geordish.org> (geordish)
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - Ibrahim Tachijian <barhom@netsat.se> (barhom)
 - Guillaume Coeugnet <aliasprotect-git@yahoo.fr> (gcoeugnet)
 - Jared Newell <jared.newell@gmail.com> (Jaredn)
@@ -112,7 +140,10 @@ LibreNMS contributors:
 - Benjamin Busche <benjamin.busche@gmail.com> (optic00)
 - Brandon Boudrias <bt.boudrias@gmail.com> (brandune)
 - Andy Noyland <andrew@noyland.co.uk> (Zappatron)
+<<<<<<< HEAD
 - Cercel Valentin <crc@nuamchefazi.ro> (crcro)
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - Ahmed Sajid <ahmed4343@hotmail.com> (ahmedsajid)
 - Karsten Schmidt <git@guggemand.dk> (guggemand)
 - Maxence POULAIN <maxence.poulain@eriador.info> (Linutux42)
@@ -123,7 +154,11 @@ LibreNMS contributors:
 - Russell Morris <github@rkmorris.us> (arrmo)
 - Bennett Blodinger <bennett.blodinger@gmail.com> (benwa)
 - Michael Hansen <nerdalertdk@gmail.com> (nerdalertdk)
+<<<<<<< HEAD
 - Daniel Cox <danielcoxman@gmail.com> (ospfbgp) 
+=======
+- Daniel Cox <danielcoxman@gmail.com> (ospfbgp)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - Joseph Cunningham <joey.was@gmail.com> (joeywas)
 - Michael Van Delft <librenms@xo.tc> (HybridAU)
 - Piotr Jurga <deutor1361@gmail.com> (deutor)
@@ -154,15 +189,70 @@ LibreNMS contributors:
 - Markus Wigge <markus@cultcom.de> (cultcom)
 - Matthew Wall <llawwehttam@gmail.com> (llawwehttam)
 - Andres Rahn <andreser@gmail.com> (Andreser)
+<<<<<<< HEAD
 - Christoph Zilian <czilian@hotmail.com> (czilian)
 - Guillem Mateos <bbguillem@gmail.com> (guillemmateos) 
+=======
+- Philippe Mathieu-Daudé <philmd@users.noreply.github.com> (philmd)
+- Christoph Zilian <czilian@hotmail.com> (czilian)
+- Guillem Mateos <bbguillem@gmail.com> (guillemmateos)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - Joachim Tingvold <joachim@tingvold.com> (jallakim)
 - Martin Zatloukal <slezi2@pvfree.net> (erotel)
 - Matthew Schwen <mschwen@gmail.com> (mattschwen)
 - Joel Cant <joel@linuxmod.co.uk> (NerdBlender
+<<<<<<< HEAD
 - Aldemir Akpinar <aldemir.akpinar@gmail.com> (aldemir_a)
 
 [1]: http://observium.org/ "Observium web site"
+=======
+- Aldemir Akpinar <aldemir.akpinar@gmail.com> (aldemira)
+- Rob Nichols <rob@ignition360.com> (rdnn)
+- Patrick Fruh <info@kaeltis.de> (Kaeltis)
+- Julian Kornberger <jk+github@digineo.de> (corny)
+- ant Kenworthy <git@manchetermonkey.co.uk> (mcrmonkey)
+- Aleksandr Stankevic <aleksandr.stankevic@gmail.com> (sysmonk)
+- Richard Mayhew <richard@splash.co.za> (InsaneSplash)
+- Jacob <wackychocolatefactory@gmail.com> (wackychocolatefactory)
+- Patrick Velder <patrick2+librenms@velder.li> (patrick7)
+- Andrew Wippler <andrew.wippler+librenms@gmail.com> (andrewwippler)
+- Robert Towster <rnt-github at towster.com> (towster)
+- Rocky Luke <rockyluke@offline.net> (rockyluke)
+- Tim Jackson <jackson.tim@gmail.com> (jackson-tim)
+- Jørn-Stian Lønsetteig <jeg@glemte.no> (gilrim)
+- Viktoria Rei Bauer <vbauer@stargazer.at> (ToeiRei)
+- Ryan Eno <ryaneno@gmail.com> (VimCommando)
+- Matt Peterson <matt@peterson.org> (dorkmatt)
+- William George <wrgeorge1983@gmail.com> (wrgeorge1983)
+- Valentin Parmeland <naoko.vp@gmail.com> (NK74)
+- Michał Margula <michal@margula.pl> (alchemyx)
+- Maclin Fuehr-Bush <macfuehrbush@gmail.com> (mobilemaclin)
+- Robert Penziol <rpenziol@pdx.edu> (rpenziol)
+- Stefan Behte <craig at haquarter.de> (craig)
+- Zane C. Bowers-Hadley <vvelox@vvelox.net> (vvelox)
+- Valentin Polonuyer <valik.vicious@gmail.com> (ValikVicious)
+- Olivier Le Brouster <olb@nebkha.net> (ollb)
+- Avery Payne <avery.p.payne@gmail.com> (apayne)
+- Ryan Medlyn <ryan.medlyn@gmail.com> (rmedlyn)
+- Mark Hughes <m@rkhugh.es> (markehme)
+- Mark Abrahams <mark@abrahams.co.nz> (markabrahams)
+- Klaas Tammling <klaas@tammling.hamburg> (KlaasT)
+- Simon Mott <me@simonmott.co.uk> (tsumaru720)
+- Hubert Ladet <mail4git38@gmail.com> (mail4git38)
+- Deeps (deepseth)
+- Jari Schäfer <jari.schaefer@gmail.com> (jarischaefer)
+- Jan-Philipp Litza <janphilipp@litza.de> (jplitza)
+- Chris Putnam <chrisputnam@gmail.com> (putnam)
+- Jonathan Price <jonathan@jonathanprice.uk> (Pricetx)
+- Remy de Boer <remy@slowpoke.nl> (remydb)
+- Ben Klang <ben@alkaloid.net> (bklang)
+- Tim Stallard <code@timstallard.me.uk> (TimStallard)
+- Svenn D'Hert <admin at svennd.be> (svennd)
+- Dominik Bay <db@rrbone.net> (eimann)
+- Nick Peelman <nick@peelman.us> (peelman)
+- Patrick Ryon <patrick@slashdoom.com> (slashdoom)
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 Observium was written by:
 - Adam Armstrong
 - Tom Laermans

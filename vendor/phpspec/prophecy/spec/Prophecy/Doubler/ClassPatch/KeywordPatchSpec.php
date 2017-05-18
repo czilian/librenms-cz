@@ -4,6 +4,10 @@ namespace spec\Prophecy\Doubler\ClassPatch;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+<<<<<<< HEAD
+=======
+use Prophecy\Doubler\Generator\Node\ClassNode;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 use Prophecy\Doubler\Generator\Node\MethodNode;
 
 class KeywordPatchSpec extends ObjectBehavior
@@ -18,6 +22,7 @@ class KeywordPatchSpec extends ObjectBehavior
         $this->getPriority()->shouldReturn(49);
     }
 
+<<<<<<< HEAD
     /**
      * @param \Prophecy\Doubler\Generator\Node\ClassNode $node
      * @param \Prophecy\Doubler\Generator\Node\MethodNode $method1
@@ -26,6 +31,14 @@ class KeywordPatchSpec extends ObjectBehavior
      */
     function it_will_remove_echo_and_eval_methods($node, $method1, $method2, $method3)
     {
+=======
+    function it_will_remove_echo_and_eval_methods(
+        ClassNode $node,
+        MethodNode $method1,
+        MethodNode $method2,
+        MethodNode $method3
+    ) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $node->removeMethod('eval')->shouldBeCalled();
         $node->removeMethod('echo')->shouldBeCalled();
 

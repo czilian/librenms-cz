@@ -127,21 +127,40 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         }
 
         if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+<<<<<<< HEAD
             $buffer = $test->toString() . "\n";
+=======
+            $buffer = $test->toString() . PHP_EOL;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         } else {
             $buffer = '';
         }
 
+<<<<<<< HEAD
         $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
                    "\n" .
                    PHPUnit_Util_Filter::getFilteredStacktrace($e);
+=======
+        if ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
+            $type    = $e->getClassname();
+            $buffer .= (string) $e;
+        } else {
+            $type    = get_class($e);
+            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . PHP_EOL .
+                       PHPUnit_Util_Filter::getFilteredStacktrace($e);
+        }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         $error = $this->document->createElement(
             'error',
             PHPUnit_Util_XML::prepareString($buffer)
         );
 
+<<<<<<< HEAD
         $error->setAttribute('type', get_class($e));
+=======
+        $error->setAttribute('type', $type);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         $this->currentTestCase->appendChild($error);
 

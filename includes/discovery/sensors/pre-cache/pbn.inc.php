@@ -9,6 +9,7 @@
  * the source code distribution for details.
  */
 
+<<<<<<< HEAD
 if ($device['os'] == 'pbn') {
     echo 'Pre-cache PBN: ';
 
@@ -17,3 +18,7 @@ if ($device['os'] == 'pbn') {
 
     $pbn_oids = snmpwalk_cache_multi_oid($device, '.1.3.6.1.4.1.11606.10.9.63.1.7', array(), 'NMS-IF-MIB', 'pbn');
 }
+=======
+echo 'ifSfpParameterTable ';
+$pre_cache['pbn_oids'] = snmpwalk_cache_multi_oid($device, '.1.3.6.1.4.1.11606.10.9.63.1.7', array(), 'NMS-IF-MIB', 'pbn');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

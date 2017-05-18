@@ -30,10 +30,17 @@ if (!empty($ifName) && is_numeric($port_id)) {
         $device = device_by_id_cache($device_id);
         if ($descr === 'repoll') {
             del_dev_attrib($device, 'ifName:'.$ifName);
+<<<<<<< HEAD
             log_event("$ifName Port ifAlias cleared manually", $device, 'interface', $port_id);
         } else {
             set_dev_attrib($device, 'ifName:'.$ifName, 1);
             log_event("$ifName Port ifAlias set manually: $descr", $device, 'interface', $port_id);
+=======
+            log_event("$ifName Port ifAlias cleared manually", $device, 'interface', 3, $port_id);
+        } else {
+            set_dev_attrib($device, 'ifName:'.$ifName, 1);
+            log_event("$ifName Port ifAlias set manually: $descr", $device, 'interface', 3, $port_id);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
         $status = 'ok';
     } else {

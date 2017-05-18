@@ -25,3 +25,9 @@ discovery_modules:
     cisco-pw: 1
     cisco-vrf: 1
     cisco-vrf-lite: 1
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - Cisco Integrated Management Controller
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

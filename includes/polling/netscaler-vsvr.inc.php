@@ -30,6 +30,11 @@
 // NS-ROOT-MIB::vsvrTotSpillOvers."librenms" = Counter32: 0
 // NS-ROOT-MIB::vsvrTotalClients."librenms" = Counter64: 43023
 // NS-ROOT-MIB::vsvrClientConnOpenRate."librenms" = STRING: "0"
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if ($device['os'] == 'netscaler') {
     $oids_gauge = array(
                    'vsvrCurClntConnections',
@@ -53,6 +58,7 @@ if ($device['os'] == 'netscaler') {
 
     $oids = array_merge($oids_gauge, $oids_counter);
 
+<<<<<<< HEAD
     $rrd_def = array();
     foreach ($oids_gauge as $oid) {
         $oid_ds    = substr(str_replace('vsvr', '', $oid), 0, 19);
@@ -61,6 +67,16 @@ if ($device['os'] == 'netscaler') {
     foreach ($oids_counter as $oid) {
         $oid_ds    = substr(str_replace('vsvr', '', $oid), 0, 19);
         $rrd_def[] = "DS:$oid_ds:COUNTER:600:U:100000000000";
+=======
+    $rrd_def = new RrdDefinition();
+    foreach ($oids_gauge as $oid) {
+        $oid_ds    = str_replace('vsvr', '', $oid);
+        $rrd_def->addDataset($oid_ds, 'GAUGE', null, 100000000000);
+    }
+    foreach ($oids_counter as $oid) {
+        $oid_ds    = str_replace('vsvr', '', $oid);
+        $rrd_def->addDataset($oid_ds, 'COUNTER', null, 100000000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     $vsvr_array = snmpwalk_cache_oid($device, 'vserverEntry', array(), 'NS-ROOT-MIB');

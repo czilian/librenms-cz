@@ -6,10 +6,14 @@ use PhpSpec\ObjectBehavior;
 
 class ClassMirrorExceptionSpec extends ObjectBehavior
 {
+<<<<<<< HEAD
     /**
      * @param \ReflectionClass $class
      */
     function let($class)
+=======
+    function let(\ReflectionClass $class)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     {
         $this->beConstructedWith('', $class);
     }

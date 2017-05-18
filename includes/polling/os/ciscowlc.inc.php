@@ -12,12 +12,20 @@
 
 global $config;
 
+<<<<<<< HEAD
 $oids = 'entPhysicalModelName.1 entPhysicalSoftwareRev.1 entPhysicalSerialNum.1';
 
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+$oids = 'entPhysicalModelName.1 entPhysicalSoftwareRev.1 entPhysicalSerialNum.1';
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $data = snmp_get_multi($device, $oids, '-OQUs', 'ENTITY-MIB');
 
 if (isset($data[1]['entPhysicalSoftwareRev']) && $data[1]['entPhysicalSoftwareRev'] != '') {
     $version = $data[1]['entPhysicalSoftwareRev'];
+<<<<<<< HEAD
 }
 
 if (isset($data[1]['entPhysicalName']) && $data[1]['entPhysicalName'] != '') {
@@ -49,6 +57,38 @@ $rrd_def = array(
     'DS:NUMAPS:GAUGE:600:0:12500000000',
     'DS:NUMCLIENTS:GAUGE:600:0:12500000000'
 );
+=======
+}
+
+if (isset($data[1]['entPhysicalName']) && $data[1]['entPhysicalName'] != '') {
+    $hardware = $data[1]['entPhysicalName'];
+}
+
+if (isset($data[1]['entPhysicalModelName']) && $data[1]['entPhysicalModelName'] != '') {
+    $hardware = $data[1]['entPhysicalModelName'];
+}
+
+if (empty($hardware)) {
+    $hardware = snmp_get($device, 'sysObjectID.0', '-Osqv', 'SNMPv2-MIB:CISCO-PRODUCTS-MIB');
+}
+
+$stats      = snmpwalk_cache_oid($device, "bsnAPEntry", $stats, 'AIRESPACE-WIRELESS-MIB', null, '-OQUsb');
+$radios     = snmpwalk_cache_oid($device, "bsnAPIfEntry", $radios, 'AIRESPACE-WIRELESS-MIB', null, '-OQUsb');
+$APstats    = snmpwalk_cache_oid($device, 'bsnApIfNoOfUsers', $APstats, 'AIRESPACE-WIRELESS-MIB', null, '-OQUsxb');
+$loadParams = snmpwalk_cache_oid($device, "bsnAPIfLoadChannelUtilization", $loadParams, 'AIRESPACE-WIRELESS-MIB', null, '-OQUsb');
+$interferences = snmpwalk_cache_oid($device, "bsnAPIfInterferencePower", $interferences, 'AIRESPACE-WIRELESS-MIB', null, '-OQUsb');
+
+$numAccessPoints = count($stats);
+$numClients = 0;
+
+foreach ($APstats as $key => $value) {
+    $numClients += $value['bsnApIfNoOfUsers'];
+}
+
+$rrd_def = RrdDefinition::make()
+    ->addDataset('NUMAPS', 'GAUGE', 0, 12500000000)
+    ->addDataset('NUMCLIENTS', 'GAUGE', 0, 12500000000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $fields = array(
     'NUMAPS'     => $numAccessPoints,
@@ -58,6 +98,7 @@ $fields = array(
 $tags = compact('rrd_def');
 data_update($device, 'ciscowlc', $tags, $fields);
 
+<<<<<<< HEAD
 // also save the info about how many clients in the same place as the wireless module
 $radio = 1;
 $rrd_name = 'wificlients-radio'.$radio;
@@ -72,6 +113,8 @@ data_update($device, 'wificlients', $tags, $fields);
 
 $graphs['wifi_clients'] = true;
 
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 $ap_db = dbFetchRows('SELECT * FROM `access_points` WHERE `device_id` = ?', array($device['device_id']));
 
@@ -109,6 +152,7 @@ foreach ($radios as $key => $value) {
     }
 
     $rrd_name = array('arubaap', $name.$radionum);
+<<<<<<< HEAD
     $rrd_def = array(
         'DS:channel:GAUGE:600:0:200',
         'DS:txpow:GAUGE:600:0:200',
@@ -118,6 +162,16 @@ foreach ($radios as $key => $value) {
         'DS:numasoclients:GAUGE:600:0:500',
         'DS:interference:GAUGE:600:0:2000'
     );
+=======
+    $rrd_def = RrdDefinition::make()
+        ->addDataset('channel', 'GAUGE', 0, 200)
+        ->addDataset('txpow', 'GAUGE', 0, 200)
+        ->addDataset('radioutil', 'GAUGE', 0, 100)
+        ->addDataset('nummonclients', 'GAUGE', 0, 500)
+        ->addDataset('nummonbssid', 'GAUGE', 0, 200)
+        ->addDataset('numasoclients', 'GAUGE', 0, 500)
+        ->addDataset('interference', 'GAUGE', 0, 2000);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     $fields = array(
         'channel'         => $channel,

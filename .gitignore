@@ -8,6 +8,10 @@
 !/.php_cs
 !/.github/
 !/.codeclimate.yml
+<<<<<<< HEAD
+=======
+!/.mention-bot
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 # Others #
 ##########
@@ -16,6 +20,10 @@
 Thumbs.db
 config.php
 html/css/custom/*
+<<<<<<< HEAD
+=======
+html/images/custom/*
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 html/plugins/*
 !html/plugins/Test/
 includes/custom/*

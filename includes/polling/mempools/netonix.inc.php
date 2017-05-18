@@ -23,6 +23,7 @@
  * @author     Tony Murray <murraytony@gmail.com>
  */
 
+<<<<<<< HEAD
 if ($device['os'] == 'netonix') {
     $total = snmp_get($device, "UCD-SNMP-MIB::memTotalReal.0", "-OvQU") * 1024;
     $free = snmp_get($device, "UCD-SNMP-MIB::memAvailReal.0", "-OvQU") * 1024;
@@ -31,3 +32,11 @@ if ($device['os'] == 'netonix') {
     $mempool['free']  = $free;
     $mempool['used']  = $total - $free;
 }
+=======
+$total = snmp_get($device, "UCD-SNMP-MIB::memTotalReal.0", "-OvQU") * 1024;
+$free = snmp_get($device, "UCD-SNMP-MIB::memAvailReal.0", "-OvQU") * 1024;
+
+$mempool['total'] = $total;
+$mempool['free']  = $free;
+$mempool['used']  = $total - $free;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

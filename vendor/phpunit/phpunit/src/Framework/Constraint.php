@@ -11,9 +11,15 @@
 use SebastianBergmann\Exporter\Exporter;
 
 /**
+<<<<<<< HEAD
  * Abstract base class for constraints. which are placed upon any value.
  *
  * @since      Interface available since Release 3.0.0
+=======
+ * Abstract base class for constraints which can be applied to any value.
+ *
+ * @since Interface available since Release 3.0.0
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  */
 abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framework_SelfDescribing
 {

@@ -2,6 +2,17 @@ os: generex-ups
 text: 'Generex UPS SNMP adapter'
 type: power
 icon: generex-ups
+<<<<<<< HEAD
+=======
+rfc1628_compat: 1
+discovery:
+    -
+      sysObjectId:
+        - .1.3.6.1.2.1.33
+      sysDescr_regex:
+        - '/CS121/i'
+        - '/CS141/i'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 discovery_modules:
     storage: 0
     bgp-peers: 0
@@ -23,5 +34,12 @@ poller_modules:
     services: 0
     storage: 0
 over:
+<<<<<<< HEAD
     - { graph: device_voltage, text: Voltage }
     - { graph: sensor_voltage, text: 'Battery Voltage' }
+=======
+    - { graph: device_current, text: Current }
+    - { graph: device_voltage, text: Voltage }
+    - { graph: device_load, text: Load }
+    - { graph: device_power, text: Power }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

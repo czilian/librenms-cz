@@ -1,11 +1,14 @@
 <?php
 
 if ($_POST['action'] == 'delete_bill' && $_POST['confirm'] == 'confirm') {
+<<<<<<< HEAD
     foreach (dbFetchRows('SELECT * FROM `bill_ports` WHERE `bill_id` = ?', array($bill_id)) as $port_data) {
         dbDelete('port_in_measurements', '`port_id` = ?', array($port_data['bill_id']));
         dbDelete('port_out_measurements', '`port_id` = ?', array($port_data['bill_id']));
     }
 
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     dbDelete('bill_hist', '`bill_id` = ?', array($bill_id));
     dbDelete('bill_ports', '`bill_id` = ?', array($bill_id));
     dbDelete('bill_data', '`bill_id` = ?', array($bill_id));
@@ -19,11 +22,14 @@ if ($_POST['action'] == 'delete_bill' && $_POST['confirm'] == 'confirm') {
 
 if ($_POST['action'] == 'reset_bill' && ($_POST['confirm'] == 'rrd' || $_POST['confirm'] == 'mysql')) {
     if ($_POST['confirm'] == 'mysql') {
+<<<<<<< HEAD
         foreach (dbFetchRows('SELECT * FROM `bill_ports` WHERE `bill_id` = ?', array($bill_id)) as $port_data) {
             dbDelete('port_in_measurements', '`port_id` = ?', array($port_data['bill_id']));
             dbDelete('port_out_measurements', '`port_id` = ?', array($port_data['bill_id']));
         }
 
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         dbDelete('bill_hist', '`bill_id` = ?', array($bill_id));
         dbDelete('bill_data', '`bill_id` = ?', array($bill_id));
     }
@@ -32,6 +38,7 @@ if ($_POST['action'] == 'reset_bill' && ($_POST['confirm'] == 'rrd' || $_POST['c
         // Stil todo
     }
 
+<<<<<<< HEAD
     echo '<div class=infobox>Bill Reseting. Redirecting to Bills list.</div>';
 
     echo "<meta http-equiv='Refresh' content=\"2; url='bills/'\">";
@@ -41,6 +48,17 @@ if ($_POST['action'] == 'add_bill_port') {
     dbInsert(array('bill_id' => $_POST['bill_id'], 'port_id' => $_POST['port_id']), 'bill_ports');
 }
 
+=======
+    echo '<div class=infobox>Bill Resetting. Redirecting to Bills list.</div>';
+
+    echo "<meta http-equiv='Refresh' content=\"2; url='bills/'\">";
+}
+
+if ($_POST['action'] == 'add_bill_port') {
+    dbInsert(array('bill_id' => $_POST['bill_id'], 'port_id' => $_POST['port_id']), 'bill_ports');
+}
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if ($_POST['action'] == 'delete_bill_port') {
     dbDelete('bill_ports', '`bill_id` =  ? AND `port_id` = ?', array($bill_id, $_POST['port_id']));
 }

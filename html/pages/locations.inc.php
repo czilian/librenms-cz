@@ -52,7 +52,11 @@ foreach (getlocations() as $location) {
     }
 
     if ($hostalerts) {
+<<<<<<< HEAD
         $alert = '<img src="images/16/flag_red.png" alt="alert" />';
+=======
+        $alert = '<i class="fa fa-flag" style="color:red" aria-hidden="true"></i>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     } else {
         $alert = '';
     }

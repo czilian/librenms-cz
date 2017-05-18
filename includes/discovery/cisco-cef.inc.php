@@ -25,14 +25,27 @@ if (is_array($cefs)) {
                 echo ' | |-'.$path.': '.$path_name['cefSwitchingPath']."\n";
                 $cef_exists[$device['device_id']][$entity][$afi][$path] = 1;
 
+<<<<<<< HEAD
                 if (dbFetchCell('SELECT COUNT(*) from `cef` WHERE device_id = ? AND entPhysicalIndex = ?, AND afi=? AND cef_index=?', array($device['device_id'], $entity, $afi, $path)) != '1') {
                     dbInsert(array('device_id' => $device['device_id'], 'entPhysicalIndex' => $entity, 'afi' => $afi, 'cef_path' => $path), 'cef');
+=======
+                if (dbFetchCell('SELECT COUNT(*) from `cef_switching` WHERE device_id = ? AND entPhysicalIndex = ? AND afi=? AND cef_index=?', array($device['device_id'], $entity, $afi, $path)) != '1') {
+                    dbInsert(array('device_id' => $device['device_id'], 'entPhysicalIndex' => $entity, 'afi' => $afi, 'cef_path' => $path), 'cef_switching');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     echo '+';
                 }
             }
         }
     }
+<<<<<<< HEAD
+=======
+    unset($cefs);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }//end if
 
 // FIXME - need to delete old ones. FIXME REALLY.
 echo "\n";
+<<<<<<< HEAD
+=======
+unset($entity_array);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

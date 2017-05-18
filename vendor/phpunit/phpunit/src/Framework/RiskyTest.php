@@ -12,7 +12,11 @@
  * A marker interface for marking any exception/error as result of an unit
  * test as risky.
  *
+<<<<<<< HEAD
  * @since      Interface available since Release 4.0.0
+=======
+ * @since Interface available since Release 4.0.0
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
  */
 interface PHPUnit_Framework_RiskyTest
 {

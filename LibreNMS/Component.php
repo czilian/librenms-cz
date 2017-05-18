@@ -41,6 +41,31 @@ class Component
         'error'     => '',
     );
 
+<<<<<<< HEAD
+=======
+    public function getComponentCount($device_id = null)
+    {
+        if (is_null($device_id)) {
+            // SELECT type, count(*) as count FROM component GROUP BY type
+            $SQL = "SELECT `type` as `name`, count(*) as count FROM `component` GROUP BY `type`";
+            $rows = dbFetchRows($SQL, array());
+        } else {
+            $SQL = "SELECT `type` as `name`, count(*) as count FROM `component` WHERE `device_id` = ? GROUP BY `type`";
+            $rows = dbFetchRows($SQL, array($device_id));
+        }
+
+        if (isset($rows)) {
+            // We found some, lets re-process to make more accessible
+            $result = array();
+            foreach ($rows as $value) {
+                $result[$value['name']] = $value['count'];
+            }
+            return $result;
+        }
+        // We didn't find any components
+        return false;
+    }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     public function getComponentType($TYPE = null)
     {
         if (is_null($TYPE)) {
@@ -315,7 +340,11 @@ class Component
                     $MSG .= $k." => ".$v.",";
                 }
                 $MSG = substr($MSG, 0, -1);
+<<<<<<< HEAD
                 log_event($MSG, $device_id, 'component', $COMPONENT);
+=======
+                log_event($MSG, $device_id, 'component', 3, $COMPONENT);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             }
 
             // Process our AVP Adds and Updates
@@ -328,14 +357,22 @@ class Component
                     dbInsert($DATA, 'component_prefs');
 
                     // Log the addition to the Eventlog.
+<<<<<<< HEAD
                     log_event("Component: " . $AVP[$COMPONENT]['type'] . "(" . $COMPONENT . "). Attribute: " . $ATTR . ", was added with value: " . $VALUE, $device_id, 'component', $COMPONENT);
+=======
+                    log_event("Component: " . $AVP[$COMPONENT]['type'] . "(" . $COMPONENT . "). Attribute: " . $ATTR . ", was added with value: " . $VALUE, $device_id, 'component', 3, $COMPONENT);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 } elseif ($OLD[$device_id][$COMPONENT][$ATTR] != $VALUE) {
                     // Attribute exists but the value is different, need to update
                     $DATA = array('value'=>$VALUE);
                     dbUpdate($DATA, 'component_prefs', '`component` = ? AND `attribute` = ?', array($COMPONENT, $ATTR));
 
                     // Add the modification to the Eventlog.
+<<<<<<< HEAD
                     log_event("Component: ".$AVP[$COMPONENT]['type']."(".$COMPONENT."). Attribute: ".$ATTR.", was modified from: ".$OLD[$COMPONENT][$ATTR].", to: ".$VALUE, $device_id, 'component', $COMPONENT);
+=======
+                    log_event("Component: " . $AVP[$COMPONENT]['type'] . "(" . $COMPONENT . "). Attribute: " . $ATTR . ", was modified from: " . $OLD[$COMPONENT][$ATTR] . ", to: " . $VALUE, $device_id, 'component', 3, $COMPONENT);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 }
             } // End Foreach AVP
 
@@ -346,10 +383,37 @@ class Component
                 dbDelete('component_prefs', "`component` = ? AND `attribute` = ?", array($COMPONENT,$KEY));
 
                 // Log the addition to the Eventlog.
+<<<<<<< HEAD
                 log_event("Component: " . $AVP[$COMPONENT]['type'] . "(" . $COMPONENT . "). Attribute: " . $KEY . ", was deleted.", $COMPONENT);
+=======
+                log_event("Component: " . $AVP[$COMPONENT]['type'] . "(" . $COMPONENT . "). Attribute: " . $KEY . ", was deleted.", 4, $COMPONENT);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             }
         }
 
         return true;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Get the component id for the first component in the array
+     * Only set $device_id if using the array from getCompenents(), which is keyed by device_id
+     *
+     * @param array $component_array
+     * @param int $device_id
+     * @return int the component id
+     */
+    public function getFirstComponentID($component_array, $device_id = null)
+    {
+        if (!is_null($device_id) && isset($component_array[$device_id])) {
+            $component_array = $component_array[$device_id];
+        }
+
+        foreach ($component_array as $id => $array) {
+            return $id;
+        }
+        return -1;
+    }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

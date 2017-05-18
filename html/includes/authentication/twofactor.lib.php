@@ -161,7 +161,7 @@ function verify_hotp($key, $otp, $counter = false)
 /**
  * Print TwoFactor Input-Form
  * @param boolean $form Include FORM-tags
- * @return void|string
+ * @return string
  */
 function twofactor_form($form = true)
 {
@@ -174,9 +174,13 @@ function twofactor_form($form = true)
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">
+<<<<<<< HEAD
                 <center>
                   <img src="images/librenms_logo_light.png">
                 </center>
+=======
+                <img src="' . $config['title_image'] . '">
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
               </h3>
             </div>
             <div class="panel-body">
@@ -191,7 +195,11 @@ function twofactor_form($form = true)
         </div>
         <div class="form-group">
           <div class="col-md-12">
+<<<<<<< HEAD
             <button type="submit" class="btn btn-default btn-block" name="submit" type="submit">Login</button>
+=======
+            <button type="submit" class="btn btn-default btn-block" name="submit">Login</button>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
           </div>
          </div>
         </div>';
@@ -210,11 +218,18 @@ function twofactor_form($form = true)
 function twofactor_auth()
 {
     global $auth_message, $twofactorform, $config;
+<<<<<<< HEAD
     $twofactor = dbFetchRow('SELECT twofactor FROM users WHERE username = ?', array($_SESSION['username']));
     if (empty($twofactor['twofactor'])) {
         $_SESSION['twofactor'] = true;
     } else {
         $twofactor = json_decode($twofactor['twofactor'], true);
+=======
+    $twofactor = get_user_pref('twofactor');
+    if (empty($twofactor)) {
+        $_SESSION['twofactor'] = true;
+    } else {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($twofactor['fails'] >= 3 && (!$config['twofactor_lock'] || (time()-$twofactor['last']) < $config['twofactor_lock'])) {
             $auth_message = "Too many failures, please ".($config['twofactor_lock'] ? "wait ".$config['twofactor_lock']." seconds" : "contact administrator").".";
         } else {
@@ -236,7 +251,11 @@ function twofactor_auth()
                     $twofactor['fails'] = 0;
                     $_SESSION['twofactor'] = true;
                 }
+<<<<<<< HEAD
                 dbUpdate(array('twofactor' => json_encode($twofactor)), 'users', 'username = ?', array($_SESSION['username']));
+=======
+                set_user_pref('twofactor', $twofactor);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             }
         }
     }

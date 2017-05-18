@@ -4,10 +4,12 @@ Table of Content:
 - [About](#about)
 - [Rules](#rules)
     - [Syntax](#rules-syntax)
+    - [Options](#extra)
     - [Examples](#rules-examples)
     - [Procedure](#rules-procedure)
 - [Templates](#templates)
     - [Syntax](#templates-syntax)
+    - [Testing](#templates-testing)
     - [Examples](#templates-examples)
     - [Included](#templates-included)
 - [Transports](#transports)
@@ -16,10 +18,15 @@ Table of Content:
     - [Nagios-Compatible](#transports-nagios)
     - [IRC](#transports-irc)
     - [Slack](#transports-slack)
+    - [Rocket.chat](#transports-rocket)
     - [HipChat](#transports-hipchat)
     - [PagerDuty](#transports-pagerduty)
     - [Pushover](#transports-pushover)
     - [Boxcar](#transports-boxcar)
+<<<<<<< HEAD
+=======
+    - [Telegram](#transports-telegram)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     - [Pushbullet](#transports-pushbullet)
     - [Clickatell](#transports-clickatell)
     - [PlaySMS](#transports-playsms)
@@ -27,6 +34,12 @@ Table of Content:
     - [Canopsis](#transports-canopsis)
     - [osTicket](#transports-osticket)
     - [Microsoft Teams](#transports-msteams)
+<<<<<<< HEAD
+=======
+    - [Cisco Spark](#transports-ciscospark)
+    - [SMSEagle](#transports-smseagle)
+    - [Syslog](#transports-syslog)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 - [Entities](#entities)
     - [Devices](#entity-devices)
     - [BGP Peers](#entity-bgppeers)
@@ -41,7 +54,10 @@ Table of Content:
     - [Time](#macros-time)
     - [Sensors](#macros-sensors)
     - [Misc](#macros-misc)
+<<<<<<< HEAD
 - [Additional Options](#extra)
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 
 # <a name="about">About</a>
@@ -80,6 +96,18 @@ __Glues__ can be either `&&` for `AND` or `||` for `OR`.
 
 __Note__: The difference between `Equals` and `Like` (and its negation) is that `Equals` does a strict comparison and `Like` allows the usage of RegExp.
 Arithmetics are allowed as well.
+
+# <a name="extra">Options</a>
+
+Here are some of the other options available when adding an alerting rule:
+
+- Rule name: The name associated with the rule.
+- Severity: How "important" the rule is.
+- Max alerts: The maximum number of alerts sent for the event.  `-1` means unlimited.
+- Delay: The amount of time in seconds to wait after a rule is matched before sending an alert.
+- Interval: The interval of time in seconds between alerts for an event until Max is reached.
+- Mute alerts: Disable sending alerts for this rule.
+- Invert match: Invert the matching rule (ie. alert on items that _don't_ match the rule).
 
 ## <a name="rules-examples">Examples</a>
 
@@ -153,6 +181,18 @@ Limit: %value.sensor_limit_low / %value.sensor_limit
 
 The Default Template is a 'one-size-fit-all'. We highly recommend defining own templates for your rules to include more specific information.
 Templates can be matched against several rules.
+
+## <a name="templates-testing">Testing</a>
+
+It's possible to test your new template before assigning it to a rule. To do so you can run `./scripts/est-template.php`. The script will provide the help 
+info when ran without any paramaters.
+
+As an example, if you wanted to test template ID 10 against localhost running rule ID 2 then you would run:
+
+`./scripts/test-template.php -t 10 -d localhost -r 2`
+
+If the rule is currently alerting for localhost then you will get the full template as expected to see on email, if it's not then you will just see the 
+template without any fault information.
 
 ## <a name="templates-examples">Examples</a>
 
@@ -295,9 +335,15 @@ $config['alert']['transports']['irc'] = true;
 > You can configure these options within the WebUI now, please avoid setting these options within config.php
 
 [Using a proxy?](../Support/Configuration.md#proxy-support)
+<<<<<<< HEAD
 
 The Slack transport will POST the alert message to your Slack Incoming WebHook using the [attachments](https://api.slack.com/docs/message-attachments) option, you are able to specify multiple webhooks along with the relevant options to go with it. Simple html tags are stripped from the message. All options are optional, the only required value is for url, without this then no call to Slack will be made. Below is an example of how to send alerts to two channels with different customised options: 
 
+=======
+
+The Slack transport will POST the alert message to your Slack Incoming WebHook using the [attachments](https://api.slack.com/docs/message-attachments) option, you are able to specify multiple webhooks along with the relevant options to go with it. Simple html tags are stripped from the message. All options are optional, the only required value is for url, without this then no call to Slack will be made. Below is an example of how to send alerts to two channels with different customised options: 
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ~~
 ```php
 $config['alert']['transports']['slack'][] = array('url' => "https://hooks.slack.com/services/A12B34CDE/F56GH78JK/L901LmNopqrSTUVw2w3XYZAB4C", 'channel' => '#Alerting');
@@ -306,6 +352,22 @@ $config['alert']['transports']['slack'][] = array('url' => "https://hooks.slack.
 
 ```
 ~~
+<<<<<<< HEAD
+=======
+
+## <a name="transports-slack">Rocket.chat</a>
+
+[Using a proxy?](../Support/Configuration.md#proxy-support)
+
+The Rocket.chat transport will POST the alert message to your Rocket.chat Incoming WebHook using the [attachments](https://rocket.chat/docs/developer-guides/rest-api/chat/postmessage) option, you are able to specify multiple webhooks along with the relevant options to go with it. Simple html tags are stripped from the message. All options are optional, the only required value is for url, without this then no call to Rocket.chat will be made. Below is an example of how to send alerts to two channels with different customised options:
+
+```php
+$config['alert']['transports']['rocket'][] = array('url' => "https://rocket.url/api/v1/chat.postMessage", 'channel' => '#Alerting');
+
+$config['alert']['transports']['rocket'][] = array('url' => "https://rocket.url/api/v1/chat.postMessage", 'channel' => '@john', 'username' => 'LibreNMS', 'icon_emoji' => ':ghost:');
+
+```
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 ## <a name="transports-hipchat">HipChat</a>
 
@@ -437,6 +499,29 @@ $config['alert']['transports']['boxcar'][] = array(
 ```
 ~~
 
+<<<<<<< HEAD
+=======
+## <a name="transports-telegram">Telegram</a>
+
+[Using a proxy?](../Support/Configuration.md#proxy-support)
+
+> Thank you to [snis](https://github.com/snis) for these instructions.
+
+1. First you must create a telegram account and add BotFather to you list. To do this click on the following url: https://telegram.me/botfather
+
+2. Generate a new bot with the command "/newbot" BotFather is then asking for a username and a normal name. After that your bot is created and you get a HTTP token. (for more options for your bot type "/help")
+
+3. Add your bot to telegram with the following url: `http://telegram.me/<botname>` and send some text to the bot.
+
+4. Now copy your token code and go to the following page in chrome: `https://api.telegram.org/bot<tokencode>/getUpdates`
+
+5. You see a json code with the message you sent to the bot. Copy the Chat id. In this example that is “-9787468”
+   `"message":{"message_id":7,"from":"id":656556,"first_name":"Joo","last_name":"Doo","username":"JohnDoo"},"chat":{"id":-9787468,"title":"Telegram Group"},"date":1435216924,"text":"Hi"}}]}`
+   
+6. Now create a new "Telegram transport" in LibreNMS (Global Settings -> Alerting Settings -> Telegram transport).
+Click on 'Add Telegram config' and put your chat id and token into the relevant box.
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ## <a name="transports-pushbullet">Pushbullet</a>
 
 [Using a proxy?](../Support/Configuration.md#proxy-support)
@@ -559,6 +644,66 @@ $config['alert']['transports']['msteams']['url'] = 'https://outlook.office365.co
 ```
 ~
 
+<<<<<<< HEAD
+=======
+## <a name="transports-ciscospark">Cisco Spark</a>
+
+[Using a proxy?](../Support/Configuration.md#proxy-support)
+
+
+Cisco Spark. LibreNMS can send alerts to a Cisco Spark room. To make this possible you need to have a RoomID and a token. 
+
+For more information about Cisco Spark RoomID and token, take a look here :
+ https://developer.ciscospark.com/getting-started.html
+ https://developer.ciscospark.com/resource-rooms.html
+
+To configure the transport, go to:
+
+Global Settings -> Alerting Settings -> Cisco Spark transport.
+
+This can also be done manually in config.php :
+
+~
+```php
+$config['alert']['transports']['ciscospark']['token'] = '1234567890QWERTYUIOP';
+$config['alert']['transports']['ciscospark']['roomid'] = '1234567890QWERTYUIOP';
+```
+~
+
+## <a name="transports-smseagle">SMSEagle</a>
+
+[Using a proxy?](../Support/Configuration.md#proxy-support)
+
+SMSEagle is a hardware SMS Gateway that can be used via their HTTP-API using a Username and password
+Please consult their documentation at [www.smseagle.eu](http://www.smseagle.eu)
+Destination numbers are one per line, with no spaces. They can be in either local or international dialling format.
+
+~
+```php
+$config['alert']['transports']['smseagle']['url']   = 'ip.add.re.ss';
+$config['alert']['transports']['smseagle']['user']  = 'smseagle_user';
+$config['alert']['transports']['smseagle']['token'] = 'smseagle_user_password';
+$config['alert']['transports']['smseagle']['to'][]  = '+3534567890';
+$config['alert']['transports']['smseagle']['to'][]  = '0834567891';
+```
+~
+
+## <a name="transports-syslog">Syslog</a>
+
+You can have LibreNMS emit alerts as syslogs complying with RFC 3164.
+More information on RFC 3164 can be found here: https://tools.ietf.org/html/rfc3164
+Example output: `<26> Mar 22 00:59:03 librenms.host.net librenms[233]: [Critical] network.device.net: Port Down - port_id => 98939; ifDescr => xe-1/1/0;`
+Each fault will be sent as a separate syslog.
+
+~
+```php
+$config['alert']['transports']['syslog']['syslog_host']   = '127.0.0.1';
+$config['alert']['transports']['syslog']['syslog_port']  = 514;
+$config['alert']['transports']['syslog']['syslog_facility'] = 3;
+```
+~
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 # <a name="entities">Entities
 
 Entities as described earlier are based on the table and column names within the database, if you are unsure of what the entity is you want then have a browse around inside MySQL using `show tables` and `desc <tablename>`.
@@ -824,6 +969,7 @@ Entity: `%sensors.sensor_class = "current" && %sensors.sensor_descr = "Bank Tota
 Description: APC PDU over amperage
 
 Example: `%macros.pdu_over_amperage_apc = "1"`
+<<<<<<< HEAD
 
 # <a name="extra">Additional Options</a>
 
@@ -836,3 +982,5 @@ Here are some of the other options available when adding an alerting rule:
 - Interval: The interval of time between alerts for an event until Max is reached.
 - Mute alerts: Disable sending alerts for this rule.
 - Invert match: Invert the matching rule (ie. alert on items that _don't_ match the rule).
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

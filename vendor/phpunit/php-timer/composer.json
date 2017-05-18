@@ -15,6 +15,7 @@
         }
     ],
     "support": {
+<<<<<<< HEAD
         "issues": "https://github.com/sebastianbergmann/php-timer/issues",
         "irc": "irc://irc.freenode.net/phpunit"
     },
@@ -23,11 +24,28 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4|~5"
+=======
+        "issues": "https://github.com/sebastianbergmann/php-timer/issues"
+    },
+    "require": {
+        "php": "^5.3.3 || ^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     },
     "autoload": {
         "classmap": [
             "src/"
         ]
+<<<<<<< HEAD
+=======
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 }
 

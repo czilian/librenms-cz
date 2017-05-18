@@ -12,8 +12,14 @@ source: API/API-Docs.md
         - [`del_device`](#api-route-2)
         - [`get_device`](#api-route-3)
         - [`get_graphs`](#api-route-5)
+        - [`list_available_health_graphs`](#api-route-list_available_health_graphs)
+        - [`get_health_graph`](#api-route-get_health_graph)
         - [`get_graph_generic_by_hostname`](#api-route-6)
         - [`get_port_graphs`](#api-route-7)
+<<<<<<< HEAD
+=======
+        - [`get_device_ip_addresses`](#api-route-get_device_ip_addresses)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         - [`get_port_stack`](#api-route-29)
         - [`get_components`](#api-route-25)
         - [`add_components`](#api-route-26)
@@ -29,6 +35,16 @@ source: API/API-Docs.md
     - [`devicegroups`](#api-devicegroups)
         - [`get_devicegroups`](#api-route-get_devicegroups)
         - [`get_devices_by_group`](#api-route-get_devices_by_group)
+<<<<<<< HEAD
+=======
+    - [`ports`](#api-ports)
+        - [`get_all_ports`](#api-get_all_ports)
+        - [`get_port_info`](#api-route-get_port_info)
+        - [`get_port_ip_info`](#api-route-get_port_ip_info)
+    - [`portgroups`](#api-portgroups)
+        - [`get_graph_by_portgroup_multiport_bits`](#api-route-get_graph_by_portgroup_multiport_bits)
+        - [`get_graph_by_portgroup`](#api-route-get_graph_by_portgroup)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     - [`routing`](#api-routing)
         - [`list_bgp`](#api-route-1)
         - [`list_ipsec`](#list_ipsec)
@@ -221,6 +237,146 @@ Output:
 }
 ```
 
+### <a name="api-route-list_available_health_graphs">Function: `list_available_health_graphs`</a> [`top`](#top)
+This function allows to do three things:
+
+  - Get a list of overall health graphs available.
+  - Get a list of health graphs based on provided class.
+  - Get the health sensors information based on ID.
+
+Route: /api/v0/devices/:hostname/health(/:type)(/:sensor_id)
+
+  - hostname can be either the device hostname or id
+  - type (optional) is health type / sensor class
+  - sensor_id (optional) is the sensor id to retreive specific information.
+
+Input:
+
+  -
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/health
+```
+
+Output:
+```
+{
+    "status": "ok",
+    "err-msg": "",
+    "count": 2,
+    "graphs": [
+        {
+            "desc": "Airflow",
+            "name": "device_airflow"
+        },
+        {
+            "desc": "Voltage",
+            "name": "device_voltage"
+        }
+    ]
+}
+```
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/health/device_voltage
+```
+
+Output:
+```
+{
+    "status": "ok",
+    "err-msg": "",
+    "count": 2,
+    "graphs": [
+        {
+            "sensor_id": "1",
+            "desc": "Input Feed A"
+        },
+        {
+            "sensor_id": "2",
+            "desc": "Output Feed"
+        }
+    ]
+}
+```
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/health/device_voltage/1
+```
+
+Output:
+```
+{
+    "status": "ok",
+    "err-msg": "",
+    "count": 1,
+    "graphs": [
+        {
+            "sensor_id": "1",
+            "sensor_deleted": "0",
+            "sensor_class": "voltage",
+            "device_id": "1",
+            "poller_type": "snmp",
+            "sensor_oid": ".1.3.6.1.4.1.318.1.1.27.1.1.0",
+            "sensor_index": "1",
+            "sensor_type": "apc",
+            "sensor_descr": "Input",
+            "sensor_divisor": "1",
+            "sensor_multiplier": "1",
+            "sensor_current": "1",
+            "sensor_limit": "1.15",
+            "sensor_limit_warn": null,
+            "sensor_limit_low": "0.85",
+            "sensor_limit_low_warn": null,
+            "sensor_alert": "1",
+            "sensor_custom": "No",
+            "entPhysicalIndex": null,
+            "entPhysicalIndex_measured": null,
+            "lastupdate": "2017-01-13 13:50:26",
+            "sensor_prev": "1"
+        }
+    ]
+}
+```
+
+### <a name="api-route-get_health_graph">Function: `get_health_graph`</a> [`top`](#top)
+
+Get a particular health class graph for a device, if you provide a sensor_id as well then a single sensor graph
+will be provided. If no sensor_id value is provided then you will be sent a stacked sensor graph.
+
+Route: /api/v0/devices/:hostname/graphs/health/:type(/:sensor_id)
+
+  - hostname can be either the device hostname or id
+  - type is the name of the health graph as returned by [`list_available_health_graphs`](#api-route-list_available_health_graphs)
+  - sensor_id (optional) restricts the graph to return a particular health sensor graph.
+
+Input:
+
+  -
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/graphs/health/device_voltage
+```
+
+Output:
+
+Output is a stacked graph for the health type provided.
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/graphs/health/device_voltage/1
+```
+
+Output:
+
+Output is the graph of the particular health type sensor provided.
+
+
+
 ### <a name="api-route-6">Function: `get_graph_generic_by_hostname`</a> [`top`](#top)
 
 Get a specific graph for a device, this does not include ports.
@@ -279,6 +435,37 @@ Output:
         },
         {
             "ifName": "eth1"
+        }
+    ]
+}
+```
+### <a name="api-route-get_device_ip_addresses">Function: `get_device_ip_addresses`</a> [`top`](#top)
+
+Get a list of IP addresses (v4 and v6) associated with a device.
+
+Route: /api/v0/devices/:hostname/ip
+
+  - hostname can be either the device hostname or id
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/ip
+```
+
+Output:
+
+```text
+{
+    "status": "ok",
+    "err-msg": "",
+    "addresses": [
+        {
+          "ipv4_address_id": "290",
+          "ipv4_address": "192.168.99.292",
+          "ipv4_prefixlen": "30",
+          "ipv4_network_id": "247",
+          "port_id": "323",
+          "context_name": ""
         }
     ]
 }
@@ -549,6 +736,7 @@ Input:
     - mac: search by mac address
     - ipv4: search by IPv4 address
     - ipv6: search by IPv6 address (compressed or uncompressed)
+    - location: search by location
   - query: If searching by, then this will be used as the input.
 Example:
 ```curl
@@ -784,6 +972,772 @@ Output:
 ]
 ```
 
+## <a name="api-ports">`Ports`</a> [`top`](#top)
+
+### <a name="api-get_all_ports">Function `get_all_ports`</a> [`top`](#top)
+
+Get info for all ports on all devices.
+Strongly recommend that you use the `columns` parameter to avoid pulling too much data.
+
+Route: /api/v0/ports
+
+<<<<<<< HEAD
+  - hostname can be either the device hostname or id
+
+Input:
+
+  -
+=======
+  -
+
+Input:
+
+  - columns: Comma separated list of columns you want returned.
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/ports?columns=ifName%2Cport_id
+```
+
+Output:
+
+```text
+{
+  "status": "ok",
+  "err-msg": "",
+  "ports": [
+        {
+          "ifName": "Gi0/0/0",
+          "port_id": "1"
+        },
+        {
+          "ifName": "Gi0/0/1",
+          "port_id": "2"
+        },
+        ...
+        {
+          "ifName": "Vlan 3615",
+          "port_id": "5488"
+        }
+    ]
+}
+```
+
+### <a name="api-route-get_port_info">Function `get_port_info`</a> [`top`](#top)
+
+Get all info for a particular port.
+
+Route: /api/v0/ports/:portid
+
+<<<<<<< HEAD
+  - hostname can be either the device hostname or id
+  - type is the type of graph you want, use [`get_graphs`](#api-route-5) to see the graphs available. Defaults to device_uptime.
+
+Input:
+
+  - from: This is the date you would like the graph to start - See http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html for more information.
+  - to: This is the date you would like the graph to end - See http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html for more information.
+  - width: The graph width, defaults to 1075.
+  - height: The graph height, defaults to 300.
+=======
+  - portid must be an integer
+
+Input:
+
+  -
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/ports/323
+```
+
+Output:
+
+```text
+{
+  "status": "ok",
+  "err-msg": "",
+  "port": [
+    {
+      "port_id": "323",
+      "device_id": "55",
+      "port_descr_type": null,
+      "port_descr_descr": null,
+      "port_descr_circuit": null,
+      "port_descr_speed": null,
+      "port_descr_notes": null,
+      "ifDescr": "GigabitEthernet0/0/0",
+      "ifName": "Gi0/0/0",
+      "portName": null,
+      "ifIndex": "1",
+      "ifSpeed": "1000000000",
+      "ifConnectorPresent": "true",
+      "ifPromiscuousMode": "false",
+      "ifHighSpeed": "1000",
+      "ifOperStatus": "up",
+      "ifOperStatus_prev": null,
+      "ifAdminStatus": "up",
+      "ifAdminStatus_prev": null,
+      "ifDuplex": "fullDuplex",
+      "ifMtu": "1560",
+      "ifType": "ethernetCsmacd",
+      "ifAlias": "ASR Interconnect Trunk",
+      "ifPhysAddress": "84bf20853e00",
+      "ifHardType": null,
+      "ifLastChange": "42407358",
+      "ifVlan": "",
+      "ifTrunk": "",
+      "ifVrf": "0",
+      "counter_in": null,
+      "counter_out": null,
+      "ignore": "0",
+      "disabled": "0",
+      "detailed": "0",
+      "deleted": "0",
+      "pagpOperationMode": null,
+      "pagpPortState": null,
+      "pagpPartnerDeviceId": null,
+      "pagpPartnerLearnMethod": null,
+      "pagpPartnerIfIndex": null,
+      "pagpPartnerGroupIfIndex": null,
+      "pagpPartnerDeviceName": null,
+      "pagpEthcOperationMode": null,
+      "pagpDeviceId": null,
+      "pagpGroupIfIndex": null,
+      "ifInUcastPkts": "128518576",
+      "ifInUcastPkts_prev": "128517284",
+      "ifInUcastPkts_delta": "1292",
+      "ifInUcastPkts_rate": "4",
+      "ifOutUcastPkts": "128510560",
+      "ifOutUcastPkts_prev": "128509268",
+      "ifOutUcastPkts_delta": "1292",
+      "ifOutUcastPkts_rate": "4",
+      "ifInErrors": "0",
+      "ifInErrors_prev": "0",
+      "ifInErrors_delta": "0",
+      "ifInErrors_rate": "0",
+      "ifOutErrors": "0",
+      "ifOutErrors_prev": "0",
+      "ifOutErrors_delta": "0",
+      "ifOutErrors_rate": "0",
+      "ifInOctets": "12827393730",
+      "ifInOctets_prev": "12827276736",
+      "ifInOctets_delta": "116994",
+      "ifInOctets_rate": "387",
+      "ifOutOctets": "14957481766",
+      "ifOutOctets_prev": "14957301765",
+      "ifOutOctets_delta": "180001",
+      "ifOutOctets_rate": "596",
+      "poll_time": "1483779150",
+      "poll_prev": "1483778848",
+      "poll_period": "302"
+    }
+  ]
+}
+```
+
+### <a name="api-route-get_port_info">Function `get_port_info`</a> [`top`](#top)
+
+Get all IP info (v4 and v6) for a given port id.
+
+Route: /api/v0/ports/:portid/ip
+
+<<<<<<< HEAD
+  - hostname can be either the device hostname or id
+
+Input:
+
+  - columns: Comma separated list of columns you want returned.
+=======
+  - portid must be an integer
+
+Input:
+
+  -
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/ports/323/ip
+```
+
+Output:
+
+```text
+{
+  "status": "ok",
+  "err-msg": "",
+  "addresses": [
+    {
+      "ipv4_address_id": "290",
+      "ipv4_address": "192.168.99.292",
+      "ipv4_prefixlen": "30",
+      "ipv4_network_id": "247",
+      "port_id": "323",
+      "context_name": ""
+    }
+  ]
+}
+```
+
+<<<<<<< HEAD
+### <a name="api-route-29">Function: `get_port_stack`</a> [`top`](#top)
+
+Get a list of port mappings for a device.  This is useful for showing physical ports that are in a virtual port-channel.
+
+Route: /api/v0/devices/:hostname/port_stack
+
+  - hostname can be either the device hostname or id
+
+Input:
+
+  - valid_mappings: Filter the result by only showing valid mappings ("0" values not shown).
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/port_stack?valid_mappings
+```
+
+Output:
+
+```text
+{
+  "status": "ok",
+  "err-msg": "",
+  "count": 2,
+  "mappings": [
+    {
+      "device_id": "3742",
+      "port_id_high": "1001000",
+      "port_id_low": "51001",
+      "ifStackStatus": "active"
+    },
+    {
+      "device_id": "3742",
+      "port_id_high": "1001000",
+      "port_id_low": "52001",
+      "ifStackStatus": "active"
+    }
+  ]
+}
+```
+
+### <a name="api-route-25">Function: `get_components`</a> [`top`](#top)
+
+Get a list of components for a particular device.
+
+Route: /api/v0/devices/:hostname/components
+
+  - hostname can be either the device hostname or id
+
+Input:
+
+  - type: Filter the result by type (Equals).
+  - id: Filter the result by id (Equals).
+  - label: Filter the result by label (Contains).
+  - status: Filter the result by status (Equals).
+  - disabled: Filter the result by disabled (Equals).
+  - ignore: Filter the result by ignore (Equals).
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/components
+```
+
+Output:
+
+```text
+{
+    "status": "ok",
+    "err-msg": "",
+    "count": 3,
+    "components": {
+        "2": {
+            "TestAttribute-1": "Value1",
+            "TestAttribute-2": "Value2",
+            "TestAttribute-3": "Value3",
+            "type": "TestComponent-1",
+            "label": "This is a really cool blue component",
+            "status": "1",
+            "ignore": "0",
+            "disabled": "0"
+        },
+        "20": {
+            "TestAttribute-1": "Value4",
+            "TestAttribute-2": "Value5",
+            "TestAttribute-3": "Value6",
+            "type": "TestComponent-1",
+            "label": "This is a really cool red component",
+            "status": "1",
+            "ignore": "0",
+            "disabled": "0"
+        },
+        "27": {
+            "TestAttribute-1": "Value7",
+            "TestAttribute-2": "Value8",
+            "TestAttribute-3": "Value9",
+            "type": "TestComponent-2",
+            "label": "This is a really cool yellow widget",
+            "status": "1",
+            "ignore": "0",
+            "disabled": "0"
+        }
+    }
+}
+```
+
+### <a name="api-route-26">Function: `add_components`</a> [`top`](#top)
+
+Create a new component of a type on a particular device.
+
+Route: /api/v0/devices/:hostname/components/:type
+
+  - hostname can be either the device hostname or id
+  - type is the type of component to add
+
+Example:
+```curl
+curl -X POST -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/components/APITEST
+```
+
+Output:
+
+```text
+{
+    "status": "ok",
+    "err-msg": "",
+    "count": 1,
+    "components": {
+        "4459": {
+            "type": "APITEST",
+            "label": "",
+            "status": 1,
+            "ignore": 0,
+            "disabled": 0,
+            "error": ""
+        }
+    }
+}
+```
+
+### <a name="api-route-27">Function: `edit_components`</a> [`top`](#top)
+
+Edit an existing component on a particular device.
+
+Route: /api/v0/devices/:hostname/components
+
+  - hostname can be either the device hostname or id
+
+In this example we set the label and add a new field: TestField:
+```curl
+curl -X PUT -d '{"4459": {"type": "APITEST","label": "This is a test label","status": 1,"ignore": 0,"disabled": 0,"error": "","TestField": "TestData"}}' -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/components
+```
+
+Output:
+
+```text
+{
+    "status": "ok",
+    "err-msg": "",
+    "count": 1
+}
+```
+
+Just take the JSON array from add_components or edit_components, edit as you wish and submit it back to edit_components.
+
+### <a name="api-route-28">Function: `delete_components`</a> [`top`](#top)
+
+Delete an existing component on a particular device.
+
+Route: /api/v0/devices/:hostname/components/:component
+
+  - hostname can be either the device hostname or id
+  - component is the component ID to be deleted.
+
+Example:
+```curl
+curl -X DELETE -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/components/4459
+```
+
+Output:
+
+```text
+{
+    "status": "ok",
+    "err-msg": ""
+}
+```
+
+### <a name="api-route-8">Function: `get_port_stats_by_port_hostname`</a> [`top`](#top)
+=======
+### <a name="api-route-get_devices_by_group">Function `get_devices_by_group`</a> [`top`](#top)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+List all devices matching the group provided.
+
+Route: /api/v0/devicegroups/:name
+
+<<<<<<< HEAD
+  - hostname can be either the device hostname or id
+  - ifname can be any of the interface names for the device which can be obtained using [`get_port_graphs`](#api-route-7). Please ensure that the ifname is urlencoded if it needs to be (i.e Gi0/1/0 would need to be urlencoded.
+=======
+  - name Is the name of the device group which can be obtained using [`get_devicegroups`](#api-route-get_devicegroups). Please ensure that the name is urlencoded if it needs to be (i.e Linux Servers would need to be urlencoded.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Input (JSON):
+
+<<<<<<< HEAD
+  - columns: Comma separated list of columns you want returned.
+=======
+  - full: set to any value to return all data for the devices in a given group
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Examples:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devicegroups/LinuxServers
+```
+
+Output:
+```text
+[
+     {
+         "status": "ok",
+         "message": "Found 3 in group LinuxServers",
+         "count": 3,
+         "devices": [
+            {
+                "device_id": "15"
+            },
+            {
+                "device_id": "18"
+            },
+            {
+                "device_id": "20"
+            }
+         ]
+     }
+]
+```
+
+## <a name="api-portgroups">`Port Groups`</a> [`top`](#top)
+
+### <a name="api-route-get_graph_by_portgroup">Function: `get_graph_by_portgroup`</a> [`top`](#top)
+
+Get the graph based on the group type.
+
+Route: /api/v0/devices/portgroups/:group
+
+<<<<<<< HEAD
+  - hostname can be either the device hostname or id
+  - ifname can be any of the interface names for the device which can be obtained using [`get_port_graphs`](#api-route-7). Please ensure that the ifname is urlencoded if it needs to be (i.e Gi0/1/0 would need to be urlencoded.
+  - type is the port type you want the graph for, you can request a list of ports for a device with [`get_port_graphs`](#api-route-7).
+=======
+  - group is the type of port group graph you want, I.e Transit, Peering, etc. You can specify multiple types comma separated.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Input:
+
+  - from: This is the date you would like the graph to start - See http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html for more information.
+  - to: This is the date you would like the graph to end - See http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html for more information.
+  - width: The graph width, defaults to 1075.
+  - height: The graph height, defaults to 300.
+<<<<<<< HEAD
+  - ifDescr: If this is set to true then we will use ifDescr to lookup the port instead of ifName. Pass the ifDescr value you want to search as you would ifName.
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/portgroups/transit,peering
+```
+
+Output:
+
+Output is an image.
+
+### <a name="api-route-get_graph_by_portgroup_multiport_bits">Function: `get_graph_by_portgroup_multiport_bits`</a> [`top`](#top)
+
+Get the graph based on the multiple port id separated by commas `,`.
+
+Route: /api/v0/devices/portgroups/multiport/bits/:id
+
+  - id is a comma separated list of port ids you want, I.e 1,2,3,4, etc. You can specify multiple IDs comma separated.
+
+Input:
+
+<<<<<<< HEAD
+  - order: How to order the output, default is by hostname. Can be prepended by DESC or ASC to change the order.
+  - type: can be one of the following to filter or search by:
+    - all: All devices
+    - ignored: Only ignored devices
+    - up: Only devices that are up
+    - down: Only devices that are down
+    - disabled: Disabled devices
+    - mac: search by mac address
+    - ipv4: search by IPv4 address
+    - ipv6: search by IPv6 address (compressed or uncompressed)
+  - query: If searching by, then this will be used as the input.
+=======
+  - from: This is the date you would like the graph to start - See http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html for more information.
+  - to: This is the date you would like the graph to end - See http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html for more information.
+  - width: The graph width, defaults to 1075.
+  - height: The graph height, defaults to 300.
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/portgroups/multiport/bits/1,2,3
+```
+
+Output:
+
+<<<<<<< HEAD
+```text
+{
+ "status": "ok",
+ "count": 1,
+ "devices": [
+  {
+   "device_id": "1",
+   "hostname": "localhost",
+   ...
+   "serial": null,
+   "icon": null
+  }
+ ]
+}
+```
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices?type=mac&query=00000c9ff013
+```
+
+Output:
+
+```text
+{
+ "status": "ok",
+ "count": 1,
+ "devices": [
+  {
+   "device_id": "1",
+   "hostname": "localhost",
+   ...
+   "serial": null,
+   "icon": null
+  }
+ ]
+}
+```
+
+### <a name="api-route-11">Function: `add_device`</a> [`top`](#top)
+
+Add a new device.
+=======
+Output is an image.
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+
+## <a name="api-routing">`Routing`</a> [`top`](#top)
+
+<<<<<<< HEAD
+  - hostname: device hostname
+  - port: SNMP port (defaults to port defined in config).
+  - transport: SNMP protocol (defaults to transport defined in config).
+  - version: SNMP version to use, v1, v2c or v3. Defaults to v2c.
+  - poller_group: This is the poller_group id used for distributed poller setup. Defaults to 0.
+  - force_add: Force the device to be added regardless of it being able to respond to snmp or icmp.
+
+For SNMP v1 or v2c
+
+  - community: Required for SNMP v1 or v2c.
+
+For SNMP v3
+
+  - authlevel: SNMP authlevel (NoAuthNoPriv, AuthNoPriv, AuthPriv).
+  - authname: SNMP Auth username
+  - authpass: SNMP Auth password
+  - authalgo: SNMP Auth algorithm (MD5, SHA)
+  - cryptopass: SNMP Crypto Password
+  - cryptoalgo: SNMP Crypto algorithm (AES, DES)
+=======
+### <a name="api-route-1">Function: `list_bgp`</a> [`top`](#top)
+
+List the current BGP sessions.
+
+Route: /api/v0/bgp
+
+Input:
+
+  - hostname = Either the devices hostname or id.
+**OR**
+  - asn = The ASN you would like to filter by
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/bgp
+```
+
+Output:
+```text
+{
+<<<<<<< HEAD
+    "status": "ok",
+    "message": "Device localhost.localdomain (57) has been added successfully"
+}
+```
+
+### <a name="api-route-21">Function: `list_oxidized`</a> [`top`](#top)
+
+List devices for use with Oxidized. If you have group support enabled then a group will also be returned based on your config.
+
+Route: /api/v0/oxidized
+
+Input (JSON):
+
+  -
+
+Examples:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/oxidized
+```
+
+Output:
+
+```text
+[
+    {
+        "hostname": "localhost",
+        "os": "linux"
+    },
+    {
+        "hostname": "otherserver",
+        "os": "linux"
+    }
+]
+```
+
+### <a name="api-route-update_device_field">Function: `update_device_field`</a> [`top`](#top)
+
+Update devices field in the database.
+
+Route: /api/v0/devices/:hostname
+
+  - hostname can be either the device hostname or id
+
+Input (JSON):
+
+  - field: The column name within the database (can be an array of fields)
+  - data: The data to update the column with (can be an array of data))
+
+Examples:
+```curl
+curl -X PATCH -d '{"field": "notes", "data": "This server should be kept online"}' -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost
+```
+
+Output:
+
+```text
+[
+    {
+        "status": "ok",
+        "message": "Device notes has been updated"
+    }
+]
+```
+
+```curl
+curl -X PATCH -d '{"field": ["notes","purpose"], "data": ["This server should be kept online", "For serving web traffic"]}' -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost
+```
+
+Output:
+
+```text
+[
+    {
+        "status": "ok",
+        "message": "Device fields have been updated"
+    }
+]
+```
+
+### <a name="api-route-get_device_groups">Function `get_device_groups`</a> [`top`](#top)
+
+List the device groups that a device is matched on.
+
+Route: /api/v0/devices/:hostname/groups
+
+  - hostname can be either the device hostname or id
+
+Input (JSON):
+
+  -
+
+Examples:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devices/localhost/groups
+```
+
+Output:
+```text
+[
+    {
+        "status": "ok",
+        "message": "Found 1 device groups",
+        "count": 1,
+        "groups": [
+        {
+            "id": "1",
+            "name": "Testing",
+            "desc": "Testing",
+            "pattern": "%devices.status = \"1\" &&"
+        }
+        ]
+    }
+]
+```
+
+## <a name="api-devicegroups">`Device Groups`</a> [`top`](#top)
+
+### <a name="api-route-get_devicegroups">Function `get_devicegroups`</a> [`top`](#top)
+
+List all device groups.
+
+Route: /api/v0/devicegroups
+
+Input (JSON):
+
+  -
+
+Examples:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/devicegroups
+```
+
+Output:
+```text
+[
+    {
+        "status": "ok",
+        "message": "Found 1 device groups",
+        "count": 1,
+        "groups": [
+        {
+            "id": "1",
+            "name": "Testing",
+            "desc": "Testing",
+            "pattern": "%devices.status = \"1\" &&"
+        }
+        ]
+    }
+]
+```
+
 ### <a name="api-route-get_devices_by_group">Function `get_devices_by_group`</a> [`top`](#top)
 
 List all devices matching the group provided.
@@ -824,25 +1778,7 @@ Output:
 ```
 
 ## <a name="api-routing">`Routing`</a> [`top`](#top)
-
-### <a name="api-route-1">Function: `list_bgp`</a> [`top`](#top)
-
-List the current BGP sessions.
-
-Route: /api/v0/bgp
-
-Input:
-
-  - hostname = either the devices hostname or id.
-
-Example:
-```curl
-curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/bgp
-```
-
-Output:
-```text
-{
+=======
  "status": "ok",
  "err-msg": "",
  "count": 0,
@@ -851,6 +1787,48 @@ Output:
  ]
 }
 ```
+
+### <a name="list_ipsec">Function: `list_ipsec`</a> [`top`](#top)
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+List the current IPSec tunnels which are active.
+
+Route: /api/v0/routing/ipsec/data/:hostname
+
+  - hostname can be either the device hostname or id
+
+Input:
+
+<<<<<<< HEAD
+  - hostname = either the devices hostname or id.
+=======
+  -
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
+
+Example:
+```curl
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/routing/ipsec/data/localhost
+```
+
+Output:
+```text
+{
+    "status": "ok",
+    "err-msg": "",
+    "count": 0,
+    "ipsec": [
+        "tunnel_id": "1",
+        "device_id": "1",
+        "peer_port": "0",
+        "peer_addr": "127.0.0.1",
+        "local_addr": "127.0.0.2",
+        "local_port": "0",
+        "tunnel_name": "",
+        "tunnel_status": "active"
+    ]
+}
+```
+> Please note, this will only show active VPN sessions not all configured.
 
 ### <a name="list_ipsec">Function: `list_ipsec`</a> [`top`](#top)
 
@@ -987,6 +1965,7 @@ Output:
  "status": "ok",
  "err-msg": "",
  "message": "Alert has been acknowledged"
+<<<<<<< HEAD
 }
 ```
 
@@ -1016,6 +1995,37 @@ Output:
 }
 ```
 
+=======
+}
+```
+
+### <a name="api-route-24">Function: `unmute_alert`</a> [`top`](#top)
+
+Unmute an alert
+
+Route: /api/v0/alerts/unmute/:id
+
+  - id is the alert id, you can obtain a list of alert ids from [`list_alerts`](#api-route-14).
+
+Input:
+
+  -
+
+Example:
+```curl
+curl -X PUT -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/alerts/unmute/1
+```
+
+Output:
+```text
+{
+ "status": "ok",
+ "err-msg": "",
+ "message": "Alert has been unmuted"
+}
+```
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 ### <a name="api-route-14">Function: `list_alerts`</a> [`top`](#top)
 
@@ -1321,7 +2331,18 @@ Output:
    "allowed": "10Mbps",
    "used": "0bps",
    "percent": 0,
+<<<<<<< HEAD
    "overuse": "-"
+=======
+   "overuse": "-",
+   "ports": [
+       {
+           "device_id": "168",
+           "port_id": "35146",
+           "ifName": "eth0"
+       }
+   ]
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
   }
  ]
 }
@@ -1381,7 +2402,18 @@ Output:
    "allowed": "10Mbps",
    "used": "0bps",
    "percent": 0,
+<<<<<<< HEAD
    "overuse": "-"
+=======
+   "overuse": "-",
+   "ports": [
+       {
+           "device_id": "168",
+           "port_id": "35146",
+           "ifName": "eth0"
+       }
+   ]
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
   }
  ]
 }
@@ -1394,6 +2426,10 @@ Retrieve a specific ARP entry or all ARP enties for a device
 Route: /api/v0/resources/ip/arp/:ip
 
   - ip is the specific IP you would like to query, if this is all then you need to pass ?device=_hostname_ (or device id)
+<<<<<<< HEAD
+=======
+  - This may also be a cidr network, for example 192.168.1.0/24
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 Input:
 
@@ -1402,7 +2438,12 @@ Input:
 Example:
 ```curl
 curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/resources/ip/arp/1.1.1.1
+<<<<<<< HEAD
 curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/resources/ip/arp/1.1.1.1?device=localhost
+=======
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/resources/ip/arp/192.168.1.0/24
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/resources/ip/arp/all?device=localhost
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 ```
 
 Output:

@@ -6,3 +6,9 @@ ifname: 1
 over:
     - { graph: device_bits, text: 'Device Traffic' }
 bad_uptime: true
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr_regex:
+        - '/^Meraki MR/'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

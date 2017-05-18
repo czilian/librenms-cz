@@ -128,7 +128,11 @@ class PHPUnit_Util_Printer
             }
         } else {
             if (PHP_SAPI != 'cli' && PHP_SAPI != 'phpdbg') {
+<<<<<<< HEAD
                 $buffer = htmlspecialchars($buffer);
+=======
+                $buffer = htmlspecialchars($buffer, ENT_SUBSTITUTE);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             }
 
             print $buffer;

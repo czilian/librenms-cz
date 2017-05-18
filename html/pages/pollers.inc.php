@@ -19,11 +19,19 @@ echo '<ul class="nav nav-tabs">';
 $poll_tabs = array(
     array(
         'name' => 'Pollers',
+<<<<<<< HEAD
         'icon' => 'clock_link',
     ),
     array(
         'name' => 'Groups',
         'icon' => 'clock_add',
+=======
+        'icon' => 'fa-th-large',
+    ),
+    array(
+        'name' => 'Groups',
+        'icon' => 'fa-th',
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     ),
 );
 
@@ -31,7 +39,11 @@ foreach ($poll_tabs as $tab) {
     echo '
             <li>
                 <a href="' . generate_url(array('page'=>'pollers','tab'=>lcfirst($tab['name']))) . '">
+<<<<<<< HEAD
                    <img src="images/16/'.$tab['icon'].'.png" align="absmiddle" border="0"> '.$tab['name'].'
+=======
+                <i class="fa '.$tab['icon'].' fa-lg icon-theme" aria-hidden="true"></i>'.$tab['name'].'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 </a>
             </li>';
 }

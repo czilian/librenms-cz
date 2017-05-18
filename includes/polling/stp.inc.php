@@ -92,12 +92,20 @@ if ($stpprotocol == 'ieee8021d' || $stpprotocol == 'unknown') {
     if ($stp_db['bridgeAddress'] && $stp['bridgeAddress']) {
         // Logging if designated root changed since last db update
         if ($stp_db['designatedRoot'] != $stp['designatedRoot']) {
+<<<<<<< HEAD
             log_event('STP designated root changed: '.$stp_db['designatedRoot'].' > '.$stp['designatedRoot'], $device, 'stp');
+=======
+            log_event('STP designated root changed: ' . $stp_db['designatedRoot'] . ' > ' . $stp['designatedRoot'], $device, 'stp', 4);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
         
         // Logging if designated root port changed since last db update
         if (isset($stp['rootPort']) && $stp_db['rootPort'] != $stp['rootPort']) {
+<<<<<<< HEAD
             log_event('STP root port changed: '.$stp_db['rootPort'].' > '.$stp['rootPort'], $device, 'stp');
+=======
+            log_event('STP root port changed: ' . $stp_db['rootPort'] . ' > ' . $stp['rootPort'], $device, 'stp', 4);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
         
         // Logging if topology changed since last db update
@@ -110,7 +118,11 @@ if ($stpprotocol == 'ieee8021d' || $stpprotocol == 'unknown') {
             // ToDo fix log_event()
             //
             //log_event('STP topology changed after: '.formatUptime($stp['timeSinceTopologyChange']), $device, 'stp', $stp['timeSinceTopologyChange']);
+<<<<<<< HEAD
             log_event('STP topology changed after: '.formatUptime($stp['timeSinceTopologyChange']), $device, 'stp');
+=======
+            log_event('STP topology changed after: ' . formatUptime($stp['timeSinceTopologyChange']), $device, 'stp', 4);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         }
         // Write to db
         dbUpdate($stp, 'stp', 'device_id = ?', array($device['device_id']));
@@ -169,5 +181,24 @@ if ($stpprotocol == 'ieee8021d' || $stpprotocol == 'unknown') {
     }
 }
 
+<<<<<<< HEAD
 unset($stp_raw, $stp, $stp_db, $stp_port);
+=======
+unset(
+    $stp_raw,
+    $stp,
+    $stp_db,
+    $stp_port,
+    $mac_array,
+    $stpprotocol,
+    $tm,
+    $mac_raw,
+    $time_since_change,
+    $dr,
+    $octet,
+    $port,
+    $db,
+    $dp
+);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 echo "\n";

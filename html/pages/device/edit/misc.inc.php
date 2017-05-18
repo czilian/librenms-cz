@@ -26,5 +26,14 @@ echo '
             '.dynamic_override_config('checkbox', 'override_rrdtool_tune', $device).'
         </div>
     </div>
+<<<<<<< HEAD
+=======
+    <div class="form-group">
+        <label for="selected_ports" class="col-sm-4 control-label">Enable selected port polling?</label>
+        <div class="col-sm-8">
+            '.dynamic_override_config('checkbox', 'selected_ports', $device).'
+        </div>
+    </div>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 </form>
 ';

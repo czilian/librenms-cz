@@ -143,13 +143,21 @@ if ($_SESSION['userlevel'] >= '5') {
                 echo "<tr bgcolor='$dev_colour'><td width=150>".generate_device_link($device, shorthost($device['hostname']));
 
                 if ($device['vrf_name'] != $vrf['vrf_name']) {
+<<<<<<< HEAD
                     echo "<a href='#' onmouseover=\" return overlib('Expected Name : ".$vrf['vrf_name'].'<br />Configured : '.$device['vrf_name']."', CAPTION, '<span class=list-large>VRF Inconsistency</span>' ,FGCOLOR,'#e5e5e5', BGCOLOR, '#c0c0c0', BORDER, 5, CELLPAD, 4, CAPCOLOR, '#050505');\" onmouseout=\"return nd();\"> <img align=absmiddle src=images/16/exclamation.png></a>";
+=======
+                    echo "<a href='#' onmouseover=\" return overlib('Expected Name : ".$vrf['vrf_name'].'<br />Configured : '.$device['vrf_name']."', CAPTION, '<span class=list-large>VRF Inconsistency</span>' ,FGCOLOR,'#e5e5e5', BGCOLOR, '#c0c0c0', BORDER, 5, CELLPAD, 4, CAPCOLOR, '#050505');\" onmouseout=\"return nd();\"> <i class='fa fa-flag fa-lg' style='color:red' aria-hidden='true'></i></a>";
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 }
 
                 echo '</td><td>';
                 unset($seperator);
 
                 foreach ($ports[$device['vrf_id']][$device['device_id']] as $port) {
+<<<<<<< HEAD
+=======
+                    $port = cleanPort($port);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                     $port = array_merge($device, $port);
 
                     switch ($_GET['optc']) {
@@ -167,7 +175,11 @@ if ($_SESSION['userlevel'] >= '5') {
                             text-align: center; float: left; background-color: ".$list_colour_b_b.";'>
                                 <div style='font-weight: bold;'>".makeshortif($port['ifDescr']).'</div>';
                             print_port_thumbnail($port);
+<<<<<<< HEAD
                             echo "<div style='font-size: 9px;'>".substr(short_port_descr(display($port['ifAlias'])), 0, 22).'</div>
+=======
+                            echo "<div style='font-size: 9px;'>".substr(short_port_descr($port['ifAlias']), 0, 22).'</div>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                                 </div>';
                             break;
 
@@ -201,6 +213,7 @@ if ($_SESSION['userlevel'] >= '5') {
         $devices = dbFetchRows('SELECT * FROM `vrfs` AS V, `devices` AS D WHERE `mplsVpnVrfRouteDistinguisher` = ? AND D.device_id = V.device_id', array($vrf['mplsVpnVrfRouteDistinguisher']));
         foreach ($devices as $device) {
             $hostname = $device['hostname'];
+<<<<<<< HEAD
             if (($x % 2)) {
                 $device_colour = $list_colour_a;
             } else {
@@ -212,6 +225,13 @@ if ($_SESSION['userlevel'] >= '5') {
             include 'includes/device-header.inc.php';
 
             echo '</table>';
+=======
+
+            echo '<div>';
+            include 'includes/device-header.inc.php';
+            echo '</div>';
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             unset($seperator);
             echo '<div style="margin: 0 0 0 60px;"><table cellspacing=0 cellpadding=7>';
             $i = 1;

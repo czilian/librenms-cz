@@ -19,18 +19,23 @@
 
 require 'includes/graphs/common.inc.php';
 
+<<<<<<< HEAD
 if ($width > '500') {
     $descr_len = 24;
 } else {
     $descr_len  = 12;
     $descr_len += round(($width - 250) / 8);
 }
+=======
+$descr_len = 12;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 if ($nototal) {
     $descr_len += '2';
     $unitlen  += '2';
 }
 
+<<<<<<< HEAD
 if ($width > '500') {
     $rrd_options .= " COMMENT:'".substr(str_pad($unit_text, ($descr_len + 5)), 0, ($descr_len + 5))."Now      Min      Max     Avg\l'";
     if (!$nototal) {
@@ -42,6 +47,10 @@ if ($width > '500') {
     $rrd_options .= " COMMENT:'".substr(str_pad($unit_text, ($descr_len + 5)), 0, ($descr_len + 5))."Now      Min      Max     Avg\l'";
 }
 
+=======
+$rrd_options .= " COMMENT:'".rrdtool_escape($unit_text, $descr_len)."      Now      Min      Max     Avg\l'";
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 $i    = 0;
 $iter = 0;
 

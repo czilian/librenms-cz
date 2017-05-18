@@ -3,3 +3,10 @@ text: 'Papouch TME'
 type: environment
 over:
     - { graph: device_temperature, text: temperature }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - SNMP TME
+        - TME
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

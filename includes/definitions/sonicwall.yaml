@@ -5,3 +5,9 @@ over:
     - { graph: device_bits, text: Traffic }
     - { graph: device_processor, text: CPU }
     - { graph: device_mempool, text: Memory }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - SonicWALL
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 /*
  * LibreNMS Network Management and Monitoring System
  * Copyright (C) 2006-2011, Observium Developers - http://www.observium.org
@@ -12,6 +15,7 @@
  * See COPYING for more details.
  */
 
+<<<<<<< HEAD
 // Call poll_sensor for each sensor type that we support.
 $supported_sensors = array(
     'current'     => 'A',
@@ -32,3 +36,11 @@ $supported_sensors = array(
 foreach ($supported_sensors as $sensor_type => $sensor_unit) {
     poll_sensor($device, $sensor_type, $sensor_unit);
 }
+=======
+$sensors = dbFetchRows("SELECT `sensor_class` FROM `sensors` WHERE `device_id` = ? GROUP BY `sensor_class`", array($device['device_id']));
+foreach ($sensors as $sensor_type) {
+    poll_sensor($device, $sensor_type['sensor_class']);
+}
+
+unset($sensors, $sensor_type);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

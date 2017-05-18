@@ -38,7 +38,11 @@ class PolarPlot
     public $legendcsimtarget = '';
     public $legendcsimalt = '';
     public $legend = "";
+<<<<<<< HEAD
     public $csimtargets = []; // Array of targets for CSIM
+=======
+    public $csimtargets = array(); // Array of targets for CSIM
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     public $csimareas = ""; // Resultant CSIM area tags
     public $csimalts = null; // ALT:s for corresponding target
     public $scale = null;
@@ -126,7 +130,11 @@ class PolarPlot
     {
 
         $i = 0;
+<<<<<<< HEAD
         $p = [];
+=======
+        $p = array();
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $this->csimareas = '';
         while ($i < $this->numpoints) {
             list($x1, $y1) = $scale->PTranslate($this->coord[2 * $i], $this->coord[2 * $i + 1]);

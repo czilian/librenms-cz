@@ -1,5 +1,9 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\Exceptions\AuthenticationException;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 use Phpass\PasswordHash;
 
 if (!isset($_SESSION['username'])) {
@@ -11,6 +15,7 @@ function authenticate($username, $password)
 {
     global $config;
 
+<<<<<<< HEAD
     if (isset($_SERVER['REMOTE_USER'])) {
         $_SESSION['username'] = mres($_SERVER['REMOTE_USER']);
 
@@ -29,6 +34,26 @@ function authenticate($username, $password)
 function reauthenticate($sess_id = '', $token = '')
 {
     return 0;
+=======
+    if (isset($_SERVER['REMOTE_USER']) || isset($_SERVER['PHP_AUTH_USER'])) {
+        $_SESSION['username'] = mres($_SERVER['REMOTE_USER']) ?: mres($_SERVER['PHP_AUTH_USER']);
+
+        $row = @dbFetchRow('SELECT username FROM `users` WHERE `username`=?', array($_SESSION['username']));
+        if (isset($row['username']) && $row['username'] == $_SESSION['username']) {
+            return true;
+        } else {
+            $_SESSION['username'] = $config['http_auth_guest'];
+            return true;
+        }
+    }
+    throw new AuthenticationException();
+}
+
+
+function reauthenticate($sess_id, $token)
+{
+    return false;
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }
 
 
@@ -50,12 +75,20 @@ function auth_usermanagement()
 }
 
 
+<<<<<<< HEAD
 function adduser($username, $password, $level, $email = '', $realname = '', $can_modify_passwd = 1, $description = '', $twofactor = 0)
+=======
+function adduser($username, $password, $level, $email = '', $realname = '', $can_modify_passwd = 1, $description = '')
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     if (!user_exists($username)) {
         $hasher    = new PasswordHash(8, false);
         $encrypted = $hasher->HashPassword($password);
+<<<<<<< HEAD
         $userid    = dbInsert(array('username' => $username, 'password' => $encrypted, 'level' => $level, 'email' => $email, 'realname' => $realname, 'can_modify_passwd' => $can_modify_passwd, 'descr' => $description, 'twofactor' => $twofactor), 'users');
+=======
+        $userid    = dbInsert(array('username' => $username, 'password' => $encrypted, 'level' => $level, 'email' => $email, 'realname' => $realname, 'can_modify_passwd' => $can_modify_passwd, 'descr' => $description), 'users');
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($userid == false) {
             return false;
         } else {

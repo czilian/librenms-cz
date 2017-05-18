@@ -24,6 +24,11 @@
  * @author     Tony Murray <murraytony@gmail.com>
  */
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 global $config;
 $data = '';
 $name = 'powerdns-recursor';
@@ -44,6 +49,7 @@ if ($agent_data['app'][$name]) {
 
     d_echo("\nNo Agent Data. Attempting to connect directly to the powerdns-recursor server $scheme" . $device['hostname'] . ":$port\n");
     $context = stream_context_create(array('http' => array('header' => 'X-API-Key: ' . $config['apps'][$name]['api-key'])));
+<<<<<<< HEAD
     $data = file_get_contents($scheme . $device['hostname'] . ':' . $port . '/servers/localhost/statistics', false, $context);
 }
 
@@ -107,6 +113,79 @@ if (!empty($data)) {
         'unreachables' => 'DS:unreachables:DERIVE:600:0:U',
         'uptime' => 'DS:uptime:DERIVE:600:0:U',
         'user-msec' => 'DS:user-msec:DERIVE:600:0:U',
+=======
+    $data = file_get_contents($scheme . $device['hostname'] . ':' . $port . '/api/v1/servers/localhost/statistics', false, $context);
+    if ($data === false) {
+        $data = file_get_contents($scheme . $device['hostname'] . ':' . $port . '/servers/localhost/statistics', false, $context);
+    }
+} else {
+    // nsExtendOutputFull."powerdns-recursor"
+    $oid = '.1.3.6.1.4.1.8072.1.3.2.3.1.2.17.112.111.119.101.114.100.110.115.45.114.101.99.117.114.115.111.114';
+    $data = snmp_get($device, $oid, '-Oqv');
+}
+
+if (!empty($data)) {
+    update_application($app, $data);
+    $ds_list = array(
+        'all-outqueries' => 'DERIVE',
+        'answers-slow' => 'DERIVE',
+        'answers0-1' => 'DERIVE',
+        'answers1-10' => 'DERIVE',
+        'answers10-100' => 'DERIVE',
+        'answers100-1000' => 'DERIVE',
+        'cache-entries' => 'GAUGE',
+        'cache-hits' => 'DERIVE',
+        'cache-misses' => 'DERIVE',
+        'case-mismatches' => 'DERIVE',
+        'chain-resends' => 'DERIVE',
+        'client-parse-errors' => 'DERIVE',
+        'concurrent-queries' => 'GAUGE',
+        'dlg-only-drops' => 'DERIVE',
+        'dont-outqueries' => 'DERIVE',
+        'edns-ping-matches' => 'DERIVE',
+        'edns-ping-mismatches' => 'DERIVE',
+        'failed-host-entries' => 'GAUGE',
+        'ipv6-outqueries' => 'DERIVE',
+        'ipv6-questions' => 'DERIVE',
+        'malloc-bytes' => 'GAUGE',
+        'max-mthread-stack' => 'GAUGE',
+        'negcache-entries' => 'GAUGE',
+        'no-packet-error' => 'DERIVE',
+        'noedns-outqueries' => 'DERIVE',
+        'noerror-answers' => 'DERIVE',
+        'noping-outqueries' => 'DERIVE',
+        'nsset-invalidations' => 'DERIVE',
+        'nsspeeds-entries' => 'GAUGE',
+        'nxdomain-answers' => 'DERIVE',
+        'outgoing-timeouts' => 'DERIVE',
+        'over-capacity-drops' => 'DERIVE',
+        'packetcache-entries' => 'GAUGE',
+        'packetcache-hits' => 'DERIVE',
+        'packetcache-misses' => 'DERIVE',
+        'policy-drops' => 'DERIVE',
+        'qa-latency' => 'GAUGE',
+        'questions' => 'DERIVE',
+        'resource-limits' => 'DERIVE',
+        'security-status' => 'GAUGE',
+        'server-parse-errors' => 'DERIVE',
+        'servfail-answers' => 'DERIVE',
+        'spoof-prevents' => 'DERIVE',
+        'sys-msec' => 'DERIVE',
+        'tcp-client-overflow' => 'DERIVE',
+        'tcp-clients' => 'GAUGE',
+        'tcp-outqueries' => 'DERIVE',
+        'tcp-questions' => 'DERIVE',
+        'throttle-entries' => 'GAUGE',
+        'throttled-out' => 'DERIVE',
+        'throttled-outqueries' => 'DERIVE',
+        'too-old-drops' => 'DERIVE',
+        'unauthorized-tcp' => 'DERIVE',
+        'unauthorized-udp' => 'DERIVE',
+        'unexpected-packets' => 'DERIVE',
+        'unreachables' => 'DERIVE',
+        'uptime' => 'DERIVE',
+        'user-msec' => 'DERIVE',
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     );
 
     //decode and flatten the data
@@ -117,8 +196,16 @@ if (!empty($data)) {
     d_echo($stats);
 
     // only the stats we store in rrd
+<<<<<<< HEAD
     $fields = array();
     foreach ($rrd_def as $key => $value) {
+=======
+    $rrd_def = new RrdDefinition();
+    $fields = array();
+    foreach ($ds_list as $key => $type) {
+        $rrd_def->addDataset($key, $type, 0);
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if (isset($stats[$key])) {
             $fields[$key] = $stats[$key];
         } else {

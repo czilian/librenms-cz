@@ -42,7 +42,11 @@ if (($device['os'] == 'vmware') || ($device['os'] == 'linux')) {
          */
         if (dbFetchCell("SELECT COUNT(id) FROM `vminfo` WHERE `device_id` = ? AND `vmwVmVMID` = ? AND vm_type='vmware'", array($device['device_id'], $index)) == 0) {
             $vmid = dbInsert(array('device_id' => $device['device_id'], 'vm_type' => 'vmware', 'vmwVmVMID' => $index, 'vmwVmDisplayName' => mres($vmwVmDisplayName), 'vmwVmGuestOS' => mres($vmwVmGuestOS), 'vmwVmMemSize' => mres($vmwVmMemSize), 'vmwVmCpus' => mres($vmwVmCpus), 'vmwVmState' => mres($vmwVmState)), 'vminfo');
+<<<<<<< HEAD
             log_event(mres($vmwVmDisplayName)." ($vmwVmMemSize GB / $vmwVmCpus vCPU) Discovered", $device, 'system', $vmid);
+=======
+            log_event(mres($vmwVmDisplayName) . " ($vmwVmMemSize GB / $vmwVmCpus vCPU) Discovered", $device, 'system', 3, $vmid);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             echo '+';
             // FIXME eventlog
         } else {
@@ -69,7 +73,11 @@ if (($device['os'] == 'vmware') || ($device['os'] == 'linux')) {
 
         if (!in_array($db_vm['vmwVmVMID'], $vmw_vmlist)) {
             dbDelete('vminfo', '`id` = ?', array($db_vm['id']));
+<<<<<<< HEAD
             log_event(mres($db_vm['vmwVmDisplayName']).' Removed', $device, 'system', $db_vm['vmwVmVMID']);
+=======
+            log_event(mres($db_vm['vmwVmDisplayName']) . ' Removed', $device, 'system', 4, $db_vm['vmwVmVMID']);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             echo '-';
             // FIXME eventlog
         }

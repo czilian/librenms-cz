@@ -4,3 +4,8 @@ type: power
 over:
     - { graph: device_current, text: Current }
 icon: raritan
+<<<<<<< HEAD
+=======
+discovery:
+    - sysObjectId: .1.3.6.1.4.1.13742
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

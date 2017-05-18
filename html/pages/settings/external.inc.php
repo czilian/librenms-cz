@@ -55,6 +55,26 @@ $rrdtool_conf = array(
           'descr'              => 'Tune all rrd port files to use max values',
           'type'               => 'checkbox',
     ),
+<<<<<<< HEAD
+=======
+    array('name'               => 'rrd.step',
+        'descr'                => 'Change the rrd step value (default 300)',
+        'type'                 => 'text',
+    ),
+    array('name'               => 'rrd.heartbeat',
+        'descr'                => 'Change the rrd heartbeat value (default 600)',
+
+        'type'                 => 'text',
+    ),
+);
+
+$peeringdb_conf = array(
+    array(
+        'name'               => 'peeringdb.enabled',
+        'descr'              => 'Enable PeeringDB lookup (data is downloaded with daily.sh)',
+        'type'               => 'checkbox',
+    ),
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 );
 
 echo '
@@ -65,6 +85,10 @@ echo '
 echo generate_dynamic_config_panel('Oxidized integration', $config_groups, $oxidized_conf);
 echo generate_dynamic_config_panel('Unix-agent integration', $config_groups, $unixagent_conf);
 echo generate_dynamic_config_panel('RRDTool Setup', $config_groups, $rrdtool_conf);
+<<<<<<< HEAD
+=======
+echo generate_dynamic_config_panel('PeeringDB Integration', $config_groups, $peeringdb_conf);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 echo '
     </form>

@@ -1,3 +1,24 @@
+<<<<<<< HEAD
+=======
+1.7.0 / 2017-03-02
+==================
+
+* Add full PHP 7.1 Support (thanks @prolic)
+* Allow `sebastian/comparator ^2.0` (thanks @sebastianbergmann)
+* Allow `sebastian/recursion-context ^3.0` (thanks @sebastianbergmann)
+* Allow `\Error` instances in `ThrowPromise` (thanks @jameshalsall)
+* Support `phpspec/phpspect ^3.2` (thanks @Sam-Burns)
+* Fix failing builds (thanks @Sam-Burns)
+
+1.6.2 / 2016-11-21
+==================
+
+* Added support for detecting @method on interfaces that the class itself implements, or when the stubbed class is an interface itself (thanks @Seldaek)
+* Added support for sebastian/recursion-context 2 (thanks @sebastianbergmann)
+* Added testing on PHP 7.1 on Travis (thanks @danizord)
+* Fixed the usage of the phpunit comparator (thanks @Anyqax)
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 1.6.1 / 2016-06-07
 ==================
 

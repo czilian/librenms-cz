@@ -6,3 +6,9 @@ processor_stacked: 1
 over:
     - { graph: device_processor, text: 'Processor Usage' }
     - { graph: device_ucd_memory, text: 'Memory Usage' }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - pfSense
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

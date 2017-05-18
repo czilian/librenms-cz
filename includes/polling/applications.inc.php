@@ -11,6 +11,13 @@ if (count($app_rows) > 0) {
             echo $app['app_type'].' include missing! ';
         }
     }
+<<<<<<< HEAD
 
     echo "\n";
 }
+=======
+    echo "\n";
+}
+
+unset($app_rows);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

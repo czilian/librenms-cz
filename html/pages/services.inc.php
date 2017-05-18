@@ -1,6 +1,14 @@
 <?php
 
 $pagetitle[] = 'Services';
+<<<<<<< HEAD
+=======
+
+?>
+<div class="container-fluid">
+  <div class="row">
+<?php
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 print_optionbar_start();
 
@@ -88,6 +96,7 @@ if (isset($state)) {
 
 ?>
 <div class="row col-sm-12"><span id="message"></span></div>
+<<<<<<< HEAD
 <table class="table table-hover table-condensed table-striped">
     <tr>
         <th>Device</th>
@@ -103,6 +112,14 @@ if ($_SESSION['userlevel'] >= '5') {
     $host_par = array();
 } else {
     $host_sql = 'SELECT * FROM devices AS D, services AS S, devices_perms AS P WHERE D.device_id = S.device_id AND D.device_id = P.device_id AND P.user_id = ? GROUP BY D.hostname ORDER BY D.hostname';
+=======
+<?php
+if ($_SESSION['userlevel'] >= '5') {
+    $host_sql = 'SELECT `D`.`device_id`,`D`.`hostname` FROM devices AS D, services AS S WHERE D.device_id = S.device_id GROUP BY `D`.`hostname`, `D`.`device_id` ORDER BY D.hostname';
+    $host_par = array();
+} else {
+    $host_sql = 'SELECT `D`.`device_id`,`D`.`hostname` FROM devices AS D, services AS S, devices_perms AS P WHERE D.device_id = S.device_id AND D.device_id = P.device_id AND P.user_id = ? GROUP BY `D`.`hostname`, `D`.`device_id` ORDER BY D.hostname';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $host_par = array($_SESSION['user_id']);
 }
 
@@ -118,6 +135,7 @@ foreach (dbFetchRows($host_sql, $host_par) as $device) {
         $sql_param[0] = $device_id;
     }
 
+<<<<<<< HEAD
     foreach (dbFetchRows("SELECT * FROM `services` WHERE `device_id` = ? $where", $sql_param) as $service) {
         if ($service['service_status'] == '2') {
             $status = "<span class='red'><b>".$service['service_type']."</b></span>";
@@ -145,3 +163,51 @@ foreach (dbFetchRows($host_sql, $host_par) as $device) {
 }//end foreach
 ?>
 </table>
+=======
+
+        $head=true;
+    foreach (dbFetchRows("SELECT * FROM `services` WHERE `device_id` = ? $where ORDER BY service_type", $sql_param) as $service) {
+        if ($service['service_status'] == '2') {
+            $status = "<span class='col-sm-12 label label-danger threeqtr-width'><b>".$service['service_type']."</b></span>";
+        } elseif ($service['service_status'] == '1') {
+            $status = "<span class='col-sm-12 label label-warning threeqtr-width'><b>".$service['service_type']."</b></span>";
+        } elseif ($service['service_status'] == '0') {
+            $status = "<span class='col-sm-12 label label-success threeqtr-width'><b>".$service['service_type']."</b></span>";
+        } else {
+            $status = "<span class='col-sm-12 label label-info threeqtr-width'><b>".$service['service_type']."</b></span>";
+        }
+        if ($head) {
+            echo '
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">'.$devlink.'</h3>
+    </div>
+    <div class="panel-body">
+                ';
+        }
+        $head=false;
+?>
+        <div class="row">
+            <div class="col-md-1"><h4><?php echo $status?></h4></div>
+            <div class="col-md-2"><div class="text-muted"><?php echo formatUptime(time() - $service['service_changed'])?></div></div>
+            <div class="col-md-3"><div class="text-muted"><span class='box-desc'><?php echo nl2br(display($service['service_desc']))?></div></span></div>
+            <div class="col-md-5"><span class='box-desc'><?php echo nl2br(display($service['service_message']))?></span></div>
+            <div class="col-md-1">
+<?php
+if (is_admin() === true) {
+    echo "<button type='button' class='btn btn-primary btn-sm' aria-label='Edit' data-toggle='modal' data-target='#create-service' data-service_id='{$service['service_id']}' name='edit-service'><i class='fa fa-pencil' aria-hidden='true'></i></button>
+                <button type='button' class='btn btn-danger btn-sm' aria-label='Delete' data-toggle='modal' data-target='#confirm-delete' data-service_id='{$service['service_id']}' name='delete-service'><i class='fa fa-trash' aria-hidden='true'></i></button>";
+}
+?>
+            </div>
+        </div>
+        <div class="row"><div class="col-sm-12">&nbsp;</div></div>
+<?php
+    }//end foreach
+    echo "</div></div>";
+    unset($samehost);
+}//end foreach
+?>
+  </div>
+</div>
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

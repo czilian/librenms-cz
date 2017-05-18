@@ -11,10 +11,18 @@
 
 namespace Symfony\Component\Yaml\Tests;
 
+<<<<<<< HEAD
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
 
 class DumperTest extends \PHPUnit_Framework_TestCase
+=======
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Dumper;
+
+class DumperTest extends TestCase
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 {
     protected $parser;
     protected $dumper;
@@ -209,6 +217,7 @@ EOF;
     public function getEscapeSequences()
     {
         return array(
+<<<<<<< HEAD
             'null' => array("\t\\0", '"\t\\\\0"'),
             'bell' => array("\t\\a", '"\t\\\\a"'),
             'backspace' => array("\t\\b", '"\t\\\\b"'),
@@ -226,6 +235,27 @@ EOF;
             'non-breaking-space' => array("\t\\�", '"\t\\\\�"'),
             'line-separator' => array("\t\\L", '"\t\\\\L"'),
             'paragraph-separator' => array("\t\\P", '"\t\\\\P"'),
+=======
+            'empty string' => array('', "''"),
+            'null' => array("\x0", '"\\0"'),
+            'bell' => array("\x7", '"\\a"'),
+            'backspace' => array("\x8", '"\\b"'),
+            'horizontal-tab' => array("\t", '"\\t"'),
+            'line-feed' => array("\n", '"\\n"'),
+            'vertical-tab' => array("\v", '"\\v"'),
+            'form-feed' => array("\xC", '"\\f"'),
+            'carriage-return' => array("\r", '"\\r"'),
+            'escape' => array("\x1B", '"\\e"'),
+            'space' => array(' ', "' '"),
+            'double-quote' => array('"', "'\"'"),
+            'slash' => array('/', '/'),
+            'backslash' => array('\\', '\\'),
+            'next-line' => array("\xC2\x85", '"\\N"'),
+            'non-breaking-space' => array("\xc2\xa0", '"\\_"'),
+            'line-separator' => array("\xE2\x80\xA8", '"\\L"'),
+            'paragraph-separator' => array("\xE2\x80\xA9", '"\\P"'),
+            'colon' => array(':', "':'"),
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         );
     }
 

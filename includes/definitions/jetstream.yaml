@@ -2,3 +2,11 @@ os: jetstream
 text: 'TP-Link JetStream'
 type: network
 icon: tplink
+<<<<<<< HEAD
+=======
+mib_dir:
+    - tplink
+discovery:
+    - sysObjectId:
+        - .1.3.6.1.4.1.11863.5.34
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

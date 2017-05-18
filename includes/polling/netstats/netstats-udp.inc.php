@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+=======
+use LibreNMS\RRD\RrdDefinition;
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 if (!starts_with($device['os'], array('Snom', 'asa'))) {
     echo ' UDP';
 
@@ -11,11 +16,18 @@ if (!starts_with($device['os'], array('Snom', 'asa'))) {
         'udpNoPorts',
     );
 
+<<<<<<< HEAD
     $rrd_def = array();
     $snmpstring = '';
     foreach ($oids as $oid) {
         $oid_ds      = substr($oid, 0, 19);
         $rrd_def[]   = " DS:$oid_ds:COUNTER:600:U:1000000"; // Limit to 1MPPS?
+=======
+    $rrd_def = new RrdDefinition();
+    $snmpstring = '';
+    foreach ($oids as $oid) {
+        $rrd_def->addDataset($oid, 'COUNTER', null, 1000000); // Limit to 1MPPS?
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $snmpstring .= ' UDP-MIB::'.$oid.'.0';
     }
 

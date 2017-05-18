@@ -33,6 +33,7 @@ function mergedb()
 {
     global $config;
 
+<<<<<<< HEAD
     $clone = $config;
     foreach (dbFetchRows('select config_name,config_value from config') as $obj) {
         $clone = array_replace_recursive($clone, mergecnf($obj));
@@ -71,3 +72,41 @@ function mergecnf($obj)
 
     return $pointer;
 }//end mergecnf()
+=======
+    $db_config = array();
+    foreach (dbFetchRows('SELECT `config_name`,`config_value` FROM `config`') as $obj) {
+        assign_array_by_path($db_config, $obj['config_name'], $obj['config_value']);
+    }
+    $config = array_replace_recursive($db_config, $config);
+}
+
+/**
+ * Assign a value into the passed array by a path
+ * 'snmp.version' = 'v1' becomes $arr['snmp']['version'] = 'v1'
+ *
+ * @param array $arr the array to insert the value into, will be modified in place
+ * @param string $path the path to insert the value at
+ * @param mixed $value the value to insert, will be type cast
+ * @param string $separator path separator
+ */
+function assign_array_by_path(&$arr, $path, $value, $separator = '.')
+{
+    // type cast value. Is this needed here?
+    if (filter_var($value, FILTER_VALIDATE_INT)) {
+        $value = (int) $value;
+    } elseif (filter_var($value, FILTER_VALIDATE_FLOAT)) {
+        $value = (float) $value;
+    } elseif (filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null) {
+        $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    $keys = explode($separator, $path);
+
+    // walk the array creating keys if they don't exist
+    foreach ($keys as $key) {
+        $arr = &$arr[$key];
+    }
+   // assign the variable
+    $arr = $value;
+}
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

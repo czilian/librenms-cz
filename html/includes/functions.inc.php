@@ -72,6 +72,15 @@ function nicecase($item)
 
         case 'nfs-v3-stats':
             return 'NFS v3 Stats';
+<<<<<<< HEAD
+=======
+            
+        case 'nfs-server':
+            return 'NFS Server';
+
+        case 'ntp':
+            return 'NTP';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
         case 'ntp-client':
             return 'NTP Client';
@@ -97,6 +106,27 @@ function nicecase($item)
         case 'gpsd':
             return 'GPSD';
 
+<<<<<<< HEAD
+=======
+        case 'exim-stats':
+            return 'EXIM Stats';
+
+        case 'fbsd-nfs-client':
+            return 'FreeBSD NFS Client';
+
+        case 'fbsd-nfs-server':
+            return 'FreeBSD NFS Server';
+        
+        case 'php-fpm':
+            return 'PHP-FPM';
+
+        case 'opengridscheduler':
+            return 'Open Grid Scheduler';
+
+        case 'sdfsinfo':
+            return 'SDFS info';
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         default:
             return ucfirst($item);
     }
@@ -181,8 +211,9 @@ function generate_overlib_content($graph_array, $text)
 }//end generate_overlib_content()
 
 
-function get_percentage_colours($percentage)
+function get_percentage_colours($percentage, $component_perc_warn = null)
 {
+<<<<<<< HEAD
     $background = array();
     if ($percentage > '90') {
         $background['left']  = 'c4323f';
@@ -205,6 +236,36 @@ function get_percentage_colours($percentage)
 }//end get_percentage_colours()
 
 
+=======
+    $perc_warn = '75';
+
+    if (isset($component_perc_warn)) {
+        $perc_warn = round($component_perc_warn, 0);
+    }
+
+    $background = array();
+    if ($percentage > $perc_warn) {
+        $background['left']  = 'c4323f';
+        $background['right'] = 'C96A73';
+    } elseif ($percentage > '75') {
+        $background['left']  = 'bf5d5b';
+        $background['right'] = 'd39392';
+    } elseif ($percentage > '50') {
+        $background['left']  = 'bf875b';
+        $background['right'] = 'd3ae92';
+    } elseif ($percentage > '25') {
+        $background['left']  = '5b93bf';
+        $background['right'] = '92b7d3';
+    } else {
+        $background['left']  = '9abf5b';
+        $background['right'] = 'bbd392';
+    }
+
+    return ($background);
+}//end get_percentage_colours()
+
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 function generate_minigraph_image($device, $start, $end, $type, $legend = 'no', $width = 275, $height = 100, $sep = '&amp;', $class = 'minigraph-image', $absolute_size = 0)
 {
     return '<img class="'.$class.'" width="'.$width.'" height="'.$height.'" src="graph.php?'.implode($sep, array('device='.$device['device_id'], "from=$start", "to=$end", "width=$width", "height=$height", "type=$type", "legend=$legend", "absolute=$absolute_size")).'">';
@@ -234,7 +295,11 @@ function generate_device_link($device, $text = null, $vars = array(), $start = 0
         $text = $device['hostname'];
     }
 
+<<<<<<< HEAD
     $text = ip_to_sysname($device, $text);
+=======
+    $text = format_hostname($device, $text);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     if (isset($config['os'][$device['os']]['over'])) {
         $graphs = $config['os'][$device['os']]['over'];
@@ -269,6 +334,37 @@ function generate_device_link($device, $text = null, $vars = array(), $start = 0
     }
 
     $contents .= '</div>';
+<<<<<<< HEAD
+
+    foreach ($graphs as $entry) {
+        $graph         = $entry['graph'];
+        $graphhead = $entry['text'];
+        $contents .= '<div class="overlib-box">';
+        $contents .= '<span class="overlib-title">'.$graphhead.'</span><br />';
+        $contents .= generate_minigraph_image($device, $start, $end, $graph);
+        $contents .= generate_minigraph_image($device, $config['time']['week'], $end, $graph);
+        $contents .= '</div>';
+    }
+
+    if ($escape_text) {
+        $text = htmlentities($text);
+    }
+
+    if ($overlib == 0) {
+        $link = $contents;
+    } else {
+        $link = overlib_link($url, $text, escape_quotes($contents), $class);
+    }
+
+    if (device_permitted($device['device_id'])) {
+        return $link;
+    } else {
+        return $device['hostname'];
+    }
+}//end generate_device_link()
+
+=======
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     foreach ($graphs as $entry) {
         $graph         = $entry['graph'];
@@ -298,13 +394,22 @@ function generate_device_link($device, $text = null, $vars = array(), $start = 0
 }//end generate_device_link()
 
 
-function overlib_link($url, $text, $contents, $class)
+function overlib_link($url, $text, $contents, $class = null)
 {
     global $config;
 
     $contents = "<div style=\'background-color: #FFFFFF;\'>".$contents.'</div>';
     $contents = str_replace('"', "\'", $contents);
+<<<<<<< HEAD
     $output   = '<a class="'.$class.'" href="'.$url.'"';
+=======
+    if ($class === null) {
+        $output   = '<a href="'.$url.'"';
+    } else {
+        $output   = '<a class="'.$class.'" href="'.$url.'"';
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if ($config['web_mouseover'] === false) {
         $output .= '>';
     } else {
@@ -365,11 +470,19 @@ function permissions_cache($user_id)
     foreach (dbFetchRows("SELECT * FROM ports_perms WHERE user_id = '".$user_id."'") as $port) {
         $permissions['port'][$port['port_id']] = 1;
     }
+<<<<<<< HEAD
 
     foreach (dbFetchRows("SELECT * FROM bill_perms WHERE user_id = '".$user_id."'") as $bill) {
         $permissions['bill'][$bill['bill_id']] = 1;
     }
 
+=======
+
+    foreach (dbFetchRows("SELECT * FROM bill_perms WHERE user_id = '".$user_id."'") as $bill) {
+        $permissions['bill'][$bill['bill_id']] = 1;
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     return $permissions;
 }//end permissions_cache()
 
@@ -441,6 +554,7 @@ function application_permitted($app_id, $device_id = null)
 function device_permitted($device_id)
 {
     global $permissions;
+<<<<<<< HEAD
 
     if ($_SESSION['userlevel'] >= '5') {
         $allowed = true;
@@ -450,6 +564,17 @@ function device_permitted($device_id)
         $allowed = false;
     }
 
+=======
+
+    if ($_SESSION['userlevel'] >= '5') {
+        $allowed = true;
+    } elseif ($permissions['device'][$device_id]) {
+        $allowed = true;
+    } else {
+        $allowed = false;
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     return $allowed;
 }//end device_permitted()
 
@@ -466,6 +591,7 @@ function generate_graph_tag($args)
     foreach ($args as $key => $arg) {
         $urlargs[] = $key.'='.urlencode($arg);
     }
+<<<<<<< HEAD
 
     return '<img src="graph.php?'.implode('&amp;', $urlargs).'" border="0" />';
 }//end generate_graph_tag()
@@ -491,6 +617,33 @@ function generate_lazy_graph_tag($args)
         $urlargs[] = $key."=".urlencode($arg);
     }
 
+=======
+
+    return '<img src="graph.php?'.implode('&amp;', $urlargs).'" border="0" />';
+}//end generate_graph_tag()
+
+function generate_lazy_graph_tag($args)
+{
+    global $config;
+    $urlargs = array();
+    $w = 0;
+    $h = 0;
+    foreach ($args as $key => $arg) {
+        switch (strtolower($key)) {
+            case 'width':
+                $w = $arg;
+                break;
+            case 'height':
+                $h = $arg;
+                break;
+            case 'lazy_w':
+                $lazy_w = $arg;
+                break;
+        }
+        $urlargs[] = $key."=".urlencode($arg);
+    }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if (isset($lazy_w)) {
         $w=$lazy_w;
     }
@@ -570,6 +723,7 @@ function generate_entity_link($type, $entity, $text = null, $graph_type = null)
 
             $link = generate_link($text, array('page' => 'device', 'device' => $entity['device_id'], 'tab' => 'health', 'metric' => 'storage'));
             break;
+<<<<<<< HEAD
 
         default:
             $link = $entity[$type.'_id'];
@@ -579,12 +733,27 @@ function generate_entity_link($type, $entity, $text = null, $graph_type = null)
 }//end generate_entity_link()
 
 
+=======
+
+        default:
+            $link = $entity[$type.'_id'];
+    }
+
+    return ($link);
+}//end generate_entity_link()
+
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 function generate_port_link($port, $text = null, $type = null, $overlib = 1, $single_graph = 0)
 {
     global $config;
 
     $graph_array = array();
+<<<<<<< HEAD
     $port        = ifNameDescr($port);
+=======
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if (!$text) {
         $text = fixifName($port['label']);
     }
@@ -592,6 +761,7 @@ function generate_port_link($port, $text = null, $type = null, $overlib = 1, $si
     if ($type) {
         $port['graph_type'] = $type;
     }
+<<<<<<< HEAD
 
     if (!isset($port['graph_type'])) {
         $port['graph_type'] = 'port_bits';
@@ -606,6 +776,22 @@ function generate_port_link($port, $text = null, $type = null, $overlib = 1, $si
     $content = '<div class=list-large>'.$port['hostname'].' - '.fixifName($port['label']).'</div>';
     if ($port['ifAlias']) {
         $content .= display($port['ifAlias']).'<br />';
+=======
+
+    if (!isset($port['graph_type'])) {
+        $port['graph_type'] = 'port_bits';
+    }
+
+    $class = ifclass($port['ifOperStatus'], $port['ifAdminStatus']);
+
+    if (!isset($port['hostname'])) {
+        $port = array_merge($port, device_by_id_cache($port['device_id']));
+    }
+
+    $content = '<div class=list-large>'.$port['hostname'].' - '.fixifName(addslashes(display($port['label']))).'</div>';
+    if ($port['ifAlias']) {
+        $content .= addslashes(display($port['ifAlias'])).'<br />';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     $content              .= "<div style=\'width: 850px\'>";
@@ -661,7 +847,11 @@ function generate_bill_url($bill, $vars = array())
 function generate_port_image($args)
 {
     if (!$args['bg']) {
+<<<<<<< HEAD
         $args['bg'] = 'FFFFFF';
+=======
+        $args['bg'] = 'FFFFFF00';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     return "<img src='graph.php?type=".$args['graph_type'].'&amp;id='.$args['port_id'].'&amp;from='.$args['from'].'&amp;to='.$args['to'].'&amp;width='.$args['width'].'&amp;height='.$args['height'].'&amp;bg='.$args['bg']."'>";
@@ -684,8 +874,13 @@ function print_port_thumbnail($args)
 {
     echo generate_port_link($args, generate_port_image($args));
 }//end print_port_thumbnail()
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 function print_optionbar_start($height = 0, $width = 0, $marginbottom = 5)
 {
     echo '
@@ -698,6 +893,7 @@ function print_optionbar_end()
 {
     echo '  </div>';
 }//end print_optionbar_end()
+<<<<<<< HEAD
 
 
 function geteventicon($message)
@@ -733,6 +929,9 @@ function geteventicon($message)
     }
 }//end geteventicon()
 
+=======
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 function overlibprint($text)
 {
@@ -788,9 +987,15 @@ function getlocations()
 
     // Fetch regular locations
     if ($_SESSION['userlevel'] >= '5') {
+<<<<<<< HEAD
         $rows = dbFetchRows('SELECT D.device_id,location FROM devices AS D GROUP BY location ORDER BY location');
     } else {
         $rows = dbFetchRows('SELECT D.device_id,location FROM devices AS D, devices_perms AS P WHERE D.device_id = P.device_id AND P.user_id = ? GROUP BY location ORDER BY location', array($_SESSION['user_id']));
+=======
+        $rows = dbFetchRows('SELECT location FROM devices AS D GROUP BY location ORDER BY location');
+    } else {
+        $rows = dbFetchRows('SELECT location FROM devices AS D, devices_perms AS P WHERE D.device_id = P.device_id AND P.user_id = ? GROUP BY location ORDER BY location', array($_SESSION['user_id']));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     foreach ($rows as $row) {
@@ -837,7 +1042,11 @@ function generate_ap_link($args, $text = null, $type = null)
 {
     global $config;
 
+<<<<<<< HEAD
     $args = ifNameDescr($args);
+=======
+    $args = cleanPort($args);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if (!$text) {
         $text = fixIfName($args['label']);
     }
@@ -975,6 +1184,7 @@ function is_admin()
     return $allowed;
 }//end is_admin()
 
+<<<<<<< HEAD
 
 function is_read()
 {
@@ -1000,6 +1210,33 @@ function is_demo_user()
 function is_normal_user()
 {
 
+=======
+
+function is_read()
+{
+    if ($_SESSION['userlevel'] == '5') {
+        $allowed = true;
+    } else {
+        $allowed = false;
+    }
+
+    return $allowed;
+}//end is_read()
+
+function is_demo_user()
+{
+
+    if ($_SESSION['userlevel'] == 11) {
+        return true;
+    } else {
+        return false;
+    }
+}// end is_demo_user();
+
+function is_normal_user()
+{
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     if (is_admin() === false && is_read() === false && is_demo_user() === false) {
         return true;
     } else {
@@ -1024,6 +1261,22 @@ function get_client_ip()
     return $client_ip;
 }//end get_client_ip()
 
+<<<<<<< HEAD
+=======
+/**
+ * @param $string
+ * @param int $max
+ * @return string
+ */
+function shorten_text($string, $max = 30)
+{
+    if (strlen($string) > 50) {
+        return substr($string, 0, $max) . "...";
+    } else {
+        return $string;
+    }
+}
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 function shorten_interface_type($string)
 {
@@ -1134,10 +1387,22 @@ function alert_details($details)
         }
 
         if ($tmp_alerts['port_id']) {
+<<<<<<< HEAD
+=======
+            $tmp_alerts = cleanPort($tmp_alerts);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             $fault_detail .= generate_port_link($tmp_alerts).';&nbsp;';
             $fallback      = false;
         }
 
+<<<<<<< HEAD
+=======
+        if ($tmp_alerts['accesspoint_id']) {
+            $fault_detail .= generate_ap_link($tmp_alerts, $tmp_alerts['name']) . ';&nbsp;';
+            $fallback      = false;
+        }
+
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         if ($tmp_alerts['type'] && $tmp_alerts['label']) {
             if ($tmp_alerts['error'] == "") {
                 $fault_detail .= ' '.$tmp_alerts['type'].' - '.$tmp_alerts['label'].';&nbsp;';
@@ -1270,6 +1535,7 @@ function get_ripe_api_whois_data_json($ripe_data_param, $ripe_query_param)
     $ripe_whois_url = 'https://stat.ripe.net/data/'. $ripe_data_param . '/data.json?resource=' . $ripe_query_param;
     return json_decode(file_get_contents($ripe_whois_url), true);
 }//end get_ripe_api_whois_data_json()
+<<<<<<< HEAD
 
 /**
  * Return the rows from 'ports' for all ports of a certain type as parsed by port_descr_parser.
@@ -1361,4 +1627,343 @@ function get_rules_from_json()
 {
     global $config;
     return json_decode(file_get_contents($config['install_dir'] . '/misc/alert_rules.json'), true);
+=======
+
+/**
+ * Return the rows from 'ports' for all ports of a certain type as parsed by port_descr_parser.
+ * One or an array of strings can be provided as an argument; if an array is passed, all ports matching
+ * any of the types in the array are returned.
+ * @param $types mixed String or strings matching 'port_descr_type's.
+ * @return array Rows from the ports table for matching ports.
+ */
+function get_ports_from_type($given_types)
+{
+    global $config;
+
+    # Make the arg an array if it isn't, so subsequent steps only have to handle arrays.
+    if (!is_array($given_types)) {
+        $given_types = array($given_types);
+    }
+
+    # Check the config for a '_descr' entry for each argument. This is how a 'custom_descr' entry can
+    #  be key/valued to some other string that's actually searched for in the DB. Merge or append the
+    #  configured value if it's an array or a string. Or append the argument itself if there's no matching
+    #  entry in config.
+    $search_types = array();
+    foreach ($given_types as $type) {
+        if (isset($config[$type.'_descr']) === true) {
+            if (is_array($config[$type.'_descr']) === true) {
+                $search_types = array_merge($search_types, $config[$type.'_descr']);
+            } else {
+                $search_types[] = $config[$type.'_descr'];
+            }
+        } else {
+            $search_types[] = $type;
+        }
+    }
+
+    # Using the full list of strings to search the DB for, build the 'where' portion of a query that
+    #  compares 'port_descr_type' with entry in the list. Also, since '@' is the convential wildcard,
+    #  replace it with '%' so it functions as a wildcard in the SQL query.
+    $type_where = ' (';
+    $or = '';
+    $type_param = array();
+
+    foreach ($search_types as $type) {
+        if (!empty($type)) {
+            $type            = strtr($type, '@', '%');
+            $type_where     .= " $or `port_descr_type` LIKE ?";
+            $or              = 'OR';
+            $type_param[]    = $type;
+        }
+    }
+    $type_where  .= ') ';
+
+    # Run the query with the generated 'where' and necessary parameters, and send it back.
+    $ports = dbFetchRows("SELECT * FROM `ports` as I, `devices` AS D WHERE $type_where AND I.device_id = D.device_id ORDER BY I.ifAlias", $type_param);
+    return $ports;
+}
+
+function ipmiSensorName($hardwareId, $sensorIpmi, $rewriteArray)
+{
+    if (count($rewriteArray[$hardwareId]) > 0) {
+        if ($rewriteArray[$hardwareId][$sensorIpmi] != "") {
+            return $rewriteArray[$hardwareId][$sensorIpmi];
+        } else {
+            return $sensorIpmi;
+        }
+    } else {
+        return $sensorIpmi;
+    }
+}
+
+/**
+ * @param $filename
+ * @param $content
+ */
+function file_download($filename, $content)
+{
+    $length = strlen($content);
+    header('Content-Description: File Transfer');
+    header('Content-Type: text/plain');
+    header("Content-Disposition: attachment; filename=$filename");
+    header('Content-Transfer-Encoding: binary');
+    header('Content-Length: ' . $length);
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Expires: 0');
+    header('Pragma: public');
+    echo $content;
+}
+
+function get_rules_from_json()
+{
+    global $config;
+    return json_decode(file_get_contents($config['install_dir'] . '/misc/alert_rules.json'), true);
+}
+
+function search_oxidized_config($search_in_conf_textbox)
+{
+    global $config;
+    $oxidized_search_url = $config['oxidized']['url'] . '/nodes/conf_search?format=json';
+    $postdata = http_build_query(
+        array(
+            'search_in_conf_textbox' => $search_in_conf_textbox,
+        )
+    );
+    $opts = array('http' =>
+        array(
+            'method'  => 'POST',
+            'header'  => 'Content-type: application/x-www-form-urlencoded',
+            'content' => $postdata
+        )
+    );
+    $context  = stream_context_create($opts);
+    return json_decode(file_get_contents($oxidized_search_url, false, $context), true);
+}
+
+/**
+ * @param $data
+ * @return bool|mixed
+ */
+function array_to_htmljson($data)
+{
+    if (is_array($data)) {
+        $data = htmlentities(json_encode($data));
+        return str_replace(',', ',<br />', $data);
+    } else {
+        return false;
+    }
+}
+
+/**
+ * @param int $eventlog_severity
+ * @return string $eventlog_severity_icon
+ */
+function eventlog_severity($eventlog_severity)
+{
+    switch ($eventlog_severity) {
+        case 1:
+            return "severity-ok"; //OK
+        case 2:
+            return "severity-info"; //Informational
+        case 3:
+            return "severity-notice"; //Notice
+        case 4:
+            return "severity-warning"; //Warning
+        case 5:
+            return "severity-critical"; //Critical
+        default:
+            return "severity-unknown"; //Unknown
+    }
+} // end eventlog_severity
+
+/**
+ *
+ */
+function set_image_type()
+{
+    return header('Content-type: ' . get_image_type());
+}
+
+function get_image_type()
+{
+    global $config;
+
+    if ($config['webui']['graph_type'] === 'svg') {
+        return 'image/svg+xml';
+    } else {
+        return 'image/png';
+    }
+}
+
+function get_oxidized_nodes_list()
+{
+    global $config;
+
+    $context = stream_context_create(array(
+        'http' => array(
+            'header' => "Accept: application/json",
+        )
+    ));
+
+    $data = json_decode(file_get_contents($config['oxidized']['url'] . '/nodes?format=json', false, $context), true);
+
+    foreach ($data as $object) {
+        $device = device_by_name($object['name']);
+        $fa_color = $object['status'] == 'success' ? 'success' : 'danger';
+        echo "
+        <tr>
+        <td>
+        " . generate_device_link($device) . "
+        </td>
+        <td>
+        <i class='fa fa-square text-" . $fa_color . "'></i>
+        </td>
+        <td>
+        " . $object['time'] . "
+        </td>
+        <td>
+        " . $object['model'] . "
+        </td>
+        <td>
+        " . $object['group'] . "
+        </td>
+        </tr>";
+    }
+}
+
+// fetches disks for a system
+function get_disks($device)
+{
+    return dbFetchRows('SELECT * FROM `ucd_diskio` WHERE device_id = ? ORDER BY diskio_descr', array($device));
+}
+
+/**
+ * Get the fail2ban jails for a device... just requires the device ID
+ * an empty return means either no jails or fail2ban is not in use
+ * @param $device_id
+ * @return array
+ */
+function get_fail2ban_jails($device_id)
+{
+    $options=array(
+        'filter' => array(
+            'type' => array('=', 'fail2ban'),
+        ),
+    );
+
+    $component=new LibreNMS\Component();
+    $f2bc=$component->getComponents($device_id, $options);
+
+    if (isset($f2bc[$device_id])) {
+        $id = $component->getFirstComponentID($f2bc, $device_id);
+        return json_decode($f2bc[$device_id][$id]['jails']);
+    }
+
+    return array();
+}
+
+/**
+ * Get the Postgres databases for a device... just requires the device ID
+ * an empty return means Postres is not in use
+ * @param $device_id
+ * @return array
+ */
+function get_postgres_databases($device_id)
+{
+    $options=array(
+        'filter' => array(
+             'type' => array('=', 'postgres'),
+        ),
+    );
+
+    $component=new LibreNMS\Component();
+    $pgc=$component->getComponents($device_id, $options);
+
+    if (isset($pgc[$device_id])) {
+        $id = $component->getFirstComponentID($pgc, $device_id);
+        return json_decode($pgc[$device_id][$id]['databases']);
+    }
+
+    return array();
+}
+
+// takes the device array and app_id
+function get_disks_with_smart($device, $app_id)
+{
+    $all_disks=get_disks($device['device_id']);
+    $disks=array();
+    $all_disks_int=0;
+    while (isset($all_disks[$all_disks_int])) {
+        $disk=$all_disks[$all_disks_int]['diskio_descr'];
+        $rrd_filename = rrd_name($device['hostname'], array('app', 'smart', $app_id, $disk));
+        if (rrdtool_check_rrd_exists($rrd_filename)) {
+            $disks[]=$disk;
+        }
+        $all_disks_int++;
+    }
+    return $disks;
+}
+
+/**
+ * Gets all dashboards the user can access
+ * adds in the keys:
+ *   username - the username of the owner of each dashboard
+ *   default - the default dashboard for the logged in user
+ *
+ * @param int $user_id optionally get list for another user
+ * @return array list of dashboards
+ */
+function get_dashboards($user_id = null)
+{
+    $default = get_user_pref('dashboard');
+    $dashboards = dbFetchRows(
+        "SELECT * FROM `dashboards` WHERE dashboards.access > 0 || dashboards.user_id = ?",
+        array(is_null($user_id) ? $_SESSION['user_id'] : $user_id)
+    );
+
+    $usernames = array(
+        $_SESSION['user_id'] => $_SESSION['username']
+    );
+
+    $result = array();
+    foreach ($dashboards as $dashboard) {
+        $duid = $dashboard['user_id'];
+        if (!isset($usernames[$duid])) {
+            $user = get_user($duid);
+            $usernames[$duid] = $user['username'];
+        }
+
+        $dashboard['username'] = $usernames[$duid];
+        $dashboard['default'] = $dashboard['dashboard_id'] == $default;
+
+        $result[$dashboard['dashboard_id']] = $dashboard;
+    }
+
+    return $result;
+}
+
+/**
+ * Generate javascript to fill in a select box from an ajax list
+ *
+ * @param string $list_type type of list look in html/includes/list/
+ * @param string $selector jquery selector for the target select element
+ * @param int $selected the id of the item to mark as selected
+ * @return string the javascript (not including <script> tags)
+ */
+function generate_fill_select_js($list_type, $selector, $selected = null)
+{
+    return '$(document).ready(function() {
+    $select = $("' . $selector . '")
+    $.getJSON(\'ajax_list.php?id=' . $list_type . '\', function(data){
+        $.each(data, function(index,item) {
+            if (item.id == "' . $selected . '") {
+                $select.append("<option value=" + item.id + " selected>" + item.value + "</option>");
+            } else {
+                $select.append("<option value=" + item.id + ">" + item.value + "</option>");
+            }
+        });
+    });
+});';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 }

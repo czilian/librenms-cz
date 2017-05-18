@@ -175,13 +175,21 @@ if (defined('SHOW_SETTINGS') || empty($widget_settings)) {
         }
     } elseif ($top_query === 'uptime') {
         if (is_admin() || is_read()) {
+<<<<<<< HEAD
             $query = 'SELECT `uptime`, `hostname`, `last_polled`, `device_id` 
+=======
+            $query = 'SELECT `uptime`, `hostname`, `last_polled`, `device_id`, `sysName` 
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       FROM `devices` 
                       WHERE unix_timestamp() - UNIX_TIMESTAMP(`last_polled`) < :interval 
                       ORDER BY `uptime` ' . $sort_order . ' 
                       LIMIT :count';
         } else {
+<<<<<<< HEAD
             $query = 'SELECT `uptime`, `hostname`, `last_polled`, `d`.`device_id` 
+=======
+            $query = 'SELECT `uptime`, `hostname`, `last_polled`, `d`.`device_id`, `d`.`sysName`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       FROM `devices` as `d`, `devices_perms` AS `P`
                       WHERE  `P`.`user_id` = :user
                       AND `P`.`device_id` = `d`.`device_id`
@@ -191,13 +199,21 @@ if (defined('SHOW_SETTINGS') || empty($widget_settings)) {
         }
     } elseif ($top_query === 'ping') {
         if (is_admin() || is_read()) {
+<<<<<<< HEAD
             $query = 'SELECT `last_ping_timetaken`, `hostname`, `last_polled`, `device_id` 
+=======
+            $query = 'SELECT `last_ping_timetaken`, `hostname`, `last_polled`, `device_id`, `sysName`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       FROM `devices` 
                       WHERE unix_timestamp() - UNIX_TIMESTAMP(`last_polled`) < :interval 
                       ORDER BY `last_ping_timetaken` ' . $sort_order . ' 
                       LIMIT :count';
         } else {
+<<<<<<< HEAD
             $query = 'SELECT `last_ping_timetaken`, `hostname`, `last_polled`, `d`.`device_id` 
+=======
+            $query = 'SELECT `last_ping_timetaken`, `hostname`, `last_polled`, `d`.`device_id`, `d`.`sysName`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       FROM `devices` as `d`, `devices_perms` AS `P` 
                       WHERE `P`.`user_id` = :user 
                       AND `P`.`device_id` = `d`.`device_id` 
@@ -207,6 +223,7 @@ if (defined('SHOW_SETTINGS') || empty($widget_settings)) {
         }
     } elseif ($top_query === 'cpu') {
         if (is_admin() || is_read()) {
+<<<<<<< HEAD
             $query = 'SELECT `hostname`, `last_polled`, `d`.`device_id`, avg(`processor_usage`) as `cpuload` 
                       FROM `processors` AS `procs`, `devices` AS `d` 
                       WHERE `d`.`device_id` = `procs`.`device_id` 
@@ -220,12 +237,31 @@ if (defined('SHOW_SETTINGS') || empty($widget_settings)) {
 					  WHERE `P`.`user_id` = :user AND `P`.`device_id` = `procs`.`device_id` 
                       AND unix_timestamp() - UNIX_TIMESTAMP(`last_polled`) < :interval
                       GROUP BY `procs`.`device_id` 
+=======
+            $query = 'SELECT `hostname`, `last_polled`, `d`.`device_id`, avg(`processor_usage`) as `cpuload`, `d`.`sysName`
+                      FROM `processors` AS `procs`, `devices` AS `d` 
+                      WHERE `d`.`device_id` = `procs`.`device_id` 
+                      AND unix_timestamp() - UNIX_TIMESTAMP(`last_polled`) < :interval 
+                      GROUP BY `d`.`device_id`, `d`.`hostname`, `d`.`last_polled`, `d`.`sysName`
+                      ORDER BY `cpuload` ' . $sort_order . ' 
+                      LIMIT :count';
+        } else {
+            $query = 'SELECT `hostname`, `last_polled`, `d`.`device_id`, avg(`processor_usage`) as `cpuload`, `d`.`sysName`
+                      FROM `processors` AS procs, `devices` AS `d`, `devices_perms` AS `P`
+					  WHERE `P`.`user_id` = :user AND `P`.`device_id` = `procs`.`device_id` 
+                      AND unix_timestamp() - UNIX_TIMESTAMP(`last_polled`) < :interval
+                      GROUP BY `procs`.`device_id`, `d`.`hostname`, `d`.`last_polled`, `d`.`sysName`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       ORDER BY `cpuload` ' . $sort_order . '
                       LIMIT :count';
         }
     } elseif ($top_query === 'ram') {
         if (is_admin() || is_read()) {
+<<<<<<< HEAD
             $query = 'SELECT `hostname`, `last_polled`, `d`.`device_id`, `mempool_perc` 
+=======
+            $query = 'SELECT `hostname`, `last_polled`, `d`.`device_id`, `mempool_perc`, `d`.`sysName`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       FROM `mempools` as `mem`, `devices` as `d`
                       WHERE `d`.`device_id` = `mem`.`device_id`
                       AND `mempool_descr` IN (\'Physical memory\',\'Memory\')
@@ -233,7 +269,11 @@ if (defined('SHOW_SETTINGS') || empty($widget_settings)) {
                       ORDER BY `mempool_perc` ' . $sort_order . '
                       LIMIT :count';
         } else {
+<<<<<<< HEAD
             $query = 'SELECT `hostname`, `last_polled`, `d`.`device_id`, `mempool_perc` 
+=======
+            $query = 'SELECT `hostname`, `last_polled`, `d`.`device_id`, `mempool_perc`, `d`.`sysName`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       FROM `mempools` as `mem`, `devices` as `d`, `devices_perms` AS `P`
                       WHERE `P`.`user_id` = :user AND `P`.`device_id` = `mem`.`device_id`
                       AND `mempool_descr` IN (\'Physical memory\',\'Memory\')
@@ -243,13 +283,21 @@ if (defined('SHOW_SETTINGS') || empty($widget_settings)) {
         }
     } elseif ($top_query === 'poller') {
         if (is_admin() || is_read()) {
+<<<<<<< HEAD
             $query = 'SELECT `last_polled_timetaken`, `hostname`, `last_polled`, `device_id` 
+=======
+            $query = 'SELECT `last_polled_timetaken`, `hostname`, `last_polled`, `device_id`, `sysName`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       FROM `devices` 
                       WHERE unix_timestamp() - UNIX_TIMESTAMP(`last_polled`) < :interval 
                       ORDER BY `last_polled_timetaken` ' . $sort_order . ' 
                       LIMIT :count';
         } else {
+<<<<<<< HEAD
             $query = 'SELECT `last_polled_timetaken`, `hostname`, `last_polled`, `d`.`device_id` 
+=======
+            $query = 'SELECT `last_polled_timetaken`, `hostname`, `last_polled`, `d`.`device_id`, `d`.`sysName`
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                       FROM `devices` as `d`, `devices_perms` AS `P` 
                       WHERE `P`.`user_id` = :user 
                       AND `P`.`device_id` = `d`.`device_id` 

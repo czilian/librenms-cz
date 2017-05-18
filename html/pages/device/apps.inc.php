@@ -21,9 +21,13 @@ foreach (dbFetchRows('SELECT * FROM `applications` WHERE `device_id` = ?', array
 
     if ($vars['app'] == $app['app_type']) {
         echo "<span class='pagemenu-selected'>";
+<<<<<<< HEAD
         // echo('<img src="images/icons/'.$app['app_type'].'.png" class="optionicon" />');
     } else {
         // echo('<img src="images/icons/greyscale/'.$app['app_type'].'.png" class="optionicon" />');
+=======
+    } else {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     }
 
     $link_add = array('app' => $app['app_type']);

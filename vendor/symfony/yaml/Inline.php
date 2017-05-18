@@ -21,7 +21,11 @@ use Symfony\Component\Yaml\Exception\DumpException;
  */
 class Inline
 {
+<<<<<<< HEAD
     const REGEX_QUOTED_STRING = '(?:"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"|\'([^\']*(?:\'\'[^\']*)*)\')';
+=======
+    const REGEX_QUOTED_STRING = '(?:"([^"\\\\]*+(?:\\\\.[^"\\\\]*+)*+)"|\'([^\']*+(?:\'\'[^\']*+)*+)\')';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
     private static $exceptionOnInvalidType = false;
     private static $objectSupport = false;
@@ -149,8 +153,13 @@ class Inline
             case Escaper::requiresDoubleQuoting($value):
                 return Escaper::escapeWithDoubleQuotes($value);
             case Escaper::requiresSingleQuoting($value):
+<<<<<<< HEAD
             case preg_match(self::getHexRegex(), $value):
             case preg_match(self::getTimestampRegex(), $value):
+=======
+            case Parser::preg_match(self::getHexRegex(), $value):
+            case Parser::preg_match(self::getTimestampRegex(), $value):
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 return Escaper::escapeWithSingleQuotes($value);
             default:
                 return $value;
@@ -212,12 +221,21 @@ class Inline
     /**
      * Parses a YAML scalar.
      *
+<<<<<<< HEAD
      * @param string $scalar
      * @param string $delimiters
      * @param array  $stringDelimiters
      * @param int    &$i
      * @param bool   $evaluate
      * @param array  $references
+=======
+     * @param string   $scalar
+     * @param string[] $delimiters
+     * @param string[] $stringDelimiters
+     * @param int      &$i
+     * @param bool     $evaluate
+     * @param array    $references
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
      *
      * @return string
      *
@@ -244,10 +262,17 @@ class Inline
                 $i += strlen($output);
 
                 // remove comments
+<<<<<<< HEAD
                 if (preg_match('/[ \t]+#/', $output, $match, PREG_OFFSET_CAPTURE)) {
                     $output = substr($output, 0, $match[0][1]);
                 }
             } elseif (preg_match('/^(.+?)('.implode('|', $delimiters).')/', substr($scalar, $i), $match)) {
+=======
+                if (Parser::preg_match('/[ \t]+#/', $output, $match, PREG_OFFSET_CAPTURE)) {
+                    $output = substr($output, 0, $match[0][1]);
+                }
+            } elseif (Parser::preg_match('/^(.+?)('.implode('|', $delimiters).')/', substr($scalar, $i), $match)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                 $output = $match[1];
                 $i += strlen($output);
             } else {
@@ -282,7 +307,11 @@ class Inline
      */
     private static function parseQuotedScalar($scalar, &$i)
     {
+<<<<<<< HEAD
         if (!preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match)) {
+=======
+        if (!Parser::preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match)) {
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
             throw new ParseException(sprintf('Malformed inline YAML string: %s.', substr($scalar, $i)));
         }
 
@@ -453,7 +482,11 @@ class Inline
      * @param string $scalar
      * @param array  $references
      *
+<<<<<<< HEAD
      * @return string A YAML string
+=======
+     * @return mixed The evaluated YAML string
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
      *
      * @throws ParseException when object parsing support was disabled and the parser detected a PHP object or when a reference could not be resolved
      */
@@ -530,16 +563,26 @@ class Inline
 
                         return '0' == $scalar[1] ? octdec($scalar) : (((string) $raw === (string) $cast) ? $cast : $raw);
                     case is_numeric($scalar):
+<<<<<<< HEAD
                     case preg_match(self::getHexRegex(), $scalar):
+=======
+                    case Parser::preg_match(self::getHexRegex(), $scalar):
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         return '0x' === $scalar[0].$scalar[1] ? hexdec($scalar) : (float) $scalar;
                     case '.inf' === $scalarLower:
                     case '.nan' === $scalarLower:
                         return -log(0);
                     case '-.inf' === $scalarLower:
                         return log(0);
+<<<<<<< HEAD
                     case preg_match('/^(-|\+)?[0-9,]+(\.[0-9]+)?$/', $scalar):
                         return (float) str_replace(',', '', $scalar);
                     case preg_match(self::getTimestampRegex(), $scalar):
+=======
+                    case Parser::preg_match('/^(-|\+)?[0-9,]+(\.[0-9]+)?$/', $scalar):
+                        return (float) str_replace(',', '', $scalar);
+                    case Parser::preg_match(self::getTimestampRegex(), $scalar):
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
                         $timeZone = date_default_timezone_get();
                         date_default_timezone_set('UTC');
                         $time = strtotime($scalar);

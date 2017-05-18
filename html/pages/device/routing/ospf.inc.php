@@ -98,6 +98,10 @@ foreach (dbFetchRows('SELECT * FROM `ospf_instances` WHERE `device_id` = ?', arr
                       </thead>
                   </div>';
     foreach (dbFetchRows("SELECT * FROM `ospf_ports` AS O, `ports` AS P WHERE O.`ospfIfAdminStat` = 'enabled' AND O.`device_id` = ? AND O.`ospfIfAreaId` = ? AND P.port_id = O.port_id", array($device['device_id'], $area['ospfAreaId'])) as $ospfport) {
+<<<<<<< HEAD
+=======
+        $ospfport = cleanPort($ospfport);
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
         $port_status_color = 'default';
 
         if ($ospfport['ospfIfAdminStat'] == 'enabled') {

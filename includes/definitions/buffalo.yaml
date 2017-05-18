@@ -4,3 +4,9 @@ type: storage
 icon: buffalo
 over:
     - { graph: device_bits, text: 'Device Traffic' }
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - BUFFALO TeraStation
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

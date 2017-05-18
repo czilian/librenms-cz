@@ -8,3 +8,11 @@ over:
     - { graph: device_mempool, text: 'Memory Usage' }
 mib_dir:
     - accedian
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr:
+        - AMN-
+        - AEN-
+        - AMO-
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

@@ -48,7 +48,11 @@ $pdf->setTextShadow(array('enabled' => false, 'depth_w' => 0.2, 'depth_h' => 0.2
 
 if (isset($_GET['report']) && !empty($_GET['report'])) {
     $report = mres($_GET['report']);
+<<<<<<< HEAD
     $pdf->SetHeaderData('../../'.$config['title_image'], 40, ucfirst($report), $config['project_name'], array(0, 0, 0), array(0, 64, 128));
+=======
+    $pdf->SetHeaderData('../../../../../html/'.$config['title_image'], 40, ucfirst($report), $config['project_name'], array(0, 0, 0), array(0, 64, 128));
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     include_once "includes/reports/$report.pdf.inc.php";
 } else {
     $report = 'report';

@@ -87,16 +87,28 @@ except:
 discovery_path = config['install_dir'] + '/discovery.php'
 db_username = config['db_user']
 db_password = config['db_pass']
+<<<<<<< HEAD
+=======
+db_port = int(config['db_port'])
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 if config['db_host'][:5].lower() == 'unix:':
     db_server = config['db_host']
     db_port = 0
+<<<<<<< HEAD
 elif ':' in config['db_host']:
     db_server = config['db_host'].rsplit(':')[0]
     db_port = int(config['db_host'].rsplit(':')[1])
 else:
     db_server = config['db_host']
     db_port = 0
+=======
+elif config['db_socket']:
+    db_server = config['db_socket']
+    db_port = 0
+else:
+    db_server = config['db_host']
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 
 db_dbname = config['db_name']
 

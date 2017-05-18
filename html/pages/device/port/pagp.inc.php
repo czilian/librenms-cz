@@ -29,6 +29,11 @@ echo "<a href='#' onmouseover=\"return overlib('<img src=\'$yearly_url\'>', LEFT
       <img src='$yearly_traffic' border=0></a>";
 
 foreach (dbFetchRows('SELECT * FROM `ports` WHERE `pagpGroupIfIndex` = ? and `device_id` = ?', array($port['ifIndex'], $device['device_id'])) as $member) {
+<<<<<<< HEAD
     echo "$br<img src='images/16/brick_link.png' align=absmiddle> <strong>".generate_port_link($member).' (PAgP)</strong>';
+=======
+    $member = cleanPort($member);
+    echo "$br<i class='fa fa-anchor fa-lg icon-theme' aria-hidden='true'></i> <strong>".generate_port_link($member).' (PAgP)</strong>';
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
     $br = '<br />';
 }

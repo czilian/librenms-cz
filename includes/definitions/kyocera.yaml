@@ -5,3 +5,9 @@ over:
     - { graph: device_toner, text: Toner }
 ifname: 1
 type: printer
+<<<<<<< HEAD
+=======
+discovery:
+    - sysDescr_regex:
+        - '/^KYOCERA/'
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7

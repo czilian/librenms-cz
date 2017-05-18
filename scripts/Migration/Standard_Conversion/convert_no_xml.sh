@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/bin/bash
+=======
+#!/usr/bin/env bash
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
 # Observium to LibreNMS conversion
 
 ####################### SCRIPT DESCRIPTION ########################
@@ -50,4 +54,8 @@ while read line;
 	done < $NODELIST
 
 # This line SSHs to LibreNMS server and runs the destwork script to finish conversion
+<<<<<<< HEAD
 ssh root@$DEST 'bash -s' < $DESTSCRIPT
+=======
+ssh root@$DEST 'bash -s' < $DESTSCRIPT
+>>>>>>> b95d6565525b3f64a4f77dbdc157d7b6b47bbcc7
