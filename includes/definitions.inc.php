@@ -894,7 +894,7 @@ $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 $os = 'advafsp150ge11x';
 $config['os'][$os]['text']             = 'ADVA FSP150CC';
 $config['os'][$os]['type']             = 'network';
-$config['os'][$os]['icon']             = 'advage11x';
+$config['os'][$os]['icon']             = 'adva-ge11x';
 $config['os'][$os]['over'][0]['graph'] = 'device_bits';
 $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
@@ -914,7 +914,7 @@ $config['os'][$os]['over'][0]['text']  = 'Device Traffic';
 
 $os = 'advafsp3kr7';
 $config['os'][$os]['text']             = 'ADVA FSP3KR7';
-$config['os'][$os]['type']             = 'DWDM';
+$config['os'][$os]['type']             = 'network';
 $config['os'][$os]['icon']             = 'adva-dwdm';
 $config['os'][$os]['over'][0]['graph'] = 'device_dbm';
 $config['os'][$os]['over'][0]['text']  = 'Laser Power';

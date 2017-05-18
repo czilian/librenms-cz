@@ -1,0 +1,9 @@
+os: advafsp150ge114x
+text: ADVA FSP150
+type: network
+icon: adva_switch
+over:
+    - { graph: device_bits, text: Traffic }
+type: network
+discovery:
+    - sysDescr: 'FSP150CC'
