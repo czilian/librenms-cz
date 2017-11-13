@@ -7,11 +7,14 @@ over:
 discovery:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     - sysObjectId: 
       - .1.3.6.1.4.1.3807.1.281802.
 mib_dir:
     - fiberhome
 =======
+=======
+>>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
 =======
 >>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
     - sysDescr_regex: '/^AN5516-0(1|6|4|4B)$/'
@@ -44,6 +47,9 @@ poller_modules:
     ucd-mib: 0
     wireless: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 0c49e9b0232c1c0fcbd3b39176adf99e26fe825c
+=======
+>>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
 =======
 >>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442

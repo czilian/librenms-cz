@@ -11,6 +11,7 @@ Example Dashboard
 LibreNMS has a whole list of Widgets to select from. 
 --------------------------------------------------------------
 <<<<<<< HEAD
+<<<<<<< HEAD
 + Alerts Widget: show all alert not notifications.
 + Availability Map: Shows all devices with colored tiles, green up, yellow for warning (device has been restarted in last 24 hours),red   for down. You can also list all services and ignored/disabled devcies in this widget.
 + Componet Status: List all componets Ok state, Warning state, Critical state.
@@ -26,6 +27,8 @@ LibreNMS has a whole list of Widgets to select from.
 + Top Devices: By Traffic, or  Uptime, or Response time, or Poller Duration, or Procssor load, or Memory Usage.
 + Top Interfaces: Lists top interfaces.
 =======
+=======
+>>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
 + Alerts Widget: Displays all alert notifications.
 + Availability Map: Displays all devices with colored tiles, green up, yellow for warning (device has been restarted in last 24 hours),red   for down. You can also list all services and ignored/disabled devcies in this widget.
 + Componet Status: List all componets Ok state, Warning state, Critical state.
@@ -40,6 +43,9 @@ LibreNMS has a whole list of Widgets to select from.
 + Syslog: Displays all syslog entries.
 + Top Devices: By Traffic, or  Uptime, or Response time, or Poller Duration, or Procssor load, or Memory Usage.
 + Top Interfaces: Lists top interfaces by traffic utilization.
+<<<<<<< HEAD
+>>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
+=======
 >>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
 + Worldmap: displays all your devices locations. From syslocation or from override sysLocation.
 --------------------------------------------------------------------
@@ -63,7 +69,11 @@ Step 2: Then go to Settings -> WebUI settings -> Dashboard Settings and set the 
 Using the Notes Widget.
 ```html
 <<<<<<< HEAD
+<<<<<<< HEAD
 <iframe src="http://url/" width="1200" height="800">
+=======
+<iframe src="url/" width="1200" height="800">
+>>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
 =======
 <iframe src="url/" width="1200" height="800">
 >>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
@@ -72,6 +82,10 @@ Using the Notes Widget.
 ```
 Note you may need to play with the width and height and also size your widget properly.
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+``` src="url" ``` needs to be URL to webpage your linking to.
+>>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
 =======
 ``` src="url" ``` needs to be URL to webpage your linking to.
 >>>>>>> 1c3f0d834519992c01c53a2dcfe58b12283b5442
