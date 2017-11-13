@@ -19,6 +19,9 @@ $states       = dbFetchCell("select count(*) from sensors WHERE sensor_class='st
 $load         = dbFetchCell("select count(*) from sensors WHERE sensor_class='load' AND device_id = ?", array($device['device_id']));
 $signal       = dbFetchCell("select count(*) from sensors WHERE sensor_class='signal' AND device_id = ?", array($device['device_id']));
 $airflow      = dbFetchCell("select count(*) from sensors WHERE sensor_class='airflow' AND device_id = ?", array($device['device_id']));
+$snr          = dbFetchCell("select count(*) from sensors WHERE sensor_class='snr' AND device_id = ?", array($device['device_id']));
+$pressure     = dbFetchCell("select count(*) from sensors WHERE sensor_class='pressure' AND device_id = ?", array($device['device_id']));
+$cooling      = dbFetchCell("select count(*) from sensors WHERE sensor_class='cooling' AND device_id = ?", array($device['device_id']));
 
 unset($datas);
 $datas[] = 'overview';
@@ -94,6 +97,18 @@ if ($airflow) {
     $datas[] = 'airflow';
 }
 
+if ($snr) {
+    $datas[] = 'snr';
+}
+
+if ($pressure) {
+    $datas[] = 'pressure';
+}
+
+if ($cooling) {
+    $datas[] = 'cooling';
+}
+
 $type_text['overview']    = 'Overview';
 $type_text['charge']      = 'Battery Charge';
 $type_text['temperature'] = 'Temperature';
@@ -113,6 +128,9 @@ $type_text['state']       = 'State';
 $type_text['load']        = 'Load';
 $type_text['signal']      = 'Signal';
 $type_text['airflow']     = 'Airflow';
+$type_text['snr']         = 'SNR';
+$type_text['pressure']    = 'Pressure';
+$type_text['cooling']     = 'Cooling';
 
 $link_array = array(
     'page'   => 'device',

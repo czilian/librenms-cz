@@ -65,6 +65,13 @@ You can also set this globally with the config option `$config['snmp']['max_oid'
 The default 16 threads that `poller-wrapper.py` runs as isn't necessarily the optimal number. A general rule of thumb is 
 2 threads per core but we suggest that you play around with lowering / increasing the number until you get the optimal value.
 
+This can be changed by going to the cron job for librenms. Usually in /etc/cron.d/librenms and changing the "16"
+
+*/5  *    * * *   librenms    /opt/librenms/cronic /opt/librenms/poller-wrapper.py 16
+
+KEEP in MIND that this dosnt always help, it depnds on your system and CPU. So Be careful. 
+
+
 #### Recursive DNS
 
 If your install uses hostnames for devices and you have quite a lot then it's advisable to setup a local recursive dns instance on the 
@@ -75,13 +82,12 @@ LibreNMS server. Something like pdns-recursor can be used and then configure `/e
 By default the polling ports module will walk ifXEntry + some items from ifEntry regardless of the port. So if a port is marked as deleted because you don't want to see them 
 or it's disabled then we still collect data. For the most part this is fine as the walks are quite quick. However for devices with a lot of ports and good % of those are 
 either deleted or disabled then this approach isn't optimal. So to counter this you can enable 'selected port polling' per device within the edit device -> misc section or by
-globally enabling it (not recommended): `$config['polling']['selected_ports'] = true;`.
+globally enabling it (not recommended): `$config['polling']['selected_ports'] = true;`. You can also set it for a specific OS: `$config['os']['ios']['polling']['selected_ports'] = true;`. 
 
 If you would like to see if you should turn this on then run this query in MySQL: `select device_id, count(*) as total from ports where deleted=1 group by device_id order by total desc;`. You will see output like the following:
 
-+-----------+-------+
 | device_id | total |
-+-----------+-------+
+| --------: | ----: |
 |       128 |   339 |
 |        92 |    56 |
 |        41 |    41 |
@@ -96,6 +102,6 @@ Here device id 128 and potentially 92 and 41 are likely candidates for this feat
 
 If you are running https then you should enable http/2 support in whatever web server you use:
 
-For Nginx (1.9.5 and above) change `listen 443 http2;` to `listen 443 ssl http2;` in the Virtualhost config.
+For Nginx (1.9.5 and above) change `listen 443 ssl;` to `listen 443 ssl http2;` in the Virtualhost config.
 
 For Apache (2.4.17 an above) set `Protocols h2 http/1.1` in the Virtualhost config.

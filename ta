@@ -1,0 +1,57 @@
+[33mccfe100[m HEAD@{0}: reset: moving to HEAD@{2}
+[33mb10089c[m HEAD@{1}: reset: moving to HEAD@{6}
+[33mccfe100[m HEAD@{2}: checkout: moving from production to master
+[33mccfe100[m HEAD@{3}: checkout: moving from master to production
+[33mccfe100[m HEAD@{4}: commit: TPL
+[33m4df5151[m HEAD@{5}: reset: moving to HEAD@{6}
+[33mb10089c[m HEAD@{6}: checkout: moving from repair to master
+[33m022404f[m HEAD@{7}: commit (merge): Merge branch 'master' of https://github.com/librenms/librenms into repair
+[33mb10089c[m HEAD@{8}: checkout: moving from master to repair
+[33mb10089c[m HEAD@{9}: checkout: moving from VBT-Production to master
+[33m5323e43[m HEAD@{10}: commit (merge): Merge branch 'master' of https://github.com/librenms/librenms into VBT-Production
+[33ma5fd949[m HEAD@{11}: commit: Update 11.2017
+[33m4df5151[m HEAD@{12}: commit: TP-Link VPN Router
+[33mb10089c[m HEAD@{13}: checkout: moving from master to VBT-Production
+[33mb10089c[m HEAD@{14}: commit: corrected yaml definitions
+[33mff0d8e8[m HEAD@{15}: pull https://github.com/czilian/librenms_staging.git Fiberhome-Switch-OS: Merge made by the 'recursive' strategy.
+[33m24f751f[m HEAD@{16}: pull https://github.com/czilian/librenms_staging.git ADVA-support-v1: Merge made by the 'recursive' strategy.
+[33m60e8d9d[m HEAD@{17}: pull: Fast-forward
+[33m359d500[m HEAD@{18}: reset: moving to origin/master
+[33me290bdf[m HEAD@{19}: checkout: moving from ADVA-support-v1 to master
+[33m917db6a[m HEAD@{20}: commit (merge): Merge branch 'ADVA-support-v1' of https://github.com/czilian/librenms_staging into ADVA-support-v1
+[33mdb3d2c3[m HEAD@{21}: commit: Inlude vendor folder
+[33me290bdf[m HEAD@{22}: checkout: moving from master to ADVA-support-v1
+[33me290bdf[m HEAD@{23}: checkout: moving from master to master
+[33me290bdf[m HEAD@{24}: reset: moving to 0f76cbe
+[33m716441e[m HEAD@{25}: reset: moving to 716441e
+[33m50ba7ab[m HEAD@{26}: checkout: moving from test to master
+[33m50ba7ab[m HEAD@{27}: checkout: moving from master to test
+[33m50ba7ab[m HEAD@{28}: checkout: moving from 716441eeda921def312f3448de38aa42cf26c50c to master
+[33m716441e[m HEAD@{29}: checkout: moving from master to origin
+[33m50ba7ab[m HEAD@{30}: checkout: moving from test to master
+[33m50ba7ab[m HEAD@{31}: checkout: moving from test to test
+[33m50ba7ab[m HEAD@{32}: checkout: moving from 716441eeda921def312f3448de38aa42cf26c50c to master
+[33m716441e[m HEAD@{33}: checkout: moving from master to origin
+[33m50ba7ab[m HEAD@{34}: checkout: moving from 716441eeda921def312f3448de38aa42cf26c50c to master
+[33m716441e[m HEAD@{35}: checkout: moving from master to origin
+[33m50ba7ab[m HEAD@{36}: checkout: moving from 716441eeda921def312f3448de38aa42cf26c50c to master
+[33m716441e[m HEAD@{37}: checkout: moving from master to origin
+[33m50ba7ab[m HEAD@{38}: checkout: moving from master to master
+[33m50ba7ab[m HEAD@{39}: commit (merge): . 21-3-2017 attempt: Merge branch 'master' of https://github.com/librenms/librenms
+[33m3a544f1[m HEAD@{40}: commit: - still trying
+[33me861603[m HEAD@{41}: commit: -trying my luck 21/3/17
+[33m8b68429[m HEAD@{42}: checkout: moving from master to master
+[33m8b68429[m HEAD@{43}: checkout: moving from master to master
+[33m8b68429[m HEAD@{44}: reset: moving to bcc40b7
+[33mc1779f0[m HEAD@{45}: reset: moving to c1779f0
+[33mbcc40b7[m HEAD@{46}: reset: moving to bcc40
+[33m4da39f6[m HEAD@{47}: reset: moving to 4da39f6
+[33mbcc40b7[m HEAD@{48}: reset: moving to bcc40b7
+[33m1d243c4[m HEAD@{49}: checkout: moving from master to origin
+[33m8b68429[m HEAD@{50}: checkout: moving from master to master
+[33m8b68429[m HEAD@{51}: checkout: moving from master to master
+[33m8b68429[m HEAD@{52}: reset: moving to 8b68429
+[33m7833c28[m HEAD@{53}: reset: moving to 7833c28
+[33m8b68429[m HEAD@{54}: reset: moving to 8b68429
+[33mc1779f0[m HEAD@{55}: reset: moving to c1779f0
+[33m8b68429[m 
