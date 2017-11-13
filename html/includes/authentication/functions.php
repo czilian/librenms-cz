@@ -23,6 +23,7 @@
  * @author     Tony Murray <murraytony@gmail.com>
  */
 
+use LibreNMS\Authentication\TwoFactor;
 use LibreNMS\Exceptions\AuthenticationException;
 use Phpass\PasswordHash;
 
@@ -72,32 +73,51 @@ function log_in_user()
         throw new AuthenticationException('Invalid Credentials');
     }
 
-    if (!(isset($_SESSION['authenticated']) && $_SESSION['authenticated'])) {
+    if (!session_authenticated()) {
         // check twofactor
         if ($config['twofactor'] === true && !isset($_SESSION['twofactor'])) {
-            include_once $config['install_dir'].'/html/includes/authentication/twofactor.lib.php';
-            twofactor_auth();
+            if (TwoFactor::showForm()) {
+                return false; // not done yet, one more cycle to show the 2fa form
+            }
         }
 
         // if two factor isn't enabled or it has passed already ware are logged in
         if (!$config['twofactor'] || $_SESSION['twofactor']) {
             $_SESSION['authenticated'] = true;
             dbInsert(array('user' => $_SESSION['username'], 'address' => get_client_ip(), 'result' => 'Logged In'), 'authlog');
-        } else {
-            throw new AuthenticationException('Two-Factor Auth Failed');
         }
+    }
+
+    if (session_authenticated()) {
+        set_remember_me();
     }
 
     return true;
 }
 
 /**
- * Set or update the remember me cookie
+ * Check if the session is authenticated
+ *
+ * @return bool
+ */
+function session_authenticated()
+{
+    return isset($_SESSION['authenticated']) && $_SESSION['authenticated'];
+}
+
+/**
+ * Set or update the remember me cookie if $_SESSION['remember'] is set
  * If setting a new cookie, $_SESSION['username'] must be set
  */
 function set_remember_me()
 {
     global $config;
+
+    if (!isset($_SESSION['remember'])) {
+        return;
+    }
+    unset($_SESSION['remember']);
+
     $sess_id = session_id();
     $expiration = time() + 60 * 60 * 24 * $config['auth_remember'];
 
@@ -120,11 +140,11 @@ function set_remember_me()
         $db_entry['session_token'] = $token;
         $db_entry['session_auth'] = $auth;
         dbInsert($db_entry, 'session');
-    }
+    }\
 
-    setcookie('sess_id', $sess_id, $expiration, '/', null, false, true);
-    setcookie('token', $token_id, $expiration, '/', null, false, true);
-    setcookie('auth', $auth, $expiration, '/', null, false, true);
+    setcookie('sess_id', $sess_id, $expiration, '/', null, $config['secure_cookies'], true);
+    setcookie('token', $token_id, $expiration, '/', null, $config['secure_cookies'], true);
+    setcookie('auth', $auth, $expiration, '/', null, $config['secure_cookies'], true);
 }
 
 /**
@@ -173,7 +193,8 @@ function clear_remember_me($username)
     unset($_COOKIE);
 
     $time = time() - 60 * 60 * 24 * $config['auth_remember']; // time in the past to make sure
-    setcookie('sess_id', '', $time, '/');
-    setcookie('token', '', $time, '/');
-    setcookie('auth', '', $time, '/');
+
+    setcookie('sess_id', '', $time, '/', null, $config['secure_cookies']);
+    setcookie('token', '', $time, '/', null, $config['secure_cookies']);
+    setcookie('auth', '', $time, '/', null, $config['secure_cookies']);
 }
