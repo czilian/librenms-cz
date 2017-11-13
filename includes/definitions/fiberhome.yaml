@@ -6,6 +6,6 @@ over:
     - { graph: device_bits, text: 'Device Traffic' }
 discovery:
     - sysObjectId: 
-      - .1.3.6.1.4.1.3807.1.281802.
+      - .1.3.6.1.4.1.3807.1.281802
 mib_dir:
     - fiberhome

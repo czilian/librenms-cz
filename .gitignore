@@ -19,6 +19,8 @@ config.php
 html/css/custom/*
 html/images/custom/*
 html/plugins/*
+html/images/librenms_logo_light.svg
+html/images/favicon.ico
 !html/plugins/Test/
 includes/custom/*
 junk
