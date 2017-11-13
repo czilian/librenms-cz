@@ -7,7 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
+<<<<<<< HEAD
     'Ulrichsg\\' => array($vendorDir . '/ulrichsg/getopt-php/src'),
+=======
+>>>>>>> 0c49e9b0232c1c0fcbd3b39176adf99e26fe825c
     'Slim' => array($vendorDir . '/slim/slim'),
     'Requests' => array($vendorDir . '/rmccue/requests/library'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
