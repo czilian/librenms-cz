@@ -20,6 +20,7 @@
 
 namespace LibreNMS;
 
+use LibreNMS\Authentication\Auth;
 use LibreNMS\Exceptions\DatabaseConnectException;
 
 class IRCBot
@@ -539,15 +540,16 @@ class IRCBot
 
     private function hostAuth()
     {
+        global $authorizer;
         foreach ($this->config['irc_auth'] as $nms_user => $hosts) {
             foreach ($hosts as $host) {
                 $host = preg_replace("/\*/", ".*", $host);
                 if (preg_match("/$host/", $this->getUserHost($this->data))) {
-                    $user_id = get_userid(mres($nms_user));
-                    $user = get_user($user_id);
+                    $user_id = Auth::get()->getUserid(mres($nms_user));
+                    $user = Auth::get()->getUser($user_id);
                     $this->user['name'] = $user['username'];
                     $this->user['id']   = $user_id;
-                    $this->user['level'] = get_userlevel($user['username']);
+                    $this->user['level'] = Auth::get()->getUserlevel($user['username']);
                     $this->user['expire'] = (time() + ($this->config['irc_authtime'] * 3600));
                     if ($this->user['level'] < 5) {
                         foreach (dbFetchRows('SELECT device_id FROM devices_perms WHERE user_id = ?', array($this->user['id'])) as $tmp) {
@@ -577,12 +579,13 @@ class IRCBot
 
     private function _auth($params)
     {
+        global $authorizer;
         $params = explode(' ', $params, 2);
         if (strlen($params[0]) == 64) {
             if ($this->tokens[$this->getUser($this->data)] == $params[0]) {
                 $this->user['expire'] = (time() + ($this->config['irc_authtime'] * 3600));
-                $tmp_user = get_user($this->user['id']);
-                $tmp = get_userlevel($tmp_user['username']);
+                $tmp_user = Auth::get()->getUser($this->user['id']);
+                $tmp = Auth::get()->getUserlevel($tmp_user['username']);
                 $this->user['level'] = $tmp;
                 if ($this->user['level'] < 5) {
                     foreach (dbFetchRows('SELECT device_id FROM devices_perms WHERE user_id = ?', array($this->user['id'])) as $tmp) {
@@ -599,8 +602,8 @@ class IRCBot
                 return $this->respond('Nope.');
             }
         } else {
-            $user_id = get_userid(mres($params[0]));
-            $user = get_user($user_id);
+            $user_id = Auth::get()->getUserid(mres($params[0]));
+            $user = Auth::get()->getUser($user_id);
             if ($user['email'] && $user['username'] == $params[0]) {
                 $token = hash('gost', openssl_random_pseudo_bytes(1024));
                 $this->tokens[$this->getUser($this->data)] = $token;
@@ -855,7 +858,7 @@ class IRCBot
                 $srvign   = dbFetchCell("SELECT COUNT(*) FROM services WHERE service_ignore = 1".$d_a);
                 $srvdis   = dbFetchCell("SELECT COUNT(*) FROM services WHERE service_disabled = 1".$d_a);
                 $service_status = dbFetchRows("SELECT `service_status`, COUNT(*) AS `count` FROM `services` WHERE `service_disabled`=0 AND `service_ignore`=0 $d_a GROUP BY `service_status`");
-                $service_status = array_combine(array_column($service_status, 'service_status'), array_column($service_status, 'count')); // key by status
+                $service_status = array_column($service_status, 'count', 'service_status'); // key by status
 
                 foreach ($status_colors as $status => $color) {
                     if (isset($service_status[$status])) {

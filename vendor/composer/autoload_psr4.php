@@ -6,12 +6,15 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Ulrichsg\\Getopt\\' => array($vendorDir . '/ulrichsg/getopt-php/src'),
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
-    'ReadmeGen\\' => array($vendorDir . '/fojuth/readmegen/src'),
+    'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'LibreNMS\\Tests\\' => array($baseDir . '/tests'),
     'LibreNMS\\' => array($baseDir . '/LibreNMS'),
-    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
+    'InfluxDB\\' => array($vendorDir . '/influxdb/influxdb-php/src/InfluxDB'),
+    'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
+    'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
+    'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Dapphp\\Radius\\' => array($vendorDir . '/dapphp/radius/src'),
     'CorsSlim\\' => array($vendorDir . '/palanik/corsslim'),
     'Amenadiel\\JpGraph\\Util\\' => array($vendorDir . '/amenadiel/jpgraph/src/util'),
