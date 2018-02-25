@@ -1,8 +1,9 @@
 <?php
 /**
- * WirelessErrorRateDiscovery.php
+ * screenos.inc.php
  *
- * Discover bit error rate sensors in bps
+ * Juniper ScreenOS arp table support
+ * Has a buggy implementation of ipNetToMediaPhysAddress
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,19 +20,20 @@
  *
  * @package    LibreNMS
  * @link       http://librenms.org
- * @copyright  2017 Tony Murray
+ * @copyright  2018 Tony Murray
  * @author     Tony Murray <murraytony@gmail.com>
  */
 
-namespace LibreNMS\Interfaces\Discovery\Sensors;
+// collect arp data
+$nsIpArpTable = snmpwalk_group($device, 'nsIpArpTable', 'NETSCREEN-IP-ARP-MIB');
 
-interface WirelessErrorRateDiscovery
-{
-    /**
-     * Discover wireless bit error rate.  This is in bps. Type is error-rate.
-     * Returns an array of LibreNMS\Device\Sensor objects that have been discovered
-     *
-     * @return array Sensors
-     */
-    public function discoverWirelessErrorRate();
+if (!empty($nsIpArpTable)) {
+    // get internal id to ifIndex map
+    $nsIfInfo = snmpwalk_group($device, 'nsIfInfo', 'NETSCREEN-INTERFACE-MIB', 0);
+    $nsIfInfo = array_flip($nsIfInfo['nsIfInfo']);
+}
+
+foreach ($nsIpArpTable as $data) {
+    $ifIndex = $nsIfInfo[$data['nsIpArpIfIdx']];
+    $arp_data[$ifIndex]['ipNetToMediaPhysAddress'][$data['nsIpArpIp']] = $data['nsIpArpMac'];
 }
